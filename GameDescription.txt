@@ -1,0 +1,14 @@
+Game Description:
+
+This is a encounter and fight to the death game. Players will need to choose to be either human or monster. After choosing the character, player will need to set up a initial character. For humans, the player would need to choose a character from warrior, archer or priest, and as for monsters, that would be minotaur, medusa, or griffin. After setting up the initial character, the game will then start with the initial character that the player chooses and place them on the board.
+
+This is a turn based game. At the start of the game, each player is given a health bar of 10 hearts as their initial life state. For each turn, the player will have four action to choose that is move, attack, defence and swap.
+
+Move	- the player will be given a dice to roll and the player move their pieces around the board depending on the number of the dice rolled.	
+Attack	- the player will be able to decrease the health bar of the opponent. 
+Defence	- the player will be able to decrease the damage taken from opponent attack.
+Swap	- the player will be able to swap to different character
+
+After all the players choose their action, either the character that uses the action, defence or swap, act first or the character with the fastest speed state will have the first move to perform the action. The player would need to move around the board to meet up his or hers opponent that is human(if the player is monster) or monster(if the player is human) and then engage a fight with each other. The player who defeat their opponent will win the game.
+
+If no player has been defeated at the 30th turns of the game, the player with the highest health bar wins the game. The game will only end in draw if the health bar of both players are the same at the 30th turns of the game. At the 25th turns of the game, all the status of all characters will be boosted up in order to end the game faster.
