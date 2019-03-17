@@ -1,0 +1,195 @@
+@startuml Board_Game_Ouline
+
+package javafx {
+    class Polygon
+}
+package view {
+    interface IMenuView
+    interface IGameView
+    interface IBoardView
+    class BoardView
+    IBoardView <|-- BoardView
+    IGameView <|-- GameView
+    IMenuView <|-- MenuView
+    class MenuView
+    class GameView
+    class HexagonalDrawableTile {
+        draw()
+    }
+
+
+}
+
+Polygon <|-- HexagonalDrawableTile
+
+package gameModel {
+
+       interface IPlayer {
+           +getPlayerName()
+           +setPlayerName()
+           +getPlayerID()
+           +setPlayerID()
+       }
+       
+       class HumanPlayer {
+            int playerID;
+            String playerName
+            
+            getPlayerName() ...
+       }
+       IPlayer <|-- HumanPlayer
+      
+
+    package board {
+        interface IBoard {
+            +insertPiece(IPiece piece)
+            +setUpTiles()
+            +addTile(ITile tile)
+        }
+        IBoard <|-- Board
+        abstract class Board {
+            ITile[] tiles()
+        }
+
+        class Board2dHex {
+
+        }
+
+        Board <|-- Board2dHex
+
+            package tiles {
+                    interface ITile
+                    abstract class Tile
+                    ITile <|-- Tile
+
+                     class HexagonalTile {
+                        - int numSides;
+                        - bool traversable;
+                        - int movementCost;
+
+                         +getTraversable()
+                          +getSides()
+                            +returnOrientation()
+                      }
+                Tile <|-- HexagonalTile
+
+            }
+
+            package pieces {
+                    interface IPiece {
+                       +move(int direction)
+                    }
+                    IPiece <|-- AbstractPiece
+                    abstract class Human {
+                        -int health
+                        -int attackStrength
+                        -int moveSpeed
+                    }
+                    abstract class Monster {
+                        -int health
+                        -int attackStrength
+                        -int moveSpeed
+                    }
+
+                    interface AttackingPiece {
+                        +basicAttack()
+                    }
+                    abstract class AbstractPiece{
+                          -Location boardLocation
+                    }
+                    class Archer {
+                        rangedAttack()
+                    }
+                    class Warrior {
+                        bash()
+                    }
+
+                    class Priest {
+                        heal()
+                    }
+                    Human <|-- Archer
+                    Human <|-- Warrior
+                    Human <|-- Priest
+
+                    class Minotaur {
+
+                    }
+
+
+                    Monster <|-- Medusa
+                    Monster <|-- Griffin
+                    Monster <|-- Minotaur
+
+                    AbstractPiece <|-- Human
+                    AbstractPiece <|-- Monster
+                    AttackingPiece <-- Human
+                    AttackingPiece <-- Monster
+
+                }
+
+
+    }
+
+    GameManager -> IBoard
+
+
+    class Turn
+
+    class GameManager {
+        ArrayList<IPlayer> players
+        TurnTimer timer
+        IBoard currentBoard(Board b)
+        Turn turn
+        void setPlayers()
+        +ArrayList<IPlayer> getPlayers()
+
+        setupNewGame(IPlayer players,
+                IBoard board)
+    }
+    GameManager -> IPlayer
+    GameManager <- Turn
+}
+
+
+IBoard -> IPiece
+IBoard -> ITile
+
+package util {
+      class TurnTimer {
+           +setTimerLength()
+           +startTimer()
+           +stopTimer()
+      }
+
+}
+
+package controller {
+    interface IGameViewController
+    interface IMenuViewController
+
+    class GameViewController
+    class MenuViewController
+
+    IGameViewController <|-- GameViewController
+    IMenuViewController <|-- MenuViewController
+
+    class GameController {
+         void setPlayers()
+         void setTurn()
+         buildNewGame()
+    }
+
+    class BoardController {
+        drawTiles(ITile tiles)
+    }
+}
+
+GameController <-> GameManager
+IMenuViewController <-> IMenuView
+IGameViewController <-> IGameView
+GameManager <-> TurnTimer
+BoardController <-> IBoardView
+HexagonalDrawableTile <-> HexagonalTile
+Board2dHex <-> HexagonalTile
+
+@enduml
