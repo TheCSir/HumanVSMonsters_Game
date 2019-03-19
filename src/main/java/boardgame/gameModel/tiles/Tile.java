@@ -1,4 +1,4 @@
-package gameModel.tiles;
+package boardgame.gameModel.tiles;
 
 public abstract class Tile implements ITile {
 }

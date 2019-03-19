@@ -1,4 +1,4 @@
-package gameModel.pieces;
+package boardgame.gameModel.pieces;
 
 public class Medusa extends Monster {
     public void basicAttack(){}

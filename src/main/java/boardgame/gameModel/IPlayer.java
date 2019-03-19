@@ -1,4 +1,4 @@
-package gameModel;
+package boardgame.gameModel;
 
 public interface IPlayer {
     public int getPlayerID();

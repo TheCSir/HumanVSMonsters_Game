@@ -1,4 +1,4 @@
-package gameModel.pieces;
+package boardgame.gameModel.pieces;
 
 public interface IAttackingPiece {
     public void basicAttack();

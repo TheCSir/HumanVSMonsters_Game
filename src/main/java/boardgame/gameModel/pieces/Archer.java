@@ -1,4 +1,4 @@
-package gameModel.pieces;
+package boardgame.gameModel.pieces;
 
 public class Archer extends Human {
     public void basicAttack(){}

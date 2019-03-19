@@ -1,7 +1,7 @@
-package gameModel.board;
+package boardgame.gameModel.board;
 
-import gameModel.pieces.IPiece;
-import gameModel.tiles.ITile;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.tiles.ITile;
 
 public interface IBoard {
     public void insertPice(IPiece piece);

@@ -1,4 +1,4 @@
-package gameModel.pieces;
+package boardgame.gameModel.pieces;
 
 import java.util.HashMap;
 
