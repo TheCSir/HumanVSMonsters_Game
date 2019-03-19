@@ -5,6 +5,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -62,6 +63,7 @@
               </Label>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:" />
                   <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
+                  <TextField fx:id="greeting" text="Goodbye" />
                </children>
             </VBox>
       </children>
