@@ -1,4 +1,4 @@
 package boardgame.view;
 
-public class Location {
+public class PieceView {
 }
