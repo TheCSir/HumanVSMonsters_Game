@@ -4,6 +4,8 @@ package boardgame.controller;
  Controller class for main screen.
  */
 
+import boardgame.gameModel.GameManager;
+import boardgame.gameModel.pieces.Piece;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTile;
 import boardgame.view.HexagonTilePiece;
@@ -20,6 +22,7 @@ import javafx.scene.transform.Translate;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -58,6 +61,10 @@ public class MainController implements Initializable {
     //TODO move event.
 
     public MainController () {
+
+        //Get a reference to the game manager
+        GameManager gm = new GameManager();
+        //gm.setUpDefaultGame();
         activePlayer = playerArray[0];
         tiles = new ArrayList<>();
     }
@@ -77,10 +84,9 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         turnTime.setText("Turn Time " + time);
-
         BoardGrid bg = drawBasicGrid(10, 10, r);
         endTurnButton.setOnAction(e -> changeActivePlayer());
-        addPieces(bg);
+        addPieces(bg, new ArrayList<>());
     }
 
 
@@ -90,7 +96,6 @@ public class MainController implements Initializable {
         BoardGrid boardGrid = new BoardGrid();
         double xStartOffset = 40;
         double yStartOffset = 40;
-
 
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
@@ -104,10 +109,11 @@ public class MainController implements Initializable {
                 tiles.add(tile);
 
             }
-        }return boardGrid;
+        }return boardGrid; //TODO actually return grid.
     }
 
-    private void addPieces(BoardGrid boardGrid) {
+    //Add game pieces to the game board.
+    private void addPieces(BoardGrid boardGrid, List<Piece> pieceList) {
         MapLocation tileCoords = new MapLocation(1, 1);
         double xCoord = 0.0;
         double yCoord = 0.0;
@@ -122,7 +128,7 @@ public class MainController implements Initializable {
                 }catch (FileNotFoundException e) {
                     System.out.println("Image File not found!");
                 }
-                pieceTile.setFill(Color.BLUE);
+
                 boardPane.getChildren().add(pieceTile);
                 pieceTile.setOnMouseClicked(e -> handlePieceClicked(pieceTile));
             }
@@ -147,6 +153,7 @@ public class MainController implements Initializable {
         }
     }
 
+    //TODO change to view class.
     private void changePiecePosition(HexagonTile hexagonTile, HexagonTile desiredTilePosition) {
         //Should probably be a view method.
         Translate translate = new Translate();
@@ -157,8 +164,5 @@ public class MainController implements Initializable {
         //Bring piece to front so that it doesn't get stuck behind background tile.
         hexagonTile.toFront();
     }
-
-
-
 
 }
