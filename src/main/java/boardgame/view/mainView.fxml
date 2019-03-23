@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -61,14 +62,15 @@
                   <Font size="18.0" />
                 </font>
               </Label>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:" />
+                  <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:" />
                   <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
+                  <Button fx:id="endTurnButton" mnemonicParsing="false" text="End Turn" />
                </children>
             </VBox>
             <Pane fx:id="boardPane" layoutX="269.0" layoutY="31.0" prefHeight="802.0" prefWidth="742.0" />
             <VBox fx:id="tileInfoPane" layoutX="27.0" layoutY="31.0" prefHeight="847.0" prefWidth="214.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Piece selected:" />
+                  <Text fx:id="pieceSelected" strokeType="OUTSIDE" strokeWidth="0.0" text="Piece selected:" />
                </children>
             </VBox>
       </children>
