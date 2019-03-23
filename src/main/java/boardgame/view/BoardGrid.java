@@ -1,6 +1,7 @@
 package boardgame.view;
 
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Translate;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class BoardGrid {
     }
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
+
 
 }
 

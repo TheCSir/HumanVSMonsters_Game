@@ -6,6 +6,7 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManager;
 import boardgame.gameModel.pieces.Piece;
+import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTile;
 import boardgame.view.HexagonTilePiece;
@@ -29,9 +30,8 @@ public class MainController implements Initializable {
 
     //TODO Move all these variables out of main controller class so they can be dynamically assigned.
     private final static double r = 40; // the inner radius from hexagon center to outer corner
-    private final static double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
-    private final static double TILE_HEIGHT = 2 * r;
-    private final static double TILE_WIDTH = 2 * n;
+
+
     private static final String PLAYER1 = "Human Player";
     private static final String PLAYER2 = "Monster Player";
 
@@ -84,7 +84,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         turnTime.setText("Turn Time " + time);
-        BoardGrid bg = drawBasicGrid(10, 10, r);
+        BoardGrid bg = drawBasicGrid(Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, r);
         endTurnButton.setOnAction(e -> changeActivePlayer());
         addPieces(bg, new ArrayList<>());
     }
@@ -96,7 +96,9 @@ public class MainController implements Initializable {
         BoardGrid boardGrid = new BoardGrid();
         double xStartOffset = 40;
         double yStartOffset = 40;
-
+        final double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
+        final double TILE_HEIGHT = 2 * r;
+        final double TILE_WIDTH = 2 * n;
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
                 double xCoord = x * TILE_WIDTH + (y % 2) * n + xStartOffset;

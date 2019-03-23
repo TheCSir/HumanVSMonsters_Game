@@ -1,5 +1,7 @@
 package boardgame.view;
 
+import boardgame.gameModel.GameManager;
+import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -45,6 +47,7 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
         );
 
         ObservableList<Double> points = getPoints();
+
 
         // set up the visuals and a click listener for the tile
         setFill(Color.ANTIQUEWHITE);
