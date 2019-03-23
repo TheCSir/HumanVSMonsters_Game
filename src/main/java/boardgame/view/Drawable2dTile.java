@@ -1,6 +1,6 @@
 package boardgame.view;
 
-public interface DrawableTile {
+public interface Drawable2dTile {
 
-    void draw();
+    void draw(double radius);
 }

@@ -1,18 +1,20 @@
 package boardgame.view;
 
-public class Location {
+public class MapLocation {
 
     private int xGridValue;
     private int yGridValue;
 
-    public Location(int xGridValue, int yGridValue) {
+
+    public MapLocation(int xGridValue, int yGridValue) {
         this.xGridValue = xGridValue;
         this.yGridValue = yGridValue;
+
     }
 
     @Override
     public String toString() {
-        return "Location{" +
+        return "MapLocation{" +
                 "xGridValue=" + xGridValue +
                 ", yGridValue=" + yGridValue +
                 '}';
