@@ -1,0 +1,103 @@
+{
+  "hexTileArray":
+  [
+    {
+      "xAxis": 0,
+      "yAxis": 0
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 1
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 2
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 3
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 4
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 5
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 6
+    },{
+      "xAxis": 0,
+      "yAxis": 7
+    },{
+      "xAxis": 0,
+      "yAxis": 8
+    },{
+      "xAxis": 0,
+      "yAxis": 9
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 0
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 1
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 2
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 3
+    },{
+      "xAxis": 1,
+      "yAxis": 4
+    },{
+      "xAxis": 1,
+      "yAxis": 5
+    },{
+      "xAxis": 1,
+      "yAxis": 6
+    },{
+      "xAxis": 1,
+      "yAxis": 7
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 8
+    },
+    {
+      "xAxis": 1,
+      "yAxis": 9
+    },
+    {
+      "xAxis": 2,
+      "yAxis": 0
+    },
+    {
+      "xAxis": 2,
+      "yAxis": 1
+    },{
+      "xAxis": 2,
+      "yAxis": 2
+    },{
+      "xAxis": 2,
+      "yAxis": 3
+    },{
+      "xAxis": 2,
+      "yAxis": 4
+    },
+    {
+      "xAxis": 2,
+      "yAxis": 5
+    },
+    {
+      "xAxis": 0,
+      "yAxis": 0
+    }
+  ]
+}

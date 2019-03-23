@@ -3,9 +3,9 @@ package boardgame.gameModel.board;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 
-public abstract class Board {
+public abstract class Board implements IBoard {
     private ITile[] tiles;
-    public abstract void insertPiece(IPiece piece);
-    public abstract void setUpTiles();
-    public abstract void addTile(ITile tile);
+    public void insertPiece(IPiece piece){}
+    public void setUpTiles(){}
+    public void addTile(ITile tile){}
 }
