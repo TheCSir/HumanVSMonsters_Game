@@ -32,8 +32,7 @@ public class MainController implements Initializable {
     private final static double r = 40; // the inner radius from hexagon center to outer corner
 
 
-    private static final String PLAYER1 = "Human Player";
-    private static final String PLAYER2 = "Monster Player";
+
 
     @FXML // fx:id="turnTime"
     private Text turnTime; // Value injected by FXMLLoader
@@ -55,7 +54,7 @@ public class MainController implements Initializable {
 
     double time = 60;
 
-    private String[] playerArray = {PLAYER1, PLAYER2};
+    private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
     private String activePlayer;
 
     //TODO move event.
@@ -106,7 +105,12 @@ public class MainController implements Initializable {
 
                 HexagonTile tile = new HexagonTile(xCoord, yCoord, radius);
                 tile.setGridPosition(new MapLocation(x, y));
+                Text gridloc = new Text(tile.getGridPosition().getxGridValue() + ", " + tile.getGridPosition().getyGridValue());
+
                 boardPane.getChildren().add(tile);
+                boardPane.getChildren().add(gridloc);
+                gridloc.setX(tile.getXPosition());
+                gridloc.setY(tile.getYPosition());
                 tile.setOnMouseClicked(e -> handleTileClicked(tile));
                 tiles.add(tile);
 
