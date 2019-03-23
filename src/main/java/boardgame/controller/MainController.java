@@ -118,10 +118,8 @@ public class MainController implements Initializable {
     private boolean tileSelected = false;
 
     private void handlePieceClicked(HexagonTile tile){
-        System.out.println("you clicked a piece!");
         this.selectedTile = tile;
         this.tileSelected = true;
-        System.out.println(tile.getLayoutX());
     }
 
     private void handleTileClicked(HexagonTile tile) {
@@ -132,7 +130,6 @@ public class MainController implements Initializable {
             translate.setY(tile.getBoundsInParent().getCenterY() - selectedTile.getBoundsInParent().getCenterY());
             selectedTile.getTransforms().addAll(translate);
             tile.setFill(Color.GREEN);
-            System.out.println(selectedTile.getBoundsInParent().getCenterX());
 
             //Bring piece to front so that it doesn't gte stuck behind background tile.
             selectedTile.toFront();
