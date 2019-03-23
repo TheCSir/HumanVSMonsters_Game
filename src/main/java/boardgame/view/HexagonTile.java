@@ -24,6 +24,8 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
 
     public HexagonTile(double x, double y, double radius) {
         super();
+        this.initialX=x;
+        this.initalY=y;
         double TILE_HEIGHT = 2 * radius;
 
         double n = Math.sqrt(radius * radius * 0.75); // the inner radius from hexagon center to middle of the axis
@@ -64,6 +66,25 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
 
     public double getYPosition() {
         return getBoundsInParent().getCenterY();
+    }
+
+
+    private double initialX;
+    private double initalY;
+    public double getInitialX() {
+        return this.initialX;
+    }
+
+    public double getInitialY() {
+        return this.initalY;
+    }
+
+    public void setInitialX(double x) {
+        this.initialX=x;
+    }
+
+    public void setInitalY(double y) {
+        this.initalY = y;
     }
 
     public MapLocation getGridPosition() {

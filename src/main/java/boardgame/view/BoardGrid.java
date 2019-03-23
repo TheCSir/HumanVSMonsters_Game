@@ -3,15 +3,21 @@ package boardgame.view;
 import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoardGrid {
 
     private static final String MOUNTAIN = "MOUNTAIN";
     private static final String PLAINS = "PLAINS";
 
-    private BoardGrid() {
+    Map<MapLocation, HexagonTile> tileMap;
+    ArrayList<HexagonTile> hexTile;
 
+    public BoardGrid() {
 
+        tileMap = new HashMap<>();
 
 
     }
