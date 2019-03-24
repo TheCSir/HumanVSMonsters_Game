@@ -81,7 +81,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         turnTime.setText("Turn Time " + time);
-        BoardGrid bg = drawBasicGrid(Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, r);
+        BoardGrid bg = new BoardGrid();
+        drawBasicGrid(Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, r);
         endTurnButton.setOnAction(e -> changeActivePlayer());
         addPieces(bg, new ArrayList<>());
     }
@@ -89,8 +90,7 @@ public class MainController implements Initializable {
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
-    private BoardGrid drawBasicGrid(int rows, int columns, double radius) {
-        BoardGrid boardGrid = new BoardGrid();
+    private void drawBasicGrid(int rows, int columns, double radius) {
         double xStartOffset = 40;
         double yStartOffset = 40;
         final double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
@@ -124,7 +124,6 @@ public class MainController implements Initializable {
 
                 for (MapLocation m: neighbourLocations) {
                     if(checkMapLocation(m,Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
-                       // neighbours.add(tileMap.get(m));
                         t.addNeighbour(tileMap.get(m));
                     }
                 }
@@ -137,8 +136,6 @@ public class MainController implements Initializable {
                 }
 
             }
-
-        return boardGrid; //TODO actually return grid.
         }
 
     private boolean checkMapLocation(MapLocation mapLocation, int rows, int columns) {
@@ -195,6 +192,7 @@ public class MainController implements Initializable {
                 xCoord = h.getInitialX();
                 yCoord = h.getInitialY();
                 HexagonTilePiece pieceTile = new HexagonTilePiece(xCoord, yCoord, r);
+                pieceTile.setGridPosition(new MapLocation(1, 1));
                 try {
                     pieceTile.setImagePattern("src/main/resources/bigBird.PNG");
                 }catch (FileNotFoundException e) {
@@ -226,23 +224,25 @@ public class MainController implements Initializable {
     }
 
     //TODO change to view class.
-    private void changePiecePosition(HexagonTile hexagonTile, HexagonTile desiredTilePosition) {
+    private void changePiecePosition(HexagonTile hexagonPiece, HexagonTile desiredTilePosition) {
 
-        if (checkValidMove(hexagonTile, desiredTilePosition.getGridPosition())) {
+        if (checkValidMove(hexagonPiece, desiredTilePosition.getGridPosition())) {
 
             //Should probably be a view method.
             Translate translate = new Translate();
-            translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonTile.getBoundsInParent().getCenterX());
-            translate.setY(desiredTilePosition.getBoundsInParent().getCenterY() - hexagonTile.getBoundsInParent().getCenterY());
-            hexagonTile.getTransforms().addAll(translate);
+            translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonPiece.getBoundsInParent().getCenterX());
+            translate.setY(desiredTilePosition.getBoundsInParent().getCenterY() - hexagonPiece.getBoundsInParent().getCenterY());
+            hexagonPiece.getTransforms().addAll(translate);
 
             //Bring piece to front so that it doesn't get stuck behind background tile.
-            hexagonTile.toFront();
+            hexagonPiece.toFront();
+            hexagonPiece.setGridPosition(desiredTilePosition.getGridPosition());
         }
     }
 
-    private boolean checkValidMove(HexagonTile t, MapLocation mapLocation) {
-        for (HexagonTile tile: t.getNeighbours()) {
+    private boolean checkValidMove(HexagonTile piece, MapLocation mapLocation) {
+        List<HexagonTile> neighbours = tileMap.get(piece.getGridPosition()).getNeighbours();
+        for (HexagonTile tile: neighbours) {
             if (tile.getGridPosition().equals(mapLocation)){
                 System.out.println("Valid move!");
                 return true;
