@@ -66,7 +66,6 @@ public class MainController implements Initializable {
         tiles = new ArrayList<>();
     }
 
-
     //Temporary solution for testing of changing player. Not intended for submission.
     private void changeActivePlayer() {
         if (activePlayer.equals(playerArray[0])){
@@ -213,11 +212,21 @@ public class MainController implements Initializable {
     private void handlePieceClicked(HexagonTile tile){
         this.selectedTile = tile;
         this.tileSelected = true;
+        List<HexagonTile> neighbours = tileMap.get(tile.getGridPosition()).getNeighbours();
+        for (HexagonTile n: neighbours) {
+            n.setFill(Color.LIGHTCORAL);
+        }
+
     }
 
     private void handleTileClicked(HexagonTile tile) {
         if(selectedTile !=null && tileSelected){
+            List<HexagonTile> neighbours = tileMap.get(selectedTile.getGridPosition()).getNeighbours();
+            for (HexagonTile n: neighbours) {
+                n.setFill(Color.ANTIQUEWHITE);
+            }
             changePiecePosition(selectedTile, tile);
+
 //            selectedTile=null;
 //            tileSelected=false;
         }
