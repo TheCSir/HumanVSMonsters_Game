@@ -218,8 +218,8 @@ public class MainController implements Initializable {
     private void handleTileClicked(HexagonTile tile) {
         if(selectedTile !=null && tileSelected){
             changePiecePosition(selectedTile, tile);
-            selectedTile=null;
-            tileSelected=false;
+//            selectedTile=null;
+//            tileSelected=false;
         }
     }
 
