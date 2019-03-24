@@ -1,6 +1,10 @@
 package boardgame;
 
 import boardgame.controller.MainController;
+import boardgame.gameModel.board.Board;
+import boardgame.gameModel.board.Board2DHex;
+import boardgame.gameModel.board.Location;
+import boardgame.util.Util;
 import boardgame.gameModel.tiles.HexagonalTile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,16 +36,12 @@ public class App extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
 
-            ArrayList<HexagonalTile> hexList = new ArrayList<>();
-            hexList.add(new HexagonalTile(3, 4));
-            hexList.add(new HexagonalTile(3, 3));
-            hexList.add(new HexagonalTile(4, 3));
-            hexList.add(new HexagonalTile(4, 4));
-            hexList.add(new HexagonalTile(4, 5));
+            Board2DHex board =  new Board2DHex();
+            board.setUpTiles();
 
             Group hexGroup = new Group();
 
-            for(HexagonalTile h : hexList) {
+            for(HexagonalTile h : board.getHexagonalTiles()) {
                 h.setFill(Color.RED);
                 h.setStroke(Color.BLACK);
                 h.setStrokeWidth(2);
