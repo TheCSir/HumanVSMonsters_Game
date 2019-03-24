@@ -154,7 +154,7 @@ public class MainController implements Initializable {
         MapLocation SW;
         MapLocation SE;
 
-        if (tGRidY % 2 == 0) {  //(X,Y-1),(X+1,Y-1),(X-1,Y),(X+1,Y),(X,Y+1),(X+1,Y+1)
+        if (tGRidY % 2 == 0) {
             NW = new MapLocation(tGridX - 1, tGRidY - 1);
             NE = new MapLocation(tGridX, tGRidY - 1);
             W = new MapLocation(tGridX - 1, tGRidY);
