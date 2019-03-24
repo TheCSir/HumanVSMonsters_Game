@@ -10,12 +10,16 @@ import javafx.scene.shape.Polygon;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HexagonTile extends Polygon implements Drawable2dTile {
 
     private Image image = null;
 
     private MapLocation gridPosition;
+
+    private List<HexagonTile> neighbours = new ArrayList<>();
 
     //Radius - the inner radius from hexagon center to outer corner
 
@@ -97,6 +101,16 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
     public void setGridPosition(MapLocation gridPosition) {
         this.gridPosition=gridPosition;
     }
+
+    public void addNeighbour(HexagonTile tile) {
+        neighbours.add(tile);
+    }
+
+    public List<HexagonTile> getNeighbours(){
+        return this.neighbours;
+    }
+
+
 
 
     @Override

@@ -22,16 +22,12 @@ import javafx.scene.transform.Translate;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
 
     //TODO Move all these variables out of main controller class so they can be dynamically assigned.
-    private final static double r = 40; // the inner radius from hexagon center to outer corner
-
-
+    private final static double r = Constants.TILERADIUS; // the inner radius from hexagon center to outer corner
 
 
     @FXML // fx:id="turnTime"
@@ -51,6 +47,8 @@ public class MainController implements Initializable {
     private Button endTurnButton;
 
     private ArrayList<HexagonTile> tiles;
+
+    private Map<MapLocation, HexagonTile> tileMap = new HashMap<>();
 
     double time = 60;
 
@@ -113,12 +111,80 @@ public class MainController implements Initializable {
                 gridloc.setY(tile.getYPosition());
                 tile.setOnMouseClicked(e -> handleTileClicked(tile));
                 tiles.add(tile);
+                tileMap.put(tile.getGridPosition(), tile);
 
             }
-        }return boardGrid; //TODO actually return grid.
+        }
+
+        for (HexagonTile t: tiles) {
+            int tGridX = t.getGridPosition().getxGridValue();
+            int tGRidY = t.getGridPosition().getyGridValue();
+
+            List<MapLocation> neighbourLocations = getNeighbourPositions(tGridX, tGRidY);
+
+                for (MapLocation m: neighbourLocations) {
+                    if(checkMapLocation(m,Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
+                       // neighbours.add(tileMap.get(m));
+                        t.addNeighbour(tileMap.get(m));
+                    }
+                }
+
+                for (HexagonTile ne: t.getNeighbours()) {
+                    System.out.println("Tile is: " + t.getGridPosition().getxGridValue() + ", "
+                            + t.getGridPosition().getyGridValue()
+                            + ", Neigbouring tile is " + ne.getGridPosition().getxGridValue() + ", "
+                            + ne.getGridPosition().getyGridValue());
+                }
+
+            }
+
+        return boardGrid; //TODO actually return grid.
+        }
+
+    private boolean checkMapLocation(MapLocation mapLocation, int rows, int columns) {
+        return (mapLocation.getxGridValue() >= 0
+                && mapLocation.getyGridValue() >=0
+                && mapLocation.getxGridValue() < columns
+                && mapLocation.getyGridValue() < rows);
     }
 
-    //Add game pieces to the game board.
+    private List<MapLocation> getNeighbourPositions (int tGridX, int tGRidY) {
+        List<MapLocation> neighbourLocations = new ArrayList<>();
+        MapLocation NW;
+        MapLocation NE;
+        MapLocation W;
+        MapLocation E;
+        MapLocation SW;
+        MapLocation SE;
+
+        if (tGRidY % 2 == 0) {  //(X,Y-1),(X+1,Y-1),(X-1,Y),(X+1,Y),(X,Y+1),(X+1,Y+1)
+            NW = new MapLocation(tGridX - 1, tGRidY - 1);
+            NE = new MapLocation(tGridX, tGRidY - 1);
+            W = new MapLocation(tGridX - 1, tGRidY);
+            E = new MapLocation(tGridX + 1, tGRidY);
+            SW = new MapLocation(tGridX - 1, tGRidY + 1);
+            SE = new MapLocation(tGridX, tGRidY + 1);
+
+        }else {
+            NW = new MapLocation(tGridX , tGRidY - 1);
+            NE = new MapLocation(tGridX+1, tGRidY - 1);
+            W = new MapLocation(tGridX - 1, tGRidY);
+            E = new MapLocation(tGridX + 1, tGRidY);
+            SW = new MapLocation(tGridX, tGRidY + 1);
+            SE = new MapLocation(tGridX+1, tGRidY + 1);
+
+
+        }
+        neighbourLocations.add(NW);
+        neighbourLocations.add(NE);
+        neighbourLocations.add(W);
+        neighbourLocations.add(E);
+        neighbourLocations.add(SW);
+        neighbourLocations.add(SE);
+        return neighbourLocations;
+    }
+
+    //Add game pieces to the game board. //TODO move to a view class.
     private void addPieces(BoardGrid boardGrid, List<Piece> pieceList) {
         MapLocation tileCoords = new MapLocation(1, 1);
         double xCoord = 0.0;
@@ -161,14 +227,28 @@ public class MainController implements Initializable {
 
     //TODO change to view class.
     private void changePiecePosition(HexagonTile hexagonTile, HexagonTile desiredTilePosition) {
-        //Should probably be a view method.
-        Translate translate = new Translate();
-        translate.setX(desiredTilePosition.getBoundsInParent().getCenterX()- hexagonTile.getBoundsInParent().getCenterX());
-        translate.setY(desiredTilePosition.getBoundsInParent().getCenterY() - hexagonTile.getBoundsInParent().getCenterY());
-        hexagonTile.getTransforms().addAll(translate);
 
-        //Bring piece to front so that it doesn't get stuck behind background tile.
-        hexagonTile.toFront();
+        if (checkValidMove(hexagonTile, desiredTilePosition.getGridPosition())) {
+
+            //Should probably be a view method.
+            Translate translate = new Translate();
+            translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonTile.getBoundsInParent().getCenterX());
+            translate.setY(desiredTilePosition.getBoundsInParent().getCenterY() - hexagonTile.getBoundsInParent().getCenterY());
+            hexagonTile.getTransforms().addAll(translate);
+
+            //Bring piece to front so that it doesn't get stuck behind background tile.
+            hexagonTile.toFront();
+        }
     }
 
+    private boolean checkValidMove(HexagonTile t, MapLocation mapLocation) {
+        for (HexagonTile tile: t.getNeighbours()) {
+            if (tile.getGridPosition().equals(mapLocation)){
+                System.out.println("Valid move!");
+                return true;
+            }
+        }
+        System.out.println("Invalid move!");
+        return false;
+    }
 }

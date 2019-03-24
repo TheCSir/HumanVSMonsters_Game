@@ -10,4 +10,5 @@ public class Constants {
     public static final String PLAYER1 = "Human Player";
     public static final String PLAYER2 = "Monster Player";
 
+    public static final double TILERADIUS = 40;
 }
