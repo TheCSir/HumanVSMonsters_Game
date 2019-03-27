@@ -34,8 +34,12 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
     public HexagonTile(double x, double y, double radius) {
         super();
 
-        this.initialX=x;
+        drawTile(x, y, radius);
+    }
+
+    public void drawTile(double x, double y, double radius) {
         this.initalY=y;
+        this.initialX=x;
         double TILE_HEIGHT = 2 * radius;
 
         double n = Math.sqrt(radius * radius * 0.75); // the inner radius from hexagon center to middle of the axis
@@ -54,14 +58,12 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
                 x + n, y - radius * 0.5
         );
 
-        ObservableList<Double> points = getPoints();
-
-
         // set up the visuals and a click listener for the tile
         setFill(Color.ANTIQUEWHITE);
         setStrokeWidth(1);
         setStroke(Color.BLACK);
         setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+
     }
 
     public HexagonTile(HexagonTile tile) {

@@ -8,6 +8,7 @@ import boardgame.gameModel.GameManager;
 import boardgame.gameModel.Location;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.Piece;
+import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
@@ -103,8 +104,13 @@ public class MainController implements Initializable {
         Board2DHex board2DHex = new Board2DHex();
         board2DHex.setUpTiles(10, 10);
         Map<Location, ITile> board = board2DHex.getTiles();
-        Board2DHex board2DHex1 = (Board2DHex) gm.getiBoard();
 
+        Board2DHex board2DHex1 = (Board2DHex) gm.getiBoard();
+        List<HexagonalTile> tileList = board2DHex1.getHexagonalTiles();
+//
+//        for (HexagonalTile tile:tileList) {
+//
+//        }
 
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
