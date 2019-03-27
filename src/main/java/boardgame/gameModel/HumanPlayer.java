@@ -2,6 +2,11 @@ package boardgame.gameModel;
 
 public class HumanPlayer implements IPlayer {
 
+    public HumanPlayer(int playerID, String playerName) {
+        this.playerID = playerID;
+        this.playerName = playerName;
+    }
+
     private int playerID;
     private String playerName;
 

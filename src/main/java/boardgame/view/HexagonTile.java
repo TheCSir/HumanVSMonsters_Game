@@ -1,6 +1,7 @@
 package boardgame.view;
 
 import boardgame.gameModel.GameManager;
+import boardgame.gameModel.tiles.ITile;
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -21,6 +22,8 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
 
     private List<HexagonTile> neighbours = new ArrayList<>();
 
+    private HexagonTile modelTile;
+
     //Radius - the inner radius from hexagon center to outer corner
 
     @Override
@@ -30,6 +33,7 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
 
     public HexagonTile(double x, double y, double radius) {
         super();
+
         this.initialX=x;
         this.initalY=y;
         double TILE_HEIGHT = 2 * radius;
@@ -58,6 +62,11 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
         setStrokeWidth(1);
         setStroke(Color.BLACK);
         setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+    }
+
+    public HexagonTile(HexagonTile tile) {
+        //Hold a reference to the tile from the model that this is drawing.
+        this.modelTile = tile;
     }
 
 

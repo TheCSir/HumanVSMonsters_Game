@@ -5,7 +5,10 @@ package boardgame.controller;
  */
 
 import boardgame.gameModel.GameManager;
+import boardgame.gameModel.Location;
+import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.Piece;
+import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTile;
@@ -55,18 +58,20 @@ public class MainController implements Initializable {
     private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
     private String activePlayer;
 
+    //Store a reference to the Game manager for main entry point to game.
+    private GameManager gm;
+
     //TODO move event.
 
     public MainController () {
 
-        //Get a reference to the game manager
-        GameManager gm = new GameManager();
-        //gm.setUpDefaultGame();
+        //Get a reference to the game manager. Currently sets up a game with default settings.
+        gm = new GameManager();
         activePlayer = playerArray[0];
         tiles = new ArrayList<>();
     }
 
-    //Temporary solution for testing of changing player. Not intended for submission.
+    //Temporary solution for testing of changing player. Not intended for submission. change to model.
     private void changeActivePlayer() {
         if (activePlayer.equals(playerArray[0])){
             activePlayer = playerArray[1];
@@ -95,6 +100,12 @@ public class MainController implements Initializable {
         final double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         final double TILE_HEIGHT = 2 * r;
         final double TILE_WIDTH = 2 * n;
+        Board2DHex board2DHex = new Board2DHex();
+        board2DHex.setUpTiles(10, 10);
+        Map<Location, ITile> board = board2DHex.getTiles();
+        Board2DHex board2DHex1 = (Board2DHex) gm.getiBoard();
+
+
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
                 double xCoord = x * TILE_WIDTH + (y % 2) * n + xStartOffset;

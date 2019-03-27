@@ -1,6 +1,8 @@
-package boardgame.gameModel.tiles;
+package boardgame.gameModel;
 
-
+/*
+    Simple wrapper to store x and y coordinates.
+*/
 
 public class Location {
 

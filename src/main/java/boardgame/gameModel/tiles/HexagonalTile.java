@@ -1,35 +1,78 @@
 package boardgame.gameModel.tiles;
 
-import static java.lang.Math.*;
-import static java.lang.Math.sin;
+import boardgame.gameModel.Location;
 
-public class HexagonalTile extends Tile{
+import java.util.ArrayList;
+import java.util.List;
+
+public class HexagonalTile extends Tile {
 
     private final int numSides = 6;
+    private Location location;
 
-    public HexagonalTile(int xAxis, int yAxis) {
-        this.xAxis = xAxis;
-        this.yAxis = yAxis;
-        this.sides = this.getHexagonSides();
+    public HexagonalTile(Location location) {
+        super(location);
 
-        for (double p : this.sides) {
-            this.getPoints().add(p);
-        }
     }
 
-    private double[] getHexagonSides() {
-        int graphicsHeight = this.size * 2;
-        double graphicsWidth = sqrt(3) / 2 * graphicsHeight;
-        int xxAxis = (int) (graphicsWidth * (double) xAxis + 0.5 * graphicsWidth * (double) yAxis);
-        int yyAxis = (int) (3.0 / 4.0 * graphicsHeight * yAxis);
 
-        double hexSides[] = new double[numSides * 2];
-        double angle;
-        for (int i = 0; i < numSides; i++) {
-            angle = 2 * PI / numSides * (i + 0.5);
-            hexSides[(i * 2)] = (xxAxis + size * cos(angle));
-            hexSides[(i * 2 + 1)] = (yyAxis + size * sin(angle));
-        }
-        return hexSides;
+    @Override
+    public void setGridPosition(Location location) {
+        this.location=location;
     }
+
+    @Override
+    public Location getGridPosition() {
+        return location;
+    }
+
+    @Override
+    public void addNeighbour() {
+
+    }
+
+    @Override
+    public List<ITile> getNeighbours() {
+        return null;
+    }
+
+    public List<Location> getNeighbourPositions (int tGridX, int tGRidY) {
+        List<Location> neighbourLocations = new ArrayList<>();
+        Location NW;
+        Location NE;
+        Location W;
+        Location E;
+        Location SW;
+        Location SE;
+
+
+        //Calculation is based on 0,4 coordinate for example. On a hex grid there is a slightly different
+        //calculation depending on whether a tile on the y-axis is odd or even (or equivalent for the x-axis
+        if (tGRidY % 2 == 0) {
+            NW = new Location(tGridX - 1, tGRidY - 1);
+            NE = new Location(tGridX, tGRidY - 1);
+            W = new Location(tGridX - 1, tGRidY);
+            E = new Location(tGridX + 1, tGRidY);
+            SW = new Location(tGridX - 1, tGRidY + 1);
+            SE = new Location(tGridX, tGRidY + 1);
+
+        }else {
+            NW = new Location(tGridX , tGRidY - 1);
+            NE = new Location(tGridX+1, tGRidY - 1);
+            W = new Location(tGridX - 1, tGRidY);
+            E = new Location(tGridX + 1, tGRidY);
+            SW = new Location(tGridX, tGRidY + 1);
+            SE = new Location(tGridX+1, tGRidY + 1);
+
+
+        }
+        neighbourLocations.add(NW);
+        neighbourLocations.add(NE);
+        neighbourLocations.add(W);
+        neighbourLocations.add(E);
+        neighbourLocations.add(SW);
+        neighbourLocations.add(SE);
+        return neighbourLocations;
+    }
+
 }

@@ -1,14 +1,17 @@
 package boardgame.gameModel.tiles;
 
-import javafx.scene.shape.Polygon;
+import boardgame.gameModel.Location;
 
-public abstract class Tile extends Polygon implements ITile {
-    protected int xAxis;
-    protected int yAxis;
+public abstract class Tile implements ITile {
+    private Location location;
     protected final int size = 20;
-    protected double[] sides;
-    protected boolean traversable;
+    private double[] sides;
+    private boolean traversable;
     protected int movementCost;
+
+    public Tile(Location location) {
+        this.location = location;
+    }
 
     public boolean getTraversable() {
         return traversable;
@@ -16,8 +19,5 @@ public abstract class Tile extends Polygon implements ITile {
 
     public double[] getSides() {
         return sides;
-    }
-
-    public void returnOrientation() {
     }
 }

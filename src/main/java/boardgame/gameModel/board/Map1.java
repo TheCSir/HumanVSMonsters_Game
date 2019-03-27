@@ -1,9 +1,8 @@
 package boardgame.gameModel.board;
 
-import boardgame.gameModel.tiles.BasicTile;
+import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
-import boardgame.gameModel.tiles.Location;
-import jdk.jshell.execution.LoaderDelegate;
+import boardgame.gameModel.Location;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +23,10 @@ public class Map1 {
         for (int i=0; i<defaultXSize; i++){
             for (int j=0; j<defaultYSize; j++) {
                 Location l = new Location(i, j);
-                map1.put(l, new BasicTile(l));
+                map1.put(l, new HexagonalTile(l));
             }
         }
 
     }
-
 
 }

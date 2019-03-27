@@ -1,19 +1,14 @@
 package boardgame.util;
 
-import boardgame.gameModel.board.Location;
-import boardgame.gameModel.tiles.HexagonalTile;
+import boardgame.gameModel.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Util {
     public ArrayList<Location> convertJsonToObjectArray(String json) {
