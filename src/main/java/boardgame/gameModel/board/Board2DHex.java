@@ -39,7 +39,6 @@ public class Board2DHex extends Board2d {
         //For each tile add the neighbouring tiles.
         addNeighbours();
 
-
     }
 
     @Override
@@ -51,11 +50,9 @@ public class Board2DHex extends Board2d {
         List<ITile> neighbours = boardGrid.get(piece.getGridPosition()).getNeighbours();
         for (ITile tile: neighbours) {
             if (tile.getGridPosition().equals(location)){
-                System.out.println("Valid move!");
                 return true;
             }
         }
-        System.out.println("Invalid move!");
         return false;
     }
 

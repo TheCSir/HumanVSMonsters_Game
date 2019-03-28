@@ -145,6 +145,8 @@ public class MainController implements Initializable {
         double xCoord = 0.0;
         double yCoord = 0.0;
 
+
+
         //TODO fix adding pieces
 //        for (HexagonTileView h: tiles) {
 //            if (h.getGridPosition().equals(tileCoords)) {
@@ -184,6 +186,13 @@ public class MainController implements Initializable {
     //TODO separate tile and piece. Override this method in piece.
     private void handleTileClicked(HexagonTileView tile) {
         PieceView pieceView = new PieceView();
+        System.out.println("Howdy!");
+        System.out.println("Board position is: " + tile.getGridPosition());
+        System.out.println(tile.getModelTile().getNeighbours().size());
+        for (ITile neighbour: tile.getModelTile().getNeighbours()) {
+
+            System.out.println("Neighbour: " + neighbour.getGridPosition());
+        }
         if(selectedTile !=null && tileSelected){
 
             //TODO fix this

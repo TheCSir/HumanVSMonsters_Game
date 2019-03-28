@@ -10,7 +10,6 @@ public abstract class Tile implements ITile {
     private List<ITile> neighbours;
     private Location location;
     protected final int size = 20;
-    private double[] sides;
     private boolean traversable;
     protected int movementCost;
 
@@ -24,9 +23,6 @@ public abstract class Tile implements ITile {
         return traversable;
     }
 
-    public double[] getSides() {
-        return sides;
-    }
 
     @Override
     public void setGridPosition(Location location) {
@@ -56,4 +52,14 @@ public abstract class Tile implements ITile {
         return neighbours;
     }
 
+    @Override
+    public String toString() {
+        return "Tile{" +
+                ", neighbours=" + neighbours +
+                ", location=" + location +
+                ", size=" + size +
+                ", traversable=" + traversable +
+                ", movementCost=" + movementCost +
+                '}';
+    }
 }

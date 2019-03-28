@@ -4,6 +4,8 @@ package boardgame.gameModel;
     Simple wrapper to store x and y coordinates.
 */
 
+import java.util.Objects;
+
 public class Location {
 
     private int x;
@@ -36,5 +38,19 @@ public class Location {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return getX() == location.getX() &&
+                getY() == location.getY();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getY());
     }
 }
