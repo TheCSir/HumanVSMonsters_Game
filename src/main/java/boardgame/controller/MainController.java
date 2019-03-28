@@ -9,7 +9,6 @@ import boardgame.gameModel.Location;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Warrior;
-import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
@@ -107,13 +106,13 @@ public class MainController implements Initializable {
         final double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         final double TILE_HEIGHT = 2 * r;
         final double TILE_WIDTH = 2 * n;
-        Board2DHex board2DHex = new Board2DHex();
+        Board2DHex board2DHex = (Board2DHex) gm.getiBoard();
         board2DHex.setUpTiles(10, 10);
         Map<Location, ITile> board = board2DHex.getTiles();
         board2DHex.setUpTiles();
-        List<HexagonalTile> boardTiles = board2DHex.getHexagonalTiles();
+        List<ITile> boardTiles = new ArrayList<>(board.values());
 
-        for (HexagonalTile hexagonalTile: boardTiles) {
+        for (ITile hexagonalTile: boardTiles) {
             int xPos = hexagonalTile.getLocation().getX();
             int yPos = hexagonalTile.getLocation().getY();
 
@@ -181,11 +180,8 @@ public class MainController implements Initializable {
         this.tileSelected = true;
 
 
-        //TODO fix this
-//        List<HexagonTileView> neighbours = tileMap.get(tile.getLocation()).getNeighbours();
-//        for (HexagonTileView n: neighbours) {
-//            n.setFill(Color.LIGHTCORAL);
-//        }
+        //TODO make this bring up information about the piece.
+        //TODO highlight surrounding tiles using neighbours.
 
     }
 
@@ -199,21 +195,12 @@ public class MainController implements Initializable {
 
             System.out.println("Neighbour: " + neighbour.getLocation());
         }
+
+
         if(selectedTile !=null && tileSelected){
-
-            //TODO fix this
-//            List<HexagonTileView> neighbours = tileMap.get(selectedTile.getLocation()).getNeighbours();
-//            for (HexagonTileView n: neighbours) {
-//                n.setFill(Color.ANTIQUEWHITE);
-//            }
+            if (gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation())){
             pieceView.changePiecePosition(selectedTile, tile);
-
-//            selectedTile=null;
-//            tileSelected=false;
+            }
         }
     }
-
-
-   // }
-
 }

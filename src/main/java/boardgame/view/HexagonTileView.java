@@ -14,11 +14,17 @@ import java.util.List;
 
 public class HexagonTileView extends Polygon {
 
-    private HexagonalTile modelTile;
+    private ITile modelTile;
 
-    public HexagonTileView() {
+    public HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
+        super();
+        this.modelTile=hexagonalTile;
+        drawTile(x, y, radius);
     }
 
+    public HexagonTileView() {
+
+    }
 
     //Radius - the inner radius from hexagon center to outer corner
 
@@ -114,7 +120,7 @@ public class HexagonTileView extends Polygon {
     public List<ITile> getNeighbours(){
         return modelTile.getNeighbours();
     }
-    public HexagonalTile getModelTile() {
+    public ITile getModelTile() {
         return modelTile;
     }
 

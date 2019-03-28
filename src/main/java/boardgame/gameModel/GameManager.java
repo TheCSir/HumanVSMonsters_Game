@@ -3,7 +3,6 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
-import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 
 import java.util.ArrayList;
@@ -70,8 +69,8 @@ public class GameManager {
 
 
     //Only allow movement to a neighbouring square/hexagon.
-    private boolean checkValidMove(HexagonalTile piece, Location mapLocation) {
-        List<ITile> neighbours =getiBoard().getTiles().get(piece.getLocation()).getNeighbours();
+    public boolean checkValidMove(IPiece piece, Location mapLocation) {
+        List<ITile> neighbours = getiBoard().getTiles().get(piece.getLocation()).getNeighbours();
         for (ITile tile: neighbours) {
             if (tile.getLocation().equals(mapLocation)){
                 System.out.println("Valid move!");
