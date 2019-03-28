@@ -3,7 +3,6 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
-import boardgame.gameModel.tiles.ITile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,20 +64,6 @@ public class GameManager {
 
         //Add default 3 monster pieces
         monsterPieces = setUpMonsterPieces();
-    }
-
-
-    //Only allow movement to a neighbouring square/hexagon.
-    public boolean checkValidMove(IPiece piece, Location mapLocation) {
-        List<ITile> neighbours = getiBoard().getTiles().get(piece.getLocation()).getNeighbours();
-        for (ITile tile: neighbours) {
-            if (tile.getLocation().equals(mapLocation)){
-                System.out.println("Valid move!");
-                return true;
-            }
-        }
-        System.out.println("Invalid move!");
-        return false;
     }
 
     public IBoard getiBoard() {

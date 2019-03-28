@@ -179,7 +179,6 @@ public class MainController implements Initializable {
         this.selectedTile = tile;
         this.tileSelected = true;
 
-
         //TODO make this bring up information about the piece.
         //TODO highlight surrounding tiles using neighbours.
 
@@ -188,14 +187,12 @@ public class MainController implements Initializable {
     //TODO separate tile and piece. Override this method in piece.
     private void handleTileClicked(HexagonTileView tile) {
         PieceView pieceView = new PieceView();
-        System.out.println("Howdy!");
         System.out.println("Board position is: " + tile.getLocation());
         System.out.println(tile.getModelTile().getNeighbours().size());
         for (ITile neighbour: tile.getModelTile().getNeighbours()) {
 
             System.out.println("Neighbour: " + neighbour.getLocation());
         }
-
 
         if(selectedTile !=null && tileSelected){
             if (gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation())){
