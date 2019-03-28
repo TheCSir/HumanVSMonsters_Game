@@ -99,12 +99,12 @@ public class HexagonTileView extends Polygon {
         this.initalY = y;
     }
 
-    public Location getGridPosition() {
-        return modelTile.getGridPosition();
+    public Location getLocation() {
+        return modelTile.getLocation();
     }
 
-    public void setGridPosition(Location gridPosition) {
-        modelTile.setGridPosition(gridPosition);
+    public void setLocation(Location gridPosition) {
+        modelTile.setLocation(gridPosition);
     }
 
     public void addNeighbour(ITile tile) {

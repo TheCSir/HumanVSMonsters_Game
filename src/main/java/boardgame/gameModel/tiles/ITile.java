@@ -7,17 +7,17 @@ import java.util.List;
 public interface ITile {
 
     //Pass a location containing x and y (for a 2d grid) to the tile.
-    public void setGridPosition(Location location);
+    void setLocation(Location location);
 
     //Return the location (containing grid position)
-    public Location getGridPosition();
+    Location getLocation();
 
-    public void addNeighbour(ITile tile);
-
-
-    public List<ITile> getNeighbours();
+    void addNeighbour(ITile tile);
 
 
+    List<ITile> getNeighbours();
+
+    int getPieceID();
 
 
 }

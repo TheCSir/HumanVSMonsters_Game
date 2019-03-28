@@ -6,7 +6,8 @@ public interface IPiece {
 
     public void move(int direction);
 
-    Location getGridPosition();
+    Location getLocation();
 
     void setLocation(Location location);
+
 }

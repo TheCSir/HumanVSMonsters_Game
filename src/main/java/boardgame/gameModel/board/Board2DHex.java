@@ -6,6 +6,7 @@ import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
@@ -15,11 +16,13 @@ import java.util.Map;
 public class Board2DHex extends Board2d {
     private List<HexagonalTile> hexagonalTiles = new ArrayList<>();
     private ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
-    private ObservableMap<Integer, IPiece> pieceObservableMap = FXCollections.observableHashMap();
+    private ObservableList<IPiece> pieceObservableList = FXCollections.observableArrayList();
 
+
+    //TODO implement insert piece
     @Override
     public void insertPiece(IPiece piece) {
-
+        pieceObservableList.add(piece);
     }
 
 
@@ -38,7 +41,6 @@ public class Board2DHex extends Board2d {
 
         //For each tile add the neighbouring tiles.
         addNeighbours();
-
     }
 
     @Override
@@ -47,9 +49,9 @@ public class Board2DHex extends Board2d {
     }
 
     private boolean checkValidMove(IPiece piece, Location location, Board2DHex board2DHex) {
-        List<ITile> neighbours = boardGrid.get(piece.getGridPosition()).getNeighbours();
+        List<ITile> neighbours = boardGrid.get(piece.getLocation()).getNeighbours();
         for (ITile tile: neighbours) {
-            if (tile.getGridPosition().equals(location)){
+            if (tile.getLocation().equals(location)){
                 return true;
             }
         }
@@ -97,28 +99,45 @@ public class Board2DHex extends Board2d {
         if (checkValidMove(piece, location, this)){
             piece.setLocation(location);
         }
-
     }
 
     public List<HexagonalTile> getHexagonalTiles(){
         return this.hexagonalTiles;
     }
 
+    public void setHexagonalTiles(List<HexagonalTile> hexagonalTiles) {
+        this.hexagonalTiles = hexagonalTiles;
+    }
+
+    public ObservableMap<Location, ITile> getBoardGrid() {
+        return boardGrid;
+    }
+
+    public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
+        this.boardGrid = boardGrid;
+    }
+
+    public ObservableList<IPiece> getPieceObservableList() {
+        return pieceObservableList;
+    }
+
+    public void setPieceObservableList(ObservableList<IPiece> pieceObservableList) {
+        this.pieceObservableList = pieceObservableList;
+    }
+
     //For each tile store their neighbouring tiles.
     public void addNeighbours() {
         for (HexagonalTile t: hexagonalTiles) {
-            int tGridX = t.getGridPosition().getX();
-            int tGRidY = t.getGridPosition().getY();
+            int tGridX = t.getLocation().getX();
+            int tGRidY = t.getLocation().getY();
 
-            List<Location> neighbourLocations = t.getNeighbourPositions(t.getGridPosition());
+            List<Location> neighbourLocations = t.getNeighbourPositions(t.getLocation());
 
             for (Location location: neighbourLocations) {
                 if(checkMapLocation(location, Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
                     t.addNeighbour(boardGrid.get(location));
                 }
             }
-
         }
     }
-
 }

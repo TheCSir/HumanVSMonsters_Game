@@ -9,11 +9,10 @@ public class PieceView {
     }
 
 
-    //TODO change to view class.
-    public void changePiecePosition(HexagonTileView hexagonPiece, HexagonTileView desiredTilePosition) {
+    public void changePiecePosition(HexagonTileViewPiece hexagonPiece, HexagonTileView desiredTilePosition) {
 
         //TODO add check valid move back in. But in model instead of view
-        //if (checkValidMove(hexagonPiece, desiredTilePosition.getGridPosition())) {
+        //if (checkValidMove(hexagonPiece, desiredTilePosition.getLocation())) {
 
         //Should probably be a view method.
         Translate translate = new Translate();
@@ -23,6 +22,6 @@ public class PieceView {
 
         //Bring piece to front so that it doesn't get stuck behind background tile.
         hexagonPiece.toFront();
-        hexagonPiece.setGridPosition(desiredTilePosition.getGridPosition());
+        hexagonPiece.setLocation(desiredTilePosition.getLocation());
     }
 }

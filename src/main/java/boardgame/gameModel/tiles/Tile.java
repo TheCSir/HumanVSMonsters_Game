@@ -24,13 +24,14 @@ public abstract class Tile implements ITile {
     }
 
 
+
     @Override
-    public void setGridPosition(Location location) {
+    public void setLocation(Location location) {
         this.location=location;
     }
 
     @Override
-    public Location getGridPosition() {
+    public Location getLocation() {
         return this.location;
     }
 
@@ -39,13 +40,6 @@ public abstract class Tile implements ITile {
         neighbours.add(tile);
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 
     @Override
     public List<ITile> getNeighbours() {

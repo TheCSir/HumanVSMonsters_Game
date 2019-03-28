@@ -16,8 +16,8 @@ public class GameManager {
     private IPiece pieces;
     private Turn turn;
     private Stack<Turn> turnStack;
-    private List<Human> humanPieces;
-    private List<Monster> monsterPieces;
+    private List<IPiece> humanPieces;
+    private List<IPiece> monsterPieces;
 
     //Default constructor
     public GameManager(){
@@ -38,17 +38,17 @@ public class GameManager {
         return board2DHex;
     }
 
-    public List<Monster> setUpMonsterPieces() {
-        List<Monster> monsters = new ArrayList<>();
+    public List<IPiece> setUpMonsterPieces() {
+        List<IPiece> monsters = new ArrayList<>();
         monsters.add(new Griffin(10, 5));
         monsters.add(new Medusa(10, 5));
         monsters.add(new Minotaur(10, 5));
         return monsters;
     }
 
-    public List<Human> setUpHumanPieces() {
+    public List<IPiece> setUpHumanPieces() {
 
-        ArrayList<Human> humans = new ArrayList<>();
+        ArrayList<IPiece> humans = new ArrayList<>();
         humans.add(new Warrior(10, 5));
         humans.add(new Priest(10, 5));
         humans.add(new Archer(10, 5));
@@ -71,9 +71,9 @@ public class GameManager {
 
     //Only allow movement to a neighbouring square/hexagon.
     private boolean checkValidMove(HexagonalTile piece, Location mapLocation) {
-        List<ITile> neighbours =getiBoard().getTiles().get(piece.getGridPosition()).getNeighbours();
+        List<ITile> neighbours =getiBoard().getTiles().get(piece.getLocation()).getNeighbours();
         for (ITile tile: neighbours) {
-            if (tile.getGridPosition().equals(mapLocation)){
+            if (tile.getLocation().equals(mapLocation)){
                 System.out.println("Valid move!");
                 return true;
             }

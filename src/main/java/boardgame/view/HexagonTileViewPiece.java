@@ -4,6 +4,7 @@ package boardgame.view;
 
  */
 
+import boardgame.gameModel.Location;
 import boardgame.gameModel.pieces.IPiece;
 
 public class HexagonTileViewPiece extends HexagonTileView {
@@ -21,5 +22,10 @@ public class HexagonTileViewPiece extends HexagonTileView {
 
     public void setiPiece(IPiece iPiece) {
         this.iPiece = iPiece;
+    }
+
+    @Override
+    public void setLocation(Location gridPosition) {
+        iPiece.setLocation(gridPosition);
     }
 }

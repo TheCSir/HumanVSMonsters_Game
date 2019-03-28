@@ -65,4 +65,9 @@ public class HexagonalTile extends Tile {
         neighbourLocations.add(SE);
         return neighbourLocations;
     }
+
+    @Override
+    public int getPieceID() {
+        return 0;
+    }
 }

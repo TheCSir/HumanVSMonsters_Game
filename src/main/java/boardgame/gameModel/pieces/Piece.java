@@ -27,7 +27,7 @@ public abstract class Piece implements IPiece {
     }
 
     @Override
-    public Location getGridPosition() {
+    public Location getLocation() {
         return this.location;
     }
 
