@@ -1,20 +1,15 @@
 package boardgame.view;
 
-import boardgame.util.Constants;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.transform.Translate;
+import boardgame.gameModel.Location;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BoardGrid {
 
-    Map<MapLocation, HexagonTile> tileMap;
-    ArrayList<HexagonTile> hexTile;
+    Map<Location, HexagonTileView> tileMap;
+    ArrayList<HexagonTileView> hexTile;
 
     public BoardGrid() {
 
@@ -23,7 +18,7 @@ public class BoardGrid {
 
     }
 
-    public HexagonTile getTile(MapLocation mapLocation) {
+    public HexagonTileView getTile(Location mapLocation) {
         return tileMap.get(mapLocation);
     }
 

@@ -16,7 +16,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "MapLocation{" +
+        return "Location{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';

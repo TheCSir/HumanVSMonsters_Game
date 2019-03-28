@@ -8,35 +8,28 @@ import java.util.List;
 public class HexagonalTile extends Tile {
 
     private final int numSides = 6;
-    private Location location;
 
     public HexagonalTile(Location location) {
         super(location);
-
+        neighbourPositions = getNeighbourPositions(location);
     }
 
 
     @Override
-    public void setGridPosition(Location location) {
-        this.location=location;
+    public void setLocation(Location location) {
+        super.setLocation(location);
     }
 
     @Override
-    public Location getGridPosition() {
-        return location;
+    public Location getLocation() {
+        return super.getLocation();
     }
 
-    @Override
-    public void addNeighbour() {
-
-    }
-
-    @Override
-    public List<ITile> getNeighbours() {
-        return null;
-    }
-
-    public List<Location> getNeighbourPositions (int tGridX, int tGRidY) {
+    //Calculates what the neighbour positions will be on a hexagonal grid.
+    //TODO May belong in a different class.
+    public List<Location> getNeighbourPositions(Location location) {
+        int tGridX = location.getX();
+        int tGRidY = location.getY();
         List<Location> neighbourLocations = new ArrayList<>();
         Location NW;
         Location NE;
@@ -63,8 +56,6 @@ public class HexagonalTile extends Tile {
             E = new Location(tGridX + 1, tGRidY);
             SW = new Location(tGridX, tGRidY + 1);
             SE = new Location(tGridX+1, tGRidY + 1);
-
-
         }
         neighbourLocations.add(NW);
         neighbourLocations.add(NE);
@@ -74,5 +65,4 @@ public class HexagonalTile extends Tile {
         neighbourLocations.add(SE);
         return neighbourLocations;
     }
-
 }

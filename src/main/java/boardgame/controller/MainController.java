@@ -12,19 +12,16 @@ import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
-import boardgame.view.HexagonTile;
-import boardgame.view.HexagonTilePiece;
-import boardgame.view.MapLocation;
+import boardgame.view.HexagonTileView;
+import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.PieceView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Translate;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 
@@ -50,9 +47,9 @@ public class MainController implements Initializable {
     @FXML
     private Button endTurnButton;
 
-    private ArrayList<HexagonTile> tiles;
+    private ArrayList<HexagonTileView> tiles;
 
-    private Map<MapLocation, HexagonTile> tileMap = new HashMap<>();
+    private Map<Location, HexagonTileView> tileMap = new HashMap<>();
 
     double time = 60;
 
@@ -68,6 +65,11 @@ public class MainController implements Initializable {
 
         //Get a reference to the game manager. Currently sets up a game with default settings.
         gm = new GameManager();
+
+        //Set up default board.
+
+        gm.setUpBoard();
+
         activePlayer = playerArray[0];
         tiles = new ArrayList<>();
     }
@@ -82,6 +84,7 @@ public class MainController implements Initializable {
             currentPlayer.setText(activePlayer);
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,177 +107,98 @@ public class MainController implements Initializable {
         Board2DHex board2DHex = new Board2DHex();
         board2DHex.setUpTiles(10, 10);
         Map<Location, ITile> board = board2DHex.getTiles();
+        board2DHex.setUpTiles();
+        List<HexagonalTile> boardTiles = board2DHex.getHexagonalTiles();
 
-        Board2DHex board2DHex1 = (Board2DHex) gm.getiBoard();
-        List<HexagonalTile> tileList = board2DHex1.getHexagonalTiles();
-//
-//        for (HexagonalTile tile:tileList) {
-//
-//        }
+        for (HexagonalTile hexagonalTile: boardTiles) {
+            int xPos = hexagonalTile.getGridPosition().getX();
+            int yPos = hexagonalTile.getGridPosition().getY();
 
-        for (int x = 0; x < columns; x++) {
-            for (int y = 0; y < rows; y++) {
-                double xCoord = x * TILE_WIDTH + (y % 2) * n + xStartOffset;
-                double yCoord = y * TILE_HEIGHT * 0.75 + yStartOffset;
+            //Set starting coordinates for the tile to be drawn.
+            double xCoord = xPos * TILE_WIDTH + (yPos % 2) * n + xStartOffset;
+            double yCoord = yPos * TILE_HEIGHT * 0.75 + yStartOffset;
 
-                HexagonTile tile = new HexagonTile(xCoord, yCoord, radius);
-                tile.setGridPosition(new MapLocation(x, y));
-                Text gridloc = new Text(tile.getGridPosition().getxGridValue() + ", " + tile.getGridPosition().getyGridValue());
+            //Create the new tile.
+            HexagonTileView tile = new HexagonTileView(xCoord, yCoord, radius, hexagonalTile);
 
-                boardPane.getChildren().add(tile);
-                boardPane.getChildren().add(gridloc);
-                gridloc.setX(tile.getXPosition());
-                gridloc.setY(tile.getYPosition());
-                tile.setOnMouseClicked(e -> handleTileClicked(tile));
-                tiles.add(tile);
-                tileMap.put(tile.getGridPosition(), tile);
+            //Draw the tile coordinate to help with debugging.
+            Text gridloc = new Text(xPos + ", " + yPos);
+            gridloc.setX(tile.getXPosition());
+            gridloc.setY(tile.getYPosition());
 
-            }
+
+            //Add the tile to the JAvaFX pane.
+            boardPane.getChildren().add(tile);
+            boardPane.getChildren().add(gridloc);
+
+            tile.setOnMouseClicked(e -> handleTileClicked(tile));
+            tiles.add(tile);
+            tileMap.put(tile.getGridPosition(), tile);
+
         }
-
-        for (HexagonTile t: tiles) {
-            int tGridX = t.getGridPosition().getxGridValue();
-            int tGRidY = t.getGridPosition().getyGridValue();
-
-            List<MapLocation> neighbourLocations = getNeighbourPositions(tGridX, tGRidY);
-
-                for (MapLocation m: neighbourLocations) {
-                    if(checkMapLocation(m,Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
-                        t.addNeighbour(tileMap.get(m));
-                    }
-                }
-
-                for (HexagonTile ne: t.getNeighbours()) {
-                    System.out.println("Tile is: " + t.getGridPosition().getxGridValue() + ", "
-                            + t.getGridPosition().getyGridValue()
-                            + ", Neigbouring tile is " + ne.getGridPosition().getxGridValue() + ", "
-                            + ne.getGridPosition().getyGridValue());
-                }
-
-            }
-        }
-
-    private boolean checkMapLocation(MapLocation mapLocation, int rows, int columns) {
-        return (mapLocation.getxGridValue() >= 0
-                && mapLocation.getyGridValue() >=0
-                && mapLocation.getxGridValue() < columns
-                && mapLocation.getyGridValue() < rows);
     }
 
-    private List<MapLocation> getNeighbourPositions (int tGridX, int tGRidY) {
-        List<MapLocation> neighbourLocations = new ArrayList<>();
-        MapLocation NW;
-        MapLocation NE;
-        MapLocation W;
-        MapLocation E;
-        MapLocation SW;
-        MapLocation SE;
-
-        if (tGRidY % 2 == 0) {
-            NW = new MapLocation(tGridX - 1, tGRidY - 1);
-            NE = new MapLocation(tGridX, tGRidY - 1);
-            W = new MapLocation(tGridX - 1, tGRidY);
-            E = new MapLocation(tGridX + 1, tGRidY);
-            SW = new MapLocation(tGridX - 1, tGRidY + 1);
-            SE = new MapLocation(tGridX, tGRidY + 1);
-
-        }else {
-            NW = new MapLocation(tGridX , tGRidY - 1);
-            NE = new MapLocation(tGridX+1, tGRidY - 1);
-            W = new MapLocation(tGridX - 1, tGRidY);
-            E = new MapLocation(tGridX + 1, tGRidY);
-            SW = new MapLocation(tGridX, tGRidY + 1);
-            SE = new MapLocation(tGridX+1, tGRidY + 1);
-
-
-        }
-        neighbourLocations.add(NW);
-        neighbourLocations.add(NE);
-        neighbourLocations.add(W);
-        neighbourLocations.add(E);
-        neighbourLocations.add(SW);
-        neighbourLocations.add(SE);
-        return neighbourLocations;
-    }
 
     //Add game pieces to the game board. //TODO move to a view class.
     private void addPieces(BoardGrid boardGrid, List<Piece> pieceList) {
-        MapLocation tileCoords = new MapLocation(1, 1);
+        Location tileCoords = new Location(1, 1);
         double xCoord = 0.0;
         double yCoord = 0.0;
 
-        for (HexagonTile h: tiles) {
-            if (h.getGridPosition().equals(tileCoords)) {
-                xCoord = h.getInitialX();
-                yCoord = h.getInitialY();
-                HexagonTilePiece pieceTile = new HexagonTilePiece(xCoord, yCoord, r);
-                pieceTile.setGridPosition(new MapLocation(1, 1));
-                try {
-                    pieceTile.setImagePattern("src/main/resources/bigBird.PNG");
-                }catch (FileNotFoundException e) {
-                    System.out.println("Image File not found!");
-                }
-
-                boardPane.getChildren().add(pieceTile);
-                pieceTile.setOnMouseClicked(e -> handlePieceClicked(pieceTile));
-            }
-        }
-
+        //TODO fix adding pieces
+//        for (HexagonTileView h: tiles) {
+//            if (h.getGridPosition().equals(tileCoords)) {
+//                xCoord = h.getInitialX();
+//                yCoord = h.getInitialY();
+//                HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, r, );
+//                pieceTile.setGridPosition(tileCoords);
+//                try {
+//                    pieceTile.setImagePattern("src/main/resources/bigBird.PNG");
+//                }catch (FileNotFoundException e) {
+//                    System.out.println("Image File not found!");
+//                }
+//
+//                boardPane.getChildren().add(pieceTile);
+//                pieceTile.setOnMouseClicked(e -> handlePieceClicked(pieceTile));
+//            }
+//        }
     }
 
-    private HexagonTile selectedTile = null;
+    private HexagonTileView selectedTile = null;
 
     private boolean tileSelected = false;
 
-    private void handlePieceClicked(HexagonTile tile){
+    private void handlePieceClicked(HexagonTileViewPiece tile){
         this.selectedTile = tile;
         this.tileSelected = true;
-        List<HexagonTile> neighbours = tileMap.get(tile.getGridPosition()).getNeighbours();
-        for (HexagonTile n: neighbours) {
-            n.setFill(Color.LIGHTCORAL);
-        }
+
+
+        //TODO fix this
+//        List<HexagonTileView> neighbours = tileMap.get(tile.getGridPosition()).getNeighbours();
+//        for (HexagonTileView n: neighbours) {
+//            n.setFill(Color.LIGHTCORAL);
+//        }
 
     }
 
-    private void handleTileClicked(HexagonTile tile) {
+    //TODO separate tile and piece. Override this method in piece.
+    private void handleTileClicked(HexagonTileView tile) {
+        PieceView pieceView = new PieceView();
         if(selectedTile !=null && tileSelected){
-            List<HexagonTile> neighbours = tileMap.get(selectedTile.getGridPosition()).getNeighbours();
-            for (HexagonTile n: neighbours) {
-                n.setFill(Color.ANTIQUEWHITE);
-            }
-            changePiecePosition(selectedTile, tile);
+
+            //TODO fix this
+//            List<HexagonTileView> neighbours = tileMap.get(selectedTile.getGridPosition()).getNeighbours();
+//            for (HexagonTileView n: neighbours) {
+//                n.setFill(Color.ANTIQUEWHITE);
+//            }
+            pieceView.changePiecePosition(selectedTile, tile);
 
 //            selectedTile=null;
 //            tileSelected=false;
         }
     }
 
-    //TODO change to view class.
-    private void changePiecePosition(HexagonTile hexagonPiece, HexagonTile desiredTilePosition) {
 
-        if (checkValidMove(hexagonPiece, desiredTilePosition.getGridPosition())) {
+   // }
 
-            //Should probably be a view method.
-            Translate translate = new Translate();
-            translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonPiece.getBoundsInParent().getCenterX());
-            translate.setY(desiredTilePosition.getBoundsInParent().getCenterY() - hexagonPiece.getBoundsInParent().getCenterY());
-            hexagonPiece.getTransforms().addAll(translate);
-
-            //Bring piece to front so that it doesn't get stuck behind background tile.
-            hexagonPiece.toFront();
-            hexagonPiece.setGridPosition(desiredTilePosition.getGridPosition());
-        }
-    }
-
-    private boolean checkValidMove(HexagonTile piece, MapLocation mapLocation) {
-        List<HexagonTile> neighbours = tileMap.get(piece.getGridPosition()).getNeighbours();
-        for (HexagonTile tile: neighbours) {
-            if (tile.getGridPosition().equals(mapLocation)){
-                System.out.println("Valid move!");
-                return true;
-            }
-        }
-        System.out.println("Invalid move!");
-        return false;
-    }
 }

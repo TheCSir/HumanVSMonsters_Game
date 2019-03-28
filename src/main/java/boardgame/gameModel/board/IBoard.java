@@ -1,8 +1,8 @@
 package boardgame.gameModel.board;
 
+import boardgame.gameModel.Location;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
-import boardgame.gameModel.Location;
 
 import java.util.Map;
 
@@ -27,4 +27,6 @@ public interface IBoard {
 
     //Get an individual piece.
     IPiece getPiece(int pieceID);
+
+    public void movePiece(IPiece piece, Location desiredLocation);
 }

@@ -12,7 +12,7 @@ public interface ITile {
     //Return the location (containing grid position)
     public Location getGridPosition();
 
-    public void addNeighbour();
+    public void addNeighbour(ITile tile);
 
 
     public List<ITile> getNeighbours();

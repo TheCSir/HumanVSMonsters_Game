@@ -1,9 +1,8 @@
 package boardgame.view;
 
-import boardgame.gameModel.GameManager;
+import boardgame.gameModel.Location;
+import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
-import com.sun.javafx.collections.ObservableListWrapper;
-import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -11,18 +10,15 @@ import javafx.scene.shape.Polygon;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class HexagonTile extends Polygon implements Drawable2dTile {
+public class HexagonTileView extends Polygon {
 
-    private Image image = null;
+    private HexagonalTile modelTile;
 
-    private MapLocation gridPosition;
+    public HexagonTileView() {
+    }
 
-    private List<HexagonTile> neighbours = new ArrayList<>();
-
-    private HexagonTile modelTile;
 
     //Radius - the inner radius from hexagon center to outer corner
 
@@ -31,9 +27,9 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
         return super.toString();
     }
 
-    public HexagonTile(double x, double y, double radius) {
+    public HexagonTileView(double x, double y, double radius, HexagonalTile hexTile) {
         super();
-
+        this.modelTile=hexTile;
         drawTile(x, y, radius);
     }
 
@@ -62,11 +58,9 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
         setFill(Color.ANTIQUEWHITE);
         setStrokeWidth(1);
         setStroke(Color.BLACK);
-        setOnMouseClicked(e -> System.out.println("Clicked: " + this));
-
     }
 
-    public HexagonTile(HexagonTile tile) {
+    public HexagonTileView(HexagonalTile tile) {
         //Hold a reference to the tile from the model that this is drawing.
         this.modelTile = tile;
     }
@@ -105,27 +99,27 @@ public class HexagonTile extends Polygon implements Drawable2dTile {
         this.initalY = y;
     }
 
-    public MapLocation getGridPosition() {
-        return this.gridPosition;
+    public Location getGridPosition() {
+        return modelTile.getGridPosition();
     }
 
-    public void setGridPosition(MapLocation gridPosition) {
-        this.gridPosition=gridPosition;
+    public void setGridPosition(Location gridPosition) {
+        modelTile.setGridPosition(gridPosition);
     }
 
-    public void addNeighbour(HexagonTile tile) {
-        neighbours.add(tile);
+    public void addNeighbour(ITile tile) {
+       modelTile.addNeighbour(tile);
     }
 
-    public List<HexagonTile> getNeighbours(){
-        return this.neighbours;
+    public List<ITile> getNeighbours(){
+        return modelTile.getNeighbours();
+    }
+    public HexagonalTile getModelTile() {
+        return modelTile;
     }
 
-
-
-
-    @Override
-    public void draw(double radius) {
-
+    public void setModelTile(HexagonalTile modelTile) {
+        this.modelTile = modelTile;
     }
+
 }

@@ -3,6 +3,8 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.tiles.HexagonalTile;
+import boardgame.gameModel.tiles.ITile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,6 @@ public class GameManager {
         //Set up default board.
         iBoard = setUpBoard();
 
-        //Add default 3 human pieces
-        humanPieces = setUpHumanPieces();
-
-        //Add default 3 monster pieces
-        monsterPieces = setUpMonsterPieces();
-
         turn = new Turn();
 
     }
@@ -44,12 +40,9 @@ public class GameManager {
 
     public List<Monster> setUpMonsterPieces() {
         List<Monster> monsters = new ArrayList<>();
-        Griffin griffin = new Griffin(10, 5);
-        Medusa medusa = new Medusa(10, 5);
-        Minotaur minotaur = new Minotaur(10, 5);
-        monsters.add(griffin);
-        monsters.add(medusa);
-        monsters.add(minotaur);
+        monsters.add(new Griffin(10, 5));
+        monsters.add(new Medusa(10, 5));
+        monsters.add(new Minotaur(10, 5));
         return monsters;
     }
 
@@ -67,6 +60,26 @@ public class GameManager {
         players = new ArrayList<>();
         players.add(new HumanPlayer(1, "Gandalf"));
         players.add(new MonsterPlayer(2, "Sauron"));
+
+        //Add default 3 human pieces
+        humanPieces = setUpHumanPieces();
+
+        //Add default 3 monster pieces
+        monsterPieces = setUpMonsterPieces();
+    }
+
+
+    //Only allow movement to a neighbouring square/hexagon.
+    private boolean checkValidMove(HexagonalTile piece, Location mapLocation) {
+        List<ITile> neighbours =getiBoard().getTiles().get(piece.getGridPosition()).getNeighbours();
+        for (ITile tile: neighbours) {
+            if (tile.getGridPosition().equals(mapLocation)){
+                System.out.println("Valid move!");
+                return true;
+            }
+        }
+        System.out.println("Invalid move!");
+        return false;
     }
 
     public IBoard getiBoard() {
