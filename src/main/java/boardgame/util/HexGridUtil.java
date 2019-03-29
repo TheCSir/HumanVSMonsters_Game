@@ -1,33 +1,15 @@
-package boardgame.gameModel.tiles;
+package boardgame.util;
 
 import boardgame.gameModel.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HexagonalTile extends Tile {
-
-    private final int numSides = 6;
-
-    public HexagonalTile(Location location) {
-        super(location);
-        neighbourPositions = getNeighbourPositions(location);
-    }
-
-
-    @Override
-    public void setLocation(Location location) {
-        super.setLocation(location);
-    }
-
-    @Override
-    public Location getLocation() {
-        return super.getLocation();
-    }
+public class HexGridUtil {
 
     //Calculates what the neighbour positions will be on a hexagonal grid.
     //TODO May belong in a different class.
-    public List<Location> getNeighbourPositions(Location location) {
+    public static List<Location> getNeighbourPositions(Location location) {
         int tGridX = location.getX();
         int tGRidY = location.getY();
         List<Location> neighbourLocations = new ArrayList<>();
@@ -64,10 +46,5 @@ public class HexagonalTile extends Tile {
         neighbourLocations.add(SW);
         neighbourLocations.add(SE);
         return neighbourLocations;
-    }
-
-    @Override
-    public int getPieceID() {
-        return 0;
     }
 }
