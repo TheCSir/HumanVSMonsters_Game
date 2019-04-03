@@ -32,10 +32,6 @@ import static boardgame.util.Constants.TILERADIUS;
 
 public class MainController implements Initializable {
 
-    //TODO Move all these variables out of main controller class so they can be dynamically assigned.
-
-
-
     @FXML // fx:id="turnTime"
     private Text turnTime; // Value injected by FXMLLoader
 
@@ -153,7 +149,6 @@ public class MainController implements Initializable {
         //Register listeners for the board pieces.
         registerPieceListeners(pieceList);
 
-
         ObservableList<HexagonTileViewPiece> pieces = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
 
         for (HexagonTileViewPiece piece: pieces) {
@@ -177,6 +172,7 @@ public class MainController implements Initializable {
 
    //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {
+        assert tile !=null;
         targetTile = tile;
 
         //Debugging:

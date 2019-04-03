@@ -15,6 +15,7 @@ public class Location {
     private final IntegerProperty yProperty;
 
     public Location(int x, int y) {
+        assert y>=0 && x>=0 : "Cannot pass negative to a Location.";
         xProperty = new SimpleIntegerProperty(this,"xProperty", x);
         yProperty = new SimpleIntegerProperty(this,"yProperty", y);
     }
