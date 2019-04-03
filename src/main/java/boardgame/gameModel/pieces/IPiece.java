@@ -10,4 +10,5 @@ public interface IPiece {
 
     void setLocation(Location location);
 
+    void setLocationProperty(Location location);
 }
