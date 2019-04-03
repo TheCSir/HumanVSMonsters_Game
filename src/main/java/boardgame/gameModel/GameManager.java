@@ -38,18 +38,18 @@ public class GameManager {
 
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
-        monsters.add(new Griffin(10, 5));
-        monsters.add(new Medusa(10, 5));
-        monsters.add(new Minotaur(10, 5));
+        monsters.add(new Griffin(10, 5, new Location(3, 3)));
+        monsters.add(new Medusa(10, 5, new Location(2, 2)));
+        monsters.add(new Minotaur(10, 5, new Location(0, 0)));
         return monsters;
     }
 
     public List<IPiece> setUpHumanPieces() {
 
         ArrayList<IPiece> humans = new ArrayList<>();
-        humans.add(new Warrior(10, 5));
-        humans.add(new Priest(10, 5));
-        humans.add(new Archer(10, 5));
+        humans.add(new Warrior(10, 5, new Location(5, 5)));
+        humans.add(new Priest(10, 5, new Location(6, 6)));
+        humans.add(new Archer(10, 5, new Location(7, 7)));
 
         return humans;
     }

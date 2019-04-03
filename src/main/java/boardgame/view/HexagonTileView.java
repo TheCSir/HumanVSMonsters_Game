@@ -14,6 +14,10 @@ import java.util.List;
 
 public class HexagonTileView extends Polygon {
 
+    public double getInitalY() {
+        return initalY;
+    }
+
     private ITile modelTile;
 
     public HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {

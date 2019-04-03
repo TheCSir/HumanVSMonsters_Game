@@ -1,5 +1,6 @@
 package boardgame.gameModel.tiles;
 
+
 import boardgame.gameModel.Location;
 
 import java.util.ArrayList;
