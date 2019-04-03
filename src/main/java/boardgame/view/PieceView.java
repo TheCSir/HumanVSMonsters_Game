@@ -12,10 +12,6 @@ public class PieceView {
 
     public void changePiecePosition(HexagonTileViewPiece hexagonPiece, HexagonTileView desiredTilePosition) {
 
-
-        //TODO add check valid move back in. But in model instead of view
-        //if (checkValidMove(hexagonPiece, desiredTilePosition.getLocation())) {
-
         //Should probably be a view method.
         Translate translate = new Translate();
         translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonPiece.getBoundsInParent().getCenterX());

@@ -1,6 +1,8 @@
 package boardgame.gameModel.pieces;
 
 import boardgame.gameModel.Location;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 
 public interface IPiece {
 
@@ -10,5 +12,7 @@ public interface IPiece {
 
     void setLocation(Location location);
 
-    void setLocationProperty(Location location);
+    ObjectProperty locationPropertyProperty();
+
+    IntegerProperty healthProperty();
 }

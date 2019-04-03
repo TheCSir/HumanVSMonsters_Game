@@ -14,19 +14,22 @@ import javafx.beans.property.SimpleObjectProperty;
 public abstract class Piece implements IPiece {
 
     private IntegerProperty health;
-    private int _health;
     private int attackStrength;
-    private int moveSpeed;
 
-    private Location location;
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    private int moveSpeed;
 
     //TODO This should return how far can move instead. NO need to take parameter of direction.
     public void move(int direction){}
 
     public IntegerProperty healthProperty() {
-        if (health==null) {
-            return new SimpleIntegerProperty(_health);
-        }
         return health;
     }
 
@@ -36,17 +39,16 @@ public abstract class Piece implements IPiece {
 
     @Override
     public Location getLocation() {
-        return this.location;
+        //return this.location;
+        return locationProperty.get();
     }
 
     private ObjectProperty<Location> locationProperty;
 
     public Piece(int _health, int moveSpeed, Location location) {
-        this._health = _health;
         this.moveSpeed = moveSpeed;
-        this.location=location;
         locationProperty = new SimpleObjectProperty<>(location);
-
+        health = new SimpleIntegerProperty(_health);
     }
 
     public Location getLocationProperty() {
@@ -58,13 +60,11 @@ public abstract class Piece implements IPiece {
         return locationProperty;
     }
 
-    public void setLocationProperty(Location locationProperty) {
-        this.locationProperty.set(locationProperty);
-    }
-
     //Doesn't allow a new location to be passed. Just take the coordinates to avoid affecting the observable.
     @Override
     public void setLocation(Location location) {
-        this.location.changeLocation(location.getX(), location.getY());
+        //this.location.changeLocation(location.getX(), location.getY());
+        locationProperty.setValue(location);
     }
+
 }

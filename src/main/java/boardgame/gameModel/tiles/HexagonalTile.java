@@ -7,22 +7,9 @@ import java.util.List;
 
 public class HexagonalTile extends Tile {
 
-    private final int numSides = 6;
-
     public HexagonalTile(Location location) {
         super(location);
         neighbourPositions = getNeighbourPositions(location);
-    }
-
-
-    @Override
-    public void setLocation(Location location) {
-        super.setLocation(location);
-    }
-
-    @Override
-    public Location getLocation() {
-        return super.getLocation();
     }
 
     //Calculates what the neighbour positions will be on a hexagonal grid.
@@ -65,6 +52,7 @@ public class HexagonalTile extends Tile {
         neighbourLocations.add(SE);
         return neighbourLocations;
     }
+
 
     @Override
     public int getPieceID() {
