@@ -139,7 +139,7 @@ public class MainController implements Initializable {
                 boardTiles, Constants.TILERADIUS, xStartOffset, yStartOffset);
 
         for (HexagonTileView hexagonalTile: hexagonTileViews) {
-            
+
             //Add the tile to the JAvaFX pane.
             boardPane.getChildren().add(hexagonalTile);
 
