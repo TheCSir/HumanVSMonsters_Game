@@ -17,6 +17,4 @@ public abstract class Board2d implements IBoard {
                 && location.getX() < columns
                 && location.getY() < rows);
     }
-
-
 }

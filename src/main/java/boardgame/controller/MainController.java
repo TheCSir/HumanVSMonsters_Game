@@ -8,13 +8,13 @@ import boardgame.gameModel.GameManager;
 import boardgame.gameModel.Location;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Warrior;
 import boardgame.gameModel.tiles.ITile;
-import boardgame.util.Constants;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileView;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.PieceView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,15 +22,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import static boardgame.util.Constants.TILERADIUS;
 
 public class MainController implements Initializable {
-
-    //TODO Move all these variables out of main controller class so they can be dynamically assigned.
-    private final static double r = Constants.TILERADIUS; // the inner radius from hexagon center to outer corner
-
 
     @FXML // fx:id="turnTime"
     private Text turnTime; // Value injected by FXMLLoader
@@ -41,163 +41,151 @@ public class MainController implements Initializable {
     @FXML
     private VBox tileInfoPane;
 
-
     @FXML
     private Text currentPlayer;
 
     @FXML
     private Button endTurnButton;
 
-    private ArrayList<HexagonTileView> tiles;
+    @FXML
+    private Text pieceSelected;
 
-    private Map<Location, HexagonTileView> tileMap = new HashMap<>();
+    @FXML
+    private Text pieceHealth;
+
+    @FXML
+    private Text pieceLocation;
+
+    private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
+    private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
     double time = 60;
+    private List<IPiece> pieces;
 
-    private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
-    private String activePlayer;
 
     //Store a reference to the Game manager for main entry point to game.
     private GameManager gm;
 
-    //TODO move event.
+    private Board2DHex board2DHex;
+
+    private BoardGrid boardGrid;
+
+    private HexagonTileViewPiece selectedTile = null;
+
+    private boolean tileSelected = false;
+
+    private HexagonTileView targetTile = null;
 
     public MainController () {
-
         //Get a reference to the game manager. Currently sets up a game with default settings.
         gm = new GameManager();
 
         //Set up default board.
 
         gm.setUpBoard();
+        board2DHex = (Board2DHex) gm.getiBoard();
 
-        activePlayer = playerArray[0];
-        tiles = new ArrayList<>();
+        pieces = gm.setUpHumanPieces();
     }
-
-    //Temporary solution for testing of changing player. Not intended for submission. change to model.
-    private void changeActivePlayer() {
-        if (activePlayer.equals(playerArray[0])){
-            activePlayer = playerArray[1];
-            currentPlayer.setText(activePlayer);
-        }else {
-            activePlayer = playerArray[0];
-            currentPlayer.setText(activePlayer);
-        }
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        turnTime.setText("Turn Time " + time);
-        BoardGrid bg = new BoardGrid();
-        drawBasicGrid(Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, r);
-        endTurnButton.setOnAction(e -> changeActivePlayer());
-        List<IPiece> pieces = gm.setUpHumanPieces();
-        addPieces(bg, pieces);
-    }
 
-
-    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
-    //TODO Add static map to start.
-    private void drawBasicGrid(int rows, int columns, double radius) {
-        double xStartOffset = 40;
-        double yStartOffset = 40;
-        final double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
-        final double TILE_HEIGHT = 2 * r;
-        final double TILE_WIDTH = 2 * n;
-        Board2DHex board2DHex = (Board2DHex) gm.getiBoard();
-        board2DHex.setUpTiles(10, 10);
         Map<Location, ITile> board = board2DHex.getTiles();
-        board2DHex.setUpTiles();
         List<ITile> boardTiles = new ArrayList<>(board.values());
 
-        for (ITile hexagonalTile: boardTiles) {
-            int xPos = hexagonalTile.getLocation().getX();
-            int yPos = hexagonalTile.getLocation().getY();
-
-            //Set starting coordinates for the tile to be drawn.
-            double xCoord = xPos * TILE_WIDTH + (yPos % 2) * n + xStartOffset;
-            double yCoord = yPos * TILE_HEIGHT * 0.75 + yStartOffset;
-
-            //Create the new tile.
-            HexagonTileView tile = new HexagonTileView(xCoord, yCoord, radius, hexagonalTile);
-
-            //Draw the tile coordinate to help with debugging.
-            Text gridloc = new Text(xPos + ", " + yPos);
-            gridloc.setX(tile.getXPosition());
-            gridloc.setY(tile.getYPosition());
+        boardGrid = new BoardGrid();
+        tiles = boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
 
 
-            //Add the tile to the JAvaFX pane.
-            boardPane.getChildren().add(tile);
-            boardPane.getChildren().add(gridloc);
+        //Assertions to ensure that injection works
+        assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert endTurnButton != null : "fx:id=\"endTurnButton\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceHealth != null : "fx:id=\"pieceHealth\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceLocation != null : "fx:id=\"pieceLocation\" was not injected: check your FXML file 'mainView.fxml'.";
 
-            tile.setOnMouseClicked(e -> handleTileClicked(tile));
-            tiles.add(tile);
-            tileMap.put(tile.getLocation(), tile);
+        turnTime.setText("Turn Time " + time);
 
+
+
+        //register text
+        gm.playerProperty().addListener((observable, oldValue, newValue) -> currentPlayer.setText("Current Player: " + newValue));
+        endTurnButton.setOnAction(e ->
+                gm.changeActivePlayer());
+
+
+        addPieces(tiles, pieces, boardPane);
+        registerTileListeners(tiles);
+    }
+    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
+    //TODO Add static map to start.
+
+    private void registerTileListeners(List<HexagonTileView> boardTiles) {
+
+        for (HexagonTileView hexagonalTile: boardTiles) {
+
+            //Set tile handlers
+            hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
+        }
+    }
+    //Register listeners for the board pieces.
+
+    private void registerPieceListeners (List<IPiece> pieces) {
+
+        for (IPiece piece: pieces) {
+            PieceView pieceView = new PieceView();
+            piece.locationPropertyProperty().addListener((observable) ->
+            pieceView.changePiecePosition(selectedTile, targetTile));
+        }
+    }
+    //Add game pieces to the game board.
+
+    private void addPieces(ObservableList<HexagonTileView> tileViewObservableList, List<IPiece> pieceList, Pane boardPane) {
+
+        //Register listeners for the board pieces.
+        registerPieceListeners(pieceList);
+
+        ObservableList<HexagonTileViewPiece> pieces = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
+
+        for (HexagonTileViewPiece piece: pieces) {
+            piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
     }
 
-
-    //Add game pieces to the game board. //TODO move to a view class.
-    private void addPieces(BoardGrid boardGrid, List<IPiece> pieceList) {
-        Location tileCoords = new Location(1, 1);
-        double xCoord = 0.0;
-        double yCoord = 0.0;
-        Warrior warrior = new Warrior(10, 5);
-        warrior.setLocation(tileCoords);
-//        for (IPiece piece: pieceList) {
-//
-//        }
-        //tileMap.get(tileCoords);
-
-        //TODO fix adding pieces
-        for (HexagonTileView h: tiles) {
-            if (h.getLocation().equals(tileCoords)) {
-                xCoord = h.getInitialX();
-                yCoord = h.getInitialY();
-                HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, r, warrior);
-                try {
-                    pieceTile.setImagePattern("src/main/resources/bigBird.PNG");
-                }catch (FileNotFoundException e) {
-                    System.out.println("Image File not found!");
-                }
-
-                boardPane.getChildren().add(pieceTile);
-                pieceTile.setOnMouseClicked(e -> handlePieceClicked(pieceTile));
-            }
-        }
-    }
-
-    private HexagonTileViewPiece selectedTile = null;
-
-    private boolean tileSelected = false;
-
+    //Selects piece.
     private void handlePieceClicked(HexagonTileViewPiece tile){
         this.selectedTile = tile;
         this.tileSelected = true;
-
-        //TODO make this bring up information about the piece.
-        //TODO highlight surrounding tiles using neighbours.
+        pieceSelected.setText("Class: " + tile.getiPiece().getClass().getSimpleName());
+        pieceLocation.setText("Location: "
+        + "X: " + tile.getiPiece().getLocation().getX()
+        + ", "
+        + "Y: " + tile.getiPiece().getLocation().getY());
+        pieceHealth.setText(
+                "Health: " + tile.getiPiece().healthProperty().getValue());
 
     }
 
-    //TODO separate tile and piece. Override this method in piece.
+   //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {
-        PieceView pieceView = new PieceView();
+        assert tile !=null;
+        targetTile = tile;
+
+        //Debugging:
         System.out.println("Board position is: " + tile.getLocation());
         System.out.println(tile.getModelTile().getNeighbours().size());
-        for (ITile neighbour: tile.getModelTile().getNeighbours()) {
+        for (ITile neighbour : tile.getModelTile().getNeighbours()) {
 
             System.out.println("Neighbour: " + neighbour.getLocation());
         }
 
-        if(selectedTile !=null && tileSelected){
-            if (gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation())){
-            pieceView.changePiecePosition(selectedTile, tile);
+        //Update model.
+        if (selectedTile != null && tileSelected) {
+            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
             }
         }
-    }
 }

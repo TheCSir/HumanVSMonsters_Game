@@ -28,5 +28,5 @@ public interface IBoard {
     //Get an individual piece.
     IPiece getPiece(int pieceID);
 
-    boolean movePiece(IPiece piece, Location desiredLocation);
+    void movePiece(IPiece piece, Location desiredLocation);
 }

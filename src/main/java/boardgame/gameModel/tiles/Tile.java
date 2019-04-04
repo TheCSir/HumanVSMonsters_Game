@@ -1,5 +1,6 @@
 package boardgame.gameModel.tiles;
 
+
 import boardgame.gameModel.Location;
 
 import java.util.ArrayList;
@@ -49,10 +50,7 @@ public abstract class Tile implements ITile {
     @Override
     public String toString() {
         return "Tile{" +
-                ", neighbours=" + neighbours +
                 ", location=" + location +
-                ", size=" + size +
-                ", traversable=" + traversable +
                 ", movementCost=" + movementCost +
                 '}';
     }

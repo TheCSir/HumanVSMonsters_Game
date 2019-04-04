@@ -3,6 +3,9 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
+import boardgame.util.Constants;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,9 @@ public class GameManager {
     private List<IPiece> humanPieces;
     private List<IPiece> monsterPieces;
 
+    private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
+    private StringProperty activePlayer;
+
     //Default constructor
     public GameManager(){
 
@@ -27,8 +33,10 @@ public class GameManager {
         iBoard = setUpBoard();
 
         turn = new Turn();
-
+        activePlayer = new SimpleStringProperty(playerArray[0]);
     }
+
+
 
     public IBoard setUpBoard(){
         Board2DHex board2DHex = new Board2DHex();
@@ -36,20 +44,26 @@ public class GameManager {
         return board2DHex;
     }
 
+    public IBoard setUpBoard(int rows, int columns) {
+        Board2DHex board2DHex = new Board2DHex();
+        board2DHex.setUpTiles(rows, columns);
+        return board2DHex;
+    }
+
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
-        monsters.add(new Griffin(10, 5));
-        monsters.add(new Medusa(10, 5));
-        monsters.add(new Minotaur(10, 5));
+        monsters.add(new Griffin(10, 5, new Location(3, 3)));
+        monsters.add(new Medusa(10, 5, new Location(2, 2)));
+        monsters.add(new Minotaur(10, 5, new Location(0, 0)));
         return monsters;
     }
 
     public List<IPiece> setUpHumanPieces() {
 
         ArrayList<IPiece> humans = new ArrayList<>();
-        humans.add(new Warrior(10, 5));
-        humans.add(new Priest(10, 5));
-        humans.add(new Archer(10, 5));
+        humans.add(new Warrior(10, 5, new Location(5, 5)));
+        humans.add(new Priest(10, 5, new Location(6, 6)));
+        humans.add(new Archer(10, 5, new Location(7, 7)));
 
         return humans;
     }
@@ -64,6 +78,8 @@ public class GameManager {
 
         //Add default 3 monster pieces
         monsterPieces = setUpMonsterPieces();
+
+        Board2DHex board2DHex = (Board2DHex) setUpBoard();
     }
 
     public IBoard getiBoard() {
@@ -76,5 +92,22 @@ public class GameManager {
 
     public void setiBoard(IBoard iBoard) {
         this.iBoard = iBoard;
+    }
+
+    //Temporary solution for testing of changing player. Not intended for submission. change to model.
+    public void changeActivePlayer() {
+        if (activePlayer.get().equals(playerArray[0])){
+            activePlayer.set(playerArray[1]);
+        }else {
+            activePlayer.set(playerArray[0]);
+        }
+    }
+
+    public String getCurrentPlayer() {
+        return activePlayer.get();
+    }
+
+    public StringProperty playerProperty() {
+        return activePlayer;
     }
 }

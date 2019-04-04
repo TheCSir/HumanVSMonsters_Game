@@ -4,40 +4,51 @@ package boardgame.gameModel;
     Simple wrapper to store x and y coordinates.
 */
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.util.Objects;
 
 public class Location {
 
-    private int x;
-    private int y;
+    private final IntegerProperty xProperty;
+    private final IntegerProperty yProperty;
 
     public Location(int x, int y) {
-        this.x=x;
-        this.y=y;
+        assert y>=0 && x>=0 : "Cannot pass negative to a Location.";
+        xProperty = new SimpleIntegerProperty(this,"xProperty", x);
+        yProperty = new SimpleIntegerProperty(this,"yProperty", y);
     }
 
-    @Override
-    public String toString() {
-        return "Location{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+
+    public IntegerProperty getXProperty() {
+        return xProperty;
     }
 
-    public int getX() {
-        return x;
+    public IntegerProperty getYProperty() {
+        return yProperty;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public final int getX() {
+        return xProperty.get();
     }
 
-    public int getY() {
-        return y;
+    private void setX(int value) {
+        this.xProperty.set(value);
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public final int getY() {
+        return yProperty.get();
+    }
+
+    private void setY(int value) {
+        this.yProperty.set(value);
+    }
+
+    //Change both x & y together. Doesn't allow for setting them separately.
+    public void changeLocation(int x, int y) {
+        setX(x);
+        setY(y);
     }
 
     @Override
@@ -53,4 +64,14 @@ public class Location {
     public int hashCode() {
         return Objects.hash(getX(), getY());
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "x=" + getX() +
+                ", y=" + getY() +
+                '}';
+    }
+
+
 }

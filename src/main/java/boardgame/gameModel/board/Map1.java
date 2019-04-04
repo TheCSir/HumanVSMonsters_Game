@@ -1,8 +1,8 @@
 package boardgame.gameModel.board;
 
+import boardgame.gameModel.Location;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
-import boardgame.gameModel.Location;
 
 import java.util.HashMap;
 import java.util.Map;
