@@ -18,10 +18,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +122,17 @@ public class MainController implements Initializable {
 
         addPieces(tiles, pieces, boardPane);
         registerTileListeners(tiles);
+
+        // create a input stream
+        try {
+            FileInputStream input = new FileInputStream("src/main/resources/proxy.duckduckgo.com.jpeg");
+            boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                    BackgroundSize.DEFAULT)));
+        }catch (FileNotFoundException e) {
+            System.out.println("what");
+        }
+
+
     }
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
@@ -168,6 +181,8 @@ public class MainController implements Initializable {
         pieceHealth.setText(
                 "Health: " + tile.getiPiece().healthProperty().getValue());
 
+
+
     }
 
    //Gets input and updates model for piece position.
@@ -187,5 +202,8 @@ public class MainController implements Initializable {
         if (selectedTile != null && tileSelected) {
             gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
             }
-        }
+    }
+
+
+
 }
