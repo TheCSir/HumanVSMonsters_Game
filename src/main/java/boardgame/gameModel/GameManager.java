@@ -19,9 +19,8 @@ public class GameManager {
     private Stack<Turn> turnStack;
     private List<IPiece> humanPieces;
     private List<IPiece> monsterPieces;
-
     private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
-    private StringProperty activePlayer;
+    private StringProperty activePlayerLabel;
 
     //Default constructor
     public GameManager(){
@@ -33,10 +32,10 @@ public class GameManager {
         iBoard = setUpBoard();
 
         turn = new Turn();
-        activePlayer = new SimpleStringProperty(playerArray[0]);
+        turn.initialiseTurns(players);
+
+        activePlayerLabel = new SimpleStringProperty(playerArray[0]);
     }
-
-
 
     public IBoard setUpBoard(){
         Board2DHex board2DHex = new Board2DHex();
@@ -52,32 +51,32 @@ public class GameManager {
 
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
-        monsters.add(new Griffin(10, 5, new Location(3, 3)));
-        monsters.add(new Medusa(10, 5, new Location(2, 2)));
-        monsters.add(new Minotaur(10, 5, new Location(0, 0)));
+        monsters.add(new Griffin(5, new Location(3, 3)));
+        monsters.add(new Medusa(5, new Location(2, 2)));
+        monsters.add(new Minotaur(5, new Location(0, 0)));
         return monsters;
     }
 
     public List<IPiece> setUpHumanPieces() {
 
         ArrayList<IPiece> humans = new ArrayList<>();
-        humans.add(new Warrior(10, 5, new Location(5, 5)));
-        humans.add(new Priest(10, 5, new Location(6, 6)));
-        humans.add(new Archer(10, 5, new Location(7, 7)));
+        humans.add(new Warrior(5, new Location(5, 5)));
+        humans.add(new Priest(5, new Location(6, 6)));
+        humans.add(new Archer(5, new Location(7, 7)));
 
         return humans;
     }
 
     private void defaultGameSetup(){
-        players = new ArrayList<>();
-        players.add(new HumanPlayer(1, "Gandalf"));
-        players.add(new MonsterPlayer(2, "Sauron"));
-
         //Add default 3 human pieces
         humanPieces = setUpHumanPieces();
 
         //Add default 3 monster pieces
         monsterPieces = setUpMonsterPieces();
+
+        players = new ArrayList<>();
+        players.add(new HumanPlayer(1, "Gandalf", 10, humanPieces));
+        players.add(new MonsterPlayer(2, "Sauron", 10, monsterPieces));
 
         Board2DHex board2DHex = (Board2DHex) setUpBoard();
     }
@@ -96,18 +95,20 @@ public class GameManager {
 
     //Temporary solution for testing of changing player. Not intended for submission. change to model.
     public void changeActivePlayer() {
-        if (activePlayer.get().equals(playerArray[0])){
-            activePlayer.set(playerArray[1]);
+        if (activePlayerLabel.get().equals(playerArray[0])){
+            activePlayerLabel.set(playerArray[1]);
         }else {
-            activePlayer.set(playerArray[0]);
+            activePlayerLabel.set(playerArray[0]);
         }
     }
 
     public String getCurrentPlayer() {
-        return activePlayer.get();
+        return activePlayerLabel.get();
     }
 
     public StringProperty playerProperty() {
-        return activePlayer;
+        return activePlayerLabel;
     }
+
+    public Turn getTurn() { return turn; }
 }

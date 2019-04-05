@@ -1,28 +1,12 @@
 package boardgame.gameModel;
 
-public class HumanPlayer implements IPlayer {
+import boardgame.gameModel.pieces.IPiece;
 
-    public HumanPlayer(int playerID, String playerName) {
-        this.playerID = playerID;
-        this.playerName = playerName;
-    }
+import java.util.List;
 
-    private int playerID;
-    private String playerName;
+public class HumanPlayer extends Player {
 
-    public String getPlayerName(){
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName){
-        this.playerName = playerName;
-    }
-
-    public int getPlayerID(){
-        return playerID;
-    }
-
-    public void setPlayerID(int playerID){
-        this.playerID = playerID;
+    public HumanPlayer(int playerID, String playerName, int _health, List<IPiece> pieces) {
+        super(playerID, playerName, _health, pieces);
     }
 }

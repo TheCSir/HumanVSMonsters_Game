@@ -3,19 +3,22 @@ package boardgame.gameModel.pieces;
 import boardgame.gameModel.Location;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /*
     This piece represents a character on the map.
  */
 
-
 public abstract class Piece implements IPiece {
 
     private IntegerProperty health;
     private int attackStrength;
+    private int moveSpeed;
 
+    public Piece(int moveSpeed, Location location) {
+        this.moveSpeed = moveSpeed;
+        locationProperty = new SimpleObjectProperty<>(location);
+    }
     public int getMoveSpeed() {
         return moveSpeed;
     }
@@ -24,20 +27,8 @@ public abstract class Piece implements IPiece {
         this.moveSpeed = moveSpeed;
     }
 
-    private int moveSpeed;
-
     //TODO This should return how far can move instead. NO need to take parameter of direction.
-    public void move(int direction){}
-
-    @Override
-    public IntegerProperty healthProperty() {
-        return health;
-    }
-
-    @Override
-    public void setHealthProperty(int value) {
-        health.set(value);
-    }
+    public void move(int direction) { }
 
     @Override
     public Location getLocation() {
@@ -46,12 +37,6 @@ public abstract class Piece implements IPiece {
     }
 
     private ObjectProperty<Location> locationProperty;
-
-    public Piece(int _health, int moveSpeed, Location location) {
-        this.moveSpeed = moveSpeed;
-        locationProperty = new SimpleObjectProperty<>(location);
-        health = new SimpleIntegerProperty(_health);
-    }
 
     public Location getLocationProperty() {
         return locationProperty.get();
@@ -67,12 +52,5 @@ public abstract class Piece implements IPiece {
     public void setLocation(Location location) {
         //this.location.changeLocation(location.getX(), location.getY());
         locationProperty.setValue(location);
-    }
-
-    @Override
-    public void decreaseHealthProperty() {
-        System.out.println("BANG!");
-        int decrementedHeath = this.healthProperty().getValue() - 1;
-        this.setHealthProperty(decrementedHeath);
     }
 }
