@@ -39,7 +39,6 @@ public class Board2DHex extends Board2d {
 
         //For each tile add the neighbouring tiles.
         addNeighbours();
-
     }
 
     //Default size

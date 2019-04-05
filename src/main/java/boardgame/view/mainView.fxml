@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -46,25 +47,59 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <VBox layoutX="1062.0" layoutY="6.0" prefHeight="834.0" prefWidth="214.0">
+            <VBox layoutX="1062.0" layoutY="89.0" prefHeight="519.0" prefWidth="214.0">
                <children>
-              <Label alignment="CENTER" style="&#10;" text="Turn Number:" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+                  <Label alignment="CENTER" style="&#10;" text="GAME STATUS:" textAlignment="CENTER" wrapText="false">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Label>
+              <Label alignment="CENTER" style="&#10;" text="Turn Number:" textAlignment="CENTER" wrapText="false">
                 <font>
                   <Font size="18.0" />
                 </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
               </Label>
-                  <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:" />
-                  <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
+                  <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Text>
+                  <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Text>
                   <Button fx:id="endTurnButton" mnemonicParsing="false" text="End Turn" />
                    <Button fx:id="attackButton" mnemonicParsing="false" text="Attack" />
                </children>
             </VBox>
-            <Pane fx:id="boardPane" layoutX="269.0" layoutY="31.0" prefHeight="802.0" prefWidth="742.0" />
-            <VBox fx:id="tileInfoPane" layoutX="27.0" layoutY="31.0" prefHeight="847.0" prefWidth="214.0">
+            <Pane fx:id="boardPane" layoutX="269.0" layoutY="90.0" prefHeight="801.0" prefWidth="782.0" />
+            <VBox fx:id="tileInfoPane" layoutX="27.0" layoutY="91.0" prefHeight="402.0" prefWidth="214.0">
                <children>
-                  <Text fx:id="pieceSelected" strokeType="OUTSIDE" strokeWidth="0.0" text="Piece selected:" />
-                  <Text fx:id="pieceHealth" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="pieceLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PIECE DETAILS">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text fx:id="pieceSelected" strokeType="OUTSIDE" strokeWidth="0.0" text="Piece selected:">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Text>
+                  <Text fx:id="pieceHealth" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Text>
+                  <Text fx:id="pieceLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin></Text>
                </children>
             </VBox>
       </children>
