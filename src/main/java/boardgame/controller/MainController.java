@@ -8,6 +8,7 @@ import boardgame.gameModel.GameManager;
 import boardgame.gameModel.Location;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Piece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileView;
@@ -18,10 +19,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,9 @@ public class MainController implements Initializable {
     private Text pieceSelected;
 
     @FXML
+    private Button attackButton;
+    
+    @FXML
     private Text pieceHealth;
 
     @FXML
@@ -75,6 +81,8 @@ public class MainController implements Initializable {
     private boolean tileSelected = false;
 
     private HexagonTileView targetTile = null;
+
+    private HexagonTileViewPiece targetTilePiece = null;
 
     public MainController () {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -110,17 +118,41 @@ public class MainController implements Initializable {
 
         turnTime.setText("Turn Time " + time);
 
-
-
         //register text
         gm.playerProperty().addListener((observable, oldValue, newValue) -> currentPlayer.setText("Current Player: " + newValue));
         endTurnButton.setOnAction(e ->
                 gm.changeActivePlayer());
 
+        attackButton.setOnAction(e -> chooseAttackTarget());
 
         addPieces(tiles, pieces, boardPane);
         registerTileListeners(tiles);
+
+        // create a input stream
+        try {
+            FileInputStream input = new FileInputStream("src/main/resources/proxy.duckduckgo.com.jpeg");
+            boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                    BackgroundSize.DEFAULT)));
+        }catch (FileNotFoundException e) {
+            System.out.println("what");
+        }
+
     }
+
+    private void chooseAttackTarget(){
+
+        // remove listener for selecting piece to move
+        unRegisterPieceListeners(pieces);
+
+        // register listener to choose targeted piece to attack
+        registerTargetPieceListeners(pieces);
+
+        for (HexagonTileViewPiece piece : pieceObservableList) {
+            if (!piece.getiPiece().equals(selectedTile))
+                piece.setOnMouseClicked(event -> handleTargetPieceClicked(piece));
+        }
+    }
+    
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 
@@ -142,6 +174,25 @@ public class MainController implements Initializable {
             pieceView.changePiecePosition(selectedTile, targetTile));
         }
     }
+
+    private void registerTargetPieceListeners (List<IPiece> pieces) {
+
+        for (IPiece piece: pieces) {
+            PieceView pieceView = new PieceView();
+            piece.healthProperty().addListener((observable) ->
+                    pieceView.decreaseHealthBar(targetTilePiece));
+        }
+    }
+
+    private void unRegisterPieceListeners (List<IPiece> pieces) {
+
+        for (IPiece piece: pieces) {
+            PieceView pieceView = new PieceView();
+            piece.locationPropertyProperty().removeListener((observable) ->
+                    pieceView.changePiecePosition(selectedTile, targetTile));
+        }
+    }
+
     //Add game pieces to the game board.
 
     private void addPieces(ObservableList<HexagonTileView> tileViewObservableList, List<IPiece> pieceList, Pane boardPane) {
@@ -149,9 +200,9 @@ public class MainController implements Initializable {
         //Register listeners for the board pieces.
         registerPieceListeners(pieceList);
 
-        ObservableList<HexagonTileViewPiece> pieces = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
+        pieceObservableList = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
 
-        for (HexagonTileViewPiece piece: pieces) {
+        for (HexagonTileViewPiece piece: pieceObservableList) {
             piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
     }
@@ -167,25 +218,33 @@ public class MainController implements Initializable {
         + "Y: " + tile.getiPiece().getLocation().getY());
         pieceHealth.setText(
                 "Health: " + tile.getiPiece().healthProperty().getValue());
+    }
 
+    private void handleTargetPieceClicked(HexagonTileViewPiece tile){
+        this.targetTilePiece = tile;
+        this.targetTilePiece.getiPiece().decreaseHealthProperty();
+
+        for (HexagonTileViewPiece piece: pieceObservableList) {
+            piece.setOnMouseClicked(event -> handlePieceClicked(piece));
+        }
     }
 
    //Gets input and updates model for piece position.
-    private void handleTileClicked(HexagonTileView tile) {
-        assert tile !=null;
-        targetTile = tile;
+   private void handleTileClicked(HexagonTileView tile) {
+       assert tile != null;
+       targetTile = tile;
 
-        //Debugging:
-        System.out.println("Board position is: " + tile.getLocation());
-        System.out.println(tile.getModelTile().getNeighbours().size());
-        for (ITile neighbour : tile.getModelTile().getNeighbours()) {
+       //Debugging:
+       // System.out.println("Board position is: " + tile.getLocation());
+       // System.out.println(tile.getModelTile().getNeighbours().size());
+       for (ITile neighbour : tile.getModelTile().getNeighbours()) {
 
-            System.out.println("Neighbour: " + neighbour.getLocation());
-        }
+           // System.out.println("Neighbour: " + neighbour.getLocation());
+       }
 
-        //Update model.
-        if (selectedTile != null && tileSelected) {
-            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
-            }
-        }
+       //Update model.
+       if (selectedTile != null && tileSelected) {
+           gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
+       }
+   }
 }

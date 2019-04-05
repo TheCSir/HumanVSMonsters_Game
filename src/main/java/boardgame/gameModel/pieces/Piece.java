@@ -29,11 +29,13 @@ public abstract class Piece implements IPiece {
     //TODO This should return how far can move instead. NO need to take parameter of direction.
     public void move(int direction){}
 
+    @Override
     public IntegerProperty healthProperty() {
         return health;
     }
 
-    public void setHealth(int value) {
+    @Override
+    public void setHealthProperty(int value) {
         health.set(value);
     }
 
@@ -67,4 +69,10 @@ public abstract class Piece implements IPiece {
         locationProperty.setValue(location);
     }
 
+    @Override
+    public void decreaseHealthProperty() {
+        System.out.println("BANG!");
+        int decrementedHeath = this.healthProperty().getValue() - 1;
+        this.setHealthProperty(decrementedHeath);
+    }
 }
