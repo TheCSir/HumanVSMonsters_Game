@@ -69,7 +69,7 @@ public class Board2DHex extends Board2d {
         List<ITile> neighbours = boardGrid.get(piece.getLocation()).getNeighbours();
         for (ITile tile: neighbours) {
             if (tile.getLocation().equals(location)){
-                System.out.println("True");
+                //System.out.println("True");
                 return true;
             }
         }

@@ -35,6 +35,4 @@ public class HexagonTileViewPiece extends HexagonTileView {
         return iPiece.getLocation();
     }
 
-
-
 }

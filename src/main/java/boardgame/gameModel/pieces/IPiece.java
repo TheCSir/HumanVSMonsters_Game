@@ -15,4 +15,8 @@ public interface IPiece {
     ObjectProperty locationPropertyProperty();
 
     IntegerProperty healthProperty();
+    
+    void setHealthProperty(int value);
+
+    void decreaseHealthProperty();
 }

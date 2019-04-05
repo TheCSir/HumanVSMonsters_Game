@@ -56,6 +56,7 @@
                   <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:" />
                   <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
                   <Button fx:id="endTurnButton" mnemonicParsing="false" text="End Turn" />
+                   <Button fx:id="attackButton" mnemonicParsing="false" text="Attack" />
                </children>
             </VBox>
             <Pane fx:id="boardPane" layoutX="269.0" layoutY="31.0" prefHeight="802.0" prefWidth="742.0" />

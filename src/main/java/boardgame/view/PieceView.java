@@ -19,6 +19,12 @@ public class PieceView {
         hexagonPiece.getTransforms().addAll(translate);
         //Bring piece to front so that it doesn't get stuck behind background tile.
         hexagonPiece.toFront();
-        System.out.println(hexagonPiece.getLocation().getXProperty() + ", " + hexagonPiece.getLocation().getYProperty());
+        // System.out.println(hexagonPiece.getLocation().getXProperty() + ", " + hexagonPiece.getLocation().getYProperty());
+    }
+
+    public void decreaseHealthBar(HexagonTileViewPiece targetedHexagonPiece) {
+        System.out.println("Health: " +
+                targetedHexagonPiece.getiPiece().healthProperty().toString()
+        );
     }
 }
