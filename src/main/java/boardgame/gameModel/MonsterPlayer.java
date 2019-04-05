@@ -1,34 +1,12 @@
 package boardgame.gameModel;
 
-public class MonsterPlayer implements IPlayer {
+import boardgame.gameModel.pieces.IPiece;
 
-    private int playerID;
-    private String playerName;
+import java.util.List;
 
-    public MonsterPlayer(int playerID, String playerName){
-        this.playerID=playerID;
-        this.playerName=playerName;
+public class MonsterPlayer extends Player {
+
+    public MonsterPlayer(int playerID, String playerName, int _health, List<IPiece> pieces){
+        super(playerID, playerName, _health, pieces);
     }
-
-    @Override
-    public int getPlayerID() {
-        return this.playerID;
-    }
-
-    @Override
-    public void setPlayerID(int id) {
-        this.playerID=id;
-    }
-
-    @Override
-    public String getPlayerName() {
-        return this.playerName;
-    }
-
-    @Override
-    public void setPlayerName(String name) {
-        this.playerName=name;
-    }
-
-
 }

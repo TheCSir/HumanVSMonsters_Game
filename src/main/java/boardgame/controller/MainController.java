@@ -4,21 +4,17 @@ package boardgame.controller;
  Controller class for main screen.
  */
 
-import boardgame.gameModel.GameManager;
-import boardgame.gameModel.Location;
+import boardgame.gameModel.*;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Piece;
 import boardgame.gameModel.tiles.ITile;
-import boardgame.view.BoardGrid;
-import boardgame.view.HexagonTileView;
-import boardgame.view.HexagonTileViewPiece;
-import boardgame.view.PieceView;
+import boardgame.view.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -55,12 +51,21 @@ public class MainController implements Initializable {
 
     @FXML
     private Button attackButton;
-    
+
     @FXML
     private Text pieceHealth;
 
     @FXML
     private Text pieceLocation;
+
+    @FXML
+    private Label turnNumber;
+
+    @FXML
+    private Label humanHealth;
+
+    @FXML
+    private Label monsterHealth;
 
     private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
@@ -84,12 +89,13 @@ public class MainController implements Initializable {
 
     private HexagonTileViewPiece targetTilePiece = null;
 
-    public MainController () {
+    private IPlayer activePlayer = null;
+
+    public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
         gm = new GameManager();
 
         //Set up default board.
-
         gm.setUpBoard();
         board2DHex = (Board2DHex) gm.getiBoard();
 
@@ -104,7 +110,6 @@ public class MainController implements Initializable {
 
         boardGrid = new BoardGrid();
         tiles = boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
-
 
         //Assertions to ensure that injection works
         assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
@@ -128,37 +133,47 @@ public class MainController implements Initializable {
         addPieces(tiles, pieces, boardPane);
         registerTileListeners(tiles);
 
+        registerPlayerListeners(gm.getPlayers());
+
+        registerTurnListeners(gm.getTurn());
+
+        turnNumber.setText("Turn: " +
+                gm.getTurn().getTurnNumber());
+
+
+        humanHealth.setText("Human Health: " +
+                gm.getTurn().getActivePlayer().healthProperty().getValue());
+
+        monsterHealth.setText("Monster Health: " +
+                gm.getTurn().getActivePlayer().healthProperty().getValue());
+
         // create a input stream
         try {
             FileInputStream input = new FileInputStream("src/main/resources/proxy.duckduckgo.com.jpeg");
             boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT)));
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("what");
         }
-
     }
 
-    private void chooseAttackTarget(){
-
-        // remove listener for selecting piece to move
-        unRegisterPieceListeners(pieces);
+    private void chooseAttackTarget() {
 
         // register listener to choose targeted piece to attack
-        registerTargetPieceListeners(pieces);
+        //registerPlayerListeners();
 
         for (HexagonTileViewPiece piece : pieceObservableList) {
             if (!piece.getiPiece().equals(selectedTile))
                 piece.setOnMouseClicked(event -> handleTargetPieceClicked(piece));
         }
     }
-    
+
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 
     private void registerTileListeners(List<HexagonTileView> boardTiles) {
 
-        for (HexagonTileView hexagonalTile: boardTiles) {
+        for (HexagonTileView hexagonalTile : boardTiles) {
 
             //Set tile handlers
             hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
@@ -166,27 +181,48 @@ public class MainController implements Initializable {
     }
     //Register listeners for the board pieces.
 
-    private void registerPieceListeners (List<IPiece> pieces) {
+    private void registerPieceListeners(List<IPiece> pieces) {
 
-        for (IPiece piece: pieces) {
+        for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().addListener((observable) ->
-            pieceView.changePiecePosition(selectedTile, targetTile));
+                    pieceView.changePiecePosition(selectedTile, targetTile));
         }
     }
 
-    private void registerTargetPieceListeners (List<IPiece> pieces) {
+    private void registerPlayerListeners(List<IPlayer> players) {
 
-        for (IPiece piece: pieces) {
-            PieceView pieceView = new PieceView();
-            piece.healthProperty().addListener((observable) ->
-                    pieceView.decreaseHealthBar(targetTilePiece));
+        for (IPlayer player : players) {
+            PlayerView playerView = new PlayerView();
+            player.healthProperty().addListener((observable) ->
+                    playerView.decreaseHealthBar(player, targetTilePiece));
+
+            if(player.getClass().getSimpleName().equals("HumanPlayer")) {
+                player.healthProperty().addListener((observable) ->
+                        humanHealth.setText("Human Health: " +
+                                player.healthProperty().getValue())
+                );
+            }
+
+            else if(player.getClass().getSimpleName().equals("MonsterPlayer")) {
+                player.healthProperty().addListener((observable) ->
+                        monsterHealth.setText("Monster Health: " +
+                                player.healthProperty().getValue())
+                );
+            }
         }
     }
 
-    private void unRegisterPieceListeners (List<IPiece> pieces) {
+    private void registerTurnListeners(Turn turn){
+        turn.turnNumberProperty().addListener(observable ->
+                turnNumber.setText("Turn: " +
+                        turn.getTurnNumber())
+        );
+    }
 
-        for (IPiece piece: pieces) {
+    private void unRegisterPieceListeners(List<IPiece> pieces) {
+
+        for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().removeListener((observable) ->
                     pieceView.changePiecePosition(selectedTile, targetTile));
@@ -202,49 +238,53 @@ public class MainController implements Initializable {
 
         pieceObservableList = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
 
-        for (HexagonTileViewPiece piece: pieceObservableList) {
+        for (HexagonTileViewPiece piece : pieceObservableList) {
             piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
     }
 
     //Selects piece.
-    private void handlePieceClicked(HexagonTileViewPiece tile){
+    private void handlePieceClicked(HexagonTileViewPiece tile) {
         this.selectedTile = tile;
         this.tileSelected = true;
         pieceSelected.setText("Class: " + tile.getiPiece().getClass().getSimpleName());
         pieceLocation.setText("Location: "
-        + "X: " + tile.getiPiece().getLocation().getX()
-        + ", "
-        + "Y: " + tile.getiPiece().getLocation().getY());
-        pieceHealth.setText(
-                "Health: " + tile.getiPiece().healthProperty().getValue());
+                + "X: " + tile.getiPiece().getLocation().getX()
+                + ", "
+                + "Y: " + tile.getiPiece().getLocation().getY());
     }
 
-    private void handleTargetPieceClicked(HexagonTileViewPiece tile){
+    private void handleTargetPieceClicked(HexagonTileViewPiece tile) {
         this.targetTilePiece = tile;
-        this.targetTilePiece.getiPiece().decreaseHealthProperty();
+        gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
 
-        for (HexagonTileViewPiece piece: pieceObservableList) {
+        for (HexagonTileViewPiece piece : pieceObservableList) {
             piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
+
+        // end turn
+        gm.getTurn().nextTurn(gm.getPlayers());
     }
 
-   //Gets input and updates model for piece position.
-   private void handleTileClicked(HexagonTileView tile) {
-       assert tile != null;
-       targetTile = tile;
+    //Gets input and updates model for piece position.
+    private void handleTileClicked(HexagonTileView tile) {
+        assert tile != null;
+        targetTile = tile;
 
-       //Debugging:
-       // System.out.println("Board position is: " + tile.getLocation());
-       // System.out.println(tile.getModelTile().getNeighbours().size());
-       for (ITile neighbour : tile.getModelTile().getNeighbours()) {
+        //Debugging:
+        // System.out.println("Board position is: " + tile.getLocation());
+        // System.out.println(tile.getModelTile().getNeighbours().size());
+        for (ITile neighbour : tile.getModelTile().getNeighbours()) {
 
-           // System.out.println("Neighbour: " + neighbour.getLocation());
-       }
+            // System.out.println("Neighbour: " + neighbour.getLocation());
+        }
 
-       //Update model.
-       if (selectedTile != null && tileSelected) {
-           gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
-       }
-   }
+        //Update model.
+        if (selectedTile != null && tileSelected) {
+            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
+        }
+
+        // end turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+    }
 }

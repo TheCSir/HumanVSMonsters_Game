@@ -3,8 +3,8 @@ package boardgame.gameModel.pieces;
 import boardgame.gameModel.Location;
 
 public class Archer extends Human {
-    public Archer(int _health, int moveSpeed, Location location) {
-        super(_health, moveSpeed, location);
+    public Archer(int moveSpeed, Location location) {
+        super(moveSpeed, location);
     }
 
     public void basicAttack(){}
