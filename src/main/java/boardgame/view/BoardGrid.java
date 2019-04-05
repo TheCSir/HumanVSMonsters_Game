@@ -48,7 +48,8 @@ public class BoardGrid {
                     double yCoord = h.getInitialY();
                     HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
                     try {
-                        pieceTile.setImagePattern(Constants.BIRDPNG);
+                        pieceTile.setImagePattern(imageURL(piece));
+                        System.out.println(imageURL(piece));
                     }catch (FileNotFoundException e) {
                         System.out.println("Image File not found!");
                     }
@@ -60,6 +61,33 @@ public class BoardGrid {
         }
 
         return pieces;
+    }
+
+//    public HexagonTileViewPiece addPiece(HexagonTileView , IPiece piece, Pane boardPane) {
+//        for (HexagonTileView h: tileViewObservableList) {
+//            if (h.getLocation().equals(piece.getLocation())) {
+//                double xCoord = h.getInitialX();
+//                double yCoord = h.getInitialY();
+//                HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
+//                try {
+//                    pieceTile.setImagePattern(Constants.BIRDPNG);
+//                }catch (FileNotFoundException e) {
+//                    System.out.println("Image File not found!");
+//                }
+//
+//                boardPane.getChildren().add(pieceTile);
+//              //  pieces.add(pieceTile);
+//            }
+//        }
+//
+//    }
+
+    public String imageURL(IPiece iPiece) {
+        String i  = "src/main/resources/"
+                + iPiece.getClass().getName()
+                + ".png";
+        System.out.println(i);
+        return i;
     }
 
     public ObservableList<HexagonTileView> drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {

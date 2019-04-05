@@ -112,8 +112,6 @@ public class MainController implements Initializable {
 
         turnTime.setText("Turn Time " + time);
 
-
-
         //register text
         gm.playerProperty().addListener((observable, oldValue, newValue) -> currentPlayer.setText("Current Player: " + newValue));
         endTurnButton.setOnAction(e ->
@@ -131,7 +129,6 @@ public class MainController implements Initializable {
         }catch (FileNotFoundException e) {
             System.out.println("what");
         }
-
 
     }
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
@@ -155,8 +152,8 @@ public class MainController implements Initializable {
             pieceView.changePiecePosition(selectedTile, targetTile));
         }
     }
-    //Add game pieces to the game board.
 
+    //Add game pieces to the game board.
     private void addPieces(ObservableList<HexagonTileView> tileViewObservableList, List<IPiece> pieceList, Pane boardPane) {
 
         //Register listeners for the board pieces.
@@ -180,9 +177,6 @@ public class MainController implements Initializable {
         + "Y: " + tile.getiPiece().getLocation().getY());
         pieceHealth.setText(
                 "Health: " + tile.getiPiece().healthProperty().getValue());
-
-
-
     }
 
    //Gets input and updates model for piece position.
@@ -197,13 +191,9 @@ public class MainController implements Initializable {
 
             System.out.println("Neighbour: " + neighbour.getLocation());
         }
-
         //Update model.
         if (selectedTile != null && tileSelected) {
             gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
             }
     }
-
-
-
 }
