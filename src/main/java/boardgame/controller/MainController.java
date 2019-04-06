@@ -67,6 +67,9 @@ public class MainController implements Initializable {
     @FXML
     private Label monsterHealth;
 
+    @FXML
+    private Button swapButton;
+
     private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
@@ -129,6 +132,9 @@ public class MainController implements Initializable {
                 gm.changeActivePlayer());
 
         attackButton.setOnAction(e -> chooseAttackTarget());
+
+        //swap button action
+        swapButton.setOnAction(e -> gm.swapPiece());
 
         addPieces(tiles, pieces, boardPane);
         registerTileListeners(tiles);

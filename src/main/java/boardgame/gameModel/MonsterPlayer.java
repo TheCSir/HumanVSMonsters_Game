@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MonsterPlayer extends Player {
 
-    public MonsterPlayer(int playerID, String playerName, int _health, List<IPiece> pieces){
-        super(playerID, playerName, _health, pieces);
+    public MonsterPlayer(int playerID, String playerName, int _health, List<IPiece> pieces,int ActivePiece){
+        super(playerID, playerName, _health, pieces,ActivePiece);
     }
 }

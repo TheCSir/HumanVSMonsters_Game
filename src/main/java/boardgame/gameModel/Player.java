@@ -13,11 +13,14 @@ public abstract class Player implements IPlayer {
     private IntegerProperty health;
     private List<IPiece> pieces;
 
-    public Player(int playerID, String playerName, int _health, List<IPiece> pieces) {
+    private int ActivePiece;
+
+    public Player(int playerID, String playerName, int _health, List<IPiece> pieces,int ActivePiece) {
         this.playerID = playerID;
         this.playerName = playerName;
         this.health = new SimpleIntegerProperty(_health);
         this.pieces = pieces;
+        this.ActivePiece=ActivePiece;
     }
 
     public String getPlayerName(){
@@ -57,5 +60,15 @@ public abstract class Player implements IPlayer {
     @Override
     public void setPieces(List<IPiece> pieces) {
         this.pieces = pieces;
+    }
+
+    @Override
+    public int getActivePiece() {
+        return ActivePiece;
+    }
+
+    @Override
+    public void setActivePiece(int activePiece) {
+        ActivePiece = activePiece;
     }
 }

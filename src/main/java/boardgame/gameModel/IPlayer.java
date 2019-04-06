@@ -15,4 +15,6 @@ public interface IPlayer {
     public void decreaseHealthProperty();
     public List<IPiece> getPieces();
     public void setPieces(List<IPiece> pieces);
+    public int getActivePiece();
+    public void setActivePiece(int ActivePiece);
 }

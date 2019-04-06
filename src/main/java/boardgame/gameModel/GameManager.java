@@ -74,9 +74,11 @@ public class GameManager {
         //Add default 3 monster pieces
         monsterPieces = setUpMonsterPieces();
 
+        //make sure to assign player id in this order
+        //means human player id should always be '1'
         players = new ArrayList<>();
-        players.add(new HumanPlayer(1, "Gandalf", 10, humanPieces));
-        players.add(new MonsterPlayer(2, "Sauron", 10, monsterPieces));
+        players.add(new HumanPlayer(1, "Gandalf", 10, humanPieces,0));
+        players.add(new MonsterPlayer(2, "Sauron", 10, monsterPieces,0));
 
         Board2DHex board2DHex = (Board2DHex) setUpBoard();
     }
@@ -97,9 +99,28 @@ public class GameManager {
     public void changeActivePlayer() {
         if (activePlayerLabel.get().equals(playerArray[0])){
             activePlayerLabel.set(playerArray[1]);
+            turn.nextTurn(players);
         }else {
             activePlayerLabel.set(playerArray[0]);
+            turn.nextTurn(players);
         }
+    }
+
+    //Temp swap piece
+    public void swapPiece () {
+
+        int piece = turn.getActivePlayer().getActivePiece();
+
+        if (piece<Constants.TypesOfPicees-1)
+            turn.getActivePlayer().setActivePiece(piece+1);
+        else
+            turn.getActivePlayer().setActivePiece(0);
+
+
+        activePlayerLabel.set(turn.getActivePlayer().getPieces().get(piece).getClass().getSimpleName());
+
+
+        //activePlayerLabel.set(monsterPieces.get(0).getClass().getSimpleName());
     }
 
     public String getCurrentPlayer() {

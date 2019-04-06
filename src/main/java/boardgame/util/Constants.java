@@ -13,6 +13,8 @@ public class Constants {
     public static final String PLAYER1 = "Human Player";
     public static final String PLAYER2 = "Monster Player";
 
+    public static final int TypesOfPicees = 3;
+
     public static final double TILERADIUS = 40;
 
     public static final String BIRDPNG = "src/main/resources/bigBird.PNG";
