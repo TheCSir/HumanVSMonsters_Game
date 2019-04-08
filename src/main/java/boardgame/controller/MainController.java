@@ -74,6 +74,8 @@ public class MainController implements Initializable {
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
     double time = 60;
+    private List<IPiece> humanPieces;
+    private List<IPiece> monsterPieces;
     private List<IPiece> pieces;
 
 
@@ -102,7 +104,14 @@ public class MainController implements Initializable {
         gm.setUpBoard();
         board2DHex = (Board2DHex) gm.getiBoard();
 
-        pieces = gm.setUpHumanPieces();
+
+        humanPieces = gm.setUpHumanPieces();
+        monsterPieces =  gm.setUpMonsterPieces();
+        pieces = new ArrayList<>();
+        pieces.addAll(humanPieces);
+        pieces.addAll(monsterPieces);
+        //pieces = gm.setUpHumanPieces();
+
     }
 
     @Override
@@ -150,7 +159,7 @@ public class MainController implements Initializable {
         monsterHealth.setText("Monster Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
-        // create a input stream
+        // Set up the background.
         try {
             FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
             boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
