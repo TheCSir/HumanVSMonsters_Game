@@ -4,7 +4,10 @@ package boardgame.controller;
  Controller class for main screen.
  */
 
-import boardgame.gameModel.*;
+import boardgame.gameModel.GameManager;
+import boardgame.gameModel.IPlayer;
+import boardgame.gameModel.Location;
+import boardgame.gameModel.Turn;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
@@ -149,7 +152,7 @@ public class MainController implements Initializable {
 
         // create a input stream
         try {
-            FileInputStream input = new FileInputStream("src/main/resources/proxy.duckduckgo.com.jpeg");
+            FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
             boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT)));
         } catch (FileNotFoundException e) {
