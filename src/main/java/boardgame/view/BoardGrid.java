@@ -7,7 +7,6 @@ import boardgame.util.Constants;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class BoardGrid {
 //                }
 //
 //                boardPane.getChildren().add(pieceTile);
-//              //  pieces.add(pieceTile);
+//                pieces.add(pieceTile);
 //            }
 //        }
 //
@@ -102,7 +101,7 @@ public class BoardGrid {
 
         }
 
-        drawTileGridPos(hexagonTileViews, boardPane);
+        //drawTileGridPos(hexagonTileViews, boardPane);
         return FXCollections.observableArrayList(hexagonTileViews);
     }
 
@@ -128,24 +127,22 @@ public class BoardGrid {
         return hexagonTileViewList;
     }
 
-    //Draw the tile coordinate to help with debugging.
-    public void drawTileGridPos(List<HexagonTileView> hexagonTileViewList, Pane boardPane) {
-
-        for (HexagonTileView hexagonalTile: hexagonTileViewList) {
-
-
-            Text gridloc = new Text(hexagonalTile.getModelTile().getLocation().getX() + ", "
-                    + hexagonalTile.getModelTile().getLocation().getY());
-            gridloc.setX(hexagonalTile.getXPosition());
-            gridloc.setY(hexagonalTile.getYPosition());
-            boardPane.getChildren().add(gridloc);
-        }
-    }
+//    //Draw the tile coordinate to help with debugging.
+//    public void drawTileGridPos(List<HexagonTileView> hexagonTileViewList, Pane boardPane) {
+//
+//        for (HexagonTileView hexagonalTile: hexagonTileViewList) {
+//
+//
+//            Text gridloc = new Text(hexagonalTile.getModelTile().getLocation().getX() + ", "
+//                    + hexagonalTile.getModelTile().getLocation().getY());
+//            gridloc.setX(hexagonalTile.getXPosition());
+//            gridloc.setY(hexagonalTile.getYPosition());
+//            boardPane.getChildren().add(gridloc);
+//        }
+//    }
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
-
-
 
 }
 
