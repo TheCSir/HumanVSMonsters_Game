@@ -349,7 +349,7 @@ public class MainController implements Initializable {
 
         //To Do: check if active player is human or monster
         int activePiece = gm.getTurn().getActivePlayer().getActivePiece();
-        Location currentLocation = gm.getHumanPieces().get(activePiece).getLocation();
+        Location currentLocation = gm.getTurn().getActivePlayer().getPieces().get(activePiece).getLocation();
         Location outSideTheBoard = new Location(-1,-1);
         int UserChoice;
 
@@ -357,16 +357,16 @@ public class MainController implements Initializable {
         if(button==1){ UserChoice = ButtonOneVal;}
         else{ UserChoice = ButtonTwoVal; }
 
-        gm.adjustHumanLocation(activePiece,outSideTheBoard);
-        gm.adjustHumanLocation(UserChoice,currentLocation);
+        gm.getTurn().getActivePlayer().adjustPieceLocation(activePiece,outSideTheBoard);
+        gm.getTurn().getActivePlayer().adjustPieceLocation(UserChoice,currentLocation);
         gm.getTurn().getActivePlayer().setActivePiece(UserChoice);
 
         //debug
-        System.out.println("New Locaton of "+gm.getHumanPieces().get(activePiece).getClass().getSimpleName() +
-                " is "+ gm.getHumanPieces().get(activePiece).getLocation());
+        System.out.println("New Locaton of "+gm.getTurn().getActivePlayer().getPieces().get(activePiece).getClass().getSimpleName() +
+                " is "+ gm.getTurn().getActivePlayer().getPieces().get(activePiece).getLocation());
 
-        System.out.println("New Locaton of "+gm.getHumanPieces().get(UserChoice).getClass().getSimpleName() +
-                " is "+ gm.getHumanPieces().get(UserChoice).getLocation());
+        System.out.println("New Locaton of "+gm.getTurn().getActivePlayer().getPieces().get(UserChoice).getClass().getSimpleName() +
+                " is "+ gm.getTurn().getActivePlayer().getPieces().get(UserChoice).getLocation());
 
         //set the pane invisible
         SwapPane.setVisible(false);

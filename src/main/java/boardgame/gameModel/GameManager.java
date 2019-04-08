@@ -68,12 +68,6 @@ public class GameManager {
         return humans;
     }
 
-    public void adjustHumanLocation(int Piece, Location newLocation){
-
-        this.humanPieces.get(Piece).setLocation(newLocation);
-
-    }
-
     private void defaultGameSetup(){
         //Add default 3 human pieces
         humanPieces = setUpHumanPieces();
@@ -123,12 +117,4 @@ public class GameManager {
 
     public Turn getTurn() { return turn; }
 
-
-    public List<IPiece> getMonsterPieces() {
-        return monsterPieces;
-    }
-
-    public List<IPiece> getHumanPieces() {
-        return humanPieces;
-    }
 }

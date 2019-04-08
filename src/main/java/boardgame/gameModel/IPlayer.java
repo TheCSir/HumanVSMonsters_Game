@@ -17,4 +17,5 @@ public interface IPlayer {
     public void setPieces(List<IPiece> pieces);
     public int getActivePiece();
     public void setActivePiece(int ActivePiece);
+    public void adjustPieceLocation(int Piece, Location newLocation);
 }

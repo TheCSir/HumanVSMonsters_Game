@@ -71,4 +71,12 @@ public abstract class Player implements IPlayer {
     public void setActivePiece(int activePiece) {
         ActivePiece = activePiece;
     }
+
+    @Override
+    public void adjustPieceLocation(int Piece, Location newLocation){
+
+        this.pieces.get(Piece).setLocation(newLocation);
+
+    }
 }
+
