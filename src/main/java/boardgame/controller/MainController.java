@@ -8,6 +8,7 @@ import boardgame.gameModel.*;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
+import boardgame.util.Constants;
 import boardgame.view.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -70,6 +71,15 @@ public class MainController implements Initializable {
     @FXML
     private Button swapButton;
 
+    @FXML
+    private Pane SwapPane;
+
+    @FXML
+    private Button Opt_one;
+
+    @FXML
+    private Button Opt_two;
+
     private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
@@ -93,6 +103,10 @@ public class MainController implements Initializable {
     private HexagonTileViewPiece targetTilePiece = null;
 
     private IPlayer activePlayer = null;
+
+    // To store swap piece selection values
+    private int ButtonOneVal,ButtonTwoVal;
+
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -134,7 +148,12 @@ public class MainController implements Initializable {
         attackButton.setOnAction(e -> chooseAttackTarget());
 
         //swap button action
-        swapButton.setOnAction(e -> gm.swapPiece());
+        swapButton.setOnAction(e -> HandleSwapPane());
+
+        //Swap options clicked
+        Opt_one.setOnAction(e -> HandleSwap(1));
+        Opt_two.setOnAction(e -> HandleSwap(2));
+
 
         addPieces(tiles, pieces, boardPane);
         registerTileListeners(tiles);
@@ -292,5 +311,65 @@ public class MainController implements Initializable {
 
         // end turn
         gm.getTurn().nextTurn(gm.getPlayers());
+    }
+
+    //handle swap clicked
+    public void HandleSwapPane () {
+
+        String OptOne,OptTwo;
+        int ActivePiece = gm.getTurn().getActivePlayer().getActivePiece();
+
+        //Switch the disabled status
+        SwapPane.setVisible(!SwapPane.isVisible());
+
+        switch (ActivePiece) {
+            case 0:
+                ButtonOneVal=ActivePiece+1;
+                ButtonTwoVal=ActivePiece+2;
+                break;
+
+            case 1:
+                ButtonOneVal=ActivePiece-1;
+                ButtonTwoVal=ActivePiece+1;
+                break;
+
+            case 2:
+                ButtonOneVal=ActivePiece-2;
+                ButtonTwoVal=ActivePiece-1;
+                break;
+
+        }
+        //set button texts according to pieces
+        Opt_one.setText(gm.getTurn().getActivePlayer().getPieces().get(ButtonOneVal).getClass().getSimpleName());
+        Opt_two.setText(gm.getTurn().getActivePlayer().getPieces().get(ButtonTwoVal).getClass().getSimpleName());
+    }
+
+    public void HandleSwap(int button) {
+
+
+        //To Do: check if active player is human or monster
+        int activePiece = gm.getTurn().getActivePlayer().getActivePiece();
+        Location currentLocation = gm.getHumanPieces().get(activePiece).getLocation();
+        Location outSideTheBoard = new Location(-1,-1);
+        int UserChoice;
+
+        // Select which piece to swap according to user input
+        if(button==1){ UserChoice = ButtonOneVal;}
+        else{ UserChoice = ButtonTwoVal; }
+
+        gm.adjustHumanLocation(activePiece,outSideTheBoard);
+        gm.adjustHumanLocation(UserChoice,currentLocation);
+        gm.getTurn().getActivePlayer().setActivePiece(UserChoice);
+
+        //debug
+        System.out.println("New Locaton of "+gm.getHumanPieces().get(activePiece).getClass().getSimpleName() +
+                " is "+ gm.getHumanPieces().get(activePiece).getLocation());
+
+        System.out.println("New Locaton of "+gm.getHumanPieces().get(UserChoice).getClass().getSimpleName() +
+                " is "+ gm.getHumanPieces().get(UserChoice).getLocation());
+
+        //set the pane invisible
+        SwapPane.setVisible(false);
+
     }
 }

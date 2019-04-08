@@ -50,6 +50,7 @@ public class GameManager {
     }
 
     public List<IPiece> setUpMonsterPieces() {
+
         List<IPiece> monsters = new ArrayList<>();
         monsters.add(new Griffin(5, new Location(3, 3)));
         monsters.add(new Medusa(5, new Location(2, 2)));
@@ -61,10 +62,16 @@ public class GameManager {
 
         ArrayList<IPiece> humans = new ArrayList<>();
         humans.add(new Warrior(5, new Location(5, 5)));
-        humans.add(new Priest(5, new Location(6, 6)));
-        humans.add(new Archer(5, new Location(7, 7)));
+        humans.add(new Priest(5, new Location(-1, -1)));
+        humans.add(new Archer(5, new Location(-1, -1)));
 
         return humans;
+    }
+
+    public void adjustHumanLocation(int Piece, Location newLocation){
+
+        this.humanPieces.get(Piece).setLocation(newLocation);
+
     }
 
     private void defaultGameSetup(){
@@ -106,23 +113,6 @@ public class GameManager {
         }
     }
 
-    //Temp swap piece
-    public void swapPiece () {
-
-        int piece = turn.getActivePlayer().getActivePiece();
-
-        if (piece<Constants.TypesOfPicees-1)
-            turn.getActivePlayer().setActivePiece(piece+1);
-        else
-            turn.getActivePlayer().setActivePiece(0);
-
-
-        activePlayerLabel.set(turn.getActivePlayer().getPieces().get(piece).getClass().getSimpleName());
-
-
-        //activePlayerLabel.set(monsterPieces.get(0).getClass().getSimpleName());
-    }
-
     public String getCurrentPlayer() {
         return activePlayerLabel.get();
     }
@@ -132,4 +122,13 @@ public class GameManager {
     }
 
     public Turn getTurn() { return turn; }
+
+
+    public List<IPiece> getMonsterPieces() {
+        return monsterPieces;
+    }
+
+    public List<IPiece> getHumanPieces() {
+        return humanPieces;
+    }
 }
