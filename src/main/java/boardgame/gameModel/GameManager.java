@@ -4,6 +4,7 @@ import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.Griffin;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.util.Constants;
 import javafx.beans.property.SimpleStringProperty;
@@ -62,6 +63,7 @@ public class GameManager {
     public List<IPiece> setUpHumanPieces() {
 
         ArrayList<IPiece> humans = new ArrayList<>();
+        IPiece piece = PieceFactory.createPiece(Warrior.class.getName(), 5, new Location(9, 9));
         humans.add(new Warrior(5, new Location(9, 9)));
 //        humans.add(new Priest(5, new Location(6, 6)));
 //        humans.add(new Archer(5, new Location(7, 7)));
@@ -77,9 +79,11 @@ public class GameManager {
         monsterPieces = setUpMonsterPieces();
 
         players = new ArrayList<>();
-        players.add(new HumanPlayer(1, "Gandalf", 10, humanPieces));
-        players.add(new MonsterPlayer(2, "Sauron", 10, monsterPieces));
 
+        Player player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
+        Player player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
+        players.add(player1);
+        players.add(player2);
         Board2DHex board2DHex = (Board2DHex) setUpBoard();
     }
 

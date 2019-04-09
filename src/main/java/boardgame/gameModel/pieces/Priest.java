@@ -8,5 +8,7 @@ public class Priest extends Human {
     }
 
     public void basicAttack(){}
-    public void heal(){}
+    public void specialAbility(){
+        System.out.println("Healing!");
+    }
 }

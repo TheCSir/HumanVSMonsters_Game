@@ -320,8 +320,4 @@ public class MainController implements Initializable {
             }
         }
     }
-
-//    private void checkActivePlayer() {
-//
-//    }
 }

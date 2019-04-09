@@ -8,5 +8,7 @@ public class Warrior extends Human {
     }
 
     public void basicAttack(){}
-    public void bash(){}
+    public void specialAbility(){
+        System.out.println("Bash");
+    }
 }
