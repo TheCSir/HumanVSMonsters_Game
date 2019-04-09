@@ -3,10 +3,12 @@ package boardgame.gameModel.pieces;
 import boardgame.gameModel.Location;
 
 public class Warrior extends Human {
-    public Warrior(int moveSpeed, Location location) {
+    Warrior(int moveSpeed, Location location) {
         super(moveSpeed, location);
     }
 
     public void basicAttack(){}
-    public void bash(){}
+    public void specialAbility(){
+        System.out.println("Bash");
+    }
 }

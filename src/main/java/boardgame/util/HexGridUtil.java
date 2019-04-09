@@ -1,6 +1,7 @@
 package boardgame.util;
 
 import boardgame.gameModel.Location;
+import boardgame.gameModel.LocationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +25,20 @@ public class HexGridUtil {
         //Calculation is based on 0,4 coordinate for example. On a hex grid there is a slightly different
         //calculation depending on whether a tile on the y-axis is odd or even (or equivalent for the x-axis
         if (tGRidY % 2 == 0) {
-            NW = new Location(tGridX - 1, tGRidY - 1);
-            NE = new Location(tGridX, tGRidY - 1);
-            W = new Location(tGridX - 1, tGRidY);
-            E = new Location(tGridX + 1, tGRidY);
-            SW = new Location(tGridX - 1, tGRidY + 1);
-            SE = new Location(tGridX, tGRidY + 1);
+            NW = LocationFactory.createLocation(tGridX - 1, tGRidY - 1);
+            NE = LocationFactory.createLocation(tGridX, tGRidY - 1);
+            W = LocationFactory.createLocation(tGridX - 1, tGRidY);
+            E = LocationFactory.createLocation(tGridX + 1, tGRidY);
+            SW = LocationFactory.createLocation(tGridX - 1, tGRidY + 1);
+            SE = LocationFactory.createLocation(tGridX, tGRidY + 1);
 
         }else {
-            NW = new Location(tGridX , tGRidY - 1);
-            NE = new Location(tGridX+1, tGRidY - 1);
-            W = new Location(tGridX - 1, tGRidY);
-            E = new Location(tGridX + 1, tGRidY);
-            SW = new Location(tGridX, tGRidY + 1);
-            SE = new Location(tGridX+1, tGRidY + 1);
+            NW = LocationFactory.createLocation(tGridX , tGRidY - 1);
+            NE = LocationFactory.createLocation(tGridX+1, tGRidY - 1);
+            W = LocationFactory.createLocation(tGridX - 1, tGRidY);
+            E = LocationFactory.createLocation(tGridX + 1, tGRidY);
+            SW = LocationFactory.createLocation(tGridX, tGRidY + 1);
+            SE = LocationFactory.createLocation(tGridX+1, tGRidY + 1);
         }
         neighbourLocations.add(NW);
         neighbourLocations.add(NE);

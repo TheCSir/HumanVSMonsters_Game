@@ -1,6 +1,7 @@
 package boardgame.gameModel.board;
 
 import boardgame.gameModel.Location;
+import boardgame.gameModel.LocationFactory;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 
@@ -22,7 +23,7 @@ public class Map1 {
 
         for (int i=0; i<defaultXSize; i++){
             for (int j=0; j<defaultYSize; j++) {
-                Location l = new Location(i, j);
+                Location l = LocationFactory.createLocation(i, j);
                 map1.put(l, new HexagonalTile(l));
             }
         }

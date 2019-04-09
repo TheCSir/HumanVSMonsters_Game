@@ -1,6 +1,7 @@
 package boardgame.gameModel.board;
 
 import boardgame.gameModel.Location;
+import boardgame.gameModel.LocationFactory;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
@@ -30,7 +31,7 @@ public class Board2DHex extends Board2d {
 
         for (int x=0; x<rows; x++) {
             for (int y=0; y<columns; y++) {
-                Location location = new Location(x, y);
+                Location location = LocationFactory.createLocation(x, y);
                 HexagonalTile hexagonalTile = new HexagonalTile(location);
                 // hexagonalTiles.add(hexagonalTile);
                 boardGrid.put(location, hexagonalTile);
@@ -47,7 +48,7 @@ public class Board2DHex extends Board2d {
 
         for (int x=0; x<Constants.DEFAULTBOARDROWS; x++) {
                for (int y=0; y<Constants.DEFAULTBOARDCOLUMNS; y++) {
-                   Location location = new Location(x, y);
+                   Location location = LocationFactory.createLocation(x, y);
                    HexagonalTile hexagonalTile = new HexagonalTile(location);
                   // hexagonalTiles.add(hexagonalTile);
                    boardGrid.put(location, hexagonalTile);
