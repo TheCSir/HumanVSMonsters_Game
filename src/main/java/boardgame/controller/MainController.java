@@ -339,10 +339,12 @@ public class MainController implements Initializable {
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
 
             //Update model.
-            gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
+            boolean pieceMoved = gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
 
-            // end turn
-            gm.getTurn().nextTurn(gm.getPlayers());
+            if(pieceMoved) {
+                // end turn
+                gm.getTurn().nextTurn(gm.getPlayers());
+            }
         }
     }
 

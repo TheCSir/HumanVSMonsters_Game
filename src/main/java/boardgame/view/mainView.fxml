@@ -116,7 +116,7 @@
                                 <Insets bottom="15.0"/>
                             </VBox.margin>
                         </Text>
-                        <Text fx:id="pieceHealth" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                        <Text fx:id="pieceHealth" strokeType="OUTSIDE" strokeWidth="0.0" text="">
                             <VBox.margin>
                                 <Insets bottom="15.0"/>
                             </VBox.margin>
