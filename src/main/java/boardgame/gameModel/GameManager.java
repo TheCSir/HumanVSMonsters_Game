@@ -2,7 +2,9 @@ package boardgame.gameModel;
 
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.Griffin;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Warrior;
 import boardgame.util.Constants;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -51,18 +53,18 @@ public class GameManager {
 
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
-        monsters.add(new Griffin(5, new Location(3, 3)));
-        monsters.add(new Medusa(5, new Location(2, 2)));
-        monsters.add(new Minotaur(5, new Location(0, 0)));
+        monsters.add(new Griffin(5, new Location(0, 0)));
+//        monsters.add(new Medusa(5, new Location(3, 3)));
+//        monsters.add(new Minotaur(5, new Location(4, 3)));
         return monsters;
     }
 
     public List<IPiece> setUpHumanPieces() {
 
         ArrayList<IPiece> humans = new ArrayList<>();
-        humans.add(new Warrior(5, new Location(5, 5)));
-        humans.add(new Priest(5, new Location(6, 6)));
-        humans.add(new Archer(5, new Location(7, 7)));
+        humans.add(new Warrior(5, new Location(9, 9)));
+//        humans.add(new Priest(5, new Location(6, 6)));
+//        humans.add(new Archer(5, new Location(7, 7)));
 
         return humans;
     }

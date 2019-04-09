@@ -3,6 +3,7 @@ package boardgame.view;
 import boardgame.gameModel.Location;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
+import javafx.collections.FXCollections;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -132,4 +133,17 @@ public class HexagonTileView extends Polygon {
         this.modelTile = modelTile;
     }
 
+    private List<HexagonTileView> neighbourViews = FXCollections.observableArrayList();
+
+    public List<HexagonTileView> getNeighbourViews() {
+        return neighbourViews;
+    }
+
+    public void setNeighbourViews(List<HexagonTileView> neighbourViews) {
+        this.neighbourViews = neighbourViews;
+    }
+
+    public void addNeighbourView(HexagonTileView tileView) {
+        this.neighbourViews.add(tileView);
+    }
 }
