@@ -4,13 +4,9 @@ package boardgame.controller;
  Controller class for main screen.
  */
 
-import boardgame.gameModel.GameManager;
-import boardgame.gameModel.IPlayer;
-import boardgame.gameModel.Location;
-import boardgame.gameModel.Turn;
+import boardgame.gameModel.*;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.view.*;
 import javafx.collections.FXCollections;
@@ -91,7 +87,7 @@ public class MainController implements Initializable {
     private List<IPiece> pieces;
 
     //Store a reference to the Game manager for main entry point to game.
-    private GameManager gm;
+    private IGameManager gm;
 
     private Board2DHex board2DHex;
 
@@ -113,7 +109,7 @@ public class MainController implements Initializable {
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
-        gm = new GameManager();
+        gm = GameManagerFactory.createGameManager();
 
         //Set up default board.
         gm.setUpBoard();
