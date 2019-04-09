@@ -6,32 +6,53 @@ import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static boardgame.util.Constants.xStartOffset;
 import static boardgame.util.Constants.yStartOffset;
 
 public class BoardGrid {
 
-    Map<Location, HexagonTileView> tileMap;
     ArrayList<HexagonTileView> hexTile;
     private ObservableList<HexagonTileView> pieceObservableList = FXCollections.observableArrayList();
 
+    public ObservableMap<Location, HexagonTileView> getTileViewObservableMap() {
+        return tileViewObservableMap;
+    }
+
+    public void setTileViewObservableMap(ObservableMap<Location, HexagonTileView> tileViewObservableMap) {
+        this.tileViewObservableMap = tileViewObservableMap;
+    }
+
+    public void addTile(HexagonTileView tileView) {
+        tileViewObservableMap.put(tileView.getLocation(), tileView);
+    }
+
+    public HexagonTileView getTile(Location location) {
+        return tileViewObservableMap.get(location);
+    }
+
+    private ObservableMap<Location, HexagonTileView> tileViewObservableMap = FXCollections.observableHashMap();
+
+    public ObservableList<HexagonTileView> getHexagonTileViews() {
+        return hexagonTileViews;
+    }
+
+    public void setHexagonTileViews(ObservableList<HexagonTileView> hexagonTileViews) {
+        this.hexagonTileViews = hexagonTileViews;
+    }
+
+    private ObservableList<HexagonTileView> hexagonTileViews = FXCollections.observableArrayList();
+
     public BoardGrid() {
 
-        tileMap = new HashMap<>();
-
     }
 
-    public HexagonTileView getTile(Location mapLocation) {
-        return tileMap.get(mapLocation);
-    }
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 
@@ -89,7 +110,7 @@ public class BoardGrid {
         return i;
     }
 
-    public ObservableList<HexagonTileView> drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
+    public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
 
         List<HexagonTileView> hexagonTileViews = calculateTileCoord(
                 boardTiles, radius, xStartOffset, yStartOffset);
@@ -98,11 +119,15 @@ public class BoardGrid {
 
             //Add the tile to the JAvaFX pane.
             boardPane.getChildren().add(hexagonalTile);
-
         }
 
-        //drawTileGridPos(hexagonTileViews, boardPane);
-        return FXCollections.observableArrayList(hexagonTileViews);
+        //Add neighbouring tile views.
+        for (HexagonTileView tileView: tileViewObservableMap.values()) {
+            List<ITile> neighbours = tileView.getNeighbours();
+            for (ITile neighbour: neighbours) {
+                tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+            }
+        }
     }
 
     //returns a list of tiles to add to a pane.
@@ -123,23 +148,13 @@ public class BoardGrid {
             //Create the new tile.
             HexagonTileView tile = new HexagonTileView(xCoord, yCoord, r, hexagonalTile);
             hexagonTileViewList.add(tile);
+
+
+            tileViewObservableMap.put(tile.getLocation(), tile);
+            hexagonTileViews.add(tile);
         }
         return hexagonTileViewList;
     }
-
-//    //Draw the tile coordinate to help with debugging.
-//    public void drawTileGridPos(List<HexagonTileView> hexagonTileViewList, Pane boardPane) {
-//
-//        for (HexagonTileView hexagonalTile: hexagonTileViewList) {
-//
-//
-//            Text gridloc = new Text(hexagonalTile.getModelTile().getLocation().getX() + ", "
-//                    + hexagonalTile.getModelTile().getLocation().getY());
-//            gridloc.setX(hexagonalTile.getXPosition());
-//            gridloc.setY(hexagonalTile.getYPosition());
-//            boardPane.getChildren().add(gridloc);
-//        }
-//    }
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.

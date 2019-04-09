@@ -82,7 +82,7 @@ public class MainController implements Initializable {
     }
 
     private State currentState = State.NONE;
-    private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
+    //private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
     double time = 60;
@@ -106,6 +106,10 @@ public class MainController implements Initializable {
     private HexagonTileViewPiece targetTilePiece = null;
 
     private IPlayer activePlayer = null;
+
+    public static final String MOVE = "move";
+    private String state = null;
+
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -132,7 +136,8 @@ public class MainController implements Initializable {
         List<ITile> boardTiles = new ArrayList<>(board.values());
 
         boardGrid = new BoardGrid();
-        tiles = boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
+        boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
+
 
         //Assertions to ensure that injection works
         assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
@@ -152,8 +157,8 @@ public class MainController implements Initializable {
         moveButton.setOnAction(e -> chooseMoveTargetPiece());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
 
-        addPieces(tiles, pieces, boardPane);
-        registerTileListenersForMove(tiles);
+        addPieces(boardGrid.getHexagonTileViews(), pieces, boardPane);
+        registerTileListenersForMove(boardGrid.getHexagonTileViews());
 
         registerPlayerListeners(gm.getPlayers());
 
@@ -168,6 +173,8 @@ public class MainController implements Initializable {
 
         monsterHealth.setText("Monster Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
+
+        moveButton.setOnMouseClicked(e -> handleMoveClicked());
 
         // Set up the background.
         try {
@@ -340,21 +347,35 @@ public class MainController implements Initializable {
     }
 
     //Gets input and updates model for piece position.
-    private void handleTileClickedForMove(HexagonTileView tile) {
+    private void handleTileClicked(HexagonTileView tile) {
         assert tile != null;
         targetTile = tile;
 
-        for (ITile neighbour : tile.getModelTile().getNeighbours()) {
-
-            // System.out.println("Neighbour: " + neighbour.getLocation());
+        if (selectedTile != null && tileSelected) {
+            HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
+            List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
+            for (HexagonTileView neighbourView: neighbouringTiles) {
+                neighbourView.setFill(Color.ANTIQUEWHITE);
+            }
+                //Update model.
+            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
         }
-
-        //Update model.
-        if (this.selectedPiece != null && tileSelected && currentState.equals(State.MOVE)) {
-            gm.getiBoard().movePiece(this.selectedPiece.getiPiece(), tile.getLocation());
-
             // end turn
             gm.getTurn().nextTurn(gm.getPlayers());
+    }
+
+    private void handleMoveClicked() {
+
+        if (selectedTile != null && tileSelected) {
+          HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
+          List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
+            for (HexagonTileView neighbourView: neighbouringTiles) {
+                neighbourView.setFill(Color.RED);
+            }
         }
     }
+
+//    private void checkActivePlayer() {
+//
+//    }
 }

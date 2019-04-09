@@ -19,4 +19,6 @@ public class PieceView {
         hexagonPiece.toFront();
         // System.out.println(hexagonPiece.getLocation().getXProperty() + ", " + hexagonPiece.getLocation().getYProperty());
     }
+
+
 }
