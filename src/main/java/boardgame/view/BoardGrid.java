@@ -165,6 +165,17 @@ public class BoardGrid {
         }
     }
 
+    // EXPERIMENT: Highlight piece range
+    public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, int depth) {
+        for(int i = 0; i < depth; i++){
+            HexagonTileView underTile = this.getTile(selectedTilePiece.getLocation());
+            List<HexagonTileView> rangeTiles = underTile.getNeighbourViews();
+            for (HexagonTileView neighbourView : rangeTiles) {
+                neighbourView.setFill(Color.BLUE);
+            }
+        }
+    }
+
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 

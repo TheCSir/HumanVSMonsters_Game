@@ -107,12 +107,17 @@ public class Board2DHex extends Board2d {
     }
 
     @Override
-    public void movePiece(IPiece piece, Location location) {
+    public boolean movePiece(IPiece piece, Location location) {
 
+        boolean pieceMoved = false;
         //First check that moving to a neighbouring position. If so change location.
         if (checkValidMove(piece, location, this)){
             piece.setLocation(location);
+
+            pieceMoved = true;
         }
+
+        return pieceMoved;
     }
 
     public ObservableMap<Location, ITile> getBoardGrid() {

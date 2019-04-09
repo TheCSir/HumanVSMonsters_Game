@@ -182,6 +182,9 @@ public class MainController implements Initializable {
 
     private void chooseAttackTargetPiece() {
         currentState = State.ATTACK;
+
+        if(selectedTilePiece != null)
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
     }
 
     private void chooseAbilityTargetPiece() {
@@ -284,7 +287,6 @@ public class MainController implements Initializable {
 
     //Selects piece.
     private void handlePieceClicked(HexagonTileViewPiece piece) {
-
         // Reset tiles color
         if(selectedTilePiece != null)
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
@@ -300,12 +302,19 @@ public class MainController implements Initializable {
 
         switch (currentState){
             case MOVE:
-                boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
+                if(isActivePlayerPiece())
+                    boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
                 break;
             case ATTACK:
-                gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
-                // end turn
-                gm.getTurn().nextTurn(gm.getPlayers());
+                if(!isActivePlayerPiece()) {
+                    // get attacked player
+                    IPlayer attackedPLayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
+
+                    attackedPLayer.decreaseHealthProperty();
+
+                    // end turn
+                    gm.getTurn().nextTurn(gm.getPlayers());
+                }
                 break;
             case SPECIAL_ABILITY:
                 break;
@@ -321,22 +330,39 @@ public class MainController implements Initializable {
         assert tile != null;
         targetTile = tile;
 
-        if (selectedTilePiece != null && tileSelected) {
+        if (selectedTilePiece != null && tileSelected && isActivePlayerPiece() && currentState.equals(State.MOVE)) {
             // Reset tiles color
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
 
             //Update model.
-            gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
+            boolean pieceMoved = gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
 
-            // end turn
-            gm.getTurn().nextTurn(gm.getPlayers());
+            if(pieceMoved) {
+                // end turn
+                gm.getTurn().nextTurn(gm.getPlayers());
+            }
         }
     }
 
     private void handleMoveClicked() {
         currentState = State.MOVE;
-        if (selectedTilePiece != null && tileSelected) {
+        if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
         }
     }
+
+    // Checks if selected piece belongs to the active player
+    private boolean isActivePlayerPiece(){
+        if(selectedTilePiece == null)
+            return false;
+
+        for(IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
+            if(piece.getClass().getSimpleName().equals(selectedTilePiece.getiPiece().getClass().getSimpleName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
