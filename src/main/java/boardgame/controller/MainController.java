@@ -168,10 +168,10 @@ public class MainController implements Initializable {
                 gm.getTurn().getTurnNumber());
 
 
-        humanHealth.setText("Human Health: " +
+        humanHealth.setText("Gandalf Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
-        monsterHealth.setText("Monster Health: " +
+        monsterHealth.setText("Sauron Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
         // Set up the background.
@@ -232,14 +232,14 @@ public class MainController implements Initializable {
 
             if(player.getClass().getSimpleName().equals("HumanPlayer")) {
                 player.healthProperty().addListener((observable) ->
-                        humanHealth.setText("Human Health: " +
+                        humanHealth.setText("Gandalf Health: " +
                                 player.healthProperty().getValue())
                 );
             }
 
             else if(player.getClass().getSimpleName().equals("MonsterPlayer")) {
                 player.healthProperty().addListener((observable) ->
-                        monsterHealth.setText("Monster Health: " +
+                        monsterHealth.setText("Sauron Health: " +
                                 player.healthProperty().getValue())
                 );
             }
@@ -320,15 +320,6 @@ public class MainController implements Initializable {
         }
     }
 
-    private void handleTargetPieceClicked(HexagonTileViewPiece tile) {
-        this.targetTilePiece = tile;
-        gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
-
-        for (HexagonTileViewPiece piece : pieceObservableList) {
-            piece.setOnMouseClicked(event -> handlePieceClicked(piece));
-        }
-    }
-    
     //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {
         assert tile != null;
