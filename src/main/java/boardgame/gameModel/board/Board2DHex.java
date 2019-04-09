@@ -65,7 +65,7 @@ public class Board2DHex extends Board2d {
 
     private boolean checkValidMove(IPiece piece, Location location, Board2DHex board2DHex) {
 
-        List<ITile> neighbours = boardGrid.get(piece.getLocation()).getNeighbours();
+        List<ITile> neighbours = getNeighbours(piece);
         for (ITile tile: neighbours) {
             if (tile.getLocation().equals(location)){
                 //System.out.println("True");
@@ -141,5 +141,9 @@ public class Board2DHex extends Board2d {
                 }
             }
         }
+    }
+
+    public List<ITile> getNeighbours(IPiece piece){
+        return boardGrid.get(piece.getLocation()).getNeighbours();
     }
 }

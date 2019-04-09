@@ -10,6 +10,7 @@ import boardgame.gameModel.Location;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.view.*;
 import javafx.collections.FXCollections;
@@ -48,10 +49,10 @@ public class MainController implements Initializable {
     private Text currentPlayer;
 
     @FXML
-    private Button endTurnButton;
+    private Text pieceSelected;
 
     @FXML
-    private Text pieceSelected;
+    private Button moveButton;
 
     @FXML
     private Button attackButton;
@@ -71,17 +72,23 @@ public class MainController implements Initializable {
     @FXML
     private Label monsterHealth;
 
-    @FXML
-    private Button moveButton;
+    private enum State{
+        MOVE,
+        ATTACK,
+        SPECIAL_ABILITY,
+        DEFENSE,
+        SWAP,
+        NONE
+    }
 
-//    private ObservableList<HexagonTileView> tileViewObservableList = FXCollections.observableArrayList();
+    private State currentState = State.NONE;
+    //private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
     double time = 60;
     private List<IPiece> humanPieces;
     private List<IPiece> monsterPieces;
     private List<IPiece> pieces;
-
 
     //Store a reference to the Game manager for main entry point to game.
     private GameManager gm;
@@ -90,7 +97,7 @@ public class MainController implements Initializable {
 
     private BoardGrid boardGrid;
 
-    private HexagonTileViewPiece selectedTile = null;
+    private HexagonTileViewPiece selectedTilePiece = null;
 
     private boolean tileSelected = false;
 
@@ -135,7 +142,6 @@ public class MainController implements Initializable {
         //Assertions to ensure that injection works
         assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
         assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert endTurnButton != null : "fx:id=\"endTurnButton\" was not injected: check your FXML file 'mainView.fxml'.";
         assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
         assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
         assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
@@ -144,15 +150,15 @@ public class MainController implements Initializable {
 
         turnTime.setText("Turn Time " + time);
 
-        //register text
-        gm.playerProperty().addListener((observable, oldValue, newValue) -> currentPlayer.setText("Current Player: " + newValue));
-        endTurnButton.setOnAction(e ->
-                gm.changeActivePlayer());
+        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
 
-        attackButton.setOnAction(e -> chooseAttackTarget());
+        // register piece actions
+        moveButton.setOnMouseClicked(e -> handleMoveClicked());
+        attackButton.setOnAction(e -> chooseAttackTargetPiece());
 
         addPieces(boardGrid.getHexagonTileViews(), pieces, boardPane);
-        registerTileListeners(boardGrid.getHexagonTileViews());
+
+        registerTileListenersForMove(boardGrid.getHexagonTileViews());
 
         registerPlayerListeners(gm.getPlayers());
 
@@ -162,13 +168,11 @@ public class MainController implements Initializable {
                 gm.getTurn().getTurnNumber());
 
 
-        humanHealth.setText("Human Health: " +
+        humanHealth.setText("Gandalf Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
-        monsterHealth.setText("Monster Health: " +
+        monsterHealth.setText("Sauron Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
-
-        moveButton.setOnMouseClicked(e -> handleMoveClicked());
 
         // Set up the background.
         try {
@@ -180,21 +184,26 @@ public class MainController implements Initializable {
         }
     }
 
-    private void chooseAttackTarget() {
+    private void chooseAttackTargetPiece() {
+        currentState = State.ATTACK;
+    }
 
-        // register listener to choose targeted piece to attack
-        //registerPlayerListeners();
+    private void chooseAbilityTargetPiece() {
+        currentState = State.SPECIAL_ABILITY;
+    }
 
-        for (HexagonTileViewPiece piece : pieceObservableList) {
-            if (!piece.getiPiece().equals(selectedTile))
-                piece.setOnMouseClicked(event -> handleTargetPieceClicked(piece));
-        }
+    private void chooseDefenseTargetPiece() {
+        currentState = State.DEFENSE;
+    }
+
+    private void chooseSwapTargetPiece() {
+        currentState = State.SWAP;
     }
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 
-    private void registerTileListeners(List<HexagonTileView> boardTiles) {
+    private void registerTileListenersForMove(List<HexagonTileView> boardTiles) {
 
         for (HexagonTileView hexagonalTile : boardTiles) {
 
@@ -202,6 +211,7 @@ public class MainController implements Initializable {
             hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
         }
     }
+
     //Register listeners for the board pieces.
 
     private void registerPieceListeners(List<IPiece> pieces) {
@@ -209,7 +219,7 @@ public class MainController implements Initializable {
         for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().addListener((observable) ->
-                    pieceView.changePiecePosition(selectedTile, targetTile));
+                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
@@ -222,14 +232,14 @@ public class MainController implements Initializable {
 
             if(player.getClass().getSimpleName().equals("HumanPlayer")) {
                 player.healthProperty().addListener((observable) ->
-                        humanHealth.setText("Human Health: " +
+                        humanHealth.setText("Gandalf Health: " +
                                 player.healthProperty().getValue())
                 );
             }
 
             else if(player.getClass().getSimpleName().equals("MonsterPlayer")) {
                 player.healthProperty().addListener((observable) ->
-                        monsterHealth.setText("Monster Health: " +
+                        monsterHealth.setText("Sauron Health: " +
                                 player.healthProperty().getValue())
                 );
             }
@@ -237,9 +247,19 @@ public class MainController implements Initializable {
     }
 
     private void registerTurnListeners(Turn turn){
+        // increment Turn number label
         turn.turnNumberProperty().addListener(observable ->
                 turnNumber.setText("Turn: " +
                         turn.getTurnNumber())
+        );
+
+        // Change Current Player label
+        gm.getTurn().getActivePlayerProperty().addListener(observable ->
+                currentPlayer.setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
+
+        // reset currentState
+        turn.turnNumberProperty().addListener(observable ->
+                currentState = State.NONE
         );
     }
 
@@ -248,7 +268,7 @@ public class MainController implements Initializable {
         for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().removeListener((observable) ->
-                    pieceView.changePiecePosition(selectedTile, targetTile));
+                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
@@ -267,29 +287,37 @@ public class MainController implements Initializable {
     }
 
     //Selects piece.
-    private void handlePieceClicked(HexagonTileViewPiece tile) {
-        //TODO Move selection to model?
-        this.selectedTile = tile;
+    private void handlePieceClicked(HexagonTileViewPiece piece) {
+
+        // Reset tiles color
+        if(selectedTilePiece != null)
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+
+        this.selectedTilePiece = piece;
         this.tileSelected = true;
-        pieceSelected.setText("Class: " + tile.getiPiece().getClass().getSimpleName());
+
+        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
         pieceLocation.setText("Location: "
-                + "X: " + tile.getiPiece().getLocation().getX()
+                + "X: " + piece.getiPiece().getLocation().getX()
                 + ", "
-                + "Y: " + tile.getiPiece().getLocation().getY());
+                + "Y: " + piece.getiPiece().getLocation().getY());
 
-
-    }
-
-    private void handleTargetPieceClicked(HexagonTileViewPiece tile) {
-        this.targetTilePiece = tile;
-        gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
-
-        for (HexagonTileViewPiece piece : pieceObservableList) {
-            piece.setOnMouseClicked(event -> handlePieceClicked(piece));
+        switch (currentState){
+            case MOVE:
+                boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
+                break;
+            case ATTACK:
+                gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
+                // end turn
+                gm.getTurn().nextTurn(gm.getPlayers());
+                break;
+            case SPECIAL_ABILITY:
+                break;
+            case DEFENSE:
+                break;
+            case SWAP:
+                break;
         }
-
-        // end turn
-        gm.getTurn().nextTurn(gm.getPlayers());
     }
 
     //Gets input and updates model for piece position.
@@ -297,27 +325,22 @@ public class MainController implements Initializable {
         assert tile != null;
         targetTile = tile;
 
-        if (selectedTile != null && tileSelected) {
-            HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
-            List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
-            for (HexagonTileView neighbourView: neighbouringTiles) {
-                neighbourView.setFill(Color.ANTIQUEWHITE);
-            }
-                //Update model.
-            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
-        }
+        if (selectedTilePiece != null && tileSelected) {
+            // Reset tiles color
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+
+            //Update model.
+            gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
+
             // end turn
             gm.getTurn().nextTurn(gm.getPlayers());
+        }
     }
 
     private void handleMoveClicked() {
-
-        if (selectedTile != null && tileSelected) {
-          HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
-          List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
-            for (HexagonTileView neighbourView: neighbouringTiles) {
-                neighbourView.setFill(Color.RED);
-            }
+        currentState = State.MOVE;
+        if (selectedTilePiece != null && tileSelected) {
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
         }
     }
 

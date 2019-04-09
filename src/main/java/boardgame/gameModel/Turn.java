@@ -25,7 +25,9 @@ public class Turn {
 
     public ObjectProperty<IPlayer> getActivePlayerProperty(){ return this.activePlayerProperty; }
 
-    public IPlayer getActivePlayer(){ return this.activePlayerProperty.get(); }
+    public IPlayer getActivePlayer(){
+        return this.activePlayerProperty.get();
+    }
 
     public void setActivePlayer(IPlayer activePlayer) {
         this.activePlayerProperty.set(activePlayer);
@@ -35,7 +37,9 @@ public class Turn {
         int firstTurn = 1;
         this.setTurnNumberProperty(firstTurn);
 
-        setActivePlayer(players.get(0));
+        int firstPlayerIndex = this.getTurnNumber() % players.size();
+
+        setActivePlayer(players.get(firstPlayerIndex));
     }
 
     public void nextTurn(List<IPlayer> players){
