@@ -21,8 +21,6 @@ public class GameManager {
     private Stack<Turn> turnStack;
     private List<IPiece> humanPieces;
     private List<IPiece> monsterPieces;
-    private String[] playerArray = {Constants.PLAYER1, Constants.PLAYER2};
-    private StringProperty activePlayerLabel;
 
     //Default constructor
     public GameManager(){
@@ -35,8 +33,6 @@ public class GameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
-
-        activePlayerLabel = new SimpleStringProperty(playerArray[0]);
     }
 
     public IBoard setUpBoard(){
@@ -54,8 +50,7 @@ public class GameManager {
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
         monsters.add(new Griffin(5, new Location(0, 0)));
-//        monsters.add(new Medusa(5, new Location(3, 3)));
-//        monsters.add(new Minotaur(5, new Location(4, 3)));
+
         return monsters;
     }
 
@@ -63,8 +58,6 @@ public class GameManager {
 
         ArrayList<IPiece> humans = new ArrayList<>();
         humans.add(new Warrior(5, new Location(9, 9)));
-//        humans.add(new Priest(5, new Location(6, 6)));
-//        humans.add(new Archer(5, new Location(7, 7)));
 
         return humans;
     }
@@ -93,23 +86,6 @@ public class GameManager {
 
     public void setiBoard(IBoard iBoard) {
         this.iBoard = iBoard;
-    }
-
-    //Temporary solution for testing of changing player. Not intended for submission. change to model.
-    public void changeActivePlayer() {
-        if (activePlayerLabel.get().equals(playerArray[0])){
-            activePlayerLabel.set(playerArray[1]);
-        }else {
-            activePlayerLabel.set(playerArray[0]);
-        }
-    }
-
-    public String getCurrentPlayer() {
-        return activePlayerLabel.get();
-    }
-
-    public StringProperty playerProperty() {
-        return activePlayerLabel;
     }
 
     public Turn getTurn() { return turn; }
