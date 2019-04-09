@@ -97,7 +97,7 @@ public class MainController implements Initializable {
 
     private BoardGrid boardGrid;
 
-    private HexagonTileViewPiece selectedPiece = null;
+    private HexagonTileViewPiece selectedTilePiece = null;
 
     private boolean tileSelected = false;
 
@@ -150,14 +150,14 @@ public class MainController implements Initializable {
 
         turnTime.setText("Turn Time " + time);
 
-        //register text
-        gm.getTurn().getActivePlayerProperty().addListener((observable, oldValue, newValue) ->
-                currentPlayer.setText("Current Player: " + newValue.getPlayerName()));
+        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
 
-        moveButton.setOnAction(e -> chooseMoveTargetPiece());
+        // register piece actions
+        moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
 
         addPieces(boardGrid.getHexagonTileViews(), pieces, boardPane);
+
         registerTileListenersForMove(boardGrid.getHexagonTileViews());
 
         registerPlayerListeners(gm.getPlayers());
@@ -174,8 +174,6 @@ public class MainController implements Initializable {
         monsterHealth.setText("Monster Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
-        moveButton.setOnMouseClicked(e -> handleMoveClicked());
-
         // Set up the background.
         try {
             FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
@@ -184,10 +182,6 @@ public class MainController implements Initializable {
         } catch (FileNotFoundException e) {
             System.out.println("what");
         }
-    }
-
-    private void chooseMoveTargetPiece() {
-        currentState = State.MOVE;
     }
 
     private void chooseAttackTargetPiece() {
@@ -214,7 +208,7 @@ public class MainController implements Initializable {
         for (HexagonTileView hexagonalTile : boardTiles) {
 
             //Set tile handlers
-            hexagonalTile.setOnMouseClicked(e -> handleTileClickedForMove(hexagonalTile));
+            hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
         }
     }
 
@@ -225,7 +219,7 @@ public class MainController implements Initializable {
         for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().addListener((observable) ->
-                    pieceView.changePiecePosition(selectedPiece, targetTile));
+                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
@@ -259,6 +253,10 @@ public class MainController implements Initializable {
                         turn.getTurnNumber())
         );
 
+        // Change Current Player label
+        gm.getTurn().getActivePlayerProperty().addListener(observable ->
+                currentPlayer.setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
+
         // reset currentState
         turn.turnNumberProperty().addListener(observable ->
                 currentState = State.NONE
@@ -270,7 +268,7 @@ public class MainController implements Initializable {
         for (IPiece piece : pieces) {
             PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().removeListener((observable) ->
-                    pieceView.changePiecePosition(selectedPiece, targetTile));
+                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
@@ -290,8 +288,14 @@ public class MainController implements Initializable {
 
     //Selects piece.
     private void handlePieceClicked(HexagonTileViewPiece piece) {
-        this.selectedPiece = piece;
+
+        // Reset tiles color
+        if(selectedTilePiece != null)
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+
+        this.selectedTilePiece = piece;
         this.tileSelected = true;
+
         pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
         pieceLocation.setText("Location: "
                 + "X: " + piece.getiPiece().getLocation().getX()
@@ -300,7 +304,7 @@ public class MainController implements Initializable {
 
         switch (currentState){
             case MOVE:
-                highLightTilesRange(piece);
+                boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
                 break;
             case ATTACK:
                 gm.getTurn().getActivePlayerProperty().get().decreaseHealthProperty();
@@ -324,54 +328,28 @@ public class MainController implements Initializable {
             piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
     }
-
-    private void highLightTilesRange(HexagonTileViewPiece tile){
-
-        for(HexagonTileView neighbourView : tiles){
-            neighbourView.setFill(Color.ANTIQUEWHITE);
-        }
-
-        HexagonalTile t = new HexagonalTile(tile.getLocation());
-        tile.setModelTile(t);
-
-        IPiece selectedPiece = tile.getiPiece();
-        List<ITile> neighbours = board2DHex.getNeighbours(selectedPiece);
-
-        for (ITile neighbour : neighbours) {
-
-            for(HexagonTileView neighbourView : tiles){
-                if(neighbour.equals(neighbourView.getModelTile()))
-                    neighbourView.setFill(Color.RED);
-            }
-        }
-    }
-
+    
     //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {
         assert tile != null;
         targetTile = tile;
 
-        if (selectedTile != null && tileSelected) {
-            HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
-            List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
-            for (HexagonTileView neighbourView: neighbouringTiles) {
-                neighbourView.setFill(Color.ANTIQUEWHITE);
-            }
-                //Update model.
-            gm.getiBoard().movePiece(selectedTile.getiPiece(), tile.getLocation());
-        }
+        if (selectedTilePiece != null && tileSelected) {
+            // Reset tiles color
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+
+            //Update model.
+            gm.getiBoard().movePiece(selectedTilePiece.getiPiece(), tile.getLocation());
+
             // end turn
             gm.getTurn().nextTurn(gm.getPlayers());
+        }
     }
 
     private void handleMoveClicked() {
-
-        if (selectedTile != null && tileSelected) {
-          HexagonTileView underTile = boardGrid.getTile(selectedTile.getLocation());
-          List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
-            for (HexagonTileView neighbourView: neighbouringTiles) {
-                neighbourView.setFill(Color.RED);
-            }
+        currentState = State.MOVE;
+        if (selectedTilePiece != null && tileSelected) {
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
         }
     }
 

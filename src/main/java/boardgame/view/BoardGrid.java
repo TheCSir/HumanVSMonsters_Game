@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -154,6 +155,14 @@ public class BoardGrid {
             hexagonTileViews.add(tile);
         }
         return hexagonTileViewList;
+    }
+
+    public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, Color color) {
+        HexagonTileView underTile = this.getTile(selectedTilePiece.getLocation());
+        List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
+        for (HexagonTileView neighbourView : neighbouringTiles) {
+            neighbourView.setFill(color);
+        }
     }
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
