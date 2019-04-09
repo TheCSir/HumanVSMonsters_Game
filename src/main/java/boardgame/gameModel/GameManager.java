@@ -6,9 +6,6 @@ import boardgame.gameModel.pieces.Griffin;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
-import boardgame.util.Constants;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +47,8 @@ public class GameManager {
 
     public List<IPiece> setUpMonsterPieces() {
         List<IPiece> monsters = new ArrayList<>();
-        monsters.add(new Griffin(5, new Location(0, 0)));
-
+        IPiece piece = PieceFactory.createPiece(Griffin.class.getName(), 5, new Location(0, 0));
+        monsters.add(piece);
         return monsters;
     }
 
@@ -59,7 +56,7 @@ public class GameManager {
 
         ArrayList<IPiece> humans = new ArrayList<>();
         IPiece piece = PieceFactory.createPiece(Warrior.class.getName(), 5, new Location(9, 9));
-        humans.add(new Warrior(5, new Location(9, 9)));
+        humans.add(piece);
 
         return humans;
     }

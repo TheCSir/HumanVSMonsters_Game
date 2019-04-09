@@ -3,7 +3,7 @@ package boardgame.gameModel.pieces;
 import boardgame.gameModel.Location;
 
 public class Priest extends Human {
-    public Priest(int moveSpeed, Location location) {
+    Priest(int moveSpeed, Location location) {
         super(moveSpeed, location);
     }
 
