@@ -14,13 +14,6 @@ public class PlayerView {
     public PlayerView(){}
 
     public void decreaseHealthBar(IPlayer targetedPlayer, HexagonTileViewPiece targetedHexagonPiece) {
-        System.out.println("Player Class: " +
-                targetedPlayer.getClass().getSimpleName() +
-                ". Player Health" +
-                targetedPlayer.healthProperty()
-        );
-        System.out.println("Piece Class: " +
-                targetedHexagonPiece.getiPiece().getClass().getSimpleName()
-        );
+        // TODO decrease attacked player health from view
     }
 }
