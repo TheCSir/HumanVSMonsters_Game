@@ -98,7 +98,6 @@
                                 <Insets bottom="15.0"/>
                             </VBox.margin>
                         </Text>
-                        <Button fx:id="endTurnButton" mnemonicParsing="false" text="End Turn"/>
                     </children>
                 </VBox>
                 <Pane fx:id="boardPane" layoutX="269.0" layoutY="90.0" prefHeight="801.0" prefWidth="782.0"/>

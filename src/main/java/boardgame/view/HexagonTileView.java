@@ -52,8 +52,6 @@ public class HexagonTileView extends Polygon {
         double TILE_WIDTH = 2 * n;
         // creates the polygon using the corner coordinates
 
-
-
         //Should I use these coordinate to establish wheree to place piece?
         getPoints().addAll(
                 x, y,
