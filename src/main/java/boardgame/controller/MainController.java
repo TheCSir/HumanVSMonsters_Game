@@ -178,6 +178,8 @@ public class MainController implements Initializable {
         } catch (FileNotFoundException e) {
             System.out.println("what");
         }
+
+
     }
 
     private void chooseAttackTargetPiece() {
@@ -299,6 +301,7 @@ public class MainController implements Initializable {
                 + "X: " + piece.getiPiece().getLocation().getX()
                 + ", "
                 + "Y: " + piece.getiPiece().getLocation().getY());
+
 
         switch (currentState){
             case MOVE:

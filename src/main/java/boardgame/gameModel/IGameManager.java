@@ -24,4 +24,6 @@ public interface IGameManager {
     void setiBoard(IBoard iBoard);
 
     Turn getTurn();
+
+    IPlayer getAttackedPlayer(IPiece getiPiece);
 }
