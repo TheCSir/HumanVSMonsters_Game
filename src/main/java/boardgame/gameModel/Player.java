@@ -3,17 +3,16 @@ package boardgame.gameModel;
 import boardgame.gameModel.pieces.IPiece;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
-import java.util.List;
+import javafx.collections.ObservableList;
 
 public abstract class Player implements IPlayer {
 
     private int playerID;
     private String playerName;
     private IntegerProperty health;
-    private List<IPiece> pieces;
+    private ObservableList<IPiece> pieces;
 
-    public Player(int playerID, String playerName, int _health, List<IPiece> pieces) {
+    public Player(int playerID, String playerName, int _health, ObservableList<IPiece> pieces) {
         this.playerID = playerID;
         this.playerName = playerName;
         this.health = new SimpleIntegerProperty(_health);
@@ -50,12 +49,12 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
-    public List<IPiece> getPieces() {
+    public ObservableList<IPiece> getPieces() {
         return pieces;
     }
 
     @Override
-    public void setPieces(List<IPiece> pieces) {
+    public void setPieces(ObservableList<IPiece> pieces) {
         this.pieces = pieces;
     }
 }

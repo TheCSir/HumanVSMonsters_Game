@@ -68,7 +68,7 @@ public class BoardGrid {
 
     //Add game pieces to the game board.
     public void addPieces(List<IPiece> pieceList, Pane boardPane) {
-
+        pieceObservableList.clear();
         for (IPiece piece : pieceList) {
             addPiece(piece, boardPane);
         }
@@ -160,6 +160,15 @@ public class BoardGrid {
                 neighbourView.setFill(Color.BLUE);
             }
         }
+    }
+
+    public void removePiece(IPiece piece, Pane boardPane) {
+        for (HexagonTileViewPiece viewPiece : pieceObservableList) {
+            if (viewPiece.getiPiece().equals(piece)) {
+                boardPane.getChildren().remove(viewPiece);
+            }
+        }
+
     }
 
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.

@@ -7,48 +7,45 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.util.LocationFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 class GameManager implements IGameManager {
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
-    private IPiece pieces;
     private Turn turn;
     private Stack<Turn> turnStack;
 
-    public List<IPiece> getHumanPieces() {
+    private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
+    private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
+
+    //Default constructor
+    public GameManager() {
+        players = new ArrayList<>();
+
+    }
+
+    @Override
+    public ObservableList<IPiece> getHumanPieces() {
         return humanPieces;
     }
 
-    public void setHumanPieces(List<IPiece> humanPieces) {
+    @Override
+    public void setHumanPieces(ObservableList<IPiece> humanPieces) {
         this.humanPieces = humanPieces;
     }
 
-    public List<IPiece> getMonsterPieces() {
+    @Override
+    public ObservableList<IPiece> getMonsterPieces() {
         return monsterPieces;
     }
 
-    public void setMonsterPieces(List<IPiece> monsterPieces) {
+    @Override
+    public void setMonsterPieces(ObservableList<IPiece> monsterPieces) {
         this.monsterPieces = monsterPieces;
-    }
-
-    private List<IPiece> humanPieces;
-    private List<IPiece> monsterPieces;
-
-    //Default constructor
-    public GameManager(){
-
-        //Add default players etc.
-        defaultGameSetup();
-
-        //Set up default board.
-        iBoard = setUpBoard();
-
-        turn = new Turn();
-        turn.initialiseTurns(players);
     }
 
     @Override
@@ -66,38 +63,38 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public List<IPiece> setUpMonsterPieces() {
-        List<IPiece> monsters = new ArrayList<>();
+    public void setUpMonsterPieces() {
+
         IPiece piece = PieceFactory.createPiece(Griffin.class.getName(), 5, LocationFactory.createLocation(0, 0));
-        monsters.add(piece);
-        return monsters;
+        monsterPieces.add(piece);
     }
 
     @Override
-    public List<IPiece> setUpHumanPieces() {
+    public void setUpHumanPieces() {
 
-        ArrayList<IPiece> humans = new ArrayList<>();
         IPiece piece = PieceFactory.createPiece(Warrior.class.getName(), 5, LocationFactory.createLocation(9, 9));
-        humans.add(piece);
+        humanPieces.add(piece);
 
-        return humans;
     }
 
     @Override
     public void defaultGameSetup(){
         //Add default 3 human pieces
-        humanPieces = setUpHumanPieces();
+        setUpHumanPieces();
 
         //Add default 3 monster pieces
-        monsterPieces = setUpMonsterPieces();
-
-        players = new ArrayList<>();
+        setUpMonsterPieces();
 
         Player player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
         Player player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
         players.add(player1);
         players.add(player2);
-        Board2DHex board2DHex = (Board2DHex) setUpBoard();
+
+        //Set up default board.
+        iBoard = setUpBoard();
+
+        turn = new Turn();
+        turn.initialiseTurns(players);
     }
 
     @Override
@@ -127,5 +124,13 @@ class GameManager implements IGameManager {
         }
 
         return null;
+    }
+
+    @Override
+    public ObservableList<IPiece> getAllPieces() {
+        ObservableList<IPiece> allpieces = FXCollections.observableArrayList();
+        allpieces.addAll(players.get(0).getPieces());
+        allpieces.addAll(players.get(1).getPieces());
+        return allpieces;
     }
 }
