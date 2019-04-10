@@ -1,4 +1,4 @@
-package boardgame.gameModel;
+package boardgame.util;
 
 public class LocationFactory {
 

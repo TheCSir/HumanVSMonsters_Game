@@ -1,11 +1,11 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 
 public interface IPiece {
 
-    public void move(int direction);
+    void move(int direction);
 
     Location getLocation();
 

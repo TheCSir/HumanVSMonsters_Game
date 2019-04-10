@@ -1,6 +1,6 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 public class Warrior extends Human {
     Warrior(int moveSpeed, Location location) {

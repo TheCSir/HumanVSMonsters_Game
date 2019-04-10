@@ -1,6 +1,6 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 public class Griffin extends Monster {
     Griffin(int moveSpeed, Location location) {

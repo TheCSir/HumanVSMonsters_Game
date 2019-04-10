@@ -1,9 +1,9 @@
 package boardgame.view;
 
-import boardgame.gameModel.Location;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
+import boardgame.util.Location;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -20,7 +20,16 @@ import static boardgame.util.Constants.yStartOffset;
 public class BoardGrid {
 
     ArrayList<HexagonTileView> hexTile;
-    private ObservableList<HexagonTileView> pieceObservableList = FXCollections.observableArrayList();
+
+    private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
+
+    public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
+        return pieceObservableList;
+    }
+
+    public void setPieceObservableList(ObservableList<HexagonTileViewPiece> pieceObservableList) {
+        this.pieceObservableList = pieceObservableList;
+    }
 
     public ObservableMap<Location, HexagonTileView> getTileViewObservableMap() {
         return tileViewObservableMap;
@@ -58,57 +67,34 @@ public class BoardGrid {
     //TODO Add static map to start.
 
     //Add game pieces to the game board.
-    public ObservableList<HexagonTileViewPiece> addPieces(ObservableList<HexagonTileView> tileViewObservableList, List<IPiece> pieceList, Pane boardPane) {
-        ObservableList<HexagonTileViewPiece> pieces = FXCollections.observableArrayList();
+    public void addPieces(List<IPiece> pieceList, Pane boardPane) {
 
-        for (HexagonTileView h: tileViewObservableList) {
-            for (IPiece piece:pieceList) {
-
-                if (h.getLocation().equals(piece.getLocation())) {
-                    double xCoord = h.getInitialX();
-                    double yCoord = h.getInitialY();
-                    HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
-                    try {
-                        pieceTile.setImagePattern(imageURL(piece));
-                        System.out.println(imageURL(piece));
-                    }catch (FileNotFoundException e) {
-                        System.out.println("Image File not found!");
-                    }
-
-                    boardPane.getChildren().add(pieceTile);
-                    pieces.add(pieceTile);
-                }
-            }
+        for (IPiece piece : pieceList) {
+            addPiece(piece, boardPane);
         }
-
-        return pieces;
     }
 
-//    public HexagonTileViewPiece addPiece(HexagonTileView , IPiece piece, Pane boardPane) {
-//        for (HexagonTileView h: tileViewObservableList) {
-//            if (h.getLocation().equals(piece.getLocation())) {
-//                double xCoord = h.getInitialX();
-//                double yCoord = h.getInitialY();
-//                HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
-//                try {
-//                    pieceTile.setImagePattern(Constants.BIRDPNG);
-//                }catch (FileNotFoundException e) {
-//                    System.out.println("Image File not found!");
-//                }
-//
-//                boardPane.getChildren().add(pieceTile);
-//                pieces.add(pieceTile);
-//            }
-//        }
-//
-//    }
 
-    public String imageURL(IPiece iPiece) {
-        String i  = "src/main/resources/"
+    public void addPiece(IPiece piece, Pane boardPane) {
+        HexagonTileView hexView = tileViewObservableMap.get(piece.getLocation());
+        double xCoord = hexView.getInitialX();
+        double yCoord = hexView.getInitialY();
+        HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
+        try {
+            pieceTile.setImagePattern(imageURL(piece));
+        } catch (FileNotFoundException e) {
+            System.out.println("Image File not found!");
+        }
+
+        boardPane.getChildren().add(pieceTile);
+        pieceObservableList.add(pieceTile);
+    }
+
+
+    private String imageURL(IPiece iPiece) {
+        return "src/main/resources/"
                 + iPiece.getClass().getName()
                 + ".png";
-        System.out.println(i);
-        return i;
     }
 
     public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {

@@ -1,12 +1,12 @@
 package boardgame.gameModel.board;
 
-import boardgame.gameModel.Location;
-import boardgame.gameModel.LocationFactory;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.util.HexGridUtil;
+import boardgame.util.Location;
+import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -137,7 +137,7 @@ public class Board2DHex extends Board2d {
     }
 
     //For each tile store their neighbouring tiles.
-    public void addNeighbours() {
+    private void addNeighbours() {
         for (ITile t: boardGrid.values()) {
             List<Location> neighbourLocations = HexGridUtil.getNeighbourPositions(t.getLocation());
 
@@ -149,7 +149,7 @@ public class Board2DHex extends Board2d {
         }
     }
 
-    public List<ITile> getNeighbours(IPiece piece){
+    private List<ITile> getNeighbours(IPiece piece) {
         return boardGrid.get(piece.getLocation()).getNeighbours();
     }
 }

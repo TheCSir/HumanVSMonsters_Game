@@ -1,6 +1,6 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

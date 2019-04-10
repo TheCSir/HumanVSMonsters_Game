@@ -4,13 +4,15 @@ package boardgame.controller;
  Controller class for main screen.
  */
 
-import boardgame.gameModel.*;
+import boardgame.gameModel.GameManagerFactory;
+import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.IPlayer;
+import boardgame.gameModel.Turn;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
+import boardgame.util.Location;
 import boardgame.view.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -78,12 +80,7 @@ public class MainController implements Initializable {
     }
 
     private State currentState = State.NONE;
-    //private ObservableList<HexagonTileView> tiles = FXCollections.observableArrayList();
-    private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 
-    double time = 60;
-    private List<IPiece> humanPieces;
-    private List<IPiece> monsterPieces;
     private List<IPiece> pieces;
 
     //Store a reference to the Game manager for main entry point to game.
@@ -116,12 +113,11 @@ public class MainController implements Initializable {
         board2DHex = (Board2DHex) gm.getiBoard();
 
 
-        humanPieces = gm.setUpHumanPieces();
-        monsterPieces =  gm.setUpMonsterPieces();
+        List<IPiece> humanPieces = gm.setUpHumanPieces();
+        List<IPiece> monsterPieces = gm.setUpMonsterPieces();
         pieces = new ArrayList<>();
         pieces.addAll(humanPieces);
         pieces.addAll(monsterPieces);
-        //pieces = gm.setUpHumanPieces();
 
     }
 
@@ -133,32 +129,25 @@ public class MainController implements Initializable {
 
         boardGrid = new BoardGrid();
         boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
+        assertJFXInjection();
 
 
-        //Assertions to ensure that injection works
-        assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceHealth != null : "fx:id=\"pieceHealth\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceLocation != null : "fx:id=\"pieceLocation\" was not injected: check your FXML file 'mainView.fxml'.";
-
+        double time = 60;
         turnTime.setText("Turn Time " + time);
 
-        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
 
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
 
-        addPieces(boardGrid.getHexagonTileViews(), pieces, boardPane);
+        addPieces(pieces, boardPane);
 
         registerTileListenersForMove(boardGrid.getHexagonTileViews());
-
         registerPlayerListeners(gm.getPlayers());
-
         registerTurnListeners(gm.getTurn());
+
+
+        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
 
         turnNumber.setText("Turn: " +
                 gm.getTurn().getTurnNumber());
@@ -180,6 +169,17 @@ public class MainController implements Initializable {
         }
 
 
+    }
+
+    private void assertJFXInjection() {
+        //Assertions to ensure that injection works
+        assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceHealth != null : "fx:id=\"pieceHealth\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceLocation != null : "fx:id=\"pieceLocation\" was not injected: check your FXML file 'mainView.fxml'.";
     }
 
     private void chooseAttackTargetPiece() {
@@ -275,14 +275,14 @@ public class MainController implements Initializable {
 
     //Add game pieces to the game board.
 
-    private void addPieces(ObservableList<HexagonTileView> tileViewObservableList, List<IPiece> pieceList, Pane boardPane) {
+    private void addPieces(List<IPiece> pieceList, Pane boardPane) {
 
         //Register listeners for the board pieces.
         registerPieceListeners(pieceList);
 
-        pieceObservableList = boardGrid.addPieces(tileViewObservableList, pieceList, boardPane);
+        boardGrid.addPieces(pieceList, boardPane);
 
-        for (HexagonTileViewPiece piece : pieceObservableList) {
+        for (HexagonTileViewPiece piece : boardGrid.getPieceObservableList()) {
             piece.setOnMouseClicked(event -> handlePieceClicked(piece));
         }
     }
@@ -327,6 +327,7 @@ public class MainController implements Initializable {
                 break;
         }
     }
+
 
     //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {

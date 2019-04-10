@@ -1,6 +1,5 @@
 package boardgame.util;
 
-import boardgame.gameModel.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

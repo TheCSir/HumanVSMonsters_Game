@@ -1,8 +1,5 @@
 package boardgame.util;
 
-import boardgame.gameModel.Location;
-import boardgame.gameModel.LocationFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 

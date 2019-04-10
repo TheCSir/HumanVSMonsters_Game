@@ -1,7 +1,7 @@
 package boardgame.gameModel.pieces;
 
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 public class Minotaur extends Monster {
     Minotaur(int moveSpeed, Location location) {

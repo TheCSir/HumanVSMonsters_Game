@@ -4,14 +4,14 @@ package boardgame.view;
 
  */
 
-import boardgame.gameModel.Location;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.util.Location;
 
 public class HexagonTileViewPiece extends HexagonTileView {
 
     private IPiece iPiece;
 
-    public HexagonTileViewPiece(double x, double y, double radius, IPiece piece) {
+    HexagonTileViewPiece(double x, double y, double radius, IPiece piece) {
         super();
         this.iPiece = piece;
         super.drawTile(x, y, radius);

@@ -1,6 +1,6 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 public abstract class Monster extends Piece implements IAttackingPiece {
 

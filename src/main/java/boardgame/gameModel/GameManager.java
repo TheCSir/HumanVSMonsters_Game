@@ -6,6 +6,7 @@ import boardgame.gameModel.pieces.Griffin;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
+import boardgame.util.LocationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,23 @@ class GameManager implements IGameManager {
     private IPiece pieces;
     private Turn turn;
     private Stack<Turn> turnStack;
+
+    public List<IPiece> getHumanPieces() {
+        return humanPieces;
+    }
+
+    public void setHumanPieces(List<IPiece> humanPieces) {
+        this.humanPieces = humanPieces;
+    }
+
+    public List<IPiece> getMonsterPieces() {
+        return monsterPieces;
+    }
+
+    public void setMonsterPieces(List<IPiece> monsterPieces) {
+        this.monsterPieces = monsterPieces;
+    }
+
     private List<IPiece> humanPieces;
     private List<IPiece> monsterPieces;
 
