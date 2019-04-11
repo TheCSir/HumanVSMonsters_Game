@@ -79,6 +79,18 @@ public class MainController implements Initializable {
     @FXML
     private Button debugAddPiece;
 
+    @FXML
+    private Button swapButton;
+
+    @FXML
+    private Pane SwapPane;
+
+    @FXML
+    private Button Opt_one;
+
+    @FXML
+    private Button Opt_two;
+
     private enum State{
         MOVE,
         ATTACK,
@@ -135,6 +147,7 @@ public class MainController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
+        swapButton.setOnAction(e-> handleSwapAction());
 
 //        addPieces(pieces, boardPane);
 
@@ -426,6 +439,10 @@ public class MainController implements Initializable {
         }
 
         return false;
+    }
+
+    private void handleSwapAction() {
+
     }
 
 }
