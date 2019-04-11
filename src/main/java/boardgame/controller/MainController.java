@@ -9,10 +9,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.IPlayer;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.board.Board2DHex;
-import boardgame.gameModel.pieces.Archer;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Medusa;
-import boardgame.gameModel.pieces.PieceFactory;
+import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Location;
 import boardgame.util.LocationFactory;
@@ -26,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
@@ -122,6 +120,9 @@ public class MainController implements Initializable {
     public static final String MOVE = "move";
     private String state = null;
 
+    private String PieceSelectionOne;
+    private String PieceSelectionTwo;
+
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -148,6 +149,8 @@ public class MainController implements Initializable {
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
         swapButton.setOnAction(e-> handleSwapAction());
+        Opt_one.setOnAction(e-> SwapToOptOne());
+        Opt_two.setOnAction(e-> SwapToOptTwo());
 
 //        addPieces(pieces, boardPane);
 
@@ -161,11 +164,11 @@ public class MainController implements Initializable {
         addPieces(gm.getAllPieces());
         registerPieceListListener();
 
-        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
-        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
-        gm.getPlayers().get(0).getPieces().add(archer);
-        gm.getPlayers().get(1).getPieces().add(medusa);
-        gm.getPlayers().get(1).getPieces().remove(medusa);
+//        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
+//        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
+//        gm.getPlayers().get(0).getPieces().add(archer);
+//        gm.getPlayers().get(1).getPieces().add(medusa);
+//        gm.getPlayers().get(1).getPieces().remove(medusa);
 
     }
 
@@ -446,8 +449,86 @@ public class MainController implements Initializable {
         //Switch the disabled status
         SwapPane.setVisible(!SwapPane.isVisible());
 
-        IPiece medusa = gm.getTurn().getActivePlayer().getPieces().get(0);
-        gm.getTurn().getActivePlayer().getPieces().remove(medusa);
+        //get current piece class
+        String oldPieceName = gm.getTurn().getActivePlayer().getPieces().get(0).getClass().getName();
+
+        // Button label store location;
+        String OptOne="";
+        String OptTwo="";
+
+
+        // Check and populate Gui according to current situation
+        if (oldPieceName.equals(Warrior.class.getName())) {
+            OptOne = Archer.class.getSimpleName();
+            PieceSelectionOne = Archer.class.getName();
+            OptTwo = Priest.class.getSimpleName();
+            PieceSelectionTwo = Priest.class.getName();
+
+        }else if (oldPieceName.equals(Priest.class.getName())) {
+            OptOne = Warrior.class.getSimpleName();
+            PieceSelectionOne = Warrior.class.getName();
+            OptTwo = Archer.class.getSimpleName();
+            PieceSelectionTwo = Archer.class.getName();
+
+        }else if (oldPieceName.equals(Archer.class.getName())) {
+            OptOne = Warrior.class.getSimpleName();
+            PieceSelectionOne = Warrior.class.getName();
+            OptTwo = Priest.class.getSimpleName();
+            PieceSelectionTwo = Priest.class.getName();
+
+        }else if (oldPieceName.equals(Medusa.class.getName())) {
+            OptOne = Griffin.class.getSimpleName();
+            PieceSelectionOne = Griffin.class.getName();
+            OptTwo = Minotaur.class.getSimpleName();
+            PieceSelectionTwo = Minotaur.class.getName();
+
+        }else if (oldPieceName.equals(Griffin.class.getName())) {
+            OptOne = Medusa.class.getSimpleName();
+            PieceSelectionOne = Medusa.class.getName();
+            OptTwo = Minotaur.class.getSimpleName();
+            PieceSelectionTwo = Minotaur.class.getName();
+
+        }else if (oldPieceName.equals(Minotaur.class.getName())) {
+            OptOne = Griffin.class.getSimpleName();
+            PieceSelectionOne = Griffin.class.getName();
+            OptTwo = Medusa.class.getSimpleName();
+            PieceSelectionTwo = Medusa.class.getName();
+
+        }
+
+        // Set button labels
+        Opt_one.setText(OptOne);
+        Opt_two.setText(OptTwo);
+
+    }
+
+    private void SwapToOptOne() {
+
+        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        int x = oldPiece.getLocation().getX();
+        int y = oldPiece.getLocation().getY();
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+
+        IPiece newPiece= PieceFactory.createPiece(PieceSelectionOne, 5, LocationFactory.createLocation(x,y));
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+        SwapPane.setVisible(false);
+
+        gm.getTurn().nextTurn(gm.getPlayers());
+    }
+
+    private void SwapToOptTwo() {
+
+        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        int x = oldPiece.getLocation().getX();
+        int y = oldPiece.getLocation().getY();
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+
+        IPiece newPiece= PieceFactory.createPiece(PieceSelectionTwo, 5, LocationFactory.createLocation(x,y));
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+        SwapPane.setVisible(false);
+
         gm.getTurn().nextTurn(gm.getPlayers());
 
     }
