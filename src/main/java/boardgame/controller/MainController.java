@@ -443,6 +443,13 @@ public class MainController implements Initializable {
 
     private void handleSwapAction() {
 
+        //Switch the disabled status
+        SwapPane.setVisible(!SwapPane.isVisible());
+
+        IPiece medusa = gm.getTurn().getActivePlayer().getPieces().get(0);
+        gm.getTurn().getActivePlayer().getPieces().remove(medusa);
+        gm.getTurn().nextTurn(gm.getPlayers());
+
     }
 
 }
