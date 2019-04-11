@@ -11,14 +11,6 @@ import javafx.collections.ObservableMap;
 public interface IBoard {
 
     /**
-     * Insert piece.
-     *
-     * @param piece the piece
-     */
-//Add a piece to the board
-    void insertPiece(IPiece piece);
-
-    /**
      * Sets up tiles.
      */
 //Set the board up based on default values.
@@ -48,23 +40,6 @@ public interface IBoard {
      */
 //return a map using Location as a key.
     ObservableMap<Location, ITile> getTiles();
-
-    /**
-     * Gets pieces.
-     *
-     * @return the pieces
-     */
-//Return a map of pieces using pieceID as a key.
-    ObservableMap<Integer, IPiece> getPieces();
-
-    /**
-     * Gets piece.
-     *
-     * @param pieceID the piece id
-     * @return the piece
-     */
-//Get an individual piece.
-    IPiece getPiece(int pieceID);
 
     /**
      * Move piece boolean.

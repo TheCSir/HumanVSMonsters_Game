@@ -12,7 +12,6 @@ public abstract class Board2d implements IBoard {
 
     protected ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
 
-    public abstract void insertPiece(IPiece piece);
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);
 

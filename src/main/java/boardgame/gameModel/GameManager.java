@@ -22,7 +22,6 @@ class GameManager implements IGameManager {
     //Default constructor
     GameManager() {
         players = new ArrayList<>();
-
     }
 
     @Override

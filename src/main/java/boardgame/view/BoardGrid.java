@@ -19,7 +19,6 @@ import static boardgame.util.Constants.yStartOffset;
 
 public class BoardGrid {
 
-    ArrayList<HexagonTileView> hexTile;
 
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
 

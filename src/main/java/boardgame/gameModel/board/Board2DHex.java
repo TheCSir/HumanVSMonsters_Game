@@ -1,6 +1,5 @@
 package boardgame.gameModel.board;
 
-import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.gameModel.tiles.TileFactory;
@@ -8,22 +7,13 @@ import boardgame.util.Constants;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.util.LocationFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.util.List;
 
 public class Board2DHex extends Board2d {
 
-    private ObservableList<IPiece> pieceObservableList = FXCollections.observableArrayList();
 
-
-    //TODO implement insert piece
-    @Override
-    public void insertPiece(IPiece piece) {
-        pieceObservableList.add(piece);
-    }
 
     //Variable size
     public void setUpTiles(int rows, int columns) {
@@ -83,15 +73,6 @@ public class Board2DHex extends Board2d {
         return super.checkMapLocation(location, rows, columns);
     }
 
-    @Override
-    public ObservableMap<Integer, IPiece> getPieces() {
-        return null;
-    }
-
-    @Override
-    public IPiece getPiece(int pieceID) {
-        return null;
-    }
 
     public ObservableMap<Location, ITile> getBoardGrid() {
         return boardGrid;
@@ -99,14 +80,6 @@ public class Board2DHex extends Board2d {
 
     public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
         this.boardGrid = boardGrid;
-    }
-
-    public ObservableList<IPiece> getPieceObservableList() {
-        return pieceObservableList;
-    }
-
-    public void setPieceObservableList(ObservableList<IPiece> pieceObservableList) {
-        this.pieceObservableList = pieceObservableList;
     }
 
     //For each tile store their neighbouring tiles.
