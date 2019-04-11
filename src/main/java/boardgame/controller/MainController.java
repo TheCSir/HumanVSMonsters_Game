@@ -6,9 +6,9 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.IPlayer;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
 import boardgame.view.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

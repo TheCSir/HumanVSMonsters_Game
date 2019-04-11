@@ -1,11 +1,11 @@
 package boardgame.gameModel;
 
+import boardgame.gameModel.players.IPlayer;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class Turn {

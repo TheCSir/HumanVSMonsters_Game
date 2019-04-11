@@ -2,6 +2,7 @@ package boardgame.gameModel;
 
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;

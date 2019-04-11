@@ -1,4 +1,4 @@
-package boardgame.gameModel;
+package boardgame.gameModel.players;
 
 import boardgame.gameModel.pieces.IPiece;
 import javafx.collections.ObservableList;
