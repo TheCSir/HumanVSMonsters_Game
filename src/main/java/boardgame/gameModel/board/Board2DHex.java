@@ -3,6 +3,7 @@ package boardgame.gameModel.board;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
+import boardgame.gameModel.tiles.TileFactory;
 import boardgame.util.Constants;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
@@ -12,7 +13,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.util.List;
-import java.util.Map;
 
 public class Board2DHex extends Board2d {
 
@@ -31,7 +31,7 @@ public class Board2DHex extends Board2d {
         for (int x=0; x<rows; x++) {
             for (int y=0; y<columns; y++) {
                 Location location = LocationFactory.createLocation(x, y);
-                HexagonalTile hexagonalTile = new HexagonalTile(location);
+                ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
                 // hexagonalTiles.add(hexagonalTile);
                 boardGrid.put(location, hexagonalTile);
             }
@@ -48,7 +48,7 @@ public class Board2DHex extends Board2d {
         for (int x=0; x<Constants.DEFAULTBOARDROWS; x++) {
                for (int y=0; y<Constants.DEFAULTBOARDCOLUMNS; y++) {
                    Location location = LocationFactory.createLocation(x, y);
-                   HexagonalTile hexagonalTile = new HexagonalTile(location);
+                   ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
                   // hexagonalTiles.add(hexagonalTile);
                    boardGrid.put(location, hexagonalTile);
                }
@@ -74,7 +74,7 @@ public class Board2DHex extends Board2d {
     }
 
     @Override
-    public Map<Location, ITile> getTiles() {
+    public ObservableMap<Location, ITile> getTiles() {
         return this.boardGrid;
     }
 
@@ -84,7 +84,7 @@ public class Board2DHex extends Board2d {
     }
 
     @Override
-    public Map<Integer, IPiece> getPieces() {
+    public ObservableMap<Integer, IPiece> getPieces() {
         return null;
     }
 

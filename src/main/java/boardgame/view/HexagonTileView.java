@@ -23,7 +23,7 @@ public class HexagonTileView extends Polygon {
 
     HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
         super();
-        this.modelTile=hexagonalTile;
+        this.modelTile = hexagonalTile;
         drawTile(x, y, radius);
     }
 
@@ -40,13 +40,14 @@ public class HexagonTileView extends Polygon {
 
     public HexagonTileView(double x, double y, double radius, HexagonalTile hexTile) {
         super();
-        this.modelTile=hexTile;
+        this.modelTile = hexTile;
         drawTile(x, y, radius);
     }
 
-    void drawTile(double x, double y, double radius) {
-        this.initalY=y;
-        this.initialX=x;
+
+    public void drawTile(double x, double y, double radius) {
+        this.initalY = y;
+        this.initialX = x;
         double TILE_HEIGHT = 2 * radius;
 
         double n = Math.sqrt(radius * radius * 0.75); // the inner radius from hexagon center to middle of the axis
@@ -75,15 +76,18 @@ public class HexagonTileView extends Polygon {
     }
 
 
-    void setImagePattern(String imageUrl) throws FileNotFoundException {
+
+    public void setImagePattern(String imageUrl) throws FileNotFoundException {
         //Loading image from URL
         ImagePattern imagePattern = new ImagePattern(new Image(new FileInputStream(imageUrl)));
         setFill(imagePattern);
     }
 
+
     public double getXPosition() {
         return getBoundsInParent().getCenterX();
     }
+
 
     public double getYPosition() {
         return getBoundsInParent().getCenterY();
@@ -93,56 +97,70 @@ public class HexagonTileView extends Polygon {
     private double initialX;
     private double initalY;
 
-    double getInitialX() {
+
+    public double getInitialX() {
         return this.initialX;
     }
 
-    double getInitialY() {
+
+    public double getInitialY() {
         return this.initalY;
     }
 
+
     public void setInitialX(double x) {
-        this.initialX=x;
+        this.initialX = x;
     }
+
 
     public void setInitalY(double y) {
         this.initalY = y;
     }
 
+
     public Location getLocation() {
         return modelTile.getLocation();
     }
+
 
     public void setLocation(Location gridPosition) {
         modelTile.setLocation(gridPosition);
     }
 
+
     public void addNeighbour(ITile tile) {
-       modelTile.addNeighbour(tile);
+        modelTile.addNeighbour(tile);
     }
 
-    List<ITile> getNeighbours() {
+
+    public List<ITile> getNeighbours() {
         return modelTile.getNeighbours();
     }
+
+
     public ITile getModelTile() {
         return modelTile;
     }
 
-    public void setModelTile(HexagonalTile modelTile) {
+
+    public void setModelTile(ITile modelTile) {
         this.modelTile = modelTile;
     }
 
     private List<HexagonTileView> neighbourViews = FXCollections.observableArrayList();
 
-    List<HexagonTileView> getNeighbourViews() {
+
+    public List<HexagonTileView> getNeighbourViews() {
         return neighbourViews;
     }
+
 
     public void setNeighbourViews(List<HexagonTileView> neighbourViews) {
         this.neighbourViews = neighbourViews;
     }
 
-    void addNeighbourView(HexagonTileView tileView) {
+
+    public void addNeighbourView(HexagonTileView tileView) {
         this.neighbourViews.add(tileView);
     }
 }

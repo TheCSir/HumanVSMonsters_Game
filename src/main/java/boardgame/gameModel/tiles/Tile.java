@@ -6,6 +6,8 @@ import boardgame.util.Location;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.valid4j.Assertive.require;
+
 public abstract class Tile implements ITile {
     List<Location> neighbourPositions;
     private List<ITile> neighbours;
@@ -15,6 +17,7 @@ public abstract class Tile implements ITile {
     private int movementCost;
 
     Tile(Location location) {
+        require(location.getX() >-1 && location.getY() >-1);
         this.location = location;
         neighbours = new ArrayList<>();
         neighbourPositions = new ArrayList<>();

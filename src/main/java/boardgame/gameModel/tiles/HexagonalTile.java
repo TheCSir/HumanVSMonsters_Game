@@ -5,7 +5,7 @@ import boardgame.util.Location;
 
 public class HexagonalTile extends Tile {
 
-    public HexagonalTile(Location location) {
+    HexagonalTile(Location location) {
         super(location);
         neighbourPositions = HexGridUtil.getNeighbourPositions(location);
     }

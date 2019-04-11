@@ -2,10 +2,7 @@ package boardgame.gameModel;
 
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.Griffin;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.pieces.Warrior;
+import boardgame.gameModel.pieces.*;
 import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +20,7 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
     //Default constructor
-    public GameManager() {
+    GameManager() {
         players = new ArrayList<>();
 
     }
@@ -132,5 +129,14 @@ class GameManager implements IGameManager {
         allpieces.addAll(players.get(0).getPieces());
         allpieces.addAll(players.get(1).getPieces());
         return allpieces;
+    }
+
+    @Override
+    public void testPieces() {
+        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
+        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
+        getPlayers().get(0).getPieces().add(archer);
+        getPlayers().get(1).getPieces().add(medusa);
+        getPlayers().get(1).getPieces().remove(medusa);
     }
 }

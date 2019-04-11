@@ -8,14 +8,7 @@ import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.IPlayer;
 import boardgame.gameModel.Turn;
-import boardgame.gameModel.board.Board2DHex;
-import boardgame.gameModel.pieces.Archer;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Medusa;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.tiles.ITile;
-import boardgame.util.Location;
-import boardgame.util.LocationFactory;
 import boardgame.view.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -33,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import static boardgame.util.Constants.TILERADIUS;
@@ -93,8 +85,6 @@ public class MainController implements Initializable {
     //Store a reference to the Game manager for main entry point to game.
     private IGameManager gm;
 
-    private Board2DHex board2DHex;
-
     private BoardGrid boardGrid;
 
     private HexagonTileViewPiece selectedTilePiece = null;
@@ -104,8 +94,6 @@ public class MainController implements Initializable {
     private HexagonTileView targetTile = null;
 
     private HexagonTileViewPiece targetTilePiece = null;
-
-    private IPlayer activePlayer = null;
 
     public static final String MOVE = "move";
     private String state = null;
@@ -117,18 +105,12 @@ public class MainController implements Initializable {
 
         gm.defaultGameSetup();
 
-        board2DHex = (Board2DHex) gm.getiBoard();
-
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        Map<Location, ITile> board = board2DHex.getTiles();
-        List<ITile> boardTiles = new ArrayList<>(board.values());
-
         boardGrid = new BoardGrid();
-        boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
+        boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
 
 
@@ -136,7 +118,6 @@ public class MainController implements Initializable {
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
 
-//        addPieces(pieces, boardPane);
 
         registerTileListenersForMove(boardGrid.getHexagonTileViews());
         registerPlayerListeners(gm.getPlayers());
@@ -148,13 +129,11 @@ public class MainController implements Initializable {
         addPieces(gm.getAllPieces());
         registerPieceListListener();
 
-        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
-        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
-        gm.getPlayers().get(0).getPieces().add(archer);
-        gm.getPlayers().get(1).getPieces().add(medusa);
-        gm.getPlayers().get(1).getPieces().remove(medusa);
+        gm.testPieces();
 
     }
+
+
 
     private void initialiseBoardBackGround() {
         // Set up the background.
@@ -341,9 +320,8 @@ public class MainController implements Initializable {
     }
 
     private void registerPieceListener(IPiece piece) {
-        PieceView pieceView = new PieceView();
         piece.locationPropertyProperty().addListener((observable) ->
-                pieceView.changePiecePosition(selectedTilePiece, targetTile));
+                PieceView.changePiecePosition(selectedTilePiece, targetTile));
     }
 
     //Selects piece.
@@ -387,7 +365,7 @@ public class MainController implements Initializable {
         }
     }
 
-
+    
     //Gets input and updates model for piece position.
     private void handleTileClicked(HexagonTileView tile) {
         assert tile != null;
