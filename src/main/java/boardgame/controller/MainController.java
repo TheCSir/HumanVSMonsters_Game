@@ -149,8 +149,8 @@ public class MainController implements Initializable {
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
         swapButton.setOnAction(e-> handleSwapAction());
-        Opt_one.setOnAction(e-> SwapToOptOne());
-        Opt_two.setOnAction(e-> SwapToOptTwo());
+        Opt_one.setOnAction(e-> doSwap(PieceSelectionOne));
+        Opt_two.setOnAction(e-> doSwap(PieceSelectionTwo));
 
 //        addPieces(pieces, boardPane);
 
@@ -502,35 +502,26 @@ public class MainController implements Initializable {
 
     }
 
-    private void SwapToOptOne() {
+    private void doSwap(String Piece) {
 
+        //Get current piece and it's location
         IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
         int x = oldPiece.getLocation().getX();
         int y = oldPiece.getLocation().getY();
+
+        //Remove current piece
         gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
 
-        IPiece newPiece= PieceFactory.createPiece(PieceSelectionOne, 5, LocationFactory.createLocation(x,y));
+        //Create new piece and add to board
+        IPiece newPiece= PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x,y));
         gm.getTurn().getActivePlayer().getPieces().add(newPiece);
 
+
+        //Handle GUI validations
         SwapPane.setVisible(false);
 
+        //End turn
         gm.getTurn().nextTurn(gm.getPlayers());
-    }
-
-    private void SwapToOptTwo() {
-
-        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
-        int x = oldPiece.getLocation().getX();
-        int y = oldPiece.getLocation().getY();
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
-
-        IPiece newPiece= PieceFactory.createPiece(PieceSelectionTwo, 5, LocationFactory.createLocation(x,y));
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
-
-        SwapPane.setVisible(false);
-
-        gm.getTurn().nextTurn(gm.getPlayers());
-
     }
 
 }
