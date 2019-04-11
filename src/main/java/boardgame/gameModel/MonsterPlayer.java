@@ -1,12 +1,11 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.pieces.IPiece;
-
-import java.util.List;
+import javafx.collections.ObservableList;
 
 public class MonsterPlayer extends Player {
 
-    public MonsterPlayer(int playerID, String playerName, int _health, List<IPiece> pieces){
+    public MonsterPlayer(int playerID, String playerName, int _health, ObservableList<IPiece> pieces) {
         super(playerID, playerName, _health, pieces);
     }
 }

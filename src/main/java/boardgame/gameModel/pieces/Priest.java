@@ -1,6 +1,6 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 public class Priest extends Human {
     Priest(int moveSpeed, Location location) {

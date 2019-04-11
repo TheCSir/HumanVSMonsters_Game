@@ -1,12 +1,12 @@
 package boardgame.gameModel.board;
 
-import boardgame.gameModel.Location;
-import boardgame.gameModel.LocationFactory;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
 import boardgame.util.HexGridUtil;
+import boardgame.util.Location;
+import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class Board2DHex extends Board2d {
 
-    private ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
     private ObservableList<IPiece> pieceObservableList = FXCollections.observableArrayList();
 
 
@@ -64,18 +63,6 @@ public class Board2DHex extends Board2d {
         boardGrid.put(tile.getLocation(), tile);
     }
 
-    private boolean checkValidMove(IPiece piece, Location location, Board2DHex board2DHex) {
-
-        List<ITile> neighbours = getNeighbours(piece);
-        for (ITile tile: neighbours) {
-            if (tile.getLocation().equals(location)){
-                //System.out.println("True");
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void addTile(Location location, ITile tile) {
         boardGrid.put(location, tile);
@@ -106,20 +93,6 @@ public class Board2DHex extends Board2d {
         return null;
     }
 
-    @Override
-    public boolean movePiece(IPiece piece, Location location) {
-
-        boolean pieceMoved = false;
-        //First check that moving to a neighbouring position. If so change location.
-        if (checkValidMove(piece, location, this)){
-            piece.setLocation(location);
-
-            pieceMoved = true;
-        }
-
-        return pieceMoved;
-    }
-
     public ObservableMap<Location, ITile> getBoardGrid() {
         return boardGrid;
     }
@@ -137,7 +110,7 @@ public class Board2DHex extends Board2d {
     }
 
     //For each tile store their neighbouring tiles.
-    public void addNeighbours() {
+    private void addNeighbours() {
         for (ITile t: boardGrid.values()) {
             List<Location> neighbourLocations = HexGridUtil.getNeighbourPositions(t.getLocation());
 
@@ -149,7 +122,4 @@ public class Board2DHex extends Board2d {
         }
     }
 
-    public List<ITile> getNeighbours(IPiece piece){
-        return boardGrid.get(piece.getLocation()).getNeighbours();
-    }
 }

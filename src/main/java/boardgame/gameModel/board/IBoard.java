@@ -1,8 +1,8 @@
 package boardgame.gameModel.board;
 
-import boardgame.gameModel.Location;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
+import boardgame.util.Location;
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package boardgame.gameModel.tiles;
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 import java.util.List;
 

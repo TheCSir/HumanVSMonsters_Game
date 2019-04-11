@@ -1,8 +1,8 @@
 package boardgame.view;
 
-import boardgame.gameModel.Location;
 import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
+import boardgame.util.Location;
 import javafx.collections.FXCollections;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -21,13 +21,13 @@ public class HexagonTileView extends Polygon {
 
     private ITile modelTile;
 
-    public HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
+    HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
         super();
         this.modelTile=hexagonalTile;
         drawTile(x, y, radius);
     }
 
-    public HexagonTileView() {
+    HexagonTileView() {
 
     }
 
@@ -44,7 +44,7 @@ public class HexagonTileView extends Polygon {
         drawTile(x, y, radius);
     }
 
-    public void drawTile(double x, double y, double radius) {
+    void drawTile(double x, double y, double radius) {
         this.initalY=y;
         this.initialX=x;
         double TILE_HEIGHT = 2 * radius;
@@ -75,7 +75,7 @@ public class HexagonTileView extends Polygon {
     }
 
 
-    public void setImagePattern(String imageUrl) throws FileNotFoundException {
+    void setImagePattern(String imageUrl) throws FileNotFoundException {
         //Loading image from URL
         ImagePattern imagePattern = new ImagePattern(new Image(new FileInputStream(imageUrl)));
         setFill(imagePattern);
@@ -92,11 +92,12 @@ public class HexagonTileView extends Polygon {
 
     private double initialX;
     private double initalY;
-    public double getInitialX() {
+
+    double getInitialX() {
         return this.initialX;
     }
 
-    public double getInitialY() {
+    double getInitialY() {
         return this.initalY;
     }
 
@@ -120,7 +121,7 @@ public class HexagonTileView extends Polygon {
        modelTile.addNeighbour(tile);
     }
 
-    public List<ITile> getNeighbours(){
+    List<ITile> getNeighbours() {
         return modelTile.getNeighbours();
     }
     public ITile getModelTile() {
@@ -133,7 +134,7 @@ public class HexagonTileView extends Polygon {
 
     private List<HexagonTileView> neighbourViews = FXCollections.observableArrayList();
 
-    public List<HexagonTileView> getNeighbourViews() {
+    List<HexagonTileView> getNeighbourViews() {
         return neighbourViews;
     }
 
@@ -141,7 +142,7 @@ public class HexagonTileView extends Polygon {
         this.neighbourViews = neighbourViews;
     }
 
-    public void addNeighbourView(HexagonTileView tileView) {
+    void addNeighbourView(HexagonTileView tileView) {
         this.neighbourViews.add(tileView);
     }
 }

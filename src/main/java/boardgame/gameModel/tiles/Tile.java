@@ -1,7 +1,7 @@
 package boardgame.gameModel.tiles;
 
 
-import boardgame.gameModel.Location;
+import boardgame.util.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ public abstract class Tile implements ITile {
     private Location location;
     protected final int size = 20;
     private boolean traversable;
-    protected int movementCost;
+    private int movementCost;
 
-    public Tile(Location location) {
+    Tile(Location location) {
         this.location = location;
         neighbours = new ArrayList<>();
         neighbourPositions = new ArrayList<>();

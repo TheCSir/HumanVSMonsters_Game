@@ -1,4 +1,4 @@
-package boardgame.gameModel;
+package boardgame.util;
 
 /*
     Simple wrapper to store x and y coordinates.
