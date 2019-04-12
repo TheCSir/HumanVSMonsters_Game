@@ -16,13 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +104,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        boardGrid = new BoardGrid();
+        boardGrid = new BoardGrid(boardPane);
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
 
@@ -121,7 +119,6 @@ public class MainController implements Initializable {
         registerTurnListeners(gm.getTurn());
 
         initialiseTextFields();
-        initialiseBoardBackGround();
 
         addPieces(gm.getAllPieces());
         registerPieceListListener();
@@ -130,16 +127,6 @@ public class MainController implements Initializable {
 
     }
 
-    private void initialiseBoardBackGround() {
-        // Set up the background.
-        try {
-            FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
-            boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-                    BackgroundSize.DEFAULT)));
-        } catch (FileNotFoundException e) {
-            System.out.println("what");
-        }
-    }
 
     private void initialiseTextFields() {
 
@@ -187,8 +174,6 @@ public class MainController implements Initializable {
         currentState = State.SWAP;
     }
 
-    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
-    //TODO Add static map to start.
 
     private void registerTileListenersForMove(List<TileView> boardTiles) {
 
@@ -245,15 +230,6 @@ public class MainController implements Initializable {
                             removePiece(piece);
                         }
                     }
-
-                    //TODO debugging - remove
-                    if (c.wasAdded()) {
-                        System.out.println(c.getAddedSubList().get(0)
-                                + " was added to the list!");
-                    } else if (c.wasRemoved()) {
-                        System.out.println(c.getRemoved().get(0)
-                                + " was removed from the list!");
-                    }
                 }
             });
         }
@@ -284,9 +260,8 @@ public class MainController implements Initializable {
     private void unRegisterPieceListeners(List<IPiece> pieces) {
 
         for (IPiece piece : pieces) {
-            PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().removeListener((observable) ->
-                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
+                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 

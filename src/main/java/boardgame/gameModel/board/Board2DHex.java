@@ -7,7 +7,6 @@ import boardgame.util.Constants;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.util.LocationFactory;
-import javafx.collections.ObservableMap;
 
 import java.util.List;
 
@@ -54,22 +53,17 @@ public class Board2DHex extends Board2d {
 
     @Override
     public void addTile(ITile tile) {
-        boardGrid.put(tile.getLocation(), tile);
+        getTiles().put(tile.getLocation(), tile);
     }
 
     @Override
     public void addTile(Location location, ITile tile) {
-        boardGrid.put(location, tile);
+        getTiles().put(location, tile);
     }
 
     @Override
     public void deleteTile(Location location, ITile tile) {
-        boardGrid.put(location, tile);
-    }
-
-    @Override
-    public ObservableMap<Location, ITile> getTiles() {
-        return this.boardGrid;
+        getTiles().put(location, tile);
     }
 
     @Override
@@ -78,22 +72,14 @@ public class Board2DHex extends Board2d {
     }
 
 
-    public ObservableMap<Location, ITile> getBoardGrid() {
-        return boardGrid;
-    }
-
-    public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
-        this.boardGrid = boardGrid;
-    }
-
     //For each tile store their neighbouring tiles.
     private void addNeighbours() {
-        for (ITile t: boardGrid.values()) {
+        for (ITile t : getTiles().values()) {
             List<Location> neighbourLocations = HexGridUtil.getNeighbourPositions(t.getLocation());
 
             for (Location location: neighbourLocations) {
                 if(checkMapLocation(location, Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
-                    t.addNeighbour(boardGrid.get(location));
+                    t.addNeighbour(getTiles().get(location));
                 }
             }
         }

@@ -7,9 +7,11 @@ import boardgame.util.Location;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,13 +59,12 @@ public class BoardGrid {
         this.hexagonTileViews = hexagonTileViews;
     }
 
-    public BoardGrid() {
+    private Pane boardPane;
 
+    public BoardGrid(Pane boardPane) {
+        this.boardPane = boardPane;
+        initialiseBoardBackGround();
     }
-
-    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
-    //TODO Add static map to start.
-
     //Add game pieces to the game board.
     public void addPieces(List<IPiece> pieceList, Pane boardPane) {
         pieceObservableList.clear();
@@ -141,6 +142,16 @@ public class BoardGrid {
         return hexagonTileViewList;
     }
 
+    private void initialiseBoardBackGround() {
+        // Set up the background.
+        try {
+            FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
+            boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                    BackgroundSize.DEFAULT)));
+        } catch (FileNotFoundException e) {
+            System.out.println("what");
+        }
+    }
 
     public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, Color color) {
         TileView underTile = this.getTile(selectedTilePiece.getLocation());
@@ -168,11 +179,8 @@ public class BoardGrid {
             }
         }
 
+
     }
-
-    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
-    //TODO Add static map to start.
-
 }
 
 
