@@ -95,8 +95,6 @@ public class MainController implements Initializable {
 
     private HexagonTileViewPiece targetTilePiece = null;
 
-    private String state = null;
-
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -192,9 +190,9 @@ public class MainController implements Initializable {
     //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
     //TODO Add static map to start.
 
-    private void registerTileListenersForMove(List<HexagonTileView> boardTiles) {
+    private void registerTileListenersForMove(List<TileView> boardTiles) {
 
-        for (HexagonTileView hexagonalTile : boardTiles) {
+        for (TileView hexagonalTile : boardTiles) {
 
             //Set tile handlers
             hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));

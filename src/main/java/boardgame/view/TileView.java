@@ -40,9 +40,9 @@ public abstract class TileView extends Polygon {
 
     public abstract void setModelTile(ITile modelTile);
 
-    public abstract List<HexagonTileView> getNeighbourViews();
+    public abstract List<TileView> getNeighbourViews();
 
-    public abstract void setNeighbourViews(List<HexagonTileView> neighbourViews);
+    public abstract void setNeighbourViews(List<TileView> neighbourViews);
 
-    public abstract void addNeighbourView(HexagonTileView tileView);
+    public abstract void addNeighbourView(TileView tileView);
 }

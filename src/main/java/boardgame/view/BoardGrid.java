@@ -21,6 +21,9 @@ public class BoardGrid {
 
 
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
+    private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
+    private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
+
 
     public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
         return pieceObservableList;
@@ -30,33 +33,29 @@ public class BoardGrid {
         this.pieceObservableList = pieceObservableList;
     }
 
-    public ObservableMap<Location, HexagonTileView> getTileViewObservableMap() {
+    public ObservableMap<Location, TileView> getTileViewObservableMap() {
         return tileViewObservableMap;
     }
 
-    public void setTileViewObservableMap(ObservableMap<Location, HexagonTileView> tileViewObservableMap) {
+    public void setTileViewObservableMap(ObservableMap<Location, TileView> tileViewObservableMap) {
         this.tileViewObservableMap = tileViewObservableMap;
     }
 
-    public void addTile(HexagonTileView tileView) {
+    public void addTile(TileView tileView) {
         tileViewObservableMap.put(tileView.getLocation(), tileView);
     }
 
-    public HexagonTileView getTile(Location location) {
+    public TileView getTile(Location location) {
         return tileViewObservableMap.get(location);
     }
 
-    private ObservableMap<Location, HexagonTileView> tileViewObservableMap = FXCollections.observableHashMap();
-
-    public ObservableList<HexagonTileView> getHexagonTileViews() {
+    public ObservableList<TileView> getHexagonTileViews() {
         return hexagonTileViews;
     }
 
-    public void setHexagonTileViews(ObservableList<HexagonTileView> hexagonTileViews) {
+    public void setHexagonTileViews(ObservableList<TileView> hexagonTileViews) {
         this.hexagonTileViews = hexagonTileViews;
     }
-
-    private ObservableList<HexagonTileView> hexagonTileViews = FXCollections.observableArrayList();
 
     public BoardGrid() {
 
@@ -75,7 +74,7 @@ public class BoardGrid {
 
 
     public void addPiece(IPiece piece, Pane boardPane) {
-        HexagonTileView hexView = tileViewObservableMap.get(piece.getLocation());
+        TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
         HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
@@ -98,17 +97,17 @@ public class BoardGrid {
 
     public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
 
-        List<HexagonTileView> hexagonTileViews = calculateTileCoord(
+        List<TileView> hexagonTileViews = calculateTileCoord(
                 boardTiles, radius, xStartOffset, yStartOffset);
 
-        for (HexagonTileView hexagonalTile: hexagonTileViews) {
+        for (TileView hexagonalTile : hexagonTileViews) {
 
             //Add the tile to the JAvaFX pane.
             boardPane.getChildren().add(hexagonalTile);
         }
 
         //Add neighbouring tile views.
-        for (HexagonTileView tileView: tileViewObservableMap.values()) {
+        for (TileView tileView : tileViewObservableMap.values()) {
             List<ITile> neighbours = tileView.getNeighbours();
             for (ITile neighbour: neighbours) {
                 tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
@@ -117,11 +116,11 @@ public class BoardGrid {
     }
 
     //returns a list of tiles to add to a pane.
-    public List<HexagonTileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset){
+    public List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
         double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         double TILE_HEIGHT = 2 * r;
         double TILE_WIDTH = 2 * n;
-        List<HexagonTileView> hexagonTileViewList = new ArrayList<>();
+        List<TileView> hexagonTileViewList = new ArrayList<>();
         for (ITile hexagonalTile:
                 hexagonTiles) {
             int xPos = hexagonalTile.getLocation().getX();
@@ -132,7 +131,7 @@ public class BoardGrid {
             double yCoord = yPos * TILE_HEIGHT * 0.75 + yStartOffset;
 
             //Create the new tile.
-            HexagonTileView tile = new HexagonTileView(xCoord, yCoord, r, hexagonalTile);
+            TileView tile = TileViewFactory.createTileView(xCoord, yCoord, r, hexagonalTile);
             hexagonTileViewList.add(tile);
 
 
@@ -142,10 +141,11 @@ public class BoardGrid {
         return hexagonTileViewList;
     }
 
+
     public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, Color color) {
-        HexagonTileView underTile = this.getTile(selectedTilePiece.getLocation());
-        List<HexagonTileView> neighbouringTiles = underTile.getNeighbourViews();
-        for (HexagonTileView neighbourView : neighbouringTiles) {
+        TileView underTile = this.getTile(selectedTilePiece.getLocation());
+        List<TileView> neighbouringTiles = underTile.getNeighbourViews();
+        for (TileView neighbourView : neighbouringTiles) {
             neighbourView.setFill(color);
         }
     }
@@ -153,9 +153,9 @@ public class BoardGrid {
     // EXPERIMENT: Highlight piece range
     public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, int depth) {
         for(int i = 0; i < depth; i++){
-            HexagonTileView underTile = this.getTile(selectedTilePiece.getLocation());
-            List<HexagonTileView> rangeTiles = underTile.getNeighbourViews();
-            for (HexagonTileView neighbourView : rangeTiles) {
+            TileView underTile = this.getTile(selectedTilePiece.getLocation());
+            List<TileView> rangeTiles = underTile.getNeighbourViews();
+            for (TileView neighbourView : rangeTiles) {
                 neighbourView.setFill(Color.BLUE);
             }
         }

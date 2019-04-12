@@ -13,12 +13,11 @@ import java.util.List;
 
 public class HexagonTileView extends TileView {
 
-    @Override
-    public double getInitalY() {
-        return initalY;
-    }
-
+    private double initialX;
+    private double initalY;
+    private List<TileView> neighbourViews = FXCollections.observableArrayList();
     private ITile modelTile;
+
 
     HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
         super();
@@ -29,8 +28,13 @@ public class HexagonTileView extends TileView {
     HexagonTileView() {
 
     }
-
     //Radius - the inner radius from hexagon center to outer corner
+
+
+    @Override
+    public double getInitalY() {
+        return initalY;
+    }
 
     @Override
     public String toString() {
@@ -82,10 +86,6 @@ public class HexagonTileView extends TileView {
     public double getYPosition() {
         return getBoundsInParent().getCenterY();
     }
-
-
-    private double initialX;
-    private double initalY;
 
 
     @Override
@@ -147,23 +147,21 @@ public class HexagonTileView extends TileView {
         this.modelTile = modelTile;
     }
 
-    private List<HexagonTileView> neighbourViews = FXCollections.observableArrayList();
-
 
     @Override
-    public List<HexagonTileView> getNeighbourViews() {
+    public List<TileView> getNeighbourViews() {
         return neighbourViews;
     }
 
 
     @Override
-    public void setNeighbourViews(List<HexagonTileView> neighbourViews) {
+    public void setNeighbourViews(List<TileView> neighbourViews) {
         this.neighbourViews = neighbourViews;
     }
 
 
     @Override
-    public void addNeighbourView(HexagonTileView tileView) {
+    public void addNeighbourView(TileView tileView) {
         this.neighbourViews.add(tileView);
     }
 }
