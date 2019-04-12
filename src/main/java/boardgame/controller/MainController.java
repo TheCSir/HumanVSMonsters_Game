@@ -91,11 +91,10 @@ public class MainController implements Initializable {
 
     private boolean tileSelected = false;
 
-    private HexagonTileView targetTile = null;
+    private TileView targetTile = null;
 
     private HexagonTileViewPiece targetTilePiece = null;
 
-    public static final String MOVE = "move";
     private String state = null;
 
 
@@ -132,8 +131,6 @@ public class MainController implements Initializable {
         gm.testPieces();
 
     }
-
-
 
     private void initialiseBoardBackGround() {
         // Set up the background.
@@ -296,7 +293,6 @@ public class MainController implements Initializable {
     }
 
     //Add game pieces to the game board.
-
     private void addPieces(List<IPiece> pieceList) {
 
         for (IPiece piece : pieceList) {
@@ -364,10 +360,9 @@ public class MainController implements Initializable {
                 break;
         }
     }
-
     
     //Gets input and updates model for piece position.
-    private void handleTileClicked(HexagonTileView tile) {
+    private void handleTileClicked(TileView tile) {
         assert tile != null;
         targetTile = tile;
 

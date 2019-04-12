@@ -8,7 +8,7 @@ public class PieceView {
 
     }
 
-    public static void changePiecePosition(HexagonTileViewPiece hexagonPiece, HexagonTileView desiredTilePosition) {
+    public static void changePiecePosition(HexagonTileViewPiece hexagonPiece, TileView desiredTilePosition) {
 
         //Should probably be a view method.
         Translate translate = new Translate();
