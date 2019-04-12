@@ -11,4 +11,7 @@ public class Warrior extends Human {
     public void specialAbility(){
         System.out.println("Bash");
     }
+
+    public void createShield() {
+    }
 }

@@ -14,4 +14,7 @@ public class Minotaur extends Monster {
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
     }
+
+    public void createShield() {
+    }
 }

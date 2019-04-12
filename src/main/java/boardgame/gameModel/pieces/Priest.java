@@ -11,4 +11,7 @@ public class Priest extends Human {
     public void specialAbility(){
         System.out.println("Healing!");
     }
+
+    public void createShield() {
+    }
 }

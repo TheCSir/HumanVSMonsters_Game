@@ -75,8 +75,8 @@ class GameManager implements IGameManager {
         //Add default 3 monster pieces
         setUpMonsterPieces();
 
-        IPlayer player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
-        IPlayer player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
+        IPlayer player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, "normal", humanPieces);
+        IPlayer player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, "normal", monsterPieces);
         players.add(player1);
         players.add(player2);
 
