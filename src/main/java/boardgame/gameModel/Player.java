@@ -10,12 +10,14 @@ public abstract class Player implements IPlayer {
     private int playerID;
     private String playerName;
     private IntegerProperty health;
+    private String playerStatus = "normal";
     private ObservableList<IPiece> pieces;
 
-    public Player(int playerID, String playerName, int _health, ObservableList<IPiece> pieces) {
+    public Player(int playerID, String playerName, int _health, String playerStatus, ObservableList<IPiece> pieces) {
         this.playerID = playerID;
         this.playerName = playerName;
         this.health = new SimpleIntegerProperty(_health);
+        this.playerStatus = playerStatus;
         this.pieces = pieces;
     }
 
@@ -47,6 +49,22 @@ public abstract class Player implements IPlayer {
         int decrementedHeath = this.healthProperty().getValue() - 1;
         this.setHealthProperty(decrementedHeath);
     }
+
+    //code add for defense
+    @Override
+    public String getPlayerStatus() { return playerStatus; }
+
+    @Override
+    public void setPlayerStatus(String status) { this.playerStatus = status; }
+
+    @Override
+    public void createShield() {
+        System.out.println("Shield created");
+        this.setPlayerStatus("Shielded");
+        System.out.println(this.playerStatus);
+    }
+
+    //end
 
     @Override
     public ObservableList<IPiece> getPieces() {

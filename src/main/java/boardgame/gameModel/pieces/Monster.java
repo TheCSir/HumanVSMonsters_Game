@@ -8,4 +8,5 @@ public abstract class Monster extends Piece implements IAttackingPiece {
 
     public abstract void basicAttack();
     public abstract void specialAbility();
+    public abstract void createShield();
 }

@@ -10,4 +10,6 @@ public abstract class Human extends Piece implements IAttackingPiece {
 
     public abstract void specialAbility();
 
+    public abstract void createShield();
+
 }

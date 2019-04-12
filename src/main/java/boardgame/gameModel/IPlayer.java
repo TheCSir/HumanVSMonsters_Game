@@ -20,6 +20,15 @@ public interface IPlayer {
 
     void decreaseHealthProperty();
 
+    //code add for defense
+    String getPlayerStatus();
+
+    void setPlayerStatus(String status);
+
+    void createShield();
+
+    //end
+
     ObservableList<IPiece> getPieces();
 
     void setPieces(ObservableList<IPiece> pieces);

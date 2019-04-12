@@ -62,6 +62,9 @@ public class MainController implements Initializable {
     private Button attackButton;
 
     @FXML
+    private Button defendButton;
+
+    @FXML
     private Text pieceHealth;
 
     @FXML
@@ -135,6 +138,9 @@ public class MainController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
+        //defense code
+        defendButton.setOnAction(e -> chooseDefenseTargetPiece());
+        //end
 
 //        addPieces(pieces, boardPane);
 
@@ -381,6 +387,14 @@ public class MainController implements Initializable {
             case SPECIAL_ABILITY:
                 break;
             case DEFENSE:
+                if(isActivePlayerPiece()) {
+                    // get defense player
+                    IPlayer defensePlayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
+
+                    defensePlayer.createShield();
+                    // end turn
+                    gm.getTurn().nextTurn(gm.getPlayers());
+                }
                 break;
             case SWAP:
                 break;
