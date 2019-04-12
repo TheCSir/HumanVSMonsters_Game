@@ -1,10 +1,10 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.board.Board2DHex;
+import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.gameModel.players.Player;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
@@ -48,17 +48,8 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public IBoard setUpBoard(){
-        Board2DHex board2DHex = new Board2DHex();
-        board2DHex.setUpTiles(10, 10);
-        return board2DHex;
-    }
-
-    @Override
-    public IBoard setUpBoard(int rows, int columns) {
-        Board2DHex board2DHex = new Board2DHex();
-        board2DHex.setUpTiles(rows, columns);
-        return board2DHex;
+    public IBoard setUpBoard(String boardType, int rows, int columns) {
+        return BoardFactory.createBoard(boardType, rows, columns);
     }
 
     @Override
@@ -84,13 +75,13 @@ class GameManager implements IGameManager {
         //Add default 3 monster pieces
         setUpMonsterPieces();
 
-        Player player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
-        Player player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
+        IPlayer player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
+        IPlayer player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
         players.add(player1);
         players.add(player2);
 
         //Set up default board.
-        iBoard = setUpBoard();
+        iBoard = setUpBoard(Board2DHex.class.getName(), 10, 10);
 
         turn = new Turn();
         turn.initialiseTurns(players);

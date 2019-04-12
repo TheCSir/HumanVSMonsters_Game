@@ -22,7 +22,7 @@ public interface IBoard {
      * @param location the location
      * @param tile     the tile
      */
-//add an additional tile to the board.
+
     void addTile(Location location, ITile tile);
 
     /**

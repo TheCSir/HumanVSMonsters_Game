@@ -15,6 +15,7 @@ public abstract class Board2d implements IBoard {
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);
 
+
     private boolean checkValidMove(IPiece piece, Location location) {
 
         List<ITile> neighbours = getNeighbours(piece);

@@ -17,9 +17,7 @@ public interface IGameManager {
 
     void setMonsterPieces(ObservableList<IPiece> monsterPieces);
 
-    IBoard setUpBoard();
-
-    IBoard setUpBoard(int rows, int columns);
+    IBoard setUpBoard(String boardType, int rows, int columns);
 
     void setUpMonsterPieces();
 

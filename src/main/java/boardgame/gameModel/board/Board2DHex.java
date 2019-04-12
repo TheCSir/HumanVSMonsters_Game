@@ -14,6 +14,11 @@ import java.util.List;
 public class Board2DHex extends Board2d {
 
 
+    public Board2DHex(int rows, int columns) {
+        super();
+        setUpTiles(rows, columns);
+    }
+
 
     //Variable size
     public void setUpTiles(int rows, int columns) {
@@ -23,7 +28,7 @@ public class Board2DHex extends Board2d {
                 Location location = LocationFactory.createLocation(x, y);
                 ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
                 // hexagonalTiles.add(hexagonalTile);
-                boardGrid.put(location, hexagonalTile);
+                addTile(location, hexagonalTile);
             }
         }
 
@@ -39,8 +44,7 @@ public class Board2DHex extends Board2d {
                for (int y=0; y<Constants.DEFAULTBOARDCOLUMNS; y++) {
                    Location location = LocationFactory.createLocation(x, y);
                    ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
-                  // hexagonalTiles.add(hexagonalTile);
-                   boardGrid.put(location, hexagonalTile);
+                   addTile(location, hexagonalTile);
                }
         }
 
