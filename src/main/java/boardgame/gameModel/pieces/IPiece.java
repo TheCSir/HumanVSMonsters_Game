@@ -57,4 +57,23 @@ public interface IPiece {
      * @return the object property
      */
     ObjectProperty locationPropertyProperty();
+
+    /**
+     * Gets isShielded property.
+     *
+     * @return the isShielded property.
+     */
+    boolean getIsShielded();
+
+    /**
+     * Sets isShielded property.
+     *
+     * @param isShielded the isShielded property.
+     */
+    void setIsShielded(boolean isShielded);
+
+    /**
+     * Creates a shield.
+     */
+    void createShield();
 }

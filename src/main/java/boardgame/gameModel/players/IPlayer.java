@@ -43,38 +43,21 @@ public interface IPlayer {
      *
      * @return the integer property
      */
-    IntegerProperty healthProperty();
+    DoubleProperty healthProperty();
 
     /**
      * Sets health property.
      *
      * @param value the value
      */
-    void setHealthProperty(int value);
+    void setHealthProperty(double value);
 
     /**
      * Decrease health property.
-     */
-    void decreaseHealthProperty();
-
-    /**
-     * Gets player status. Player status could be Shield, Normal, Poisoned etc...
      *
-     * @return the player status
+     * @param piece the piece
      */
-    String getPlayerStatus();
-
-    /**
-     * Sets player status.
-     *
-     * @param status the status
-     */
-    void setPlayerStatus(String status);
-
-    /**
-     * Create shield.
-     */
-    void createShield();
+    void decreaseHealthProperty(IPiece piece);
 
     /**
      * Gets pieces.

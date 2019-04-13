@@ -10,11 +10,12 @@ import javafx.collections.ObservableList;
 public abstract class Player implements IPlayer {
 
     //region private Player properties
+
     private int playerID;
     private String playerName;
     private DoubleProperty health;
     private ObservableList<IPiece> pieces;
-    private boolean isShielded;
+
     //endregion
 
     public Player(int playerID, String playerName, double _health, ObservableList<IPiece> pieces) {
@@ -22,7 +23,6 @@ public abstract class Player implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
-        this.isShielded = false;
     }
 
     public String getPlayerName(){
@@ -50,35 +50,16 @@ public abstract class Player implements IPlayer {
     public void setHealthProperty(double value) { health.set(value); }
 
     @Override
-    public void decreaseHealthProperty() {
+    public void decreaseHealthProperty(IPiece piece) {
         // Calculate taken damage value
         double damageValue;
-        if(this.getIsShielded())
+        if(piece.getIsShielded())
             damageValue = 0.5;
         else
             damageValue = 1;
 
         double decrementedHeath = this.healthProperty().getValue() - damageValue;
         this.setHealthProperty(decrementedHeath);
-    }
-
-    //endregion
-
-    //region Defense methods
-
-    @Override
-    public boolean getIsShielded() {
-        return isShielded;
-    }
-
-    @Override
-    public void setIsShielded(boolean isShielded) {
-        this.isShielded = isShielded;
-    }
-
-    @Override
-    public void createShield() {
-        this.setIsShielded(true);
     }
 
     //endregion
