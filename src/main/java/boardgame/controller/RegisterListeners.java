@@ -26,10 +26,6 @@ public class RegisterListeners {
         this.gm = gm;
     }
 
-    public void registerListeners() {
-
-    }
-
     public void registerTileListenersForMove(List<TileView> boardTiles) {
 
         for (TileView hexagonalTile : boardTiles) {
@@ -113,6 +109,4 @@ public class RegisterListeners {
 
         }
     }
-
-
 }

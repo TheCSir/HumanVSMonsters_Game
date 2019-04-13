@@ -36,6 +36,4 @@ public interface IGameManager {
     IPlayer getAttackedPlayer(IPiece getiPiece);
 
     ObservableList<IPiece> getAllPieces();
-
-
 }
