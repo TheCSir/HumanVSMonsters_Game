@@ -5,7 +5,9 @@ import javafx.beans.property.ObjectProperty;
 
 /**
  * The interface Piece. Provides the contract for new pieces on the board. All pieces must at least implement
- * these methods. The piece class is solely responsible for providing
+ * these methods. The piece class is solely responsible for providing a piece's attributes and behaviours.
+ * The Piece classes are well abstracted. They use polymorphism as demonstrated by the specialAbility (still to
+ * be implemented.) The pieces are observed by the view through the Location Property.
  */
 public interface IPiece {
 
@@ -24,7 +26,7 @@ public interface IPiece {
     void setMoveSpeed(int moveSpeed);
 
     /**
-     * Move.
+     * Move the piece.
      *
      * @param direction the direction
      */
@@ -81,4 +83,6 @@ public interface IPiece {
      * Checks shield turn.
      */
     void checkShieldTurn(int turnNumber);
+
+    void specialAbility();
 }

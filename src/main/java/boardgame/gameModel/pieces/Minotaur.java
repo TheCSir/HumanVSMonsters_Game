@@ -10,6 +10,7 @@ public class Minotaur extends Monster {
 
     public void basicAttack(){}
 
+    @Override
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
     }

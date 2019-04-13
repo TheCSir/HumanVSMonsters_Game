@@ -18,8 +18,11 @@ import java.util.List;
 
 
 /**
- * The type Board grid. This view class is responsible for drawing the tiles and pieces on the grid.
- * We are considering spliiting up some of the responsibility here. It i
+ * The Board grid class. This view class is responsible for drawing the tiles and pieces on the grid.
+ * We are considering splitting up some of the responsibility here for assignment 2. It is the information
+ * expert for the tiles and piece on the grid for their view representations. It is the main entry point
+ * for the view. We feel that the class is fairly cohesive. However, the coupling could be reduced by
+ * perhaps separating out the Piece Views from the Tile Views.
  */
 public class BoardGrid {
 
@@ -27,6 +30,47 @@ public class BoardGrid {
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
     private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
+
+    private TileView targetTile;
+    private HexagonTileViewPiece selectedTilePiece = null;
+    private boolean tileSelected = false;
+    private HexagonTileViewPiece targetTilePiece = null;
+
+    public TileView getTargetTile() {
+        return targetTile;
+    }
+
+    public void setTargetTile(TileView targetTile) {
+        this.targetTile = targetTile;
+    }
+
+    public HexagonTileViewPiece getSelectedTilePiece() {
+        return selectedTilePiece;
+    }
+
+    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
+        this.selectedTilePiece = selectedTilePiece;
+    }
+
+    public boolean isTileSelected() {
+        return tileSelected;
+    }
+
+    public void setTileSelected(boolean tileSelected) {
+        this.tileSelected = tileSelected;
+    }
+
+    public HexagonTileViewPiece getTargetTilePiece() {
+        return targetTilePiece;
+    }
+
+    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
+        this.targetTilePiece = targetTilePiece;
+    }
+
+    public void setBoardPane(Pane boardPane) {
+        this.boardPane = boardPane;
+    }
 
     /**
      * Instantiates a new Board grid.
@@ -45,42 +89,6 @@ public class BoardGrid {
      */
     public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
         return pieceObservableList;
-    }
-
-    /**
-     * Sets piece observable list.
-     *
-     * @param pieceObservableList the piece observable list
-     */
-    public void setPieceObservableList(ObservableList<HexagonTileViewPiece> pieceObservableList) {
-        this.pieceObservableList = pieceObservableList;
-    }
-
-    /**
-     * Gets tile view observable map.
-     *
-     * @return the tile view observable map
-     */
-    public ObservableMap<Location, TileView> getTileViewObservableMap() {
-        return tileViewObservableMap;
-    }
-
-    /**
-     * Sets tile view observable map.
-     *
-     * @param tileViewObservableMap the tile view observable map
-     */
-    public void setTileViewObservableMap(ObservableMap<Location, TileView> tileViewObservableMap) {
-        this.tileViewObservableMap = tileViewObservableMap;
-    }
-
-    /**
-     * Add tile.
-     *
-     * @param tileView the tile view
-     */
-    public void addTile(TileView tileView) {
-        tileViewObservableMap.put(tileView.getLocation(), tileView);
     }
 
     /**
@@ -105,29 +113,6 @@ public class BoardGrid {
     private Pane boardPane;
 
     /**
-     * Sets hexagon tile views.
-     *
-     * @param hexagonTileViews the hexagon tile views
-     */
-    public void setHexagonTileViews(ObservableList<TileView> hexagonTileViews) {
-        this.hexagonTileViews = hexagonTileViews;
-    }
-
-    /**
-     * Add pieces.
-     *
-     * @param pieceList the piece list
-     */
-//Add game pieces to the game board.
-    public void addPieces(List<IPiece> pieceList) {
-        pieceObservableList.clear();
-        for (IPiece piece : pieceList) {
-            addPiece(piece);
-        }
-    }
-
-
-    /**
      * Add piece.
      *
      * @param piece the piece
@@ -136,7 +121,7 @@ public class BoardGrid {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
-        HexagonTileViewPiece pieceTile = new HexagonTileViewPiece(xCoord, yCoord, Constants.TILERADIUS, piece);
+        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.TILERADIUS, piece);
         try {
             pieceTile.setImagePattern(imageURL(piece));
         } catch (FileNotFoundException e) {
@@ -238,23 +223,6 @@ public class BoardGrid {
         List<TileView> neighbouringTiles = underTile.getNeighbourViews();
         for (TileView neighbourView : neighbouringTiles) {
             neighbourView.setFill(color);
-        }
-    }
-
-    /**
-     * Sets neighbour tiles color.
-     *
-     * @param selectedTilePiece the selected tile piece
-     * @param depth             the depth
-     */
-// EXPERIMENT: Highlight piece range
-    public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, int depth) {
-        for (int i = 0; i < depth; i++) {
-            TileView underTile = this.getTile(selectedTilePiece.getLocation());
-            List<TileView> rangeTiles = underTile.getNeighbourViews();
-            for (TileView neighbourView : rangeTiles) {
-                neighbourView.setFill(Color.BLUE);
-            }
         }
     }
 
