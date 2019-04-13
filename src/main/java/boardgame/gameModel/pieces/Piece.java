@@ -1,7 +1,6 @@
 package boardgame.gameModel.pieces;
 
 import boardgame.util.Location;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -10,7 +9,6 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public abstract class Piece implements IPiece {
 
-    private IntegerProperty health;
     private int attackStrength;
     private int moveSpeed;
     private boolean isShielded;
