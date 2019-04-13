@@ -13,16 +13,14 @@ public abstract class Player implements IPlayer {
     private int playerID;
     private String playerName;
     private DoubleProperty health;
-    private String playerStatus = "normal";
     private ObservableList<IPiece> pieces;
     private boolean isShielded;
     //endregion
 
-    public Player(int playerID, String playerName, double _health, String playerStatus, ObservableList<IPiece> pieces) {
+    public Player(int playerID, String playerName, double _health, ObservableList<IPiece> pieces) {
         this.playerID = playerID;
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
-        this.playerStatus = playerStatus;
         this.pieces = pieces;
         this.isShielded = false;
     }
@@ -44,6 +42,7 @@ public abstract class Player implements IPlayer {
     }
 
     //region Health methods
+
     @Override
     public DoubleProperty healthProperty() { return health; }
 
@@ -62,18 +61,10 @@ public abstract class Player implements IPlayer {
         double decrementedHeath = this.healthProperty().getValue() - damageValue;
         this.setHealthProperty(decrementedHeath);
     }
+
     //endregion
 
     //region Defense methods
-    @Override
-    public String getPlayerStatus() {
-        return playerStatus;
-    }
-
-    @Override
-    public void setPlayerStatus(String status) {
-        this.playerStatus = status;
-    }
 
     @Override
     public boolean getIsShielded() {
@@ -87,9 +78,9 @@ public abstract class Player implements IPlayer {
 
     @Override
     public void createShield() {
-        this.setPlayerStatus("Shielded");
         this.setIsShielded(true);
     }
+
     //endregion
 
     @Override
