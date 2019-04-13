@@ -1,24 +1,30 @@
 package boardgame.gameModel.players;
 
 import boardgame.gameModel.pieces.IPiece;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 
 public abstract class Player implements IPlayer {
 
+    //region private Player properties
     private int playerID;
     private String playerName;
-    private IntegerProperty health;
+    private DoubleProperty health;
     private String playerStatus = "normal";
     private ObservableList<IPiece> pieces;
+    private boolean isShielded;
+    //endregion
 
-    public Player(int playerID, String playerName, int _health, String playerStatus, ObservableList<IPiece> pieces) {
+    public Player(int playerID, String playerName, double _health, String playerStatus, ObservableList<IPiece> pieces) {
         this.playerID = playerID;
         this.playerName = playerName;
-        this.health = new SimpleIntegerProperty(_health);
+        this.health = new SimpleDoubleProperty(_health);
         this.playerStatus = playerStatus;
         this.pieces = pieces;
+        this.isShielded = false;
     }
 
     public String getPlayerName(){
@@ -37,20 +43,28 @@ public abstract class Player implements IPlayer {
         this.playerID = playerID;
     }
 
+    //region Health methods
     @Override
-    public IntegerProperty healthProperty() { return health; }
+    public DoubleProperty healthProperty() { return health; }
 
     @Override
-    public void setHealthProperty(int value) { health.set(value); }
+    public void setHealthProperty(double value) { health.set(value); }
 
     @Override
     public void decreaseHealthProperty() {
-        System.out.println("BANG!");
-        int decrementedHeath = this.healthProperty().getValue() - 1;
+        // Calculate taken damage value
+        double damageValue;
+        if(this.getIsShielded())
+            damageValue = 0.5;
+        else
+            damageValue = 1;
+
+        double decrementedHeath = this.healthProperty().getValue() - damageValue;
         this.setHealthProperty(decrementedHeath);
     }
+    //endregion
 
-    //code add for defense
+    //region Defense methods
     @Override
     public String getPlayerStatus() {
         return playerStatus;
@@ -62,13 +76,21 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
-    public void createShield() {
-        System.out.println("Shield created");
-        this.setPlayerStatus("Shielded");
-        System.out.println(this.playerStatus);
+    public boolean getIsShielded() {
+        return isShielded;
     }
 
-    //end
+    @Override
+    public void setIsShielded(boolean isShielded) {
+        this.isShielded = isShielded;
+    }
+
+    @Override
+    public void createShield() {
+        this.setPlayerStatus("Shielded");
+        this.setIsShielded(true);
+    }
+    //endregion
 
     @Override
     public ObservableList<IPiece> getPieces() {
