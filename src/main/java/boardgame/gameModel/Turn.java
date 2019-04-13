@@ -5,6 +5,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -49,6 +50,31 @@ public class Turn {
         // This should handle having multiple players on the board
         int nextPlayerIndex = this.getTurnNumber() % players.size();
 
+        checkWin(players);
         setActivePlayer(players.get(nextPlayerIndex));
+    }
+    public void checkWin(List<IPlayer> players) {
+
+        boolean isOver = false;
+        int winner = 0;
+
+        if (players.get(0).healthProperty().getValue() <= 0) {
+
+            isOver = true;
+            winner = 1;
+
+        } else if (players.get(1).healthProperty().getValue() <= 0) {
+            isOver = true;
+            winner = 0;
+        }
+
+        if (isOver) {
+
+            System.out.println("Game Ended");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Ended");
+            alert.setHeaderText("congratulations ! Player " + players.get(winner).getPlayerName() + " Won");
+            alert.showAndWait();
+        }
     }
 }

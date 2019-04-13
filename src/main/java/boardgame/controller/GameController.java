@@ -22,7 +22,6 @@ public class GameController {
 
     public void setUpGame() {
         addPieces(gm.getAllPieces());
-        gm.testPieces();
     }
 
     public void removePiece(IPiece piece) {

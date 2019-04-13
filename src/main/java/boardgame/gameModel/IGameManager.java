@@ -37,5 +37,5 @@ public interface IGameManager {
 
     ObservableList<IPiece> getAllPieces();
 
-    void testPieces();
+
 }
