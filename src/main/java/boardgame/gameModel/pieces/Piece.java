@@ -5,10 +5,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-/*
+/**
     This piece represents a character on the map.
  */
-
 public abstract class Piece implements IPiece {
 
     private IntegerProperty health;
@@ -19,10 +18,13 @@ public abstract class Piece implements IPiece {
         this.moveSpeed = moveSpeed;
         locationProperty = new SimpleObjectProperty<>(location);
     }
+
+    @Override
     public int getMoveSpeed() {
         return moveSpeed;
     }
 
+    @Override
     public void setMoveSpeed(int moveSpeed) {
         this.moveSpeed = moveSpeed;
     }
@@ -37,6 +39,7 @@ public abstract class Piece implements IPiece {
 
     private ObjectProperty<Location> locationProperty;
 
+    @Override
     public Location getLocationProperty() {
         return locationProperty.get();
     }

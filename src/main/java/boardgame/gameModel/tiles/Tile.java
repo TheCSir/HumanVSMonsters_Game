@@ -8,14 +8,16 @@ import java.util.List;
 
 import static org.valid4j.Assertive.require;
 
+/**
+ * Abstract representation of board tile. Inheriting classes will implement the type of terrain (wall, water etc..)
+ */
+
 public abstract class Tile implements ITile {
     List<Location> neighbourPositions;
     private List<ITile> neighbours;
     private Location location;
-    protected final int size = 20;
-    private boolean traversable;
-    private int movementCost;
 
+    //Constructor is package-private. Classes to use factory to instantiate objects.
     Tile(Location location) {
         require(location.getX() >-1 && location.getY() >-1);
         this.location = location;
@@ -23,11 +25,7 @@ public abstract class Tile implements ITile {
         neighbourPositions = new ArrayList<>();
     }
 
-    public boolean getTraversable() {
-        return traversable;
-    }
-
-
+    public abstract boolean getTraversable();
 
     @Override
     public void setLocation(Location location) {
@@ -54,7 +52,6 @@ public abstract class Tile implements ITile {
     public String toString() {
         return "Tile{" +
                 ", location=" + location +
-                ", movementCost=" + movementCost +
                 '}';
     }
 }
