@@ -8,6 +8,7 @@ public class Medusa extends Monster {
     }
 
     public void basicAttack(){}
+
     public void specialAbility(){
         System.out.println("Summoning Snakes!");
     }

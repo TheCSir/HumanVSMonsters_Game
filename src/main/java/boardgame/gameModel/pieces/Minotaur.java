@@ -10,7 +10,6 @@ public class Minotaur extends Monster {
 
     public void basicAttack(){}
 
-    //Should this be refactored to Special Action? Could make it easier.
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
     }
