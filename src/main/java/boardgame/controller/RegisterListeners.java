@@ -16,7 +16,6 @@ import java.util.List;
 
 public class RegisterListeners {
 
-
     private final MainController mainController;
     private IGameManager gm;
 
@@ -82,7 +81,6 @@ public class RegisterListeners {
                 }
             });
         }
-
     }
 
     void registerTurnListeners(Turn turn) {
@@ -102,5 +100,12 @@ public class RegisterListeners {
         );
     }
 
+    public void unRegisterPieceListeners(List<IPiece> pieces) {
+
+        for (IPiece piece : pieces) {
+            piece.locationPropertyProperty().removeListener((observable) ->
+                    PieceView.changePiecePosition(mainController.getSelectedTilePiece(), mainController.getTargetTile()));
+        }
+    }
 
 }

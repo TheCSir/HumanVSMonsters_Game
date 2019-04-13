@@ -10,7 +10,6 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
-import boardgame.view.PieceView;
 import boardgame.view.TileView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static boardgame.util.Constants.TILERADIUS;
@@ -151,9 +149,6 @@ public class MainController implements Initializable {
         return registerListeners;
     }
 
-    private String PieceSelectionOne;
-
-    private String PieceSelectionTwo;
 
     public void setRegisterListeners(RegisterListeners registerListeners) {
         this.registerListeners = registerListeners;
@@ -170,27 +165,19 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         boardGrid = new BoardGrid(boardPane);
-        registerListeners = new RegisterListeners(this, gm);
+        registerListeners = RegisterListenerFactory.createRegisterListeners(this, gm);
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
 
-        // register piece actions
-        moveButton.setOnMouseClicked(e -> handleMoveClicked());
-        attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two));
-        Opt_one.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_one));
-        Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
-        //defense code
-        defendButton.setOnAction(e -> chooseDefenseTargetPiece());
-        //end
 
+        initialiseHandlers();
         initialiseTextFields();
 
         registerListeners.registerTileListenersForMove(boardGrid.getHexagonTileViews());
         registerListeners.registerPlayerListeners(gm.getPlayers(), targetTilePiece, humanHealth, monsterHealth);
         registerListeners.registerTurnListeners(gm.getTurn());
 
-        gameController = new GameController(gm, boardGrid, this);
+        gameController = GameControllerFactory.createGameController(gm, boardGrid, this);
         gameController.setUpGame();
 
         registerListeners.registerPieceListListener();
@@ -216,6 +203,17 @@ public class MainController implements Initializable {
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
         turnTime.setText("Turn Time " + 60);
+    }
+
+    private void initialiseHandlers() {
+        // register piece actions
+        moveButton.setOnMouseClicked(e -> handleMoveClicked());
+        attackButton.setOnAction(e -> chooseAttackTargetPiece());
+        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two));
+        Opt_one.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_one));
+        Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
+        //defense code
+        defendButton.setOnAction(e -> chooseDefenseTargetPiece());
     }
 
     private void assertJFXInjection() {
@@ -248,14 +246,6 @@ public class MainController implements Initializable {
         currentState = State.SWAP;
     }
 
-
-//    //Register listeners for the board pieces.
-//    private void registerPieceListeners(List<IPiece> pieces) {
-//
-//        for (IPiece piece : pieces) {
-//            registerPieceListener(piece);
-//        }
-//    }
 
     public void setTurnNumber(Label turnNumber) {
         this.turnNumber = turnNumber;
@@ -318,13 +308,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void unRegisterPieceListeners(List<IPiece> pieces) {
 
-        for (IPiece piece : pieces) {
-            piece.locationPropertyProperty().removeListener((observable) ->
-                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
-        }
-    }
 
     //Gets input and updates model for piece position.
     public void handleTileClicked(TileView tile) {
@@ -391,15 +375,6 @@ public class MainController implements Initializable {
         }
 
         return false;
-    }
-
-
-    public void setPieceSelectionTwo(String pieceSelectionTwo) {
-        PieceSelectionTwo = pieceSelectionTwo;
-    }
-
-    public void setPieceSelectionOne(String pieceSelectionOne) {
-        PieceSelectionOne = pieceSelectionOne;
     }
 
 

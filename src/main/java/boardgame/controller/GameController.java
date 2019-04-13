@@ -13,7 +13,6 @@ public class GameController {
     private final BoardGrid boardGrid;
     private IGameManager gm;
 
-
     public GameController(IGameManager gm, BoardGrid boardGrid, MainController mainController) {
         this.gm = gm;
         this.boardGrid = boardGrid;
@@ -22,7 +21,6 @@ public class GameController {
 
     public void setUpGame() {
         addPieces(gm.getAllPieces());
-        gm.testPieces();
     }
 
     public void removePiece(IPiece piece) {

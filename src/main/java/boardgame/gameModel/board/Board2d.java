@@ -48,7 +48,6 @@ public abstract class Board2d implements IBoard {
         //First check that moving to a neighbouring position. If so change location.
         if (checkValidMove(piece, location)){
             piece.setLocation(location);
-
             pieceMoved = true;
         }
 
