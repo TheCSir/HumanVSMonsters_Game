@@ -94,6 +94,33 @@ public class MainController implements Initializable {
 
     private BoardGrid boardGrid;
 
+    public enum State {
+        /**
+         * Move state.
+         */
+        MOVE,
+        /**
+         * Attack state.
+         */
+        ATTACK,
+        /**
+         * Special ability state.
+         */
+        SPECIAL_ABILITY,
+        /**
+         * Defense state.
+         */
+        DEFENSE,
+        /**
+         * Swap state.
+         */
+        SWAP,
+        /**
+         * None state.
+         */
+        NONE
+    }
+
     /**
      * This is the main entry point after the App class is started. The MainController holds handler methods
      * for input actions. It also registers the listeners for the model pieces. As our application follows
@@ -101,7 +128,7 @@ public class MainController implements Initializable {
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
      * The MainController class is the main part of application that currently requires major refactoring as
-     * it has a bit too much responsibilty. Whilst it is reasonably cohesive it is highly coupled.
+     * it has a bit too much responsibility. Whilst it is reasonably cohesive it is highly coupled.
      */
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -202,6 +229,8 @@ public class MainController implements Initializable {
         return turnNumber;
     }
 
+
+    //populate GUI text fields
     private void initialiseTextFields() {
 
         currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
@@ -249,14 +278,6 @@ public class MainController implements Initializable {
     }
 
 
-//    //Register listeners for the board pieces.
-//    private void registerPieceListeners(List<IPiece> pieces) {
-//
-//        for (IPiece piece : pieces) {
-//            registerPieceListener(piece);
-//        }
-//    }
-
     public void setTurnNumber(Label turnNumber) {
         this.turnNumber = turnNumber;
     }
@@ -269,7 +290,7 @@ public class MainController implements Initializable {
         this.currentState = currentState;
     }
 
-    //Selects piece.
+    //Method to handle piece clicked.
     public void handlePieceClicked(HexagonTileViewPiece piece) {
         // Reset tiles color
         if(selectedTilePiece != null)
@@ -318,14 +339,6 @@ public class MainController implements Initializable {
         }
     }
 
-    private void unRegisterPieceListeners(List<IPiece> pieces) {
-
-        for (IPiece piece : pieces) {
-            piece.locationPropertyProperty().removeListener((observable) ->
-                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
-        }
-    }
-
     //Gets input and updates model for piece position.
     public void handleTileClicked(TileView tile) {
         assert tile != null;
@@ -345,33 +358,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public enum State {
-        /**
-         * Move state.
-         */
-        MOVE,
-        /**
-         * Attack state.
-         */
-        ATTACK,
-        /**
-         * Special ability state.
-         */
-        SPECIAL_ABILITY,
-        /**
-         * Defense state.
-         */
-        DEFENSE,
-        /**
-         * Swap state.
-         */
-        SWAP,
-        /**
-         * None state.
-         */
-        NONE
-    }
-
+    //Method which does the tile highlight
     private void handleMoveClicked() {
         currentState = State.MOVE;
         if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
@@ -393,13 +380,20 @@ public class MainController implements Initializable {
         return false;
     }
 
-
     public void setPieceSelectionTwo(String pieceSelectionTwo) {
         PieceSelectionTwo = pieceSelectionTwo;
     }
 
     public void setPieceSelectionOne(String pieceSelectionOne) {
         PieceSelectionOne = pieceSelectionOne;
+    }
+
+    private void unRegisterPieceListeners(List<IPiece> pieces) {
+
+        for (IPiece piece : pieces) {
+            piece.locationPropertyProperty().removeListener((observable) ->
+                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
+        }
     }
 
 
