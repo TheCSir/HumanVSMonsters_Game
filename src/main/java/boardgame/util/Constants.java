@@ -10,8 +10,8 @@ public class Constants {
 
 
     //Default players.
-    public static final String PLAYER1 = "Human Player";
-    public static final String PLAYER2 = "Monster Player";
+    public static final String PLAYER1 = "HumanPlayer";
+    public static final String PLAYER2 = "MonsterPlayer";
 
     public static final double TILERADIUS = 40;
 
