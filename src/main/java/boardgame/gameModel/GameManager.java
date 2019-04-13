@@ -6,6 +6,7 @@ import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
+import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,14 +68,14 @@ class GameManager implements IGameManager {
 
     @Override
     public void defaultGameSetup(){
-        //Add default 3 human pieces
+        //Add default Human piece
         setUpHumanPieces();
 
-        //Add default 3 monster pieces
+        //Add default Monster piece
         setUpMonsterPieces();
 
-        IPlayer player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, "normal", humanPieces);
-        IPlayer player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, "normal", monsterPieces);
+        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, "Gandalf", 10, "normal", humanPieces);
+        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, "Sauron", 10, "normal", monsterPieces);
         players.add(player1);
         players.add(player2);
 

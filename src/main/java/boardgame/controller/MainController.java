@@ -6,9 +6,8 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.util.LocationFactory;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.PieceView;
@@ -74,9 +73,6 @@ public class MainController implements Initializable {
 
     @FXML
     private Label monsterHealth;
-
-    @FXML
-    private Button debugAddPiece;
 
     @FXML
     private Button swapButton;
@@ -156,6 +152,7 @@ public class MainController implements Initializable {
     }
 
     private String PieceSelectionOne;
+
     private String PieceSelectionTwo;
 
     public void setRegisterListeners(RegisterListeners registerListeners) {
@@ -180,9 +177,9 @@ public class MainController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> handleSwapAction());
-        Opt_one.setOnAction(e -> doSwap(PieceSelectionOne));
-        Opt_two.setOnAction(e -> doSwap(PieceSelectionTwo));
+        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two));
+        Opt_one.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_one));
+        Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
         //end
@@ -396,84 +393,14 @@ public class MainController implements Initializable {
         return false;
     }
 
-    private void handleSwapAction() {
 
-        //Switch the disabled status
-        SwapPane.setVisible(!SwapPane.isVisible());
-
-        //get current piece class
-        String oldPieceName = gm.getTurn().getActivePlayer().getPieces().get(0).getClass().getName();
-
-        // Button label store location;
-        String OptOne = "";
-        String OptTwo = "";
-
-
-        // Check and populate Gui according to current situation
-        if (oldPieceName.equals(Warrior.class.getName())) {
-            OptOne = Archer.class.getSimpleName();
-            PieceSelectionOne = Archer.class.getName();
-            OptTwo = Priest.class.getSimpleName();
-            PieceSelectionTwo = Priest.class.getName();
-
-        } else if (oldPieceName.equals(Priest.class.getName())) {
-            OptOne = Warrior.class.getSimpleName();
-            PieceSelectionOne = Warrior.class.getName();
-            OptTwo = Archer.class.getSimpleName();
-            PieceSelectionTwo = Archer.class.getName();
-
-        } else if (oldPieceName.equals(Archer.class.getName())) {
-            OptOne = Warrior.class.getSimpleName();
-            PieceSelectionOne = Warrior.class.getName();
-            OptTwo = Priest.class.getSimpleName();
-            PieceSelectionTwo = Priest.class.getName();
-
-        } else if (oldPieceName.equals(Medusa.class.getName())) {
-            OptOne = Griffin.class.getSimpleName();
-            PieceSelectionOne = Griffin.class.getName();
-            OptTwo = Minotaur.class.getSimpleName();
-            PieceSelectionTwo = Minotaur.class.getName();
-
-        } else if (oldPieceName.equals(Griffin.class.getName())) {
-            OptOne = Medusa.class.getSimpleName();
-            PieceSelectionOne = Medusa.class.getName();
-            OptTwo = Minotaur.class.getSimpleName();
-            PieceSelectionTwo = Minotaur.class.getName();
-
-        } else if (oldPieceName.equals(Minotaur.class.getName())) {
-            OptOne = Griffin.class.getSimpleName();
-            PieceSelectionOne = Griffin.class.getName();
-            OptTwo = Medusa.class.getSimpleName();
-            PieceSelectionTwo = Medusa.class.getName();
-
-        }
-
-        // Set button labels
-        Opt_one.setText(OptOne);
-        Opt_two.setText(OptTwo);
-
+    public void setPieceSelectionTwo(String pieceSelectionTwo) {
+        PieceSelectionTwo = pieceSelectionTwo;
     }
 
-    private void doSwap(String Piece) {
-
-        //Get current piece and it's location
-        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
-        int x = oldPiece.getLocation().getX();
-        int y = oldPiece.getLocation().getY();
-
-        //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
-
-        //Create new piece and add to board
-        IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
-
-
-        //Handle GUI validations
-        SwapPane.setVisible(false);
-
-        //End turn
-        gm.getTurn().nextTurn(gm.getPlayers());
+    public void setPieceSelectionOne(String pieceSelectionOne) {
+        PieceSelectionOne = pieceSelectionOne;
     }
+
 
 }
