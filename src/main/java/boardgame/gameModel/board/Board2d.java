@@ -21,7 +21,6 @@ public abstract class Board2d implements IBoard {
         List<ITile> neighbours = getNeighbours(piece);
         for (ITile tile: neighbours) {
             if (tile.getLocation().equals(location)){
-                //System.out.println("True");
                 return true;
             }
         }
@@ -60,9 +59,5 @@ public abstract class Board2d implements IBoard {
 
     public ObservableMap<Location, ITile> getBoardGrid() {
         return boardGrid;
-    }
-
-    public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
-        this.boardGrid = boardGrid;
     }
 }

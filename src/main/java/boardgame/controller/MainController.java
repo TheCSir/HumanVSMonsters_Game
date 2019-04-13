@@ -96,8 +96,7 @@ public class MainController implements Initializable {
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
      * The MainController class is the main part of application that currently requires major refactoring as
-     * it has a bit too much responsibility. Ideally some of the state logic (checking whether a piece has been selected
-     * and then colouring the surrounding tiles for example would be moved out of this class.)
+     * it has a bit too much responsibilty. Whilst it is reasonably cohesive it is highly coupled.
      */
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -115,16 +114,8 @@ public class MainController implements Initializable {
         return selectedTilePiece;
     }
 
-    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
-        this.selectedTilePiece = selectedTilePiece;
-    }
-
     public TileView getTargetTile() {
         return targetTile;
-    }
-
-    public void setTargetTile(TileView targetTile) {
-        this.targetTile = targetTile;
     }
 
     private HexagonTileViewPiece selectedTilePiece = null;
@@ -134,14 +125,6 @@ public class MainController implements Initializable {
     private TileView targetTile = null;
 
     private HexagonTileViewPiece targetTilePiece = null;
-
-    public HexagonTileViewPiece getTargetTilePiece() {
-        return targetTilePiece;
-    }
-
-    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
-        this.targetTilePiece = targetTilePiece;
-    }
 
     public RegisterListeners getRegisterListeners() {
         return registerListeners;
@@ -154,10 +137,6 @@ public class MainController implements Initializable {
 
     public GameController getGameController() {
         return gameController;
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 
     @Override
@@ -184,9 +163,52 @@ public class MainController implements Initializable {
         return turnNumber;
     }
 
+    private void initialiseTextFields() {
+
+        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
+        turnNumber.setText("Turn: " +
+                gm.getTurn().getTurnNumber());
+
+
+        humanHealth.setText("Gandalf Health: " +
+                gm.getTurn().getActivePlayer().healthProperty().getValue());
+
+        monsterHealth.setText("Sauron Health: " +
+                gm.getTurn().getActivePlayer().healthProperty().getValue());
+
+        turnTime.setText("Turn Time " + 60);
+    }
+
+    private void assertJFXInjection() {
+        //Assertions to ensure that injection works
+        assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceHealth != null : "fx:id=\"pieceHealth\" was not injected: check your FXML file 'mainView.fxml'.";
+        assert pieceLocation != null : "fx:id=\"pieceLocation\" was not injected: check your FXML file 'mainView.fxml'.";
+    }
+
+    private void chooseAttackTargetPiece() {
+        currentState = State.ATTACK;
+
+        if(selectedTilePiece != null)
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+    }
+
+    private void chooseDefenseTargetPiece() {
+        currentState = State.DEFENSE;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    //Selects piece.
     public void handlePieceClicked(HexagonTileViewPiece piece) {
         // Reset tiles color
-        if (selectedTilePiece != null)
+        if(selectedTilePiece != null)
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
 
         this.selectedTilePiece = piece;
@@ -199,13 +221,13 @@ public class MainController implements Initializable {
                 + "Y: " + piece.getiPiece().getLocation().getY());
 
 
-        switch (currentState) {
+        switch (currentState){
             case MOVE:
-                if (isActivePlayerPiece())
+                if(isActivePlayerPiece())
                     boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
                 break;
             case ATTACK:
-                if (!isActivePlayerPiece()) {
+                if(!isActivePlayerPiece()) {
                     // get attacked player
                     IPlayer attackedPLayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
 
@@ -230,24 +252,6 @@ public class MainController implements Initializable {
                 break;
         }
     }
-
-    //populate GUI text fields
-
-    private void initialiseTextFields() {
-
-        currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
-        turnNumber.setText("Turn: " +
-                gm.getTurn().getTurnNumber());
-
-        humanHealth.setText("Gandalf Health: " +
-                gm.getTurn().getActivePlayer().healthProperty().getValue());
-
-        monsterHealth.setText("Sauron Health: " +
-                gm.getTurn().getActivePlayer().healthProperty().getValue());
-
-        turnTime.setText("Turn Time " + 60);
-    }
-
     private void initialiseHandlers() {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
@@ -258,58 +262,6 @@ public class MainController implements Initializable {
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
     }
-
-    private void assertJFXInjection() {
-        //Assertions to ensure that injection works
-        assert currentPlayer != null : "fx:id=\"currentPlayer\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert turnTime != null : "fx:id=\"turnTime\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert boardPane != null : "fx:id=\"boardPane\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert tileInfoPane != null : "fx:id=\"tileInfoPane\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceSelected != null : "fx:id=\"pieceSelected\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceHealth != null : "fx:id=\"pieceHealth\" was not injected: check your FXML file 'mainView.fxml'.";
-        assert pieceLocation != null : "fx:id=\"pieceLocation\" was not injected: check your FXML file 'mainView.fxml'.";
-    }
-
-    private void chooseAttackTargetPiece() {
-        currentState = State.ATTACK;
-
-        if(selectedTilePiece != null)
-            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
-    }
-
-    private void chooseAbilityTargetPiece() {
-        currentState = State.SPECIAL_ABILITY;
-    }
-
-    private void chooseDefenseTargetPiece() {
-        currentState = State.DEFENSE;
-    }
-
-    private void chooseSwapTargetPiece() {
-        currentState = State.SWAP;
-    }
-
-
-    public void setTurnNumber(Label turnNumber) {
-        this.turnNumber = turnNumber;
-    }
-
-    public State getCurrentState() {
-        return currentState;
-    }
-
-    public void setCurrentState(State currentState) {
-        this.currentState = currentState;
-    }
-    //Selects piece.
-
-    // Checks if player shield is on and turns it off if it was on
-    private void checkShield() {
-        if (selectedTilePiece.getiPiece().getIsShielded())
-            selectedTilePiece.getiPiece().setIsShielded(false);
-    }
-
-
     //Gets input and updates model for piece position.
 
     public void handleTileClicked(TileView tile) {
@@ -330,12 +282,6 @@ public class MainController implements Initializable {
         }
     }
 
-    private void handleMoveClicked() {
-        currentState = State.MOVE;
-        if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
-            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
-        }
-    }
 
     public enum State {
         /**
@@ -364,6 +310,13 @@ public class MainController implements Initializable {
         NONE
     }
 
+    private void handleMoveClicked() {
+        currentState = State.MOVE;
+        if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
+        }
+    }
+
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(){
         if(selectedTilePiece == null)
@@ -377,6 +330,4 @@ public class MainController implements Initializable {
 
         return false;
     }
-
-
 }

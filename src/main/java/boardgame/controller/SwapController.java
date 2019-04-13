@@ -97,7 +97,5 @@ public class SwapController {
             return Minotaur.class.getName();
         } else
             return null;
-
     }
-
 }
