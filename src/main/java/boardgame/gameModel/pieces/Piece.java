@@ -13,10 +13,13 @@ public abstract class Piece implements IPiece {
     private IntegerProperty health;
     private int attackStrength;
     private int moveSpeed;
+    private boolean isShielded;
+    private int shieldTurn;
 
     public Piece(int moveSpeed, Location location) {
         this.moveSpeed = moveSpeed;
         locationProperty = new SimpleObjectProperty<>(location);
+        this.isShielded = false;
     }
 
     @Override
@@ -55,4 +58,32 @@ public abstract class Piece implements IPiece {
         //this.location.changeLocation(location.getX(), location.getY());
         locationProperty.setValue(location);
     }
+
+    //region Defense methods
+
+    @Override
+    public boolean getIsShielded() {
+        return isShielded;
+    }
+
+    @Override
+    public void setIsShielded(boolean isShielded) {
+        this.isShielded = isShielded;
+    }
+
+    @Override
+    public void createShield(int turnNumber) {
+        this.setIsShielded(true);
+
+        // Set which turn shield has been activated
+        this.shieldTurn = turnNumber;
+    }
+
+    // Checks if shield is activated and expires if shield lasted for more than one turn
+    public void checkShieldTurn(int turnNumber) {
+        if (turnNumber >= this.shieldTurn + 2)
+            this.setIsShielded(false);
+    }
+
+    //endregion
 }

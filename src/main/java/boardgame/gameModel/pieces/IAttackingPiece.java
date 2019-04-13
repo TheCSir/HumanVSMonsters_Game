@@ -5,6 +5,4 @@ public interface IAttackingPiece {
     void basicAttack();
 
     void specialAbility();
-
-    void createShield();
 }

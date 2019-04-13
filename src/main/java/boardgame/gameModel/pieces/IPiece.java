@@ -4,8 +4,8 @@ import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 
 /**
- * The interface Piece. Provides the contract for new picees on the board. All pieces must at least implement
- * these methods.
+ * The interface Piece. Provides the contract for new pieces on the board. All pieces must at least implement
+ * these methods. The piece class is solely responsible for providing
  */
 public interface IPiece {
 
@@ -57,4 +57,28 @@ public interface IPiece {
      * @return the object property
      */
     ObjectProperty locationPropertyProperty();
+
+    /**
+     * Gets isShielded property.
+     *
+     * @return the isShielded property.
+     */
+    boolean getIsShielded();
+
+    /**
+     * Sets isShielded property.
+     *
+     * @param isShielded the isShielded property.
+     */
+    void setIsShielded(boolean isShielded);
+
+    /**
+     * Creates a shield.
+     */
+    void createShield(int turnNumber);
+
+    /**
+     * Checks shield turn.
+     */
+    void checkShieldTurn(int turnNumber);
 }

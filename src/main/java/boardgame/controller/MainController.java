@@ -1,9 +1,5 @@
 package boardgame.controller;
 
-/*
- Controller class for main screen.
- */
-
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
@@ -100,7 +96,8 @@ public class MainController implements Initializable {
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
      * The MainController class is the main part of application that currently requires major refactoring as
-     * it has a bit too much responsibility. Whilst it is reasonably cohesive it is highly coupled.
+     * it has a bit too much responsibility. Ideally some of the state logic (checking whether a piece has been selected
+     * and then colouring the surrounding tiles for example would be moved out of this class.)
      */
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -181,16 +178,61 @@ public class MainController implements Initializable {
         gameController.setUpGame();
 
         registerListeners.registerPieceListListener();
-
-
     }
 
     public Label getTurnNumber() {
         return turnNumber;
     }
 
+    public void handlePieceClicked(HexagonTileViewPiece piece) {
+        // Reset tiles color
+        if (selectedTilePiece != null)
+            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
+
+        this.selectedTilePiece = piece;
+        this.tileSelected = true;
+
+        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
+        pieceLocation.setText("Location: "
+                + "X: " + piece.getiPiece().getLocation().getX()
+                + ", "
+                + "Y: " + piece.getiPiece().getLocation().getY());
+
+
+        switch (currentState) {
+            case MOVE:
+                if (isActivePlayerPiece())
+                    boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
+                break;
+            case ATTACK:
+                if (!isActivePlayerPiece()) {
+                    // get attacked player
+                    IPlayer attackedPLayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
+
+                    attackedPLayer.decreaseHealthProperty(selectedTilePiece.getiPiece());
+
+                    // end turn
+                    gm.getTurn().nextTurn(gm.getPlayers());
+                }
+                break;
+            case SPECIAL_ABILITY:
+                break;
+            case DEFENSE:
+                if (isActivePlayerPiece()) {
+                    // Get active player and create shield
+                    selectedTilePiece.getiPiece().createShield(gm.getTurn().getTurnNumber());
+
+                    // end turn
+                    gm.getTurn().nextTurn(gm.getPlayers());
+                }
+                break;
+            case SWAP:
+                break;
+        }
+    }
 
     //populate GUI text fields
+
     private void initialiseTextFields() {
 
         currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
@@ -215,33 +257,6 @@ public class MainController implements Initializable {
         Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
-    }
-
-    public enum State {
-        /**
-         * Move state.
-         */
-        MOVE,
-        /**
-         * Attack state.
-         */
-        ATTACK,
-        /**
-         * Special ability state.
-         */
-        SPECIAL_ABILITY,
-        /**
-         * Defense state.
-         */
-        DEFENSE,
-        /**
-         * Swap state.
-         */
-        SWAP,
-        /**
-         * None state.
-         */
-        NONE
     }
 
     private void assertJFXInjection() {
@@ -288,52 +303,10 @@ public class MainController implements Initializable {
     }
     //Selects piece.
 
-    public void handlePieceClicked(HexagonTileViewPiece piece) {
-        // Reset tiles color
-        if(selectedTilePiece != null)
-            boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
-
-        this.selectedTilePiece = piece;
-        this.tileSelected = true;
-
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
-                + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
-
-
-        switch (currentState){
-            case MOVE:
-                if(isActivePlayerPiece())
-                    boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
-                break;
-            case ATTACK:
-                if(!isActivePlayerPiece()) {
-                    // get attacked player
-                    IPlayer attackedPLayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
-
-                    attackedPLayer.decreaseHealthProperty();
-
-                    // end turn
-                    gm.getTurn().nextTurn(gm.getPlayers());
-                }
-                break;
-            case SPECIAL_ABILITY:
-                break;
-            case DEFENSE:
-                if (isActivePlayerPiece()) {
-                    // get defense player
-                    IPlayer defensePlayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
-
-                    defensePlayer.createShield();
-                    // end turn
-                    gm.getTurn().nextTurn(gm.getPlayers());
-                }
-                break;
-            case SWAP:
-                break;
-        }
+    // Checks if player shield is on and turns it off if it was on
+    private void checkShield() {
+        if (selectedTilePiece.getiPiece().getIsShielded())
+            selectedTilePiece.getiPiece().setIsShielded(false);
     }
 
 
@@ -362,6 +335,33 @@ public class MainController implements Initializable {
         if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
         }
+    }
+
+    public enum State {
+        /**
+         * Move state.
+         */
+        MOVE,
+        /**
+         * Attack state.
+         */
+        ATTACK,
+        /**
+         * Special ability state.
+         */
+        SPECIAL_ABILITY,
+        /**
+         * Defense state.
+         */
+        DEFENSE,
+        /**
+         * Swap state.
+         */
+        SWAP,
+        /**
+         * None state.
+         */
+        NONE
     }
 
     // Checks if selected piece belongs to the active player

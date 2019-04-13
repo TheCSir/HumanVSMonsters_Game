@@ -99,6 +99,17 @@ public class RegisterListeners {
         turn.turnNumberProperty().addListener(observable ->
                 mainController.setCurrentState(MainController.State.NONE)
         );
+
+        for (IPlayer iPlayer : gm.getPlayers()) {
+            ObservableList<IPiece> pieces = iPlayer.getPieces();
+
+            for (IPiece piece : pieces) {
+                turn.turnNumberProperty().addListener(observable ->
+                        piece.checkShieldTurn(turn.getTurnNumber())
+                );
+            }
+
+        }
     }
 
     public void unRegisterPieceListeners(List<IPiece> pieces) {

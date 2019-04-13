@@ -12,7 +12,4 @@ public class Archer extends Human {
     public void specialAbility() {
         System.out.println("Ranged Attack!");
     }
-
-    public void createShield() {
-    }
 }
