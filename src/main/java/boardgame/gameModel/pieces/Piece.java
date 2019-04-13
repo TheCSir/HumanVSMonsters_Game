@@ -78,7 +78,7 @@ public abstract class Piece implements IPiece {
     }
 
     public void checkShieldTurn(int turnNumber){
-        if(turnNumber == this.shieldTurn + 2)
+        if(turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
     }
 
