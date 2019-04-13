@@ -27,7 +27,6 @@ public abstract class Piece implements IPiece {
         this.moveSpeed = moveSpeed;
     }
 
-    //TODO This should return how far can move instead. NO need to take parameter of direction.
     public void move(int direction) { }
 
     @Override

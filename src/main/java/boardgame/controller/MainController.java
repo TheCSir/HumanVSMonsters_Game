@@ -6,15 +6,9 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.IPlayer;
 import boardgame.gameModel.Turn;
-import boardgame.gameModel.board.Board2DHex;
-import boardgame.gameModel.pieces.Archer;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Medusa;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.tiles.ITile;
-import boardgame.util.Location;
+import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.players.IPlayer;
 import boardgame.util.LocationFactory;
 import boardgame.view.*;
 import javafx.collections.ListChangeListener;
@@ -23,17 +17,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import static boardgame.util.Constants.TILERADIUS;
@@ -62,6 +53,9 @@ public class MainController implements Initializable {
     private Button attackButton;
 
     @FXML
+    private Button defendButton;
+
+    @FXML
     private Text pieceHealth;
 
     @FXML
@@ -79,6 +73,18 @@ public class MainController implements Initializable {
     @FXML
     private Button debugAddPiece;
 
+    @FXML
+    private Button swapButton;
+
+    @FXML
+    private Pane SwapPane;
+
+    @FXML
+    private Button Opt_one;
+
+    @FXML
+    private Button Opt_two;
+
     private enum State{
         MOVE,
         ATTACK,
@@ -93,23 +99,18 @@ public class MainController implements Initializable {
     //Store a reference to the Game manager for main entry point to game.
     private IGameManager gm;
 
-    private Board2DHex board2DHex;
-
     private BoardGrid boardGrid;
 
     private HexagonTileViewPiece selectedTilePiece = null;
 
     private boolean tileSelected = false;
 
-    private HexagonTileView targetTile = null;
+    private TileView targetTile = null;
 
     private HexagonTileViewPiece targetTilePiece = null;
 
-    private IPlayer activePlayer = null;
-
-    public static final String MOVE = "move";
-    private String state = null;
-
+    private String PieceSelectionOne;
+    private String PieceSelectionTwo;
 
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -117,54 +118,36 @@ public class MainController implements Initializable {
 
         gm.defaultGameSetup();
 
-        board2DHex = (Board2DHex) gm.getiBoard();
-
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        Map<Location, ITile> board = board2DHex.getTiles();
-        List<ITile> boardTiles = new ArrayList<>(board.values());
-
-        boardGrid = new BoardGrid();
-        boardGrid.drawBasicGrid(boardTiles, TILERADIUS, boardPane);
+        boardGrid = new BoardGrid(boardPane);
+        boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
 
 
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
+        swapButton.setOnAction(e -> handleSwapAction());
+        Opt_one.setOnAction(e -> doSwap(PieceSelectionOne));
+        Opt_two.setOnAction(e -> doSwap(PieceSelectionTwo));
+        //defense code
+        defendButton.setOnAction(e -> chooseDefenseTargetPiece());
+        //end
 
-//        addPieces(pieces, boardPane);
 
         registerTileListenersForMove(boardGrid.getHexagonTileViews());
         registerPlayerListeners(gm.getPlayers());
         registerTurnListeners(gm.getTurn());
 
         initialiseTextFields();
-        initialiseBoardBackGround();
 
         addPieces(gm.getAllPieces());
         registerPieceListListener();
+        gm.testPieces();
 
-        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
-        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
-        gm.getPlayers().get(0).getPieces().add(archer);
-        gm.getPlayers().get(1).getPieces().add(medusa);
-        gm.getPlayers().get(1).getPieces().remove(medusa);
-
-    }
-
-    private void initialiseBoardBackGround() {
-        // Set up the background.
-        try {
-            FileInputStream input = new FileInputStream("src/main/resources/wood_table_background.jpeg");
-            boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-                    BackgroundSize.DEFAULT)));
-        } catch (FileNotFoundException e) {
-            System.out.println("what");
-        }
     }
 
     private void initialiseTextFields() {
@@ -213,12 +196,10 @@ public class MainController implements Initializable {
         currentState = State.SWAP;
     }
 
-    //TODO refactor to separate class responsible for drawing grid and return AnchorPane.
-    //TODO Add static map to start.
 
-    private void registerTileListenersForMove(List<HexagonTileView> boardTiles) {
+    private void registerTileListenersForMove(List<TileView> boardTiles) {
 
-        for (HexagonTileView hexagonalTile : boardTiles) {
+        for (TileView hexagonalTile : boardTiles) {
 
             //Set tile handlers
             hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
@@ -271,15 +252,6 @@ public class MainController implements Initializable {
                             removePiece(piece);
                         }
                     }
-
-                    //TODO debugging - remove
-                    if (c.wasAdded()) {
-                        System.out.println(c.getAddedSubList().get(0)
-                                + " was added to the list!");
-                    } else if (c.wasRemoved()) {
-                        System.out.println(c.getRemoved().get(0)
-                                + " was removed from the list!");
-                    }
                 }
             });
         }
@@ -310,14 +282,12 @@ public class MainController implements Initializable {
     private void unRegisterPieceListeners(List<IPiece> pieces) {
 
         for (IPiece piece : pieces) {
-            PieceView pieceView = new PieceView();
             piece.locationPropertyProperty().removeListener((observable) ->
-                    pieceView.changePiecePosition(selectedTilePiece, targetTile));
+                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
     //Add game pieces to the game board.
-
     private void addPieces(List<IPiece> pieceList) {
 
         for (IPiece piece : pieceList) {
@@ -341,9 +311,8 @@ public class MainController implements Initializable {
     }
 
     private void registerPieceListener(IPiece piece) {
-        PieceView pieceView = new PieceView();
         piece.locationPropertyProperty().addListener((observable) ->
-                pieceView.changePiecePosition(selectedTilePiece, targetTile));
+                PieceView.changePiecePosition(selectedTilePiece, targetTile));
     }
 
     //Selects piece.
@@ -381,15 +350,22 @@ public class MainController implements Initializable {
             case SPECIAL_ABILITY:
                 break;
             case DEFENSE:
+                if (isActivePlayerPiece()) {
+                    // get defense player
+                    IPlayer defensePlayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
+
+                    defensePlayer.createShield();
+                    // end turn
+                    gm.getTurn().nextTurn(gm.getPlayers());
+                }
                 break;
             case SWAP:
                 break;
         }
     }
 
-
     //Gets input and updates model for piece position.
-    private void handleTileClicked(HexagonTileView tile) {
+    private void handleTileClicked(TileView tile) {
         assert tile != null;
         targetTile = tile;
 
@@ -426,6 +402,86 @@ public class MainController implements Initializable {
         }
 
         return false;
+    }
+
+    private void handleSwapAction() {
+
+        //Switch the disabled status
+        SwapPane.setVisible(!SwapPane.isVisible());
+
+        //get current piece class
+        String oldPieceName = gm.getTurn().getActivePlayer().getPieces().get(0).getClass().getName();
+
+        // Button label store location;
+        String OptOne = "";
+        String OptTwo = "";
+
+
+        // Check and populate Gui according to current situation
+        if (oldPieceName.equals(Warrior.class.getName())) {
+            OptOne = Archer.class.getSimpleName();
+            PieceSelectionOne = Archer.class.getName();
+            OptTwo = Priest.class.getSimpleName();
+            PieceSelectionTwo = Priest.class.getName();
+
+        } else if (oldPieceName.equals(Priest.class.getName())) {
+            OptOne = Warrior.class.getSimpleName();
+            PieceSelectionOne = Warrior.class.getName();
+            OptTwo = Archer.class.getSimpleName();
+            PieceSelectionTwo = Archer.class.getName();
+
+        } else if (oldPieceName.equals(Archer.class.getName())) {
+            OptOne = Warrior.class.getSimpleName();
+            PieceSelectionOne = Warrior.class.getName();
+            OptTwo = Priest.class.getSimpleName();
+            PieceSelectionTwo = Priest.class.getName();
+
+        } else if (oldPieceName.equals(Medusa.class.getName())) {
+            OptOne = Griffin.class.getSimpleName();
+            PieceSelectionOne = Griffin.class.getName();
+            OptTwo = Minotaur.class.getSimpleName();
+            PieceSelectionTwo = Minotaur.class.getName();
+
+        } else if (oldPieceName.equals(Griffin.class.getName())) {
+            OptOne = Medusa.class.getSimpleName();
+            PieceSelectionOne = Medusa.class.getName();
+            OptTwo = Minotaur.class.getSimpleName();
+            PieceSelectionTwo = Minotaur.class.getName();
+
+        } else if (oldPieceName.equals(Minotaur.class.getName())) {
+            OptOne = Griffin.class.getSimpleName();
+            PieceSelectionOne = Griffin.class.getName();
+            OptTwo = Medusa.class.getSimpleName();
+            PieceSelectionTwo = Medusa.class.getName();
+
+        }
+
+        // Set button labels
+        Opt_one.setText(OptOne);
+        Opt_two.setText(OptTwo);
+
+    }
+
+    private void doSwap(String Piece) {
+
+        //Get current piece and it's location
+        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        int x = oldPiece.getLocation().getX();
+        int y = oldPiece.getLocation().getY();
+
+        //Remove current piece
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+
+        //Create new piece and add to board
+        IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+
+        //Handle GUI validations
+        SwapPane.setVisible(false);
+
+        //End turn
+        gm.getTurn().nextTurn(gm.getPlayers());
     }
 
 }

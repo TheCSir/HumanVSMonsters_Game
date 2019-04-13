@@ -10,11 +10,11 @@ import java.util.List;
 
 public abstract class Board2d implements IBoard {
 
-    protected ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
+    private ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
 
-    public abstract void insertPiece(IPiece piece);
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);
+
 
     private boolean checkValidMove(IPiece piece, Location location) {
 
@@ -26,6 +26,11 @@ public abstract class Board2d implements IBoard {
             }
         }
         return false;
+    }
+
+    @Override
+    public ObservableMap<Location, ITile> getTiles() {
+        return this.getBoardGrid();
     }
 
     //Ensure returned value is not outside grid.
@@ -52,5 +57,13 @@ public abstract class Board2d implements IBoard {
 
     private List<ITile> getNeighbours(IPiece piece) {
         return boardGrid.get(piece.getLocation()).getNeighbours();
+    }
+
+    public ObservableMap<Location, ITile> getBoardGrid() {
+        return boardGrid;
+    }
+
+    public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
+        this.boardGrid = boardGrid;
     }
 }

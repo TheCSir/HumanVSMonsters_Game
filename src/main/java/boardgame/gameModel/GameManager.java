@@ -1,11 +1,11 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.board.Board2DHex;
+import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.Griffin;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.pieces.Warrior;
+import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.PlayerFactory;
 import boardgame.util.LocationFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,9 +23,8 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
     //Default constructor
-    public GameManager() {
+    GameManager() {
         players = new ArrayList<>();
-
     }
 
     @Override
@@ -49,17 +48,8 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public IBoard setUpBoard(){
-        Board2DHex board2DHex = new Board2DHex();
-        board2DHex.setUpTiles(10, 10);
-        return board2DHex;
-    }
-
-    @Override
-    public IBoard setUpBoard(int rows, int columns) {
-        Board2DHex board2DHex = new Board2DHex();
-        board2DHex.setUpTiles(rows, columns);
-        return board2DHex;
+    public IBoard setUpBoard(String boardType, int rows, int columns) {
+        return BoardFactory.createBoard(boardType, rows, columns);
     }
 
     @Override
@@ -85,13 +75,13 @@ class GameManager implements IGameManager {
         //Add default 3 monster pieces
         setUpMonsterPieces();
 
-        Player player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, humanPieces);
-        Player player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, monsterPieces);
+        IPlayer player1 = PlayerFactory.createPlayer("HumanPlayer", 1, "Gandalf", 10, "normal", humanPieces);
+        IPlayer player2 = PlayerFactory.createPlayer("MonsterPlayer", 2, "Sauron", 10, "normal", monsterPieces);
         players.add(player1);
         players.add(player2);
 
         //Set up default board.
-        iBoard = setUpBoard();
+        iBoard = setUpBoard(Board2DHex.class.getName(), 10, 10);
 
         turn = new Turn();
         turn.initialiseTurns(players);
@@ -132,5 +122,14 @@ class GameManager implements IGameManager {
         allpieces.addAll(players.get(0).getPieces());
         allpieces.addAll(players.get(1).getPieces());
         return allpieces;
+    }
+
+    @Override
+    public void testPieces() {
+        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
+        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
+        getPlayers().get(0).getPieces().add(archer);
+        getPlayers().get(1).getPieces().add(medusa);
+        getPlayers().get(1).getPieces().remove(medusa);
     }
 }

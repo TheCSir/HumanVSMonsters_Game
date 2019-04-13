@@ -1,4 +1,4 @@
-package boardgame.gameModel;
+package boardgame.gameModel.players;
 
 import boardgame.gameModel.pieces.IPiece;
 import javafx.beans.property.IntegerProperty;
@@ -19,6 +19,15 @@ public interface IPlayer {
     void setHealthProperty(int value);
 
     void decreaseHealthProperty();
+
+    //code add for defense
+    String getPlayerStatus();
+
+    void setPlayerStatus(String status);
+
+    void createShield();
+
+    //end
 
     ObservableList<IPiece> getPieces();
 

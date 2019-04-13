@@ -1,53 +1,51 @@
 package boardgame.view;
 
-import boardgame.gameModel.tiles.HexagonalTile;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Location;
 import javafx.collections.FXCollections;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Polygon;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public class HexagonTileView extends Polygon {
+public class HexagonTileView extends TileView {
 
-    public double getInitalY() {
-        return initalY;
-    }
-
+    private double initialX;
+    private double initalY;
+    private List<TileView> neighbourViews = FXCollections.observableArrayList();
     private ITile modelTile;
+
 
     HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
         super();
-        this.modelTile=hexagonalTile;
+        this.modelTile = hexagonalTile;
         drawTile(x, y, radius);
     }
 
     HexagonTileView() {
 
     }
-
     //Radius - the inner radius from hexagon center to outer corner
+
+
+    @Override
+    public double getInitalY() {
+        return initalY;
+    }
 
     @Override
     public String toString() {
         return super.toString();
     }
 
-    public HexagonTileView(double x, double y, double radius, HexagonalTile hexTile) {
-        super();
-        this.modelTile=hexTile;
-        drawTile(x, y, radius);
-    }
 
-    void drawTile(double x, double y, double radius) {
-        this.initalY=y;
-        this.initialX=x;
-        double TILE_HEIGHT = 2 * radius;
+    @Override
+    public void drawTile(double x, double y, double radius) {
+        this.initalY = y;
+        this.initialX = x;
 
         double n = Math.sqrt(radius * radius * 0.75); // the inner radius from hexagon center to middle of the axis
         double TILE_WIDTH = 2 * n;
@@ -69,80 +67,101 @@ public class HexagonTileView extends Polygon {
         setStroke(Color.BLACK);
     }
 
-    public HexagonTileView(HexagonalTile tile) {
-        //Hold a reference to the tile from the model that this is drawing.
-        this.modelTile = tile;
-    }
 
-
-    void setImagePattern(String imageUrl) throws FileNotFoundException {
+    @Override
+    public void setImagePattern(String imageUrl) throws FileNotFoundException {
         //Loading image from URL
         ImagePattern imagePattern = new ImagePattern(new Image(new FileInputStream(imageUrl)));
         setFill(imagePattern);
     }
 
+
+    @Override
     public double getXPosition() {
         return getBoundsInParent().getCenterX();
     }
 
+
+    @Override
     public double getYPosition() {
         return getBoundsInParent().getCenterY();
     }
 
 
-    private double initialX;
-    private double initalY;
-
-    double getInitialX() {
+    @Override
+    public double getInitialX() {
         return this.initialX;
     }
 
-    double getInitialY() {
+
+    @Override
+    public double getInitialY() {
         return this.initalY;
     }
 
+
+    @Override
     public void setInitialX(double x) {
-        this.initialX=x;
+        this.initialX = x;
     }
 
+
+    @Override
     public void setInitalY(double y) {
         this.initalY = y;
     }
 
+
+    @Override
     public Location getLocation() {
         return modelTile.getLocation();
     }
 
+
+    @Override
     public void setLocation(Location gridPosition) {
         modelTile.setLocation(gridPosition);
     }
 
+
+    @Override
     public void addNeighbour(ITile tile) {
-       modelTile.addNeighbour(tile);
+        modelTile.addNeighbour(tile);
     }
 
-    List<ITile> getNeighbours() {
+
+    @Override
+    public List<ITile> getNeighbours() {
         return modelTile.getNeighbours();
     }
+
+
+    @Override
     public ITile getModelTile() {
         return modelTile;
     }
 
-    public void setModelTile(HexagonalTile modelTile) {
+
+    @Override
+    public void setModelTile(ITile modelTile) {
         this.modelTile = modelTile;
     }
 
-    private List<HexagonTileView> neighbourViews = FXCollections.observableArrayList();
 
-    List<HexagonTileView> getNeighbourViews() {
+    @Override
+    public List<TileView> getNeighbourViews() {
         return neighbourViews;
     }
 
-    public void setNeighbourViews(List<HexagonTileView> neighbourViews) {
+
+    @Override
+    public void setNeighbourViews(List<TileView> neighbourViews) {
         this.neighbourViews = neighbourViews;
     }
 
-    void addNeighbourView(HexagonTileView tileView) {
+
+    @Override
+    public void addNeighbourView(TileView tileView) {
         this.neighbourViews.add(tileView);
     }
 }

@@ -2,6 +2,7 @@ package boardgame.gameModel;
 
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -16,9 +17,7 @@ public interface IGameManager {
 
     void setMonsterPieces(ObservableList<IPiece> monsterPieces);
 
-    IBoard setUpBoard();
-
-    IBoard setUpBoard(int rows, int columns);
+    IBoard setUpBoard(String boardType, int rows, int columns);
 
     void setUpMonsterPieces();
 
@@ -37,4 +36,6 @@ public interface IGameManager {
     IPlayer getAttackedPlayer(IPiece getiPiece);
 
     ObservableList<IPiece> getAllPieces();
+
+    void testPieces();
 }

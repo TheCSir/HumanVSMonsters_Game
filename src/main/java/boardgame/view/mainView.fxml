@@ -151,6 +151,14 @@
                                 <Insets bottom="15.0"/>
                             </VBox.margin>
                         </Button>
+                        <Pane fx:id="SwapPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+                            <children>
+                                <Button fx:id="Opt_one" layoutX="21.0" layoutY="2.0" mnemonicParsing="false"
+                                        text="Button"/>
+                                <Button fx:id="Opt_two" layoutX="118.0" layoutY="2.0" mnemonicParsing="false"
+                                        text="Button"/>
+                            </children>
+                        </Pane>
                     </children>
                 </VBox>
             </children>

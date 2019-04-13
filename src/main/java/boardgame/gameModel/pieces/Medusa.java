@@ -11,4 +11,7 @@ public class Medusa extends Monster {
     public void specialAbility(){
         System.out.println("Summoning Snakes!");
     }
+
+    public void createShield() {
+    }
 }

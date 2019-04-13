@@ -1,6 +1,6 @@
 package boardgame.view;
 
-import boardgame.gameModel.IPlayer;
+import boardgame.gameModel.players.IPlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

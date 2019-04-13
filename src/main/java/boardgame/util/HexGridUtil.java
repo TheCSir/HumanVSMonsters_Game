@@ -6,7 +6,6 @@ import java.util.List;
 public class HexGridUtil {
 
     //Calculates what the neighbour positions will be on a hexagonal grid.
-    //TODO May belong in a different class.
     public static List<Location> getNeighbourPositions(Location location) {
         int tGridX = location.getX();
         int tGRidY = location.getY();
