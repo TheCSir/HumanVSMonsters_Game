@@ -18,7 +18,6 @@ public class Board2DHex extends Board2d {
         setUpTiles(rows, columns);
     }
 
-
     //Variable size
     public void setUpTiles(int rows, int columns) {
 
@@ -71,7 +70,6 @@ public class Board2DHex extends Board2d {
         return super.checkMapLocation(location, rows, columns);
     }
 
-
     //For each tile store their neighbouring tiles.
     private void addNeighbours() {
         for (ITile t : getTiles().values()) {
@@ -84,5 +82,4 @@ public class Board2DHex extends Board2d {
             }
         }
     }
-
 }

@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public abstract class Piece implements IPiece {
 
-    private int attackStrength;
     private int moveSpeed;
     private boolean isShielded;
     private int shieldTurn;

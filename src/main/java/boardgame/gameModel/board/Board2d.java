@@ -62,8 +62,4 @@ public abstract class Board2d implements IBoard {
     public ObservableMap<Location, ITile> getBoardGrid() {
         return boardGrid;
     }
-
-    public void setBoardGrid(ObservableMap<Location, ITile> boardGrid) {
-        this.boardGrid = boardGrid;
-    }
 }

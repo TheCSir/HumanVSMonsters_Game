@@ -119,16 +119,8 @@ public class MainController implements Initializable {
         return selectedTilePiece;
     }
 
-    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
-        this.selectedTilePiece = selectedTilePiece;
-    }
-
     public TileView getTargetTile() {
         return targetTile;
-    }
-
-    public void setTargetTile(TileView targetTile) {
-        this.targetTile = targetTile;
     }
 
     private HexagonTileViewPiece selectedTilePiece = null;
@@ -139,32 +131,12 @@ public class MainController implements Initializable {
 
     private HexagonTileViewPiece targetTilePiece = null;
 
-    public HexagonTileViewPiece getTargetTilePiece() {
-        return targetTilePiece;
-    }
-
-    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
-        this.targetTilePiece = targetTilePiece;
-    }
-
     public RegisterListeners getRegisterListeners() {
         return registerListeners;
     }
 
-    private String PieceSelectionOne;
-
-    private String PieceSelectionTwo;
-
-    public void setRegisterListeners(RegisterListeners registerListeners) {
-        this.registerListeners = registerListeners;
-    }
-
     public GameController getGameController() {
         return gameController;
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 
     @Override
@@ -234,24 +206,8 @@ public class MainController implements Initializable {
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
     }
 
-    private void chooseAbilityTargetPiece() {
-        currentState = State.SPECIAL_ABILITY;
-    }
-
     private void chooseDefenseTargetPiece() {
         currentState = State.DEFENSE;
-    }
-
-    private void chooseSwapTargetPiece() {
-        currentState = State.SWAP;
-    }
-
-    public void setTurnNumber(Label turnNumber) {
-        this.turnNumber = turnNumber;
-    }
-
-    public State getCurrentState() {
-        return currentState;
     }
 
     public void setCurrentState(State currentState) {
@@ -359,12 +315,6 @@ public class MainController implements Initializable {
         }
     }
 
-    // Checks if player shield is on and turns it off if it was on
-    private void checkShield(){
-        if(selectedTilePiece.getiPiece().getIsShielded())
-            selectedTilePiece.getiPiece().setIsShielded(false);
-    }
-
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(){
         if(selectedTilePiece == null)
@@ -378,15 +328,4 @@ public class MainController implements Initializable {
 
         return false;
     }
-
-
-    public void setPieceSelectionTwo(String pieceSelectionTwo) {
-        PieceSelectionTwo = pieceSelectionTwo;
-    }
-
-    public void setPieceSelectionOne(String pieceSelectionOne) {
-        PieceSelectionOne = pieceSelectionOne;
-    }
-
-
 }
