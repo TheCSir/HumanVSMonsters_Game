@@ -85,6 +85,7 @@ public class MainController implements Initializable {
 
     @FXML
     private Button Opt_two;
+
     private GameController gameController;
 
     private State currentState = State.NONE;
@@ -93,6 +94,14 @@ public class MainController implements Initializable {
     private IGameManager gm;
 
     private BoardGrid boardGrid;
+
+    private HexagonTileViewPiece selectedTilePiece = null;
+
+    private boolean tileSelected = false;
+
+    private TileView targetTile = null;
+
+    private HexagonTileViewPiece targetTilePiece = null;
 
     public enum State {
         /**
@@ -158,13 +167,6 @@ public class MainController implements Initializable {
         this.targetTile = targetTile;
     }
 
-    private HexagonTileViewPiece selectedTilePiece = null;
-
-    private boolean tileSelected = false;
-
-    private TileView targetTile = null;
-
-    private HexagonTileViewPiece targetTilePiece = null;
 
     public HexagonTileViewPiece getTargetTilePiece() {
         return targetTilePiece;
@@ -177,10 +179,6 @@ public class MainController implements Initializable {
     public RegisterListeners getRegisterListeners() {
         return registerListeners;
     }
-
-    private String PieceSelectionOne;
-
-    private String PieceSelectionTwo;
 
     public void setRegisterListeners(RegisterListeners registerListeners) {
         this.registerListeners = registerListeners;
@@ -378,14 +376,6 @@ public class MainController implements Initializable {
         }
 
         return false;
-    }
-
-    public void setPieceSelectionTwo(String pieceSelectionTwo) {
-        PieceSelectionTwo = pieceSelectionTwo;
-    }
-
-    public void setPieceSelectionOne(String pieceSelectionOne) {
-        PieceSelectionOne = pieceSelectionOne;
     }
 
     private void unRegisterPieceListeners(List<IPiece> pieces) {

@@ -50,8 +50,6 @@ public abstract class Player implements IPlayer {
         int decrementedHeath = this.healthProperty().getValue() - 1;
         this.setHealthProperty(decrementedHeath);
     }
-
-    //code add for defense
     @Override
     public String getPlayerStatus() {
         return playerStatus;
@@ -68,8 +66,6 @@ public abstract class Player implements IPlayer {
         this.setPlayerStatus("Shielded");
         System.out.println(this.playerStatus);
     }
-
-    //end
 
     @Override
     public ObservableList<IPiece> getPieces() {

@@ -122,13 +122,4 @@ class GameManager implements IGameManager {
         allpieces.addAll(players.get(1).getPieces());
         return allpieces;
     }
-
-    @Override
-    public void testPieces() {
-        IPiece medusa = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(3, 3));
-        IPiece archer = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(7, 7));
-        getPlayers().get(0).getPieces().add(archer);
-        getPlayers().get(1).getPieces().add(medusa);
-        getPlayers().get(1).getPieces().remove(medusa);
-    }
 }
