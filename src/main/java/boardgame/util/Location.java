@@ -1,14 +1,16 @@
 package boardgame.util;
 
-/*
-    Simple wrapper to store x and y coordinates.
-*/
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.Objects;
 
+/**
+ * Simple wrapper to store x and y coordinates. This class is relied upon by many other classes. Whilst it
+ * is highly coupled as many different classes access location we are less worried about the coupling as it is
+ * simple wrapper class which provides a listener for a location. This allows the view to easily list to where a piece
+ * is and redraw the piece when its location changes.
+ */
 public class Location {
 
     private final IntegerProperty xProperty;
@@ -17,15 +19,6 @@ public class Location {
     public Location(int x, int y) {
         xProperty = new SimpleIntegerProperty(this,"xProperty", x);
         yProperty = new SimpleIntegerProperty(this,"yProperty", y);
-    }
-
-
-    public IntegerProperty getXProperty() {
-        return xProperty;
-    }
-
-    public IntegerProperty getYProperty() {
-        return yProperty;
     }
 
     public final int getX() {
