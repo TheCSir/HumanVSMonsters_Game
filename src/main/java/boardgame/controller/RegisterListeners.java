@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.util.Constants;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.PieceView;
 import boardgame.view.PlayerView;
@@ -50,14 +51,14 @@ public class RegisterListeners {
             player.healthProperty().addListener((observable) ->
                     playerView.decreaseHealthBar(player, targetTilePiece));
 
-            if (player.getClass().getSimpleName().equals("HumanPlayer")) {
+            if (player.getClass().getSimpleName().equals(Constants.PLAYER1)) {
                 player.healthProperty().addListener((observable) ->
-                        humanHealth.setText("Gandalf Health: " +
+                        humanHealth.setText(Constants.PLAYERNAME1+" Health: " +
                                 player.healthProperty().getValue())
                 );
-            } else if (player.getClass().getSimpleName().equals("MonsterPlayer")) {
+            } else if (player.getClass().getSimpleName().equals(Constants.PLAYER2)) {
                 player.healthProperty().addListener((observable) ->
-                        monsterHealth.setText("Sauron Health: " +
+                        monsterHealth.setText(Constants.PLAYERNAME2+" Health: " +
                                 player.healthProperty().getValue())
                 );
             }

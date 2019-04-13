@@ -151,10 +151,6 @@ public class MainController implements Initializable {
         return registerListeners;
     }
 
-    private String PieceSelectionOne;
-
-    private String PieceSelectionTwo;
-
     public void setRegisterListeners(RegisterListeners registerListeners) {
         this.registerListeners = registerListeners;
     }
@@ -395,15 +391,5 @@ public class MainController implements Initializable {
 
         return false;
     }
-
-
-    public void setPieceSelectionTwo(String pieceSelectionTwo) {
-        PieceSelectionTwo = pieceSelectionTwo;
-    }
-
-    public void setPieceSelectionOne(String pieceSelectionOne) {
-        PieceSelectionOne = pieceSelectionOne;
-    }
-
 
 }
