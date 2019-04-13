@@ -194,8 +194,6 @@ public class MainController implements Initializable {
         gameController.setUpGame();
 
         registerListeners.registerPieceListListener();
-
-
     }
 
     public Label getTurnNumber() {
@@ -306,7 +304,7 @@ public class MainController implements Initializable {
             case DEFENSE:
                 if (isActivePlayerPiece()) {
                     // Get active player and create shield
-                    selectedTilePiece.getiPiece().createShield();
+                    selectedTilePiece.getiPiece().createShield(gm.getTurn().getTurnNumber());
 
                     // end turn
                     gm.getTurn().nextTurn(gm.getPlayers());

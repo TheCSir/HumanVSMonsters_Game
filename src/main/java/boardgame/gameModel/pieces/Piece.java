@@ -14,6 +14,7 @@ public abstract class Piece implements IPiece {
     private int attackStrength;
     private int moveSpeed;
     private boolean isShielded;
+    private int shieldTurn;
 
     public Piece(int moveSpeed, Location location) {
         this.moveSpeed = moveSpeed;
@@ -71,12 +72,13 @@ public abstract class Piece implements IPiece {
     }
 
     @Override
-    public void createShield() {
+    public void createShield(int turnNumber) {
         this.setIsShielded(true);
+        this.shieldTurn = turnNumber;
     }
 
-    private void checkShieldTurn(){
-        if(this.getIsShielded())
+    public void checkShieldTurn(int turnNumber){
+        if(turnNumber == this.shieldTurn + 2)
             this.setIsShielded(false);
     }
 
