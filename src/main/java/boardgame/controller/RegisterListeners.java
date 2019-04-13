@@ -28,6 +28,7 @@ public class RegisterListeners {
 
     }
 
+    // Register listeners for specific actions
     public void registerTileListenersForMove(List<TileView> boardTiles) {
 
         for (TileView hexagonalTile : boardTiles) {

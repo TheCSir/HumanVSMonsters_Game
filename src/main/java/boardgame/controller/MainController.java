@@ -92,6 +92,7 @@ public class MainController implements Initializable {
 
     private BoardGrid boardGrid;
 
+
     /**
      * This is the main entry point after the App class is started. The MainController holds handler methods
      * for input actions. It also registers the listeners for the model pieces. As our application follows
@@ -99,7 +100,7 @@ public class MainController implements Initializable {
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
      * The MainController class is the main part of application that currently requires major refactoring as
-     * it has a bit too much responsibilty. Whilst it is reasonably cohesive it is highly coupled.
+     * it has a bit too much responsibility. Whilst it is reasonably cohesive it is highly coupled.
      */
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
@@ -169,7 +170,6 @@ public class MainController implements Initializable {
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
 
-
         initialiseHandlers();
         initialiseTextFields();
 
@@ -189,12 +189,13 @@ public class MainController implements Initializable {
         return turnNumber;
     }
 
+
+    //populate GUI text fields
     private void initialiseTextFields() {
 
         currentPlayer.setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName());
         turnNumber.setText("Turn: " +
                 gm.getTurn().getTurnNumber());
-
 
         humanHealth.setText("Gandalf Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
@@ -214,6 +215,33 @@ public class MainController implements Initializable {
         Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
+    }
+
+    public enum State {
+        /**
+         * Move state.
+         */
+        MOVE,
+        /**
+         * Attack state.
+         */
+        ATTACK,
+        /**
+         * Special ability state.
+         */
+        SPECIAL_ABILITY,
+        /**
+         * Defense state.
+         */
+        DEFENSE,
+        /**
+         * Swap state.
+         */
+        SWAP,
+        /**
+         * None state.
+         */
+        NONE
     }
 
     private void assertJFXInjection() {
@@ -258,8 +286,8 @@ public class MainController implements Initializable {
     public void setCurrentState(State currentState) {
         this.currentState = currentState;
     }
-
     //Selects piece.
+
     public void handlePieceClicked(HexagonTileViewPiece piece) {
         // Reset tiles color
         if(selectedTilePiece != null)
@@ -309,8 +337,8 @@ public class MainController implements Initializable {
     }
 
 
-
     //Gets input and updates model for piece position.
+
     public void handleTileClicked(TileView tile) {
         assert tile != null;
         targetTile = tile;
@@ -327,33 +355,6 @@ public class MainController implements Initializable {
                 gm.getTurn().nextTurn(gm.getPlayers());
             }
         }
-    }
-
-    public enum State {
-        /**
-         * Move state.
-         */
-        MOVE,
-        /**
-         * Attack state.
-         */
-        ATTACK,
-        /**
-         * Special ability state.
-         */
-        SPECIAL_ABILITY,
-        /**
-         * Defense state.
-         */
-        DEFENSE,
-        /**
-         * Swap state.
-         */
-        SWAP,
-        /**
-         * None state.
-         */
-        NONE
     }
 
     private void handleMoveClicked() {

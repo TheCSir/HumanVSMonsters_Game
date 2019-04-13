@@ -1,6 +1,7 @@
 package boardgame.gameModel.players;
 
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.util.Constants;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -10,7 +11,7 @@ public abstract class Player implements IPlayer {
     private int playerID;
     private String playerName;
     private IntegerProperty health;
-    private String playerStatus = "normal";
+    private String playerStatus = Constants.IDEALSTATUS;
     private ObservableList<IPiece> pieces;
 
     public Player(int playerID, String playerName, int _health, String playerStatus, ObservableList<IPiece> pieces) {

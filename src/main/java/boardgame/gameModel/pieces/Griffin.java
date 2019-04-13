@@ -8,6 +8,7 @@ public class Griffin extends Monster {
     }
 
     public void basicAttack(){}
+
     public void specialAbility(){
         System.out.println("Summon Hawks!");
     }

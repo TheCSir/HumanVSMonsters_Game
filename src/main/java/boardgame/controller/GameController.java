@@ -7,11 +7,13 @@ import boardgame.view.HexagonTileViewPiece;
 
 import java.util.List;
 
+
 public class GameController {
 
     private final MainController mainController;
     private final BoardGrid boardGrid;
     private IGameManager gm;
+
 
     public GameController(IGameManager gm, BoardGrid boardGrid, MainController mainController) {
         this.gm = gm;
@@ -47,4 +49,5 @@ public class GameController {
             }
         }
     }
+
 }
