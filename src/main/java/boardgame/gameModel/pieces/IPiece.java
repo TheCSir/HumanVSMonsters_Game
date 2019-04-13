@@ -77,5 +77,8 @@ public interface IPiece {
      */
     void createShield(int turnNumber);
 
+    /**
+     * Checks shield turn.
+     */
     void checkShieldTurn(int turnNumber);
 }
