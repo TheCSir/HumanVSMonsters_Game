@@ -194,8 +194,6 @@ public class MainController implements Initializable {
         gameController.setUpGame();
 
         registerListeners.registerPieceListListener();
-
-
     }
 
     public Label getTurnNumber() {
@@ -295,7 +293,7 @@ public class MainController implements Initializable {
                     // get attacked player
                     IPlayer attackedPLayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
 
-                    attackedPLayer.decreaseHealthProperty();
+                    attackedPLayer.decreaseHealthProperty(selectedTilePiece.getiPiece());
 
                     // end turn
                     gm.getTurn().nextTurn(gm.getPlayers());
@@ -305,10 +303,9 @@ public class MainController implements Initializable {
                 break;
             case DEFENSE:
                 if (isActivePlayerPiece()) {
-                    // get defense player
-                    IPlayer defensePlayer = gm.getAttackedPlayer(selectedTilePiece.getiPiece());
+                    // Get active player and create shield
+                    selectedTilePiece.getiPiece().createShield(gm.getTurn().getTurnNumber());
 
-                    defensePlayer.createShield();
                     // end turn
                     gm.getTurn().nextTurn(gm.getPlayers());
                 }
@@ -377,6 +374,12 @@ public class MainController implements Initializable {
         if (selectedTilePiece != null && tileSelected && isActivePlayerPiece()) {
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.RED);
         }
+    }
+
+    // Checks if player shield is on and turns it off if it was on
+    private void checkShield(){
+        if(selectedTilePiece.getiPiece().getIsShielded())
+            selectedTilePiece.getiPiece().setIsShielded(false);
     }
 
     // Checks if selected piece belongs to the active player
