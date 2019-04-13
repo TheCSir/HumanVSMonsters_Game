@@ -11,13 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 class GameManager implements IGameManager {
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
     private Turn turn;
-    private Stack<Turn> turnStack;
 
     private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();

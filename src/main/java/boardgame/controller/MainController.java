@@ -6,13 +6,13 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.LocationFactory;
-import boardgame.view.*;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import boardgame.view.BoardGrid;
+import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.PieceView;
+import boardgame.view.TileView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,6 +29,9 @@ import java.util.ResourceBundle;
 
 import static boardgame.util.Constants.TILERADIUS;
 
+/**
+ * The type Main controller.
+ */
 public class MainController implements Initializable {
 
     @FXML // fx:id="turnTime"
@@ -39,6 +42,8 @@ public class MainController implements Initializable {
 
     @FXML
     private VBox tileInfoPane;
+
+    private RegisterListeners registerListeners;
 
     @FXML
     private Text currentPlayer;
@@ -84,15 +89,7 @@ public class MainController implements Initializable {
 
     @FXML
     private Button Opt_two;
-
-    private enum State{
-        MOVE,
-        ATTACK,
-        SPECIAL_ABILITY,
-        DEFENSE,
-        SWAP,
-        NONE
-    }
+    private GameController gameController;
 
     private State currentState = State.NONE;
 
@@ -100,6 +97,43 @@ public class MainController implements Initializable {
     private IGameManager gm;
 
     private BoardGrid boardGrid;
+
+    /**
+     * This is the main entry point after the App class is started. The MainController holds handler methods
+     * for input actions. It also registers the listeners for the model pieces. As our application follows
+     * an observer pattern these listeners will update the view when triggered.
+     * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
+     * pattern.
+     * The MainController class is the main part of application that currently requires major refactoring as
+     * it has a bit too much responsibilty. Whilst it is reasonably cohesive it is highly coupled.
+     */
+    public MainController() {
+        //Get a reference to the game manager. Currently sets up a game with default settings.
+        gm = GameManagerFactory.createGameManager();
+
+        gm.defaultGameSetup();
+
+    }
+
+    public Text getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public HexagonTileViewPiece getSelectedTilePiece() {
+        return selectedTilePiece;
+    }
+
+    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
+        this.selectedTilePiece = selectedTilePiece;
+    }
+
+    public TileView getTargetTile() {
+        return targetTile;
+    }
+
+    public void setTargetTile(TileView targetTile) {
+        this.targetTile = targetTile;
+    }
 
     private HexagonTileViewPiece selectedTilePiece = null;
 
@@ -109,23 +143,39 @@ public class MainController implements Initializable {
 
     private HexagonTileViewPiece targetTilePiece = null;
 
+    public HexagonTileViewPiece getTargetTilePiece() {
+        return targetTilePiece;
+    }
+
+    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
+        this.targetTilePiece = targetTilePiece;
+    }
+
+    public RegisterListeners getRegisterListeners() {
+        return registerListeners;
+    }
+
     private String PieceSelectionOne;
     private String PieceSelectionTwo;
 
-    public MainController() {
-        //Get a reference to the game manager. Currently sets up a game with default settings.
-        gm = GameManagerFactory.createGameManager();
+    public void setRegisterListeners(RegisterListeners registerListeners) {
+        this.registerListeners = registerListeners;
+    }
 
-        gm.defaultGameSetup();
+    public GameController getGameController() {
+        return gameController;
+    }
 
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         boardGrid = new BoardGrid(boardPane);
+        registerListeners = new RegisterListeners(this, gm);
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         assertJFXInjection();
-
 
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
@@ -137,17 +187,22 @@ public class MainController implements Initializable {
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
         //end
 
-
-        registerTileListenersForMove(boardGrid.getHexagonTileViews());
-        registerPlayerListeners(gm.getPlayers());
-        registerTurnListeners(gm.getTurn());
-
         initialiseTextFields();
 
-        addPieces(gm.getAllPieces());
-        registerPieceListListener();
-        gm.testPieces();
+        registerListeners.registerTileListenersForMove(boardGrid.getHexagonTileViews());
+        registerListeners.registerPlayerListeners(gm.getPlayers(), targetTilePiece, humanHealth, monsterHealth);
+        registerListeners.registerTurnListeners(gm.getTurn());
 
+        gameController = new GameController(gm, boardGrid, this);
+        gameController.setUpGame();
+
+        registerListeners.registerPieceListListener();
+
+
+    }
+
+    public Label getTurnNumber() {
+        return turnNumber;
     }
 
     private void initialiseTextFields() {
@@ -197,126 +252,28 @@ public class MainController implements Initializable {
     }
 
 
-    private void registerTileListenersForMove(List<TileView> boardTiles) {
+//    //Register listeners for the board pieces.
+//    private void registerPieceListeners(List<IPiece> pieces) {
+//
+//        for (IPiece piece : pieces) {
+//            registerPieceListener(piece);
+//        }
+//    }
 
-        for (TileView hexagonalTile : boardTiles) {
-
-            //Set tile handlers
-            hexagonalTile.setOnMouseClicked(e -> handleTileClicked(hexagonalTile));
-        }
+    public void setTurnNumber(Label turnNumber) {
+        this.turnNumber = turnNumber;
     }
 
-    //Register listeners for the board pieces.
-    private void registerPieceListeners(List<IPiece> pieces) {
-
-        for (IPiece piece : pieces) {
-            registerPieceListener(piece);
-        }
+    public State getCurrentState() {
+        return currentState;
     }
 
-    private void registerPlayerListeners(List<IPlayer> players) {
-
-        for (IPlayer player : players) {
-            PlayerView playerView = new PlayerView();
-            player.healthProperty().addListener((observable) ->
-                    playerView.decreaseHealthBar(player, targetTilePiece));
-
-            if(player.getClass().getSimpleName().equals("HumanPlayer")) {
-                player.healthProperty().addListener((observable) ->
-                        humanHealth.setText("Gandalf Health: " +
-                                player.healthProperty().getValue())
-                );
-            }
-
-            else if(player.getClass().getSimpleName().equals("MonsterPlayer")) {
-                player.healthProperty().addListener((observable) ->
-                        monsterHealth.setText("Sauron Health: " +
-                                player.healthProperty().getValue())
-                );
-            }
-        }
-    }
-
-    private void registerPieceListListener() {
-        for (IPlayer iPlayer : gm.getPlayers()) {
-            ObservableList<IPiece> pieces = iPlayer.getPieces();
-            pieces.addListener((ListChangeListener<IPiece>) c -> {
-                while (c.next()) {
-                    if (c.wasAdded()) {
-                        for (IPiece piece : c.getAddedSubList()) {
-                            addPiece(piece);
-                        }
-                    } else if (c.wasRemoved()) {
-                        c.getRemoved();
-                        for (IPiece piece : c.getRemoved()) {
-                            removePiece(piece);
-                        }
-                    }
-                }
-            });
-        }
-
-    }
-
-    private void removePiece(IPiece piece) {
-        boardGrid.removePiece(piece, boardPane);
-    }
-
-    private void registerTurnListeners(Turn turn){
-        // increment Turn number label
-        turn.turnNumberProperty().addListener(observable ->
-                turnNumber.setText("Turn: " +
-                        turn.getTurnNumber())
-        );
-
-        // Change Current Player label
-        gm.getTurn().getActivePlayerProperty().addListener(observable ->
-                currentPlayer.setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
-
-        // reset currentState
-        turn.turnNumberProperty().addListener(observable ->
-                currentState = State.NONE
-        );
-    }
-
-    private void unRegisterPieceListeners(List<IPiece> pieces) {
-
-        for (IPiece piece : pieces) {
-            piece.locationPropertyProperty().removeListener((observable) ->
-                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
-        }
-    }
-
-    //Add game pieces to the game board.
-    private void addPieces(List<IPiece> pieceList) {
-
-        for (IPiece piece : pieceList) {
-            addPiece(piece);
-        }
-    }
-
-    private void addPiece(IPiece piece) {
-        //Register move listener
-        registerPieceListener(piece);
-
-        boardGrid.addPiece(piece, boardPane);
-
-        //set view piece handler.
-        for (HexagonTileViewPiece hexagonTileViewPiece : boardGrid.getPieceObservableList()) {
-            if (hexagonTileViewPiece.getiPiece().equals(piece)) {
-                hexagonTileViewPiece.setOnMouseClicked(event -> handlePieceClicked(hexagonTileViewPiece));
-            }
-        }
-
-    }
-
-    private void registerPieceListener(IPiece piece) {
-        piece.locationPropertyProperty().addListener((observable) ->
-                PieceView.changePiecePosition(selectedTilePiece, targetTile));
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
     }
 
     //Selects piece.
-    private void handlePieceClicked(HexagonTileViewPiece piece) {
+    public void handlePieceClicked(HexagonTileViewPiece piece) {
         // Reset tiles color
         if(selectedTilePiece != null)
             boardGrid.setNeighbourTilesColor(selectedTilePiece, Color.ANTIQUEWHITE);
@@ -364,8 +321,16 @@ public class MainController implements Initializable {
         }
     }
 
+    private void unRegisterPieceListeners(List<IPiece> pieces) {
+
+        for (IPiece piece : pieces) {
+            piece.locationPropertyProperty().removeListener((observable) ->
+                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
+        }
+    }
+
     //Gets input and updates model for piece position.
-    private void handleTileClicked(TileView tile) {
+    public void handleTileClicked(TileView tile) {
         assert tile != null;
         targetTile = tile;
 
@@ -381,6 +346,33 @@ public class MainController implements Initializable {
                 gm.getTurn().nextTurn(gm.getPlayers());
             }
         }
+    }
+
+    public enum State {
+        /**
+         * Move state.
+         */
+        MOVE,
+        /**
+         * Attack state.
+         */
+        ATTACK,
+        /**
+         * Special ability state.
+         */
+        SPECIAL_ABILITY,
+        /**
+         * Defense state.
+         */
+        DEFENSE,
+        /**
+         * Swap state.
+         */
+        SWAP,
+        /**
+         * None state.
+         */
+        NONE
     }
 
     private void handleMoveClicked() {
