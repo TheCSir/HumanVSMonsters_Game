@@ -2,7 +2,6 @@ package boardgame.gameModel.players;
 
 import boardgame.gameModel.pieces.IPiece;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 
 /**

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="gameStatus" prefHeight="519.0" prefWidth="214.0" type="VBox"
+         xmlns="http://javafx.com/javafx/11.0.1">
+    <children>
+        <Label alignment="CENTER" style="&#10;" text="GAME STATUS:" textAlignment="CENTER" wrapText="false">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="20.0"/>
+            </VBox.margin>
+        </Label>
+        <Label fx:id="turnNumber" alignment="CENTER" style="&#10;" text="Turn Number:" textAlignment="CENTER"
+               wrapText="false">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="15.0"/>
+            </VBox.margin>
+        </Label>
+        <Label fx:id="humanHealth" alignment="CENTER" style="&#10;" text="Human Health:" textAlignment="CENTER"
+               wrapText="false">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="15.0"/>
+            </VBox.margin>
+        </Label>
+
+        <Label fx:id="monsterHealth" alignment="CENTER" style="&#10;" text="Monster Health:" textAlignment="CENTER"
+               wrapText="false">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="15.0"/>
+            </VBox.margin>
+        </Label>
+
+        <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Player:">
+            <VBox.margin>
+                <Insets bottom="15.0"/>
+            </VBox.margin>
+        </Text>
+        <Text fx:id="turnTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:">
+            <VBox.margin>
+                <Insets bottom="15.0"/>
+            </VBox.margin>
+        </Text>
+    </children>
+</fx:root>

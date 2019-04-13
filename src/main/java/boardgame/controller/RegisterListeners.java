@@ -5,27 +5,28 @@ import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
-import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.PieceView;
-import boardgame.view.PlayerView;
+import boardgame.view.StatusController;
 import boardgame.view.TileView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 
 import java.util.List;
 
 public class RegisterListeners {
 
-
     private final MainController mainController;
     private IGameManager gm;
+    private StatusController statusController;
 
-    public RegisterListeners(MainController mainController, IGameManager gm) {
+    public RegisterListeners(MainController mainController, IGameManager gm, StatusController tc) {
         this.mainController = mainController;
         this.gm = gm;
+        this.statusController = tc;
     }
 
+
+    // Register listeners for specific actions
     public void registerTileListenersForMove(List<TileView> boardTiles) {
 
         for (TileView hexagonalTile : boardTiles) {
@@ -37,24 +38,21 @@ public class RegisterListeners {
 
     public void registerPieceListener(IPiece piece) {
         piece.locationPropertyProperty().addListener((observable) ->
-                PieceView.changePiecePosition(mainController.getSelectedTilePiece(), mainController.getTargetTile()));
+                PieceView.changePiecePosition(mainController.getBoardGrid().getSelectedTilePiece(), mainController.getBoardGrid().getTargetTile()));
     }
 
-    public void registerPlayerListeners(List<IPlayer> players, HexagonTileViewPiece targetTilePiece, Label humanHealth, Label monsterHealth) {
+    public void registerPlayerListeners(List<IPlayer> players) {
 
         for (IPlayer player : players) {
-            PlayerView playerView = new PlayerView();
-            player.healthProperty().addListener((observable) ->
-                    playerView.decreaseHealthBar(player, targetTilePiece));
 
             if (player.getClass().getSimpleName().equals(Constants.PLAYER1)) {
                 player.healthProperty().addListener((observable) ->
-                        humanHealth.setText(Constants.PLAYERNAME1+" Health: " +
+                        statusController.getHumanHealth().setText(Constants.PLAYERNAME1 + " Health: " +
                                 player.healthProperty().getValue())
                 );
             } else if (player.getClass().getSimpleName().equals(Constants.PLAYER2)) {
                 player.healthProperty().addListener((observable) ->
-                        monsterHealth.setText(Constants.PLAYERNAME2+" Health: " +
+                        statusController.getMonsterHealth().setText(Constants.PLAYERNAME2 + " Health: " +
                                 player.healthProperty().getValue())
                 );
             }
@@ -79,19 +77,19 @@ public class RegisterListeners {
                 }
             });
         }
-
     }
 
     void registerTurnListeners(Turn turn) {
         // increment Turn number label
+
         turn.turnNumberProperty().addListener(observable ->
-                mainController.getTurnNumber().setText("Turn: " +
+                statusController.getTurnNumber().setText("Turn: " +
                         turn.getTurnNumber())
         );
 
         // Change Current Player label
         gm.getTurn().getActivePlayerProperty().addListener(observable ->
-                mainController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
+                statusController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
 
         // reset currentState
         turn.turnNumberProperty().addListener(observable ->
@@ -101,7 +99,7 @@ public class RegisterListeners {
         for (IPlayer iPlayer : gm.getPlayers()) {
             ObservableList<IPiece> pieces = iPlayer.getPieces();
 
-            for(IPiece piece : pieces){
+            for (IPiece piece : pieces) {
                 turn.turnNumberProperty().addListener(observable ->
                         piece.checkShieldTurn(turn.getTurnNumber())
                 );
@@ -109,4 +107,13 @@ public class RegisterListeners {
 
         }
     }
+
+    public void unRegisterPieceListeners(List<IPiece> pieces) {
+
+        for (IPiece piece : pieces) {
+            piece.locationPropertyProperty().removeListener((observable) ->
+                    PieceView.changePiecePosition(mainController.getBoardGrid().getSelectedTilePiece(), mainController.getBoardGrid().getTargetTile()));
+        }
+    }
+
 }

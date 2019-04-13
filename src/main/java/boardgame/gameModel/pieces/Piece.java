@@ -77,8 +77,8 @@ public abstract class Piece implements IPiece {
     }
 
     // Checks if shield is activated and expires if shield lasted for more than one turn
-    public void checkShieldTurn(int turnNumber){
-        if(turnNumber >= this.shieldTurn + 2)
+    public void checkShieldTurn(int turnNumber) {
+        if (turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
     }
 
