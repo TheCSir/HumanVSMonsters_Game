@@ -246,15 +246,6 @@ public class MainController implements Initializable {
         currentState = State.SWAP;
     }
 
-
-//    //Register listeners for the board pieces.
-//    private void registerPieceListeners(List<IPiece> pieces) {
-//
-//        for (IPiece piece : pieces) {
-//            registerPieceListener(piece);
-//        }
-//    }
-
     public void setTurnNumber(Label turnNumber) {
         this.turnNumber = turnNumber;
     }
@@ -312,14 +303,6 @@ public class MainController implements Initializable {
                 break;
             case SWAP:
                 break;
-        }
-    }
-
-    private void unRegisterPieceListeners(List<IPiece> pieces) {
-
-        for (IPiece piece : pieces) {
-            piece.locationPropertyProperty().removeListener((observable) ->
-                    PieceView.changePiecePosition(selectedTilePiece, targetTile));
         }
     }
 
