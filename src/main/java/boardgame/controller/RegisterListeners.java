@@ -6,7 +6,6 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
 import boardgame.view.PieceView;
-import boardgame.view.StatusController;
 import boardgame.view.TileView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

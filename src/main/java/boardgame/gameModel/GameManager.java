@@ -16,6 +16,8 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
+import static org.valid4j.Assertive.ensure;
+
 class GameManager implements IGameManager {
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
@@ -111,6 +113,7 @@ class GameManager implements IGameManager {
         for(IPlayer player : players){
             for(IPiece playerPiece : player.getPieces()){
                 if(playerPiece.getClass().getSimpleName().equals(attackedPiece.getClass().getSimpleName()))
+                    ensure(player != null);
                     return player;
             }
         }

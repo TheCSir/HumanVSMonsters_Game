@@ -6,6 +6,7 @@ import boardgame.util.Location;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.valid4j.Assertive.ensure;
 import static org.valid4j.Assertive.require;
 
 /**
@@ -23,6 +24,7 @@ public abstract class Tile implements ITile {
         this.location = location;
         neighbours = new ArrayList<>();
         neighbourPositions = new ArrayList<>();
+        ;
     }
 
     public abstract boolean getTraversable();
@@ -45,6 +47,10 @@ public abstract class Tile implements ITile {
 
     @Override
     public List<ITile> getNeighbours() {
+        for (ITile tile : neighbours) {
+            //Ensure that every neighbouring tile is actually on the grid 9no negative values.
+            ensure(tile.getLocation().getX() >= 0 && tile.getLocation().getY() >= 0);
+        }
         return neighbours;
     }
 

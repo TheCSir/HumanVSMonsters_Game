@@ -5,7 +5,6 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
-import boardgame.view.StatusController;
 import boardgame.view.TileView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

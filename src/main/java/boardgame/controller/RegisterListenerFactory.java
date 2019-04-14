@@ -1,7 +1,6 @@
 package boardgame.controller;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.view.StatusController;
 
 public class RegisterListenerFactory {
 

@@ -11,6 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import static org.valid4j.Assertive.ensure;
+import static org.valid4j.Assertive.require;
+
+/**
+ * View implementation of a hexagonal tile. Holds a reference to the model.
+ */
 public class HexagonTileView extends TileView {
 
     private double initialX;
@@ -19,12 +25,29 @@ public class HexagonTileView extends TileView {
     private ITile modelTile;
 
 
+    /**
+     * Instantiates a new Hexagon tile view.
+     * <p>
+     * Design by contract:
+     * requires that the radius is more than 0 (otherwise no tile to draw)
+     * ensures that the Tile is on the Grid.
+     *
+     * @param x             the x
+     * @param y             the y
+     * @param radius        the radius
+     * @param hexagonalTile the hexagonal tile
+     */
     HexagonTileView(double x, double y, double radius, ITile hexagonalTile) {
         super();
+        require(radius >= 0);
         this.modelTile = hexagonalTile;
         drawTile(x, y, radius);
+        ensure(hexagonalTile.getLocation().getX() >= 0 && hexagonalTile.getLocation().getY() >=0);
     }
 
+    /**
+     * Instantiates a new Hexagon tile view.
+     */
     HexagonTileView() {
 
     }

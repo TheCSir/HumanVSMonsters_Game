@@ -22,7 +22,7 @@ public abstract class Player implements IPlayer {
 
     public Player(int playerID, String playerName, double _health, ObservableList<IPiece> pieces) {
 
-        //Preconditions
+        //Preconditions. This uses the valid4j library.
         require(playerID > 0);
         require(playerName != null);
         require(_health >= 0);

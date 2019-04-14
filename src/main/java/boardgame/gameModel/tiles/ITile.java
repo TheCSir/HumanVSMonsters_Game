@@ -5,16 +5,17 @@ import boardgame.util.Location;
 import java.util.List;
 
 /**
- * Interface for board game tiles for the model.
+ * Interface for board game tiles for the model. Provides the contract for different tiles. Interface means
+ * classes using tiles do not need to rely on concrete implementations which might change.
  */
 public interface ITile {
 
     /**
-     * Gets location.
+     * Gets location as a grid position. The tile holds it's own location. This makes it easy for any method that
+     * has access to a tile to find out it's grid position.
      *
-     * @return the location
+     * @return the location of this tile.
      */
-//Return the location (containing grid position)
     Location getLocation();
 
     /**
@@ -27,7 +28,7 @@ public interface ITile {
     /**
      * Add neighbour.
      *
-     * @param tile the tile
+     * @param tile the Itile
      */
     void addNeighbour(ITile tile);
 

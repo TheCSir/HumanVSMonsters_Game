@@ -1,4 +1,4 @@
-package boardgame.view;
+package boardgame.controller;
 
 import boardgame.gameModel.IGameManager;
 import javafx.fxml.FXML;
@@ -40,7 +40,7 @@ public class StatusController extends VBox {
      * @param gm the game manager
      */
     public StatusController(IGameManager gm) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("status.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boardgame/view/status.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
