@@ -9,31 +9,72 @@ import javafx.scene.control.Alert;
 
 import java.util.List;
 
+/**
+ * This represents a game turn.
+ */
 public class Turn {
     private IntegerProperty turnNumber;
     private ObjectProperty<IPlayer> activePlayerProperty;
 
+    /**
+     * Instantiates a new Turn.
+     */
     Turn(){
         this.turnNumber = new SimpleIntegerProperty();
         this.activePlayerProperty = new SimpleObjectProperty<>();
     }
 
+    /**
+     * Turn number property integer property.
+     *
+     * @return the integer property
+     */
     public IntegerProperty turnNumberProperty() { return turnNumber; }
 
+    /**
+     * Sets turn number property.
+     *
+     * @param turnNumber the turn number
+     */
     public void setTurnNumberProperty(int turnNumber) { this.turnNumber.set(turnNumber); }
 
+    /**
+     * Gets turn number.
+     *
+     * @return the turn number
+     */
     public int getTurnNumber() { return turnNumber.getValue(); }
 
+    /**
+     * Get active player property object property.
+     *
+     * @return the object property
+     */
     public ObjectProperty<IPlayer> getActivePlayerProperty(){ return this.activePlayerProperty; }
 
+    /**
+     * Get the player whose turn it is.
+     *
+     * @return the player
+     */
     public IPlayer getActivePlayer(){
         return this.activePlayerProperty.get();
     }
 
+    /**
+     * Sets player whose turn it is as the active player.
+     *
+     * @param activePlayer the active player IPlayer
+     */
     public void setActivePlayer(IPlayer activePlayer) {
         this.activePlayerProperty.set(activePlayer);
     }
 
+    /**
+     * Initialise turns.
+     *
+     * @param players the players
+     */
     public void initialiseTurns(List<IPlayer> players){
         int firstTurn = 1;
         this.setTurnNumberProperty(firstTurn);
@@ -43,7 +84,13 @@ public class Turn {
         setActivePlayer(players.get(firstPlayerIndex));
     }
 
+    /**
+     * Start the next turn.
+     *
+     * @param players list of players in the game.
+     */
     public void nextTurn(List<IPlayer> players){
+
         int nextTurn = this.getTurnNumber() + 1;
         this.setTurnNumberProperty(nextTurn);
 
@@ -53,6 +100,12 @@ public class Turn {
         checkWin(players);
         setActivePlayer(players.get(nextPlayerIndex));
     }
+
+    /**
+     * Check if a player has won. Called at the end of a turn.
+     *
+     * @param players List of IPlayers
+     */
     public void checkWin(List<IPlayer> players) {
 
         boolean isOver = false;
