@@ -1,4 +1,4 @@
-package boardgame.view;
+package boardgame.controller;
 
 import boardgame.gameModel.IGameManager;
 import javafx.fxml.FXML;
