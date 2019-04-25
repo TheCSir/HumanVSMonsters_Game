@@ -14,10 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import static boardgame.util.Constants.TILERADIUS;
 
 /**
  * The Main Controller. This is a JavaFX Controller.
@@ -95,7 +92,6 @@ public class MainController implements Initializable {
         IdleState idleState = new IdleState();
         gameContext = new GameContext(idleState, boardGrid, gm, this);
 
-        boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         gm.setUpGame();
         RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);
 

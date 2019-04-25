@@ -18,6 +18,8 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
+import static boardgame.util.Constants.TILERADIUS;
+
 class GameManager implements IGameManager {
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
@@ -92,6 +94,7 @@ class GameManager implements IGameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
+        boardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, boardGrid.getBoardPane());
 
     }
 
