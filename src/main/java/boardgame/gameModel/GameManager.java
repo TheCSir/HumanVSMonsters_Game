@@ -18,8 +18,6 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.valid4j.Assertive.ensure;
-
 class GameManager implements IGameManager {
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
@@ -116,10 +114,11 @@ class GameManager implements IGameManager {
     public Turn getTurn() { return turn; }
 
     public IPlayer getAttackedPlayer(IPiece attackedPiece){
+
+
         for(IPlayer player : players){
             for(IPiece playerPiece : player.getPieces()){
                 if(playerPiece.getClass().getSimpleName().equals(attackedPiece.getClass().getSimpleName()))
-                    ensure(player != null);
                     return player;
             }
         }
