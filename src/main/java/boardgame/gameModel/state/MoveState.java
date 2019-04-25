@@ -56,7 +56,7 @@ public class MoveState extends OwnPieceSelected {
         bg.setNeighbourTilesColor(gameContext.getOwnPiece(), Color.ANTIQUEWHITE);
         IGameManager gm = gameContext.getGm();
         //Update model.
-        boolean pieceMoved = gm.getiBoard().movePiece(bg.getSelectedTilePiece().getiPiece(), tile.getLocation());
+        boolean pieceMoved = gm.getiBoard().movePiece(gameContext.getOwnPiece().getiPiece(), tile.getLocation());
 
         if (pieceMoved) {
             // end turn

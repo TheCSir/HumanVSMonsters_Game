@@ -19,6 +19,7 @@ public class AttackState extends OwnPieceSelected {
 
         System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
 
+        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
         System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
         // get attacked player
         gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);

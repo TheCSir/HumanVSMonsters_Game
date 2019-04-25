@@ -107,6 +107,9 @@ public class BoardGrid {
             System.out.println("Image File not found!");
         }
 
+        piece.locationPropertyProperty().addListener((observable) ->
+                PieceView.changePiecePosition(pieceTile, getTargetTile()));
+
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);
     }

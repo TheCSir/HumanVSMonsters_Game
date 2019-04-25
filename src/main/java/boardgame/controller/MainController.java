@@ -2,7 +2,6 @@ package boardgame.controller;
 
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.GameContext;
 import boardgame.gameModel.state.IdleState;
 import boardgame.view.BoardGrid;
@@ -140,19 +139,7 @@ public class MainController implements Initializable {
     //Selects piece.
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
-        boardGrid.setSelectedTilePiece(piece);
-
-
-        if (isActivePlayerPiece()) {
-            gameContext.setOwnPiece(piece);
-            gameContext.selectOwnPiece(piece);
-        }
-
-        if (!isActivePlayerPiece()) {
-            System.out.println("Selecting opponent piece");
-            gameContext.setEnemyPiece(piece);
-            gameContext.selectEnemyPiece(piece);
-        }
+        gameContext.selectPiece(piece);
 
     }
 
@@ -164,8 +151,6 @@ public class MainController implements Initializable {
     //Gets input and updates model for piece position.
     public void handleTileClicked(TileView tile) {
         assert tile != null;
-
-        boardGrid.setTargetTile(tile);
         gameContext.clickTile(tile);
 
     }
@@ -183,19 +168,6 @@ public class MainController implements Initializable {
 
     private void handleMoveClicked() {
         gameContext.pressMove();
-    }
-
-    // Checks if selected piece belongs to the active player
-    private boolean isActivePlayerPiece() {
-        if (boardGrid.getSelectedTilePiece() == null)
-            return false;
-
-        for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
-            if (piece.getClass().getSimpleName().equals(boardGrid.getSelectedTilePiece().getiPiece().getClass().getSimpleName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

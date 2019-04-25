@@ -19,7 +19,7 @@ public class OwnPieceSelected implements State {
     public void onMove(GameContext gameContext) {
         //TODO highlight surrounding tiles.
         BoardGrid bg = gameContext.getBoardGrid();
-        bg.setNeighbourTilesColor(bg.getSelectedTilePiece(), Color.RED);
+        bg.setNeighbourTilesColor(gameContext.getOwnPiece(), Color.RED);
         System.out.println("Setting surrounding colour to Red");
         System.out.println("Setting move state");
         gameContext.setState(new MoveState());

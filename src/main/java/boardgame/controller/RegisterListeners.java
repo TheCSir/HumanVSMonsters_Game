@@ -36,8 +36,8 @@ public class RegisterListeners {
     }
 
     public void registerPieceListener(IPiece piece) {
-        piece.locationPropertyProperty().addListener((observable) ->
-                PieceView.changePiecePosition(mainController.getBoardGrid().getSelectedTilePiece(), mainController.getBoardGrid().getTargetTile()));
+//        piece.locationPropertyProperty().addListener((observable) ->
+//                PieceView.changePiecePosition(mainController.getBoardGrid().getSelectedTilePiece(), mainController.getBoardGrid().getTargetTile()));
     }
 
     public void registerPlayerListeners(List<IPlayer> players) {

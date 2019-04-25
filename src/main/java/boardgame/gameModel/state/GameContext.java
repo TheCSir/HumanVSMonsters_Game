@@ -2,6 +2,9 @@ package boardgame.gameModel.state;
 
 import boardgame.controller.MainController;
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Warrior;
+import boardgame.gameModel.players.IPlayer;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
@@ -21,6 +24,7 @@ public class GameContext {
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
+    private IPlayer activePlayer;
 
     public GameContext(State state, BoardGrid boardGrid, IGameManager gm, MainController mc) {
         this.state = state;
@@ -50,6 +54,7 @@ public class GameContext {
 
     public void clickTile(TileView tile) {
         this.tileView = tile;
+        boardGrid.setTargetTile(tile);
         state.onSelectTile(this);
     }
 
@@ -61,6 +66,17 @@ public class GameContext {
     public void selectEnemyPiece(HexagonTileViewPiece enemyPiece) {
         this.enemyPiece = enemyPiece;
         state.onSelectEnemyPiece(this);
+    }
+
+    public void selectPiece(HexagonTileViewPiece piece) {
+        setActivePlayer(piece.getiPiece());
+        if (isActivePlayerPiece(piece.getiPiece())) {
+            this.ownPiece = piece;
+            state.onSelectOwnPiece(this);
+        } else {
+            this.enemyPiece = piece;
+            state.onSelectEnemyPiece(this);
+        }
     }
 
     public void attackEnemyPiece(HexagonTileViewPiece enemyPiece) {
@@ -136,5 +152,33 @@ public class GameContext {
 
     public void resetTileColours() {
         boardGrid.setNeighbourTilesColor(boardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
+    }
+
+    // Checks if selected piece belongs to the active player
+    private boolean isActivePlayerPiece(IPiece ipiece) {
+
+        String[] humanPieces = {"Warrior", "Priest", "Archer"};
+        String[] monsterPieces = {"Medusa", "Minotaur", "Griffin"};
+        System.out.println(Warrior.class.getSimpleName());
+        System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
+        for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
+            if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public IPlayer getActivePlayer() {
+        return activePlayer;
+    }
+
+    private void setActivePlayer(IPiece ipiece) {
+
+        for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
+            if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
+                activePlayer = gm.getTurn().getActivePlayer();
+            }
+        }
     }
 }
