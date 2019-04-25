@@ -90,10 +90,10 @@ public class RegisterListeners {
         gm.getTurn().getActivePlayerProperty().addListener(observable ->
                 statusController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
 
-        // reset currentState
-        turn.turnNumberProperty().addListener(observable ->
-                mainController.setCurrentState(MainController.State.NONE)
-        );
+//        // reset currentState
+//        turn.turnNumberProperty().addListener(observable ->
+//             ///   mainController.setCurrentState(MainController.State.NONE)
+//        );
 
         for (IPlayer iPlayer : gm.getPlayers()) {
             ObservableList<IPiece> pieces = iPlayer.getPieces();

@@ -1,0 +1,111 @@
+package boardgame.gameModel.state;
+
+import boardgame.controller.MainController;
+import boardgame.gameModel.IGameManager;
+import boardgame.view.BoardGrid;
+import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.TileView;
+
+public class GameContext {
+
+    private final IGameManager gm;
+    private final MainController mc;
+    private final BoardGrid boardGrid;
+    private State state;
+    private HexagonTileViewPiece ownPiece;
+    private HexagonTileViewPiece enemyPiece;
+    private TileView tileView;
+
+    public GameContext(State state, BoardGrid boardGrid, IGameManager gm, MainController mc) {
+        this.state = state;
+        this.boardGrid = boardGrid;
+        this.gm = gm;
+        this.mc = mc;
+    }
+
+    public void pressMove() {
+        state.onMove(this);
+    }
+
+    public void pressAttack() {
+        state.onAttack(this);
+    }
+
+    public void pressSpecial() {
+        state.onSpecial(this);
+
+    }
+
+    public void pressDefence(GameContext gameContext) {
+        //TODO Add implementation for defence.
+        System.out.println("To be implemented");
+        state.onDefence(this);
+    }
+
+    public void clickTile(TileView tile) {
+        this.tileView = tile;
+        state.onSelectTile(this);
+    }
+
+    public void selectOwnPiece(HexagonTileViewPiece ownpiece) {
+        this.ownPiece = ownpiece;
+        state.onSelectOwnPiece(this);
+    }
+
+    public void selectEnemyPiece(HexagonTileViewPiece enemyPiece) {
+        this.enemyPiece = enemyPiece;
+        state.onSelectEnemyPiece(this);
+    }
+
+    public void attackEnemyPiece(HexagonTileViewPiece enemyPiece) {
+        this.enemyPiece = enemyPiece;
+    }
+
+    public void pressSpecialOne() {
+
+    }
+
+    public void pressSpecialTwo() {
+
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public BoardGrid getBoardGrid() {
+        return boardGrid;
+    }
+
+    public HexagonTileViewPiece getEnemyPiece() {
+        return enemyPiece;
+    }
+
+    public void setEnemyPiece(HexagonTileViewPiece piece) {
+        enemyPiece = piece;
+    }
+
+    public HexagonTileViewPiece getOwnPiece() {
+        return ownPiece;
+    }
+
+    public void setOwnPiece(HexagonTileViewPiece piece) {
+        ownPiece = piece;
+    }
+
+    public TileView getTileView() {
+        return tileView;
+    }
+
+    public IGameManager getGm() {
+        return gm;
+    }
+
+    public MainController getMc() {
+        return mc;
+    }
+}

@@ -176,7 +176,7 @@ public class BoardGrid {
      * @return the list
      */
 //returns a list of tiles to add to a pane.
-    public List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
+    private List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
         double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         double TILE_HEIGHT = 2 * r;
         double TILE_WIDTH = 2 * n;
@@ -237,8 +237,6 @@ public class BoardGrid {
                 boardPane.getChildren().remove(viewPiece);
             }
         }
-
-
     }
 
     public Pane getBoardPane() {
