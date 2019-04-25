@@ -6,7 +6,6 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
 import boardgame.view.PieceView;
-import boardgame.view.TileView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
@@ -24,17 +23,7 @@ public class RegisterListeners {
         this.statusController = tc;
     }
 
-
-    // Register listeners for specific actions
-    public void registerTileListenersForMove(List<TileView> boardTiles) {
-
-        for (TileView hexagonalTile : boardTiles) {
-
-            //Set tile handlers
-            hexagonalTile.setOnMouseClicked(e -> mainController.handleTileClicked(hexagonalTile));
-        }
-    }
-
+    
     public void registerPlayerListeners(List<IPlayer> players) {
 
         for (IPlayer player : players) {

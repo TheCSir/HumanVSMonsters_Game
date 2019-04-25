@@ -116,7 +116,6 @@ public class MainController implements Initializable {
 
         initialiseHandlers();
 
-        registerListeners.registerTileListenersForMove(boardGrid.getHexagonTileViews());
         registerListeners.registerPlayerListeners(gm.getPlayers());
         registerListeners.registerTurnListeners(gm.getTurn());
 

@@ -181,6 +181,8 @@ public class BoardGrid {
 
             //Create the new tile.
             TileView tile = TileViewFactory.createTileView(xCoord, yCoord, r, hexagonalTile);
+            //Set tile handlers
+            tile.setOnMouseClicked(e -> mc.handleTileClicked(tile));
             hexagonTileViewList.add(tile);
 
 
