@@ -88,7 +88,6 @@ public class MainController implements Initializable {
 
         StatusController statusController = new StatusController(gm);
 
-
         IdleState idleState = new IdleState();
         gameContext = new GameContext(idleState, boardGrid, gm, this);
 
@@ -112,10 +111,26 @@ public class MainController implements Initializable {
 
 
     //Selects piece.
+
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
         gameContext.selectPiece(piece);
 
+    }
+
+    private void handleSwapAction(Pane SwapPane, Button Opt_one, Button Opt_two, GameContext gc) {
+
+        gc.pressSwapButton(SwapPane, Opt_one, Opt_two);
+
+    }
+
+    private void handleSwapOne(GameContext gc) {
+        gc.pressSwapOne();
+
+    }
+
+    private void handleSwapTwo(GameContext gc) {
+        gc.pressSwapTwo();
     }
 
     private void chooseDefenseTargetPiece() {
@@ -134,9 +149,9 @@ public class MainController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, Opt_one, Opt_two, gameContext));
-        Opt_one.setOnAction(e -> SwapController.handleSwapOne(gameContext));
-        Opt_two.setOnAction(e -> SwapController.handleSwapTwo(gameContext));
+        swapButton.setOnAction(e -> handleSwapAction(SwapPane, Opt_one, Opt_two, gameContext));
+        Opt_one.setOnAction(e -> handleSwapOne(gameContext));
+        Opt_two.setOnAction(e -> handleSwapTwo(gameContext));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
     }
