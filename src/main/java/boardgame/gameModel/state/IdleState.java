@@ -71,4 +71,14 @@ public class IdleState implements State {
     public void attackPiece(GameContext gameContext) {
 
     }
+
+    @Override
+    public void onSwapOne(GameContext gameContext) {
+        System.out.println("Shouldn't be possible to get here");
+    }
+
+    @Override
+    public void onSwapTwo(GameContext gameContext) {
+        System.out.println("How did you get here?");
+    }
 }

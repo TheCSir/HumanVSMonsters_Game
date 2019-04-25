@@ -5,6 +5,8 @@ import boardgame.gameModel.IGameManager;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 
 public class GameContext {
 
@@ -15,6 +17,9 @@ public class GameContext {
     private HexagonTileViewPiece ownPiece;
     private HexagonTileViewPiece enemyPiece;
     private TileView tileView;
+    private Pane swapPane;
+    private Button opt_one;
+    private Button opt_two;
 
     public GameContext(State state, BoardGrid boardGrid, IGameManager gm, MainController mc) {
         this.state = state;
@@ -31,9 +36,9 @@ public class GameContext {
         state.onAttack(this);
     }
 
-    public void pressSpecial() {
-        state.onSpecial(this);
+    public void pressSpecial(Pane swapPane, Button opt_one, Button opt_two) {
 
+        state.onSpecial(this);
     }
 
     public void pressDefence(GameContext gameContext) {
@@ -61,12 +66,19 @@ public class GameContext {
         this.enemyPiece = enemyPiece;
     }
 
-    public void pressSpecialOne() {
-
+    public void pressSwapButton(Pane swapPane, Button opt_one, Button opt_two) {
+        this.swapPane = swapPane;
+        this.opt_one = opt_one;
+        this.opt_two = opt_two;
+        state.onSwap(this);
     }
 
-    public void pressSpecialTwo() {
+    public void pressSwapOne(Pane swapPane, Button opt_one) {
+        state.onSwapOne(this);
+    }
 
+    public void pressSwapTwo(Pane swapPane, Button opt_two) {
+        state.onSwapTwo(this);
     }
 
     public State getState() {
@@ -107,5 +119,17 @@ public class GameContext {
 
     public MainController getMc() {
         return mc;
+    }
+
+    public Pane getSwapPane() {
+        return swapPane;
+    }
+
+    public Button getOpt_one() {
+        return opt_one;
+    }
+
+    public Button getOpt_two() {
+        return opt_two;
     }
 }

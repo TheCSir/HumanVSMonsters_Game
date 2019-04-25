@@ -217,9 +217,9 @@ public class MainController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two));
-        Opt_one.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_one));
-        Opt_two.setOnAction(e -> SwapController.doSwap(gm, SwapPane, Opt_two));
+        swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two, gameContext));
+        Opt_one.setOnAction(e -> SwapController.handleSwapOne(gm, SwapPane, Opt_one, gameContext));
+        Opt_two.setOnAction(e -> SwapController.handleSwapTwo(gm, SwapPane, Opt_two, gameContext));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
     }

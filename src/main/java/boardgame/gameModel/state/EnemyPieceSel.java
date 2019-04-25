@@ -63,4 +63,14 @@ public class EnemyPieceSel implements State {
     public void attackPiece(GameContext gameContext) {
 
     }
+
+    @Override
+    public void onSwapOne(GameContext gameContext) {
+        System.out.println("error");
+    }
+
+    @Override
+    public void onSwapTwo(GameContext gameContext) {
+        System.out.println("error");
+    }
 }

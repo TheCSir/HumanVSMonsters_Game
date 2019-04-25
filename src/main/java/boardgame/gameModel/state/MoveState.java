@@ -5,7 +5,7 @@ import boardgame.view.BoardGrid;
 import boardgame.view.TileView;
 import javafx.scene.paint.Color;
 
-public class MoveState implements State {
+public class MoveState extends OwnPieceSelected {
 
     public MoveState() {
         System.out.println("In move state");
