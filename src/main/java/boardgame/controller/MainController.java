@@ -79,7 +79,6 @@ public class MainController implements Initializable {
     private Button Opt_two;
     private GameController gameController;
 
-   // private State currentState = State.NONE;
 
     //Store a reference to the Game manager for main entry point to game.
     private IGameManager gm;
@@ -157,16 +156,9 @@ public class MainController implements Initializable {
 
 
         if (isActivePlayerPiece()) {
-            System.out.println("wazzzup");
             gameContext.setOwnPiece(piece);
             gameContext.selectOwnPiece(piece);
         }
-
-
-//        if (gameContext.getState().getClass().getName().equals(AttackState.class.getName()) && !isActivePlayerPiece()) {
-//            System.out.println("trying to attack");
-//            gameContext.setEnemyPiece(piece);
-//        }
 
         if (!isActivePlayerPiece()) {
             System.out.println("Selecting opponent piece");
@@ -174,30 +166,6 @@ public class MainController implements Initializable {
             gameContext.selectEnemyPiece(piece);
         }
 
-
-//                if(!isActivePlayerPiece()) {
-
-//                    // get attacked player
-//                    gm.getAttackedPlayer(boardGrid.getSelectedTilePiece().getiPiece()).decreaseHealthProperty(boardGrid.getSelectedTilePiece().getiPiece());
-//
-//                    // end turn
-//                    gm.getTurn().nextTurn(gm.getPlayers());
-        //       }
-//                break;
-//            case SPECIAL_ABILITY:
-//                break;
-//            case DEFENSE:
-//                if (isActivePlayerPiece()) {
-//                    // Get active player and create shield
-//                    boardGrid.getSelectedTilePiece().getiPiece().createShield(gm.getTurn().getTurnNumber());
-//
-//                    // end turn
-//                    gm.getTurn().nextTurn(gm.getPlayers());
-//                }
-//                break;
-//            case SWAP:
-//                break;
-//        }
     }
 
     private void chooseDefenseTargetPiece() {
@@ -218,8 +186,8 @@ public class MainController implements Initializable {
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
         swapButton.setOnAction(e -> SwapController.handleSwapAction(SwapPane, gm, Opt_one, Opt_two, gameContext));
-        Opt_one.setOnAction(e -> SwapController.handleSwapOne(gm, SwapPane, Opt_one, gameContext));
-        Opt_two.setOnAction(e -> SwapController.handleSwapTwo(gm, SwapPane, Opt_two, gameContext));
+        Opt_one.setOnAction(e -> SwapController.handleSwapOne(SwapPane, Opt_one, gameContext));
+        Opt_two.setOnAction(e -> SwapController.handleSwapTwo(SwapPane, Opt_two, gameContext));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
     }
