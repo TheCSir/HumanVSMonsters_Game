@@ -108,7 +108,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         StatusController statusController = new StatusController(gm);
 
-        boardGrid = new BoardGrid(boardPane);
+        boardGrid = new BoardGrid(boardPane, this);
         IdleState idleState = new IdleState();
         gameContext = new GameContext(idleState, boardGrid, gm, this);
 

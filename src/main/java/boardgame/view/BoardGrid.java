@@ -1,5 +1,6 @@
 package boardgame.view;
 
+import boardgame.controller.MainController;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 public class BoardGrid {
 
+    private MainController mc;
 
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
@@ -55,10 +57,12 @@ public class BoardGrid {
      * Instantiates a new Board grid.
      *
      * @param boardPane the board pane
+     * @param mainController
      */
-    public BoardGrid(Pane boardPane) {
+    public BoardGrid(Pane boardPane, MainController mainController) {
         this.boardPane = boardPane;
         initialiseBoardBackGround();
+        this.mc = mainController;
     }
 
     /**
@@ -109,6 +113,8 @@ public class BoardGrid {
 
         piece.locationPropertyProperty().addListener((observable) ->
                 PieceView.changePiecePosition(pieceTile, getTargetTile()));
+
+        pieceTile.setOnMouseClicked(event -> mc.handlePieceClicked(pieceTile));
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);

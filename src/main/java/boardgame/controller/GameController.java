@@ -3,7 +3,6 @@ package boardgame.controller;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.view.BoardGrid;
-import boardgame.view.HexagonTileViewPiece;
 
 import java.util.List;
 
@@ -62,16 +61,6 @@ public class GameController {
      * @param piece the piece
      */
     void addPiece(IPiece piece) {
-        //Register move listener
-        mainController.getRegisterListeners().registerPieceListener(piece);
-
         boardGrid.addPiece(piece);
-
-        //set view piece handler.
-        for (HexagonTileViewPiece hexagonTileViewPiece : boardGrid.getPieceObservableList()) {
-            if (hexagonTileViewPiece.getiPiece().equals(piece)) {
-                hexagonTileViewPiece.setOnMouseClicked(event -> mainController.handlePieceClicked(hexagonTileViewPiece));
-            }
-        }
     }
 }
