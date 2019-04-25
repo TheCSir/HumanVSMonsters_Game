@@ -141,7 +141,6 @@ public class MainController implements Initializable {
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
         boardGrid.setSelectedTilePiece(piece);
-        boardGrid.setTileSelected(true);
 
 
         if (isActivePlayerPiece()) {
@@ -170,6 +169,7 @@ public class MainController implements Initializable {
         gameContext.clickTile(tile);
 
     }
+
     private void initialiseHandlers() {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());

@@ -43,6 +43,7 @@ public class OwnPieceSelected implements State {
     @Override
     public void onDefence(GameContext gameContext) {
         System.out.println("Setting defense state");
+        gameContext.setState(new DefenceState());
     }
 
     @Override

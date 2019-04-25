@@ -33,8 +33,6 @@ public class BoardGrid {
 
     private TileView targetTile;
     private HexagonTileViewPiece selectedTilePiece = null;
-    private boolean tileSelected = false;
-    private HexagonTileViewPiece targetTilePiece = null;
 
     public TileView getTargetTile() {
         return targetTile;
@@ -52,25 +50,6 @@ public class BoardGrid {
         this.selectedTilePiece = selectedTilePiece;
     }
 
-    public boolean isTileSelected() {
-        return tileSelected;
-    }
-
-    public void setTileSelected(boolean tileSelected) {
-        this.tileSelected = tileSelected;
-    }
-
-    public HexagonTileViewPiece getTargetTilePiece() {
-        return targetTilePiece;
-    }
-
-    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
-        this.targetTilePiece = targetTilePiece;
-    }
-
-    public void setBoardPane(Pane boardPane) {
-        this.boardPane = boardPane;
-    }
 
     /**
      * Instantiates a new Board grid.
