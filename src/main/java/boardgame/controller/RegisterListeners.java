@@ -5,7 +5,6 @@ import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
-import boardgame.view.PieceView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
@@ -23,7 +22,7 @@ public class RegisterListeners {
         this.statusController = tc;
     }
 
-    
+
     public void registerPlayerListeners(List<IPlayer> players) {
 
         for (IPlayer player : players) {
@@ -74,11 +73,6 @@ public class RegisterListeners {
         gm.getTurn().getActivePlayerProperty().addListener(observable ->
                 statusController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
 
-//        // reset currentState
-//        turn.turnNumberProperty().addListener(observable ->
-//             ///   mainController.setCurrentState(MainController.State.NONE)
-//        );
-
         for (IPlayer iPlayer : gm.getPlayers()) {
             ObservableList<IPiece> pieces = iPlayer.getPieces();
 
@@ -90,13 +84,4 @@ public class RegisterListeners {
 
         }
     }
-
-    public void unRegisterPieceListeners(List<IPiece> pieces) {
-
-        for (IPiece piece : pieces) {
-            piece.locationPropertyProperty().removeListener((observable) ->
-                    PieceView.changePiecePosition(mainController.getBoardGrid().getSelectedTilePiece(), mainController.getBoardGrid().getTargetTile()));
-        }
-    }
-
 }

@@ -90,11 +90,11 @@ public class GameContext {
         state.onSwap(this);
     }
 
-    public void pressSwapOne(Pane swapPane, Button opt_one) {
+    public void pressSwapOne() {
         state.onSwapOne(this);
     }
 
-    public void pressSwapTwo(Pane swapPane, Button opt_two) {
+    public void pressSwapTwo() {
         state.onSwapTwo(this);
     }
 

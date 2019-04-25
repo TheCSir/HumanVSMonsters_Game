@@ -48,10 +48,6 @@ public class BoardGrid {
         return selectedTilePiece;
     }
 
-    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
-        this.selectedTilePiece = selectedTilePiece;
-    }
-
 
     /**
      * Instantiates a new Board grid.
@@ -66,15 +62,6 @@ public class BoardGrid {
     }
 
     /**
-     * Gets piece observable list.
-     *
-     * @return the piece observable list
-     */
-    public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
-        return pieceObservableList;
-    }
-
-    /**
      * Gets tile.
      *
      * @param location the location
@@ -82,15 +69,6 @@ public class BoardGrid {
      */
     public TileView getTile(Location location) {
         return tileViewObservableMap.get(location);
-    }
-
-    /**
-     * Gets hexagon tile views.
-     *
-     * @return the hexagon tile views
-     */
-    public ObservableList<TileView> getHexagonTileViews() {
-        return hexagonTileViews;
     }
 
     private Pane boardPane;
