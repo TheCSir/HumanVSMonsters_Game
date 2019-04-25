@@ -14,7 +14,7 @@ public class AttackState extends OwnPieceSelected {
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
         IGameManager gm = gameContext.getGm();
-        //BoardGrid boardGrid = gameContext.getBoardGrid();
+
         IPiece enemyPiece = gameContext.getEnemyPiece().getiPiece();
 
         System.out.println("enemy piece is: " + enemyPiece.getClass().getName());

@@ -28,8 +28,6 @@ public class MainController implements Initializable {
     @FXML
     private Pane boardPane;
 
-    private RegisterListeners registerListeners;
-
     @FXML
     private Text pieceSelected;
 
@@ -75,11 +73,6 @@ public class MainController implements Initializable {
     private Button Opt_two;
 
 
-    //Store a reference to the Game manager for main entry point to game.
-    private IGameManager gm;
-
-    private BoardGrid boardGrid;
-
     public Text getPieceSelected() {
         return pieceSelected;
     }
@@ -88,20 +81,12 @@ public class MainController implements Initializable {
         return pieceLocation;
     }
 
-    public RegisterListeners getRegisterListeners() {
-        return registerListeners;
-    }
-
-
-    public BoardGrid getBoardGrid() {
-        return boardGrid;
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        boardGrid = new BoardGrid(boardPane, this);
-        gm = GameManagerFactory.createGameManager(boardGrid);
+        BoardGrid boardGrid = new BoardGrid(boardPane, this);
+        //Store a reference to the Game manager for main entry point to game.
+        IGameManager gm = GameManagerFactory.createGameManager(boardGrid);
         gm.defaultGameSetup();
 
         StatusController statusController = new StatusController(gm);
@@ -112,7 +97,7 @@ public class MainController implements Initializable {
 
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
         gm.setUpGame();
-        registerListeners = RegisterListenerFactory.createRegisterListeners(this, gm, statusController);
+        RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);
 
         initialiseHandlers();
 
@@ -122,7 +107,6 @@ public class MainController implements Initializable {
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
 
-        registerListeners.registerPieceListListener();
     }
 
     private void chooseAttackTargetPiece() {
