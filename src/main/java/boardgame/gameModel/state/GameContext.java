@@ -7,6 +7,7 @@ import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class GameContext {
 
@@ -131,5 +132,9 @@ public class GameContext {
 
     public Button getOpt_two() {
         return opt_two;
+    }
+
+    public void resetTileColours() {
+        boardGrid.setNeighbourTilesColor(boardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
     }
 }

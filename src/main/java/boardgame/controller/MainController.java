@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -135,21 +134,11 @@ public class MainController implements Initializable {
     private void chooseAttackTargetPiece() {
 
         gameContext.pressAttack();
-
-        if (boardGrid.getSelectedTilePiece() != null)
-            resetTileColors();
     }
 
-    private void resetTileColors() {
-        boardGrid.setNeighbourTilesColor(boardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
-    }
 
     //Selects piece.
     public void handlePieceClicked(HexagonTileViewPiece piece) {
-
-        // Reset tiles color
-        if (boardGrid.getSelectedTilePiece() != null)
-            resetTileColors();
 
         boardGrid.setSelectedTilePiece(piece);
         boardGrid.setTileSelected(true);
