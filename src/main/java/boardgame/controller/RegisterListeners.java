@@ -60,12 +60,12 @@ public class RegisterListeners {
                 while (c.next()) {
                     if (c.wasAdded()) {
                         for (IPiece piece : c.getAddedSubList()) {
-                            mainController.getGameController().addPiece(piece);
+                            gm.addPiece(piece);
                         }
                     } else if (c.wasRemoved()) {
                         c.getRemoved();
                         for (IPiece piece : c.getRemoved()) {
-                            mainController.getGameController().removePiece(piece);
+                            gm.removePiece(piece);
                         }
                     }
                 }

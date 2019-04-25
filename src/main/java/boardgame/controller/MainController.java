@@ -56,8 +56,6 @@ public class MainController implements Initializable {
      */
     public MainController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
-        gm = GameManagerFactory.createGameManager();
-        gm.defaultGameSetup();
 
     }
 
@@ -75,7 +73,6 @@ public class MainController implements Initializable {
 
     @FXML
     private Button Opt_two;
-    private GameController gameController;
 
 
     //Store a reference to the Game manager for main entry point to game.
@@ -100,19 +97,21 @@ public class MainController implements Initializable {
         return boardGrid;
     }
 
-    public GameController getGameController() {
-        return gameController;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        boardGrid = new BoardGrid(boardPane, this);
+        gm = GameManagerFactory.createGameManager(boardGrid);
+        gm.defaultGameSetup();
+
         StatusController statusController = new StatusController(gm);
 
-        boardGrid = new BoardGrid(boardPane, this);
+
         IdleState idleState = new IdleState();
         gameContext = new GameContext(idleState, boardGrid, gm, this);
 
         boardGrid.drawBasicGrid(new ArrayList<>(gm.getiBoard().getTiles().values()), TILERADIUS, boardPane);
+        gm.setUpGame();
         registerListeners = RegisterListenerFactory.createRegisterListeners(this, gm, statusController);
 
         initialiseHandlers();
@@ -120,9 +119,6 @@ public class MainController implements Initializable {
         registerListeners.registerTileListenersForMove(boardGrid.getHexagonTileViews());
         registerListeners.registerPlayerListeners(gm.getPlayers());
         registerListeners.registerTurnListeners(gm.getTurn());
-
-        gameController = GameControllerFactory.createGameController(gm, boardGrid, this);
-        gameController.setUpGame();
 
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);

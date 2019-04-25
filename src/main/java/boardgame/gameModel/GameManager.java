@@ -11,10 +11,12 @@ import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
+import boardgame.view.BoardGrid;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.valid4j.Assertive.ensure;
 
@@ -26,9 +28,12 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
+    private BoardGrid boardGrid;
+
     //Default constructor
-    GameManager() {
+    GameManager(BoardGrid boardGrid) {
         players = new ArrayList<>();
+        this.boardGrid = boardGrid;
     }
 
     @Override
@@ -89,6 +94,7 @@ class GameManager implements IGameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
+
     }
 
     @Override
@@ -127,5 +133,40 @@ class GameManager implements IGameManager {
         allpieces.addAll(players.get(0).getPieces());
         allpieces.addAll(players.get(1).getPieces());
         return allpieces;
+    }
+
+
+    @Override
+    public void setUpGame() {
+        addPieces(getAllPieces());
+    }
+
+    //Add game pieces to the game board.
+    private void addPieces(List<IPiece> pieceList) {
+        for (IPiece piece : pieceList) {
+            addPiece(piece);
+        }
+    }
+
+
+    /**
+     * Remove a piece from the view.
+     *
+     * @param piece the piece
+     */
+    @Override
+    public void removePiece(IPiece piece) {
+        boardGrid.removePiece(piece);
+    }
+
+
+    /**
+     * Add a piece to the board in response to a change in the model.
+     *
+     * @param piece the piece
+     */
+    @Override
+    public void addPiece(IPiece piece) {
+        boardGrid.addPiece(piece);
     }
 }

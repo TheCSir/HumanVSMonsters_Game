@@ -115,4 +115,11 @@ public interface IGameManager {
      * @return the all pieces
      */
     ObservableList<IPiece> getAllPieces();
+
+
+    void setUpGame();
+
+    void removePiece(IPiece piece);
+
+    void addPiece(IPiece piece);
 }
