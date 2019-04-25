@@ -1,5 +1,6 @@
 package boardgame.gameModel;
 
+import boardgame.controller.MainController;
 import boardgame.view.BoardGrid;
 
 /**
@@ -14,7 +15,7 @@ public class GameManagerFactory {
      *
      * @return the game manager
      */
-    public static GameManager createGameManager(BoardGrid boardGrid) {
-        return new GameManager(boardGrid);
+    public static GameManager createGameManager(BoardGrid boardGrid, MainController mainController) {
+        return new GameManager(boardGrid, mainController);
     }
 }

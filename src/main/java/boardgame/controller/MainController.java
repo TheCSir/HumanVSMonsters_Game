@@ -3,7 +3,6 @@ package boardgame.controller;
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.state.GameContext;
-import boardgame.gameModel.state.IdleState;
 import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
@@ -83,13 +82,12 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         BoardGrid boardGrid = new BoardGrid(boardPane, this);
         //Store a reference to the Game manager for main entry point to game.
-        IGameManager gm = GameManagerFactory.createGameManager(boardGrid);
+        IGameManager gm = GameManagerFactory.createGameManager(boardGrid, this);
         gm.defaultGameSetup();
 
         StatusController statusController = new StatusController(gm);
 
-        IdleState idleState = new IdleState();
-        gameContext = new GameContext(idleState, boardGrid, gm, this);
+        gameContext = gm.getGameContext();
 
         gm.setUpGame();
         RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);

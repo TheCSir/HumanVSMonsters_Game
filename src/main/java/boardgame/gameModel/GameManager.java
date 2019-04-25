@@ -1,5 +1,6 @@
 package boardgame.gameModel;
 
+import boardgame.controller.MainController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
@@ -9,6 +10,8 @@ import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
 import boardgame.view.BoardGrid;
@@ -21,6 +24,7 @@ import java.util.List;
 import static boardgame.util.Constants.TILERADIUS;
 
 class GameManager implements IGameManager {
+
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
     private Turn turn;
@@ -29,11 +33,13 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
     private BoardGrid boardGrid;
+    private GameContext gameContext;
 
     //Default constructor
-    GameManager(BoardGrid boardGrid) {
+    GameManager(BoardGrid boardGrid, MainController mainController) {
         players = new ArrayList<>();
         this.boardGrid = boardGrid;
+        gameContext = new GameContext(new IdleState(), boardGrid, this, mainController);
     }
 
     @Override
@@ -170,5 +176,10 @@ class GameManager implements IGameManager {
     @Override
     public void addPiece(IPiece piece) {
         boardGrid.addPiece(piece);
+    }
+
+    @Override
+    public GameContext getGameContext() {
+        return gameContext;
     }
 }
