@@ -5,18 +5,19 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class GameContext {
 
     private final IGameManager gm;
     private final MainController mc;
-    private final BoardGrid boardGrid;
+    private final IBoardGrid IBoardGrid;
     private State state;
     private HexagonTileViewPiece ownPiece;
     private HexagonTileViewPiece enemyPiece;
@@ -26,9 +27,9 @@ public class GameContext {
     private Button opt_two;
     private IPlayer activePlayer;
 
-    public GameContext(State state, BoardGrid boardGrid, IGameManager gm, MainController mc) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, MainController mc) {
         this.state = state;
-        this.boardGrid = boardGrid;
+        this.IBoardGrid = IBoardGrid;
         this.gm = gm;
         this.mc = mc;
     }
@@ -54,7 +55,7 @@ public class GameContext {
 
     public void clickTile(TileView tile) {
         this.tileView = tile;
-        boardGrid.setTargetTile(tile);
+        IBoardGrid.setTargetTile(tile);
         state.onSelectTile(this);
     }
 
@@ -106,8 +107,8 @@ public class GameContext {
         this.state = state;
     }
 
-    public BoardGrid getBoardGrid() {
-        return boardGrid;
+    public IBoardGrid getBoardGrid() {
+        return IBoardGrid;
     }
 
     public HexagonTileViewPiece getEnemyPiece() {
@@ -151,7 +152,12 @@ public class GameContext {
     }
 
     public void resetTileColours() {
-        boardGrid.setNeighbourTilesColor(boardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
+        // IBoardGrid.setNeighbourTilesColor(IBoardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
+        System.out.println("resetting tile colours");
+
+        // Reset tiles color
+        IBoardGrid bg = getBoardGrid();
+        bg.setNeighbourTilesColor(getOwnPiece(), Color.ANTIQUEWHITE);
     }
 
     // Checks if selected piece belongs to the active player
@@ -180,5 +186,78 @@ public class GameContext {
                 activePlayer = gm.getTurn().getActivePlayer();
             }
         }
+    }
+
+    public void updatePieceDetails() {
+        HexagonTileViewPiece piece = getOwnPiece();
+
+        //Update View.
+        Text pieceLocation = getMc().getPieceLocation();
+        Text pieceSelected = getMc().getPieceSelected();
+        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
+        pieceLocation.setText("Location: "
+                + "X: " + piece.getiPiece().getLocation().getX()
+                + ", "
+                + "Y: " + piece.getiPiece().getLocation().getY());
+    }
+
+    void updateEnemyPieceDetails() {
+        HexagonTileViewPiece piece = getEnemyPiece();
+        Text pieceLocation = getMc().getPieceLocation();
+        Text pieceSelected = getMc().getPieceSelected();
+        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
+        pieceLocation.setText("Location: "
+                + "X: " + piece.getiPiece().getLocation().getX()
+                + ", "
+                + "Y: " + piece.getiPiece().getLocation().getY());
+    }
+
+    void highlightMove() {
+        IBoardGrid bg = getBoardGrid();
+        bg.setNeighbourTilesColor(getOwnPiece(), Color.RED);
+
+    }
+
+    void attackPiece() {
+        IGameManager gm = getGm();
+
+        IPiece enemyPiece = getEnemyPiece().getiPiece();
+
+        System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
+
+        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
+        System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
+        // get attacked player
+        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+
+        // end turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+    }
+
+    public void createShield() {
+        //TODO Fix bug here.
+        getBoardGrid().getSelectedTilePiece().getiPiece().createShield(getGm().getTurn().getTurnNumber());
+        System.out.println("Defending");
+        // end turn
+        getGm().getTurn().nextTurn(getGm().getPlayers());
+    }
+
+    public void updateTileInfo() {
+    }
+
+    public void movePiece() {
+        IGameManager gm = getGm();
+        TileView tile = getTileView();
+        //Update model.
+        boolean pieceMoved = gm.getiBoard().movePiece(getOwnPiece().getiPiece(), tile.getLocation());
+
+        if (pieceMoved) {
+            // end turn
+            gm.getTurn().nextTurn(gm.getPlayers());
+            System.out.println("Piece moved");
+        }
+    }
+
+    public void setUpSwap() {
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
  * for the view. We feel that the class is fairly cohesive. However, the coupling could be reduced by
  * perhaps separating out the Piece Views from the Tile Views.
  */
-public class BoardGrid {
+public class BoardGrid implements IBoardGrid {
 
     private MainController mc;
 
@@ -36,14 +36,17 @@ public class BoardGrid {
     private TileView targetTile;
     private HexagonTileViewPiece selectedTilePiece = null;
 
+    @Override
     public TileView getTargetTile() {
         return targetTile;
     }
 
+    @Override
     public void setTargetTile(TileView targetTile) {
         this.targetTile = targetTile;
     }
 
+    @Override
     public HexagonTileViewPiece getSelectedTilePiece() {
         return selectedTilePiece;
     }
@@ -67,6 +70,7 @@ public class BoardGrid {
      * @param location the location
      * @return the tile
      */
+    @Override
     public TileView getTile(Location location) {
         return tileViewObservableMap.get(location);
     }
@@ -78,6 +82,7 @@ public class BoardGrid {
      *
      * @param piece the piece
      */
+    @Override
     public void addPiece(IPiece piece) {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
@@ -99,7 +104,8 @@ public class BoardGrid {
     }
 
 
-    private String imageURL(IPiece iPiece) {
+    @Override
+    public String imageURL(IPiece iPiece) {
         return "src/main/resources/"
                 + iPiece.getClass().getName()
                 + ".png";
@@ -112,6 +118,7 @@ public class BoardGrid {
      * @param radius     the radius
      * @param boardPane  the board pane
      */
+    @Override
     public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
 
         List<TileView> hexagonTileViews = calculateTileCoord(
@@ -143,7 +150,8 @@ public class BoardGrid {
      * @return the list
      */
 //returns a list of tiles to add to a pane.
-    private List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
+    @Override
+    public List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
         double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         double TILE_HEIGHT = 2 * r;
         double TILE_WIDTH = 2 * n;
@@ -170,7 +178,8 @@ public class BoardGrid {
         return hexagonTileViewList;
     }
 
-    private void initialiseBoardBackGround() {
+    @Override
+    public void initialiseBoardBackGround() {
         // Set up the background.
         try {
             FileInputStream input = new FileInputStream("src/main/resources/wood_table_with_dice.jpeg");
@@ -187,6 +196,7 @@ public class BoardGrid {
      * @param selectedTilePiece the selected tile piece
      * @param color             the color
      */
+    @Override
     public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, Color color) {
         TileView underTile = this.getTile(selectedTilePiece.getLocation());
         List<TileView> neighbouringTiles = underTile.getNeighbourViews();
@@ -200,6 +210,7 @@ public class BoardGrid {
      *
      * @param piece the piece
      */
+    @Override
     public void removePiece(IPiece piece) {
         for (HexagonTileViewPiece viewPiece : pieceObservableList) {
             if (viewPiece.getiPiece().equals(piece)) {
@@ -208,6 +219,7 @@ public class BoardGrid {
         }
     }
 
+    @Override
     public Pane getBoardPane() {
         return boardPane;
     }

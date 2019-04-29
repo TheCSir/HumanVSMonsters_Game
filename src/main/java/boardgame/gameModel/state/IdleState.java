@@ -1,8 +1,5 @@
 package boardgame.gameModel.state;
 
-import boardgame.view.HexagonTileViewPiece;
-import javafx.scene.text.Text;
-
 public class IdleState implements State {
 
     @Override
@@ -35,17 +32,15 @@ public class IdleState implements State {
 
     }
 
+    //
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("transitioning to piece selection");
-        HexagonTileViewPiece piece = gameContext.getOwnPiece();
-        Text pieceLocation = gameContext.getMc().getPieceLocation();
-        Text pieceSelected = gameContext.getMc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
-                + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
+
+        //Update View.
+        gameContext.updatePieceDetails();
+
+        //Set new State.
         gameContext.setState(new OwnPieceSelected());
     }
 
@@ -56,14 +51,9 @@ public class IdleState implements State {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-        HexagonTileViewPiece piece = gameContext.getEnemyPiece();
-        Text pieceLocation = gameContext.getMc().getPieceLocation();
-        Text pieceSelected = gameContext.getMc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
-                + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
+
+        gameContext.updateEnemyPieceDetails();
+
         gameContext.setState(new EnemyPieceSel());
     }
 

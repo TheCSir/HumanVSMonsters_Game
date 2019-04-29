@@ -2,12 +2,8 @@ package boardgame.gameModel.state;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.*;
-import boardgame.view.BoardGrid;
-import boardgame.view.HexagonTileViewPiece;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class OwnPieceSelected implements State {
 
@@ -18,8 +14,7 @@ public class OwnPieceSelected implements State {
     @Override
     public void onMove(GameContext gameContext) {
         //TODO highlight surrounding tiles.
-        BoardGrid bg = gameContext.getBoardGrid();
-        bg.setNeighbourTilesColor(gameContext.getOwnPiece(), Color.RED);
+        gameContext.highlightMove();
         System.out.println("Setting surrounding colour to Red");
         System.out.println("Setting move state");
         gameContext.setState(new MoveState());
@@ -48,6 +43,8 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onSwap(GameContext gameContext) {
+
+        gameContext.setUpSwap();
         System.out.println("setting swap state.");
         Pane SwapPane = gameContext.getSwapPane();
         IGameManager gm = gameContext.getGm();
@@ -119,14 +116,9 @@ public class OwnPieceSelected implements State {
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
         System.out.println("selecting enemy piece");
-        HexagonTileViewPiece piece = gameContext.getEnemyPiece();
-        Text pieceLocation = gameContext.getMc().getPieceLocation();
-        Text pieceSelected = gameContext.getMc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
-                + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
+
+        gameContext.updateEnemyPieceDetails();
+
         gameContext.setState(new EnemyPieceSel());
     }
 

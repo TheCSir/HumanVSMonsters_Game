@@ -1,7 +1,7 @@
 package boardgame.gameModel;
 
 import boardgame.controller.MainController;
-import boardgame.view.BoardGrid;
+import javafx.scene.layout.Pane;
 
 /**
  * Game Manager Factory. Decouple Game Manager creation from main class. Easy to extend to multiple
@@ -15,7 +15,7 @@ public class GameManagerFactory {
      *
      * @return the game manager
      */
-    public static GameManager createGameManager(BoardGrid boardGrid, MainController mainController) {
-        return new GameManager(boardGrid, mainController);
+    public static GameManager createGameManager(Pane boardPane, MainController mainController) {
+        return new GameManager(boardPane, mainController);
     }
 }

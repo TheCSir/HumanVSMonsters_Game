@@ -1,10 +1,5 @@
 package boardgame.gameModel.state;
 
-import boardgame.gameModel.IGameManager;
-import boardgame.view.BoardGrid;
-import boardgame.view.TileView;
-import javafx.scene.paint.Color;
-
 public class MoveState extends OwnPieceSelected {
 
     public MoveState() {
@@ -50,19 +45,11 @@ public class MoveState extends OwnPieceSelected {
     @Override
     public void onSelectTile(GameContext gameContext) {
         System.out.println("The piece should try to move now. If it can't move stay in this state or go to idle");
-        TileView tile = gameContext.getTileView();
-        // Reset tiles color
-        BoardGrid bg = gameContext.getBoardGrid();
-        bg.setNeighbourTilesColor(gameContext.getOwnPiece(), Color.ANTIQUEWHITE);
-        IGameManager gm = gameContext.getGm();
-        //Update model.
-        boolean pieceMoved = gm.getiBoard().movePiece(gameContext.getOwnPiece().getiPiece(), tile.getLocation());
 
-        if (pieceMoved) {
-            // end turn
-            gm.getTurn().nextTurn(gm.getPlayers());
-            System.out.println("Piece moved");
-        }
+        gameContext.resetTileColours();
+
+        gameContext.movePiece();
+
         gameContext.setState(new IdleState());
     }
 

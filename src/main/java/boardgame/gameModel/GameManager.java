@@ -14,9 +14,11 @@ import boardgame.gameModel.state.GameContext;
 import boardgame.gameModel.state.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
-import boardgame.view.BoardGrid;
+import boardgame.view.BoardGridFactory;
+import boardgame.view.IBoardGrid;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +34,14 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
-    private BoardGrid boardGrid;
+    private IBoardGrid IBoardGrid;
     private GameContext gameContext;
 
     //Default constructor
-    GameManager(BoardGrid boardGrid, MainController mainController) {
+    GameManager(Pane boardPane, MainController mainController) {
         players = new ArrayList<>();
-        this.boardGrid = boardGrid;
-        gameContext = new GameContext(new IdleState(), boardGrid, this, mainController);
+        IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, mainController);
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this, mainController);
     }
 
     @Override
@@ -100,7 +102,7 @@ class GameManager implements IGameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
-        boardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, boardGrid.getBoardPane());
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
 
     }
 
@@ -164,7 +166,7 @@ class GameManager implements IGameManager {
      */
     @Override
     public void removePiece(IPiece piece) {
-        boardGrid.removePiece(piece);
+        IBoardGrid.removePiece(piece);
     }
 
 
@@ -175,7 +177,7 @@ class GameManager implements IGameManager {
      */
     @Override
     public void addPiece(IPiece piece) {
-        boardGrid.addPiece(piece);
+        IBoardGrid.addPiece(piece);
     }
 
     @Override

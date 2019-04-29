@@ -3,7 +3,6 @@ package boardgame.controller;
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.state.GameContext;
-import boardgame.view.BoardGrid;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
 import javafx.fxml.FXML;
@@ -80,9 +79,10 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BoardGrid boardGrid = new BoardGrid(boardPane, this);
+
         //Store a reference to the Game manager for main entry point to game.
-        IGameManager gm = GameManagerFactory.createGameManager(boardGrid, this);
+        //TODO Should boardpane be passed to model?
+        IGameManager gm = GameManagerFactory.createGameManager(boardPane, this);
         gm.defaultGameSetup();
 
         StatusController statusController = new StatusController(gm);
@@ -117,14 +117,11 @@ public class MainController implements Initializable {
     }
 
     private void handleSwapAction(Pane SwapPane, Button Opt_one, Button Opt_two, GameContext gc) {
-
         gc.pressSwapButton(SwapPane, Opt_one, Opt_two);
-
     }
 
     private void handleSwapOne(GameContext gc) {
         gc.pressSwapOne();
-
     }
 
     private void handleSwapTwo(GameContext gc) {

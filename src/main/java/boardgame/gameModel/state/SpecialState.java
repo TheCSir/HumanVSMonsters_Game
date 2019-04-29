@@ -8,10 +8,7 @@ public class SpecialState extends OwnPieceSelected {
     }
 
 
-    @Override
-    public void notSelected(GameContext gameContext) {
-
-    }
+    //TODO implement state changes.
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
