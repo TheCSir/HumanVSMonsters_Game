@@ -34,7 +34,6 @@ public class BoardGrid implements IBoardGrid {
     private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
 
     private TileView targetTile;
-    private HexagonTileViewPiece selectedTilePiece = null;
 
     @Override
     public TileView getTargetTile() {
@@ -44,11 +43,6 @@ public class BoardGrid implements IBoardGrid {
     @Override
     public void setTargetTile(TileView targetTile) {
         this.targetTile = targetTile;
-    }
-
-    @Override
-    public HexagonTileViewPiece getSelectedTilePiece() {
-        return selectedTilePiece;
     }
 
 
@@ -81,9 +75,10 @@ public class BoardGrid implements IBoardGrid {
      * Add piece.
      *
      * @param piece the piece
+     * @return
      */
     @Override
-    public void addPiece(IPiece piece) {
+    public HexagonTileViewPiece addPiece(IPiece piece) {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
@@ -97,10 +92,10 @@ public class BoardGrid implements IBoardGrid {
         piece.locationPropertyProperty().addListener((observable) ->
                 PieceView.changePiecePosition(pieceTile, getTargetTile()));
 
-        pieceTile.setOnMouseClicked(event -> mc.handlePieceClicked(pieceTile));
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);
+        return pieceTile;
     }
 
 

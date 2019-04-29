@@ -13,11 +13,10 @@ public interface IBoardGrid {
 
     void setTargetTile(TileView targetTile);
 
-    HexagonTileViewPiece getSelectedTilePiece();
 
     TileView getTile(Location location);
 
-    void addPiece(IPiece piece);
+    HexagonTileViewPiece addPiece(IPiece piece);
 
     String imageURL(IPiece iPiece);
 

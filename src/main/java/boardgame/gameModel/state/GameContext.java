@@ -236,7 +236,7 @@ public class GameContext {
 
     public void createShield() {
         //TODO Fix bug here.
-        getBoardGrid().getSelectedTilePiece().getiPiece().createShield(getGm().getTurn().getTurnNumber());
+        getOwnPiece().getiPiece().createShield(getGm().getTurn().getTurnNumber());
         System.out.println("Defending");
         // end turn
         getGm().getTurn().nextTurn(getGm().getPlayers());

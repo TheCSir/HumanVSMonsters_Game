@@ -15,6 +15,7 @@ import boardgame.gameModel.state.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
 import boardgame.view.BoardGridFactory;
+import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,12 +37,14 @@ class GameManager implements IGameManager {
 
     private IBoardGrid IBoardGrid;
     private GameContext gameContext;
+    private MainController mc;
 
     //Default constructor
     GameManager(Pane boardPane, MainController mainController) {
         players = new ArrayList<>();
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, mainController);
         gameContext = new GameContext(new IdleState(), IBoardGrid, this, mainController);
+        this.mc = mainController;
     }
 
     @Override
@@ -177,7 +180,8 @@ class GameManager implements IGameManager {
      */
     @Override
     public void addPiece(IPiece piece) {
-        IBoardGrid.addPiece(piece);
+        HexagonTileViewPiece hp = IBoardGrid.addPiece(piece);
+        hp.setOnMouseClicked(event -> mc.handlePieceClicked(hp));
     }
 
     @Override
