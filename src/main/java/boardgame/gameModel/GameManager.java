@@ -1,5 +1,6 @@
 package boardgame.gameModel;
 
+import boardgame.controller.MainController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
@@ -9,16 +10,24 @@ import boardgame.gameModel.pieces.PieceFactory;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
+import boardgame.view.BoardGridFactory;
+import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.IBoardGrid;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.valid4j.Assertive.ensure;
+import static boardgame.util.Constants.TILERADIUS;
 
 class GameManager implements IGameManager {
+
     private ArrayList<IPlayer> players;
     private IBoard iBoard;
     private Turn turn;
@@ -26,9 +35,16 @@ class GameManager implements IGameManager {
     private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
+    private IBoardGrid IBoardGrid;
+    private GameContext gameContext;
+    private MainController mc;
+
     //Default constructor
-    GameManager() {
+    GameManager(Pane boardPane, MainController mainController) {
         players = new ArrayList<>();
+        IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, mainController);
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this, mainController);
+        this.mc = mainController;
     }
 
     @Override
@@ -79,8 +95,8 @@ class GameManager implements IGameManager {
         //Add default Monster piece
         setUpMonsterPieces();
 
-        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, Constants.PLAYERNAME1, Constants.INITIALHEALTH, humanPieces);
-        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, Constants.PLAYERNAME2, Constants.INITIALHEALTH, monsterPieces);
+        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, Constants.PLAYERNAME1, Constants.INITIALHEALTH, humanPieces, this);
+        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, Constants.PLAYERNAME2, Constants.INITIALHEALTH, monsterPieces, this);
         players.add(player1);
         players.add(player2);
 
@@ -89,6 +105,8 @@ class GameManager implements IGameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
+
     }
 
     @Override
@@ -110,10 +128,11 @@ class GameManager implements IGameManager {
     public Turn getTurn() { return turn; }
 
     public IPlayer getAttackedPlayer(IPiece attackedPiece){
+
+
         for(IPlayer player : players){
             for(IPiece playerPiece : player.getPieces()){
                 if(playerPiece.getClass().getSimpleName().equals(attackedPiece.getClass().getSimpleName()))
-                    ensure(player != null);
                     return player;
             }
         }
@@ -127,5 +146,46 @@ class GameManager implements IGameManager {
         allpieces.addAll(players.get(0).getPieces());
         allpieces.addAll(players.get(1).getPieces());
         return allpieces;
+    }
+
+
+    @Override
+    public void setUpGame() {
+        addPieces(getAllPieces());
+    }
+
+    //Add game pieces to the game board.
+    private void addPieces(List<IPiece> pieceList) {
+        for (IPiece piece : pieceList) {
+            addPiece(piece);
+        }
+    }
+
+
+    /**
+     * Remove a piece from the view.
+     *
+     * @param piece the piece
+     */
+    @Override
+    public void removePiece(IPiece piece) {
+        IBoardGrid.removePiece(piece);
+    }
+
+
+    /**
+     * Add a piece to the board in response to a change in the model.
+     *
+     * @param piece the piece
+     */
+    @Override
+    public void addPiece(IPiece piece) {
+        HexagonTileViewPiece hp = IBoardGrid.addPiece(piece);
+        hp.setOnMouseClicked(event -> mc.handlePieceClicked(hp));
+    }
+
+    @Override
+    public GameContext getGameContext() {
+        return gameContext;
     }
 }

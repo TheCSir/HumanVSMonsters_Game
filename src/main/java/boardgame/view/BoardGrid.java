@@ -1,5 +1,6 @@
 package boardgame.view;
 
+import boardgame.controller.MainController;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Constants;
@@ -24,71 +25,37 @@ import java.util.List;
  * for the view. We feel that the class is fairly cohesive. However, the coupling could be reduced by
  * perhaps separating out the Piece Views from the Tile Views.
  */
-public class BoardGrid {
+public class BoardGrid implements IBoardGrid {
 
+    private MainController mc;
 
     private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
     private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
 
     private TileView targetTile;
-    private HexagonTileViewPiece selectedTilePiece = null;
-    private boolean tileSelected = false;
-    private HexagonTileViewPiece targetTilePiece = null;
 
+    @Override
     public TileView getTargetTile() {
         return targetTile;
     }
 
+    @Override
     public void setTargetTile(TileView targetTile) {
         this.targetTile = targetTile;
     }
 
-    public HexagonTileViewPiece getSelectedTilePiece() {
-        return selectedTilePiece;
-    }
-
-    public void setSelectedTilePiece(HexagonTileViewPiece selectedTilePiece) {
-        this.selectedTilePiece = selectedTilePiece;
-    }
-
-    public boolean isTileSelected() {
-        return tileSelected;
-    }
-
-    public void setTileSelected(boolean tileSelected) {
-        this.tileSelected = tileSelected;
-    }
-
-    public HexagonTileViewPiece getTargetTilePiece() {
-        return targetTilePiece;
-    }
-
-    public void setTargetTilePiece(HexagonTileViewPiece targetTilePiece) {
-        this.targetTilePiece = targetTilePiece;
-    }
-
-    public void setBoardPane(Pane boardPane) {
-        this.boardPane = boardPane;
-    }
 
     /**
      * Instantiates a new Board grid.
      *
      * @param boardPane the board pane
+     * @param mainController
      */
-    public BoardGrid(Pane boardPane) {
+    public BoardGrid(Pane boardPane, MainController mainController) {
         this.boardPane = boardPane;
         initialiseBoardBackGround();
-    }
-
-    /**
-     * Gets piece observable list.
-     *
-     * @return the piece observable list
-     */
-    public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
-        return pieceObservableList;
+        this.mc = mainController;
     }
 
     /**
@@ -97,17 +64,9 @@ public class BoardGrid {
      * @param location the location
      * @return the tile
      */
+    @Override
     public TileView getTile(Location location) {
         return tileViewObservableMap.get(location);
-    }
-
-    /**
-     * Gets hexagon tile views.
-     *
-     * @return the hexagon tile views
-     */
-    public ObservableList<TileView> getHexagonTileViews() {
-        return hexagonTileViews;
     }
 
     private Pane boardPane;
@@ -116,8 +75,10 @@ public class BoardGrid {
      * Add piece.
      *
      * @param piece the piece
+     * @return
      */
-    public void addPiece(IPiece piece) {
+    @Override
+    public HexagonTileViewPiece addPiece(IPiece piece) {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
@@ -128,12 +89,18 @@ public class BoardGrid {
             System.out.println("Image File not found!");
         }
 
+        piece.locationPropertyProperty().addListener((observable) ->
+                PieceView.changePiecePosition(pieceTile, getTargetTile()));
+
+
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);
+        return pieceTile;
     }
 
 
-    private String imageURL(IPiece iPiece) {
+    @Override
+    public String imageURL(IPiece iPiece) {
         return "src/main/resources/"
                 + iPiece.getClass().getName()
                 + ".png";
@@ -146,6 +113,7 @@ public class BoardGrid {
      * @param radius     the radius
      * @param boardPane  the board pane
      */
+    @Override
     public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
 
         List<TileView> hexagonTileViews = calculateTileCoord(
@@ -166,6 +134,7 @@ public class BoardGrid {
         }
     }
 
+
     /**
      * Calculate tile coord list.
      *
@@ -176,6 +145,7 @@ public class BoardGrid {
      * @return the list
      */
 //returns a list of tiles to add to a pane.
+    @Override
     public List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset) {
         double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
         double TILE_HEIGHT = 2 * r;
@@ -192,6 +162,8 @@ public class BoardGrid {
 
             //Create the new tile.
             TileView tile = TileViewFactory.createTileView(xCoord, yCoord, r, hexagonalTile);
+            //Set tile handlers
+            tile.setOnMouseClicked(e -> mc.handleTileClicked(tile));
             hexagonTileViewList.add(tile);
 
 
@@ -201,7 +173,8 @@ public class BoardGrid {
         return hexagonTileViewList;
     }
 
-    private void initialiseBoardBackGround() {
+    @Override
+    public void initialiseBoardBackGround() {
         // Set up the background.
         try {
             FileInputStream input = new FileInputStream("src/main/resources/wood_table_with_dice.jpeg");
@@ -218,6 +191,7 @@ public class BoardGrid {
      * @param selectedTilePiece the selected tile piece
      * @param color             the color
      */
+    @Override
     public void setNeighbourTilesColor(HexagonTileViewPiece selectedTilePiece, Color color) {
         TileView underTile = this.getTile(selectedTilePiece.getLocation());
         List<TileView> neighbouringTiles = underTile.getNeighbourViews();
@@ -231,16 +205,16 @@ public class BoardGrid {
      *
      * @param piece the piece
      */
+    @Override
     public void removePiece(IPiece piece) {
         for (HexagonTileViewPiece viewPiece : pieceObservableList) {
             if (viewPiece.getiPiece().equals(piece)) {
                 boardPane.getChildren().remove(viewPiece);
             }
         }
-
-
     }
 
+    @Override
     public Pane getBoardPane() {
         return boardPane;
     }

@@ -71,4 +71,6 @@ public interface IPlayer {
      * @param pieces the pieces
      */
     void setPieces(ObservableList<IPiece> pieces);
+
+    IPiece getPiece(IPiece piece);
 }

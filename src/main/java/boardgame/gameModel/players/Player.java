@@ -1,9 +1,11 @@
 package boardgame.gameModel.players;
 
+import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.util.Constants;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import static org.valid4j.Assertive.require;
@@ -20,7 +22,7 @@ public abstract class Player implements IPlayer {
 
     //endregion
 
-    public Player(int playerID, String playerName, double _health, ObservableList<IPiece> pieces) {
+    public Player(int playerID, String playerName, double _health, ObservableList<IPiece> pieces, IGameManager gm) {
 
         //Preconditions. This uses the valid4j library.
         require(playerID > 0);
@@ -32,6 +34,21 @@ public abstract class Player implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
+
+        pieces.addListener((ListChangeListener<IPiece>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    for (IPiece piece : c.getAddedSubList()) {
+                        gm.addPiece(piece);
+                    }
+                } else if (c.wasRemoved()) {
+                    c.getRemoved();
+                    for (IPiece piece : c.getRemoved()) {
+                        gm.removePiece(piece);
+                    }
+                }
+            }
+        });
     }
 
     public String getPlayerName(){

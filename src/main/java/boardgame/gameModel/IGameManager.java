@@ -3,6 +3,7 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.state.GameContext;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -115,4 +116,13 @@ public interface IGameManager {
      * @return the all pieces
      */
     ObservableList<IPiece> getAllPieces();
+
+
+    void setUpGame();
+
+    void removePiece(IPiece piece);
+
+    void addPiece(IPiece piece);
+
+    GameContext getGameContext();
 }

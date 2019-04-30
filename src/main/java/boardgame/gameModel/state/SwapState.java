@@ -1,4 +1,4 @@
-package boardgame.controller;
+package boardgame.gameModel.state;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.*;
@@ -6,55 +6,8 @@ import boardgame.util.LocationFactory;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
+public class SwapState extends OwnPieceSelected {
 
-public class SwapController {
-
-
-    public static void handleSwapAction(Pane SwapPane, IGameManager gm, Button Opt_one, Button Opt_two) {
-
-        //Switch the disabled status
-        SwapPane.setVisible(!SwapPane.isVisible());
-
-        //get current piece class
-        String oldPieceName = gm.getTurn().getActivePlayer().getPieces().get(0).getClass().getName();
-
-        // Button label store location;
-        String OptOne = null;
-        String OptTwo = null;
-
-
-        // Check and populate Gui according to current situation
-        if (oldPieceName.equals(Warrior.class.getName())) {
-            OptOne = Archer.class.getSimpleName();
-            OptTwo = Priest.class.getSimpleName();
-
-        } else if (oldPieceName.equals(Priest.class.getName())) {
-            OptOne = Warrior.class.getSimpleName();
-            OptTwo = Archer.class.getSimpleName();
-
-        } else if (oldPieceName.equals(Archer.class.getName())) {
-            OptOne = Warrior.class.getSimpleName();
-            OptTwo = Priest.class.getSimpleName();
-
-        } else if (oldPieceName.equals(Medusa.class.getName())) {
-            OptOne = Griffin.class.getSimpleName();
-            OptTwo = Minotaur.class.getSimpleName();
-
-        } else if (oldPieceName.equals(Griffin.class.getName())) {
-            OptOne = Medusa.class.getSimpleName();
-            OptTwo = Minotaur.class.getSimpleName();
-
-        } else if (oldPieceName.equals(Minotaur.class.getName())) {
-            OptOne = Griffin.class.getSimpleName();
-            OptTwo = Medusa.class.getSimpleName();
-
-        }
-
-        // Set button labels
-        Opt_one.setText(OptOne);
-        Opt_two.setText(OptTwo);
-
-    }
 
     public static void doSwap(IGameManager gm, Pane SwapPane, Button selection) {
 
@@ -79,6 +32,7 @@ public class SwapController {
 
         //End turn
         gm.getTurn().nextTurn(gm.getPlayers());
+
     }
 
     //Return full name of the piece
@@ -98,4 +52,24 @@ public class SwapController {
         } else
             return null;
     }
+
+    @Override
+    public void onSwap(GameContext gameContext) {
+        System.out.println("Already in swap state");
+    }
+
+    @Override
+    public void onSwapOne(GameContext gameContext) {
+        System.out.println("Selecting first option");
+        doSwap(gameContext.getGm(), gameContext.getSwapPane(), gameContext.getOpt_one());
+        gameContext.setState(new IdleState());
+    }
+
+    @Override
+    public void onSwapTwo(GameContext gameContext) {
+        System.out.println("Selecting second option.");
+        doSwap(gameContext.getGm(), gameContext.getSwapPane(), gameContext.getOpt_two());
+        gameContext.setState(new IdleState());
+    }
+
 }

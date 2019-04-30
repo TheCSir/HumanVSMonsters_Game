@@ -4,7 +4,7 @@ import boardgame.gameModel.IGameManager;
 
 public class RegisterListenerFactory {
 
-    public static RegisterListeners createRegisterListeners(MainController mc, IGameManager gm, StatusController tc) {
-        return new RegisterListeners(mc, gm, tc);
+    public static RegisterListeners createRegisterListeners(IGameManager gm, StatusController tc) {
+        return new RegisterListeners(gm, tc);
     }
 }

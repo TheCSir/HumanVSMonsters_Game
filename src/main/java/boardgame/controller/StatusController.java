@@ -51,6 +51,8 @@ public class StatusController extends VBox {
         }
         this.gm = gm;
         initialiseTextFields();
+
+
     }
 
     /**
