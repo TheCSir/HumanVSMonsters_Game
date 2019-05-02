@@ -42,7 +42,7 @@ public class RegisterListeners {
         // increment Turn number label
 
         turn.turnNumberProperty().addListener(observable ->
-                statusController.getTurnNumber().setText("Turn: " +
+                statusController.setTurnNumber("Turn: " +
                         turn.getTurnNumber())
         );
 

@@ -8,7 +8,7 @@ public class PieceView {
 
     }
 
-    public static void changePiecePosition(HexagonTileViewPiece hexagonPiece, TileView desiredTilePosition) {
+    static void changePiecePosition(HexagonTileViewPiece hexagonPiece, TileView desiredTilePosition) {
 
         Translate translate = new Translate();
         translate.setX(desiredTilePosition.getBoundsInParent().getCenterX() - hexagonPiece.getBoundsInParent().getCenterX());

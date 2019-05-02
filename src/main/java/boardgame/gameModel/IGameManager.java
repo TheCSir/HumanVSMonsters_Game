@@ -21,6 +21,8 @@ import java.util.ArrayList;
  */
 public interface IGameManager {
 
+    IPlayer getActivePlayer();
+
     /**
      * Gets human pieces.
      *

@@ -48,6 +48,11 @@ class GameManager implements IGameManager {
     }
 
     @Override
+    public IPlayer getActivePlayer() {
+        return turn.getActivePlayer();
+    }
+
+    @Override
     public ObservableList<IPiece> getHumanPieces() {
         return humanPieces;
     }

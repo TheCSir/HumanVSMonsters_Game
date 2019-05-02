@@ -14,6 +14,7 @@ public class HexagonTileViewPiece extends HexagonTileView {
 
     private IPiece iPiece;
 
+
     /**
      * Instantiates a new Hexagon tile view piece.
      *
@@ -46,4 +47,8 @@ public class HexagonTileViewPiece extends HexagonTileView {
         return iPiece.getLocation();
     }
 
+    //Used to fill text fields in the view for piece information.
+    public String getInnerPieceName() {
+        return getiPiece().getClass().getSimpleName();
+    }
 }
