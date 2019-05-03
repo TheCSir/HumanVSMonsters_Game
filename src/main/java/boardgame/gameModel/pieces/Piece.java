@@ -14,6 +14,13 @@ public abstract class Piece implements IPiece {
     private int moveSpeed;
     private boolean isShielded;
     private int shieldTurn;
+    private final ObjectProperty<Location> locationProperty;
+
+    //Used to make piece location observable.
+    public ObjectProperty<Location> locationPropertyProperty() {
+        return locationProperty;
+    }
+
 
     public Piece(int moveSpeed, Location location) {
         require(moveSpeed >= 0);
@@ -40,16 +47,10 @@ public abstract class Piece implements IPiece {
         return locationProperty.get();
     }
 
-    private ObjectProperty<Location> locationProperty;
-
     @Override
     public Location getLocationProperty() {
-        return locationProperty.get();
-    }
 
-    //Used to make piece location observable.
-    public ObjectProperty<Location> locationPropertyProperty() {
-        return locationProperty;
+        return locationProperty.get();
     }
 
     //Doesn't allow a new location to be passed. Just take the coordinates to avoid affecting the observable.

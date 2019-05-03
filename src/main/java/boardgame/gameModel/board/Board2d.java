@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class Board2d implements IBoard {
 
-    private ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
+    private final ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
 
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);

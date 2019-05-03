@@ -17,7 +17,7 @@ public abstract class Player implements IPlayer {
     private int playerID;
     private String playerName;
     private String playerStatus = Constants.IDEALSTATUS;
-    private DoubleProperty health;
+    private final DoubleProperty health;
     private ObservableList<IPiece> pieces;
 
     //endregion

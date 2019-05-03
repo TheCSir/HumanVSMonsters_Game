@@ -27,11 +27,11 @@ import java.util.List;
  */
 public class BoardGrid implements IBoardGrid {
 
-    private MainController mc;
+    private final MainController mc;
 
-    private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
-    private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
-    private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
+    private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
+    private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
+    private final ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
 
     private TileView targetTile;
 
@@ -69,7 +69,7 @@ public class BoardGrid implements IBoardGrid {
         return tileViewObservableMap.get(location);
     }
 
-    private Pane boardPane;
+    private final Pane boardPane;
 
     /**
      * Add piece.

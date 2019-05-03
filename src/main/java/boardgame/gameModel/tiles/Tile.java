@@ -15,7 +15,7 @@ import static org.valid4j.Assertive.require;
 
 public abstract class Tile implements ITile {
     List<Location> neighbourPositions;
-    private List<ITile> neighbours;
+    private final List<ITile> neighbours;
     private Location location;
 
     //Constructor is package-private. Classes to use factory to instantiate objects.

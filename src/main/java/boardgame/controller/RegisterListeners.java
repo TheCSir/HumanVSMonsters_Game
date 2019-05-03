@@ -11,8 +11,8 @@ import java.util.List;
 
 public class RegisterListeners {
 
-    private IGameManager gm;
-    private StatusController statusController;
+    private final IGameManager gm;
+    private final StatusController statusController;
 
     public RegisterListeners(IGameManager gm, StatusController tc) {
         this.gm = gm;
