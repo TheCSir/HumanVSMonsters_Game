@@ -60,16 +60,6 @@ public class GameContext {
         state.onSelectTile(this);
     }
 
-    public void selectOwnPiece(HexagonTileViewPiece ownpiece) {
-        this.ownPiece = ownpiece;
-        state.onSelectOwnPiece(this);
-    }
-
-    public void selectEnemyPiece(HexagonTileViewPiece enemyPiece) {
-        this.enemyPiece = enemyPiece;
-        state.onSelectEnemyPiece(this);
-    }
-
     public void selectPiece(HexagonTileViewPiece piece) {
         setActivePlayer(piece.getiPiece());
         if (isActivePlayerPiece(piece.getiPiece())) {
@@ -79,10 +69,6 @@ public class GameContext {
             this.enemyPiece = piece;
             state.onSelectEnemyPiece(this);
         }
-    }
-
-    public void attackEnemyPiece(HexagonTileViewPiece enemyPiece) {
-        this.enemyPiece = enemyPiece;
     }
 
     public void pressSwapButton(Pane swapPane, Button opt_one, Button opt_two) {
@@ -172,10 +158,6 @@ public class GameContext {
             }
         }
         return false;
-    }
-
-    public IPlayer getActivePlayer() {
-        return activePlayer;
     }
 
     private void setActivePlayer(IPiece ipiece) {
