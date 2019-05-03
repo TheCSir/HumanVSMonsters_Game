@@ -4,7 +4,7 @@ import boardgame.controller.MainController;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Warrior;
-import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.state.command.CommandProcessor;
 import boardgame.gameModel.state.command.MoveCommand;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
@@ -60,7 +60,6 @@ public class GameContext {
     }
 
     public void selectPiece(HexagonTileViewPiece piece) {
-        setActivePlayer(piece.getiPiece());
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             state.onSelectOwnPiece(this);
@@ -151,15 +150,6 @@ public class GameContext {
         return false;
     }
 
-    private void setActivePlayer(IPiece ipiece) {
-
-        for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
-            if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
-                IPlayer activePlayer = gm.getTurn().getActivePlayer();
-            }
-        }
-    }
-
     public void updatePieceDetails() {
         HexagonTileViewPiece piece = getOwnPiece();
 
@@ -219,9 +209,10 @@ public class GameContext {
 
 
     public void movePiece() {
+        CommandProcessor commandProcessor = new CommandProcessor();
         MoveCommand command = new MoveCommand();
         command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece().getiPiece());
-        command.execute();
+        commandProcessor.execute(command);
     }
 
     public void setUpSwap() {
