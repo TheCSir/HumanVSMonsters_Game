@@ -27,11 +27,6 @@ public class IdleState implements State {
         System.out.println("Does nothing in idle state");
     }
 
-    @Override
-    public void notSelected(GameContext gameContext) {
-
-    }
-
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
@@ -55,11 +50,6 @@ public class IdleState implements State {
         gameContext.updateEnemyPieceDetails();
 
         gameContext.setState(new EnemyPieceSel());
-    }
-
-    @Override
-    public void attackPiece(GameContext gameContext) {
-
     }
 
     @Override

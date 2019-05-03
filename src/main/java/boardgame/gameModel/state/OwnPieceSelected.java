@@ -98,11 +98,6 @@ public class OwnPieceSelected implements State {
 
 
     @Override
-    public void notSelected(GameContext gameContext) {
-        System.out.println("Setting idle state");
-    }
-
-    @Override
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("No change");
     }
@@ -120,11 +115,6 @@ public class OwnPieceSelected implements State {
         gameContext.updateEnemyPieceDetails();
 
         gameContext.setState(new EnemyPieceSel());
-    }
-
-    @Override
-    public void attackPiece(GameContext gameContext) {
-
     }
 
     @Override

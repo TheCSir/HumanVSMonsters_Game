@@ -25,8 +25,4 @@ public class SpecialState extends OwnPieceSelected {
 
     }
 
-    @Override
-    public void attackPiece(GameContext gameContext) {
-
-    }
 }

@@ -27,7 +27,7 @@ public class CommandProcessor {
     }
 
     public void redo() {
-        
+
     }
 
     private void fireCommandHistoryChanged() {

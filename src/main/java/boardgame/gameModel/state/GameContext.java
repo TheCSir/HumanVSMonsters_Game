@@ -26,7 +26,6 @@ public class GameContext {
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
-    private IPlayer activePlayer;
 
     public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, MainController mc) {
         this.state = state;
@@ -102,16 +101,8 @@ public class GameContext {
         return enemyPiece;
     }
 
-    public void setEnemyPiece(HexagonTileViewPiece piece) {
-        enemyPiece = piece;
-    }
-
     public HexagonTileViewPiece getOwnPiece() {
         return ownPiece;
-    }
-
-    public void setOwnPiece(HexagonTileViewPiece piece) {
-        ownPiece = piece;
     }
 
     public TileView getTileView() {
@@ -164,7 +155,7 @@ public class GameContext {
 
         for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
             if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
-                activePlayer = gm.getTurn().getActivePlayer();
+                IPlayer activePlayer = gm.getTurn().getActivePlayer();
             }
         }
     }
