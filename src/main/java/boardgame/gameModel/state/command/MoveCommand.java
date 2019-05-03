@@ -2,6 +2,8 @@ package boardgame.gameModel.state.command;
 
 
 //This class is using the Command pattern. This implements the Command interface.
+// See http://www.informit.com/articles/article.aspx?p=2471643&seqNum=5 for info about
+// implementation outline.
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
