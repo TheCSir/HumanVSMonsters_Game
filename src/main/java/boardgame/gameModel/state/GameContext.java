@@ -5,6 +5,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Warrior;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.state.command.MoveCommand;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
@@ -243,17 +244,11 @@ public class GameContext {
     public void updateTileInfo() {
     }
 
-    public void movePiece() {
-        IGameManager gm = getGm();
-        TileView tile = getTileView();
-        //Update model.
-        boolean pieceMoved = gm.getiBoard().movePiece(getOwnPiece().getiPiece(), tile.getLocation());
 
-        if (pieceMoved) {
-            // end turn
-            gm.getTurn().nextTurn(gm.getPlayers());
-            System.out.println("Piece moved");
-        }
+    public void movePiece() {
+        MoveCommand command = new MoveCommand();
+        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece().getiPiece());
+        command.execute();
     }
 
     public void setUpSwap() {

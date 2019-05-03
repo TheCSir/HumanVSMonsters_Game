@@ -20,26 +20,22 @@ public class MoveState extends OwnPieceSelected {
     @Override
     public void onSpecial(GameContext gameContext) {
         System.out.println("changing to special state");
+        gameContext.setState(new SpecialState());
     }
 
     @Override
     public void onDefence(GameContext gameContext) {
-        //TODO add once defence State added.
+        gameContext.setState(new DefenceState());
     }
 
     @Override
     public void onSwap(GameContext gameContext) {
-        //TODO Add once Swap State added.
-    }
-
-    @Override
-    public void notSelected(GameContext gameContext) {
-
+        gameContext.setState(new SwapState());
     }
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
-
+        gameContext.setState(new OwnPieceSelected());
     }
 
     @Override
@@ -55,11 +51,7 @@ public class MoveState extends OwnPieceSelected {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-
+        gameContext.setState(new EnemyPieceSel());
     }
 
-    @Override
-    public void attackPiece(GameContext gameContext) {
-
-    }
 }
