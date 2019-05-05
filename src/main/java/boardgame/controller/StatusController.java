@@ -31,6 +31,7 @@ public class StatusController extends VBox {
     @FXML
     private Text currentPlayer;
 
+
     @FXML
     private Text turnTime;
 
@@ -120,6 +121,10 @@ public class StatusController extends VBox {
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
         getTurnTime().setText("Turn Time " + 60);
+    }
+
+    public void setTurnNumber(String text) {
+        turnNumber.setText(text);
     }
 
 }

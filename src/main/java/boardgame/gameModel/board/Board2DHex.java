@@ -65,11 +65,6 @@ public class Board2DHex extends Board2d {
         getTiles().put(location, tile);
     }
 
-    @Override
-    public boolean checkMapLocation(Location location, int rows, int columns) {
-        return super.checkMapLocation(location, rows, columns);
-    }
-
     //For each tile store their neighbouring tiles.
     private void addNeighbours() {
         for (ITile t : getTiles().values()) {

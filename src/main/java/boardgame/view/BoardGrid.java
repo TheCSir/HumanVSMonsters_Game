@@ -52,7 +52,7 @@ public class BoardGrid implements IBoardGrid {
      * @param boardPane the board pane
      * @param mainController
      */
-    public BoardGrid(Pane boardPane, MainController mainController) {
+    BoardGrid(Pane boardPane, MainController mainController) {
         this.boardPane = boardPane;
         initialiseBoardBackGround();
         this.mc = mainController;
@@ -91,7 +91,6 @@ public class BoardGrid implements IBoardGrid {
 
         piece.locationPropertyProperty().addListener((observable) ->
                 PieceView.changePiecePosition(pieceTile, getTargetTile()));
-
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);

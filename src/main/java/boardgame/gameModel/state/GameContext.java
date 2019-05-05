@@ -42,7 +42,7 @@ public class GameContext {
         state.onAttack(this);
     }
 
-    public void pressSpecial(Pane swapPane, Button opt_one, Button opt_two) {
+    public void pressSpecial() {
 
         state.onSpecial(this);
     }
@@ -163,8 +163,6 @@ public class GameContext {
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(IPiece ipiece) {
 
-        String[] humanPieces = {"Warrior", "Priest", "Archer"};
-        String[] monsterPieces = {"Medusa", "Minotaur", "Griffin"};
         System.out.println(Warrior.class.getSimpleName());
         System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
         for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
@@ -202,14 +200,14 @@ public class GameContext {
     }
 
     void updateEnemyPieceDetails() {
-        HexagonTileViewPiece piece = getEnemyPiece();
+        IPiece piece = getEnemyPiece().getiPiece();
         Text pieceLocation = getMc().getPieceLocation();
         Text pieceSelected = getMc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
+        pieceSelected.setText("Class: " + piece.getClass().getSimpleName());
         pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
+                + "X: " + piece.getLocation().getX()
                 + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
+                + "Y: " + piece.getLocation().getY());
     }
 
     void highlightMove() {

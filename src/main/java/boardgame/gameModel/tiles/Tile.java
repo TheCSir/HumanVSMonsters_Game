@@ -24,7 +24,6 @@ public abstract class Tile implements ITile {
         this.location = location;
         neighbours = new ArrayList<>();
         neighbourPositions = new ArrayList<>();
-        ;
     }
 
     public abstract boolean getTraversable();
@@ -57,6 +56,8 @@ public abstract class Tile implements ITile {
     @Override
     public String toString() {
         return "Tile{" +
+                "neighbourPositions=" + neighbourPositions +
+                ", neighbours=" + neighbours +
                 ", location=" + location +
                 '}';
     }

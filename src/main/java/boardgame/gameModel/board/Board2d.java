@@ -43,14 +43,12 @@ public abstract class Board2d implements IBoard {
     @Override
     public boolean movePiece(IPiece piece, Location location) {
 
-        boolean pieceMoved = false;
         //First check that moving to a neighbouring position. If so change location.
         if (checkValidMove(piece, location)){
             piece.setLocation(location);
-            pieceMoved = true;
+            return true;
         }
-
-        return pieceMoved;
+        return false;
     }
 
     private List<ITile> getNeighbours(IPiece piece) {

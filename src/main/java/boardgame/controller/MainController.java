@@ -103,17 +103,21 @@ public class MainController implements Initializable {
     }
 
     private void chooseAttackTargetPiece() {
-
+        //Update Model.
         gameContext.pressAttack();
     }
 
 
     //Selects piece.
-
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
+        //Update model.
         gameContext.selectPiece(piece);
 
+    }
+
+    private void handleMoveClicked() {
+        gameContext.pressMove();
     }
 
     private void handleSwapAction(Pane SwapPane, Button Opt_one, Button Opt_two, GameContext gc) {
@@ -132,8 +136,8 @@ public class MainController implements Initializable {
         System.out.println("Clicked defense");
         gameContext.pressDefence(gameContext);
     }
-
     //Gets input and updates model for piece position.
+
     public void handleTileClicked(TileView tile) {
         assert tile != null;
         gameContext.clickTile(tile);
@@ -149,10 +153,6 @@ public class MainController implements Initializable {
         Opt_two.setOnAction(e -> handleSwapTwo(gameContext));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
-    }
-
-    private void handleMoveClicked() {
-        gameContext.pressMove();
     }
 
 }
