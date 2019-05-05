@@ -43,11 +43,9 @@ public class CommandProcessor {
     }
 
     public void redo() {
-
         Command cmd = redoList.pop();
-        cmd.redo();
         undoList.push(cmd);
-        System.out.println("redo not implemented.");
+        cmd.redo();
     }
 
     private void fireCommandHistoryChanged() {

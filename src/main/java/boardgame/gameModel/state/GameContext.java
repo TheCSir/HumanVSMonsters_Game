@@ -2,10 +2,11 @@ package boardgame.gameModel.state;
 
 import boardgame.controller.MainController;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Warrior;
+import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.command.CommandProcessor;
+import boardgame.gameModel.state.command.DefenceCommand;
 import boardgame.gameModel.state.command.MoveCommand;
+import boardgame.util.LocationFactory;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
@@ -32,6 +33,50 @@ public class GameContext {
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
         this.mc = mc;
+    }
+
+    public static void doSwap(IGameManager gm, Pane SwapPane, Button selection) {
+
+        //Get current piece and it's location
+        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        int x = oldPiece.getLocation().getX();
+        int y = oldPiece.getLocation().getY();
+
+        //Remove current piece
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+
+        //Get piece full name
+        String Piece = getClassFullName(selection.getText());
+
+        //Create new piece and add to board
+        IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+
+        //Handle GUI validations
+        SwapPane.setVisible(false);
+
+        //End turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+
+    }
+
+    //Return full name of the piece
+    public static String getClassFullName(String piece) {
+        if (piece.equals(Warrior.class.getSimpleName())) {
+            return Warrior.class.getName();
+        } else if (piece.equals(Priest.class.getSimpleName())) {
+            return Priest.class.getName();
+        } else if (piece.equals(Archer.class.getSimpleName())) {
+            return Archer.class.getName();
+        } else if (piece.equals(Medusa.class.getSimpleName())) {
+            return Medusa.class.getName();
+        } else if (piece.equals(Griffin.class.getSimpleName())) {
+            return Griffin.class.getName();
+        } else if (piece.equals(Minotaur.class.getSimpleName())) {
+            return Minotaur.class.getName();
+        } else
+            return null;
     }
 
     public void pressMove() {
@@ -140,7 +185,6 @@ public class GameContext {
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(IPiece ipiece) {
 
-        System.out.println(Warrior.class.getSimpleName());
         System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
         for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
             if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
@@ -174,12 +218,20 @@ public class GameContext {
                 + "Y: " + piece.getLocation().getY());
     }
 
+    /**
+     * Highlight tiles that can be moved to.
+     **/
     void highlightMove() {
         IBoardGrid bg = getBoardGrid();
         bg.setNeighbourTilesColor(getOwnPiece(), Color.RED);
 
     }
 
+    public void updateTileInfo() {
+    }
+
+    public void setUpSwap() {
+    }
     void attackPiece() {
         IGameManager gm = getGm();
 
@@ -196,33 +248,45 @@ public class GameContext {
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 
-    public void createShield() {
-        //TODO Fix bug here.
-        getOwnPiece().getiPiece().createShield(getGm().getTurn().getTurnNumber());
-        System.out.println("Defending");
-        // end turn
-        getGm().getTurn().nextTurn(getGm().getPlayers());
-    }
-
-    public void updateTileInfo() {
-    }
-
+    //*******************************************************
+    //*********  COMMAND SECTION ****************************
+    //
+    //  This section contains commands that can be executed.
+    //  All commands need to go through the command processor
+    // so that history can be recorded.
+    //
+    //  To create a new command create a class for the command
+    // implementing Command interface. Then set the variables.
+    // Don't forget to call execute on the command.
+    //******************************************************/
 
     private CommandProcessor commandProcessor = new CommandProcessor();
 
-    public void movePiece() {
-        MoveCommand command = new MoveCommand();
-        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece());
+
+    public void createShield() {
+        DefenceCommand command = new DefenceCommand();
+        command.SetCommand(getGm(), getOwnPiece());
         commandProcessor.execute(command);
     }
 
-    public void setUpSwap() {
+
+    public void movePiece() {
+        MoveCommand command = new MoveCommand();
+        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid());
+        commandProcessor.execute(command);
     }
 
+
+    /**
+     * Undo the selected action through the command processor.
+     */
     public void undo() {
         commandProcessor.undo();
     }
 
+    /**
+     * Redo the selected action through the command processor.
+     */
     public void redo() {
         commandProcessor.redo();
     }

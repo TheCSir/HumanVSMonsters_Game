@@ -31,6 +31,21 @@ public class BoardGrid implements IBoardGrid {
 
     private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
+
+    @Override
+    public ObservableMap<Location, TileView> getTileViewObservableMap() {
+        return tileViewObservableMap;
+    }
+
+    @Override
+    public TileView getTileView(Location location) {
+        return tileViewObservableMap.get(location);
+    }
+
+    public ObservableList<TileView> getHexagonTileViews() {
+        return hexagonTileViews;
+    }
+
     private final ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
 
     private TileView targetTile;

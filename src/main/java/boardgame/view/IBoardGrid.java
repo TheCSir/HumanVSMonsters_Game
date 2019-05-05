@@ -3,12 +3,17 @@ package boardgame.view;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Location;
+import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.List;
 
 public interface IBoardGrid {
+    ObservableMap<Location, TileView> getTileViewObservableMap();
+
+    TileView getTileView(Location location);
+
     TileView getTargetTile();
 
     void setTargetTile(TileView targetTile);
