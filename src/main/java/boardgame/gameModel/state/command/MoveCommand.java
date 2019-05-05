@@ -34,8 +34,6 @@ public class MoveCommand implements Command {
             gm.getTurn().nextTurn(gm.getPlayers());
             System.out.println("Piece moved");
         }
-
-
     }
 
     @Override
