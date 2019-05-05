@@ -13,6 +13,9 @@ import boardgame.view.IBoardGrid;
 import boardgame.view.PieceView;
 import boardgame.view.TileView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MoveCommand implements Command {
 
     private HexagonTileViewPiece selectedPiece;
@@ -21,15 +24,22 @@ public class MoveCommand implements Command {
     private IGameManager gm;
     private Turn turn;
     private IBoardGrid boardGrid;
+    private List<TileView> highlightedTiles;
 
 
     @Override
     public void execute() {
 
-        boolean pieceMoved = gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
+        List<Location> locations = new ArrayList<>();
+        for (TileView highlightedTile : highlightedTiles) {
+            locations.add(highlightedTile.getLocation());
+            System.out.println("highlightedTile.getLocation() = " + highlightedTile.getLocation());
+        }
 
-        //Should this be replaced by a location check instead of having move return a boolean?
-        if (pieceMoved) {
+        if (locations.contains(destination)) {
+            gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
+
+            //Should this be replaced by a location check instead of having move return a boolean?
             // end turn
             gm.getTurn().nextTurn(gm.getPlayers());
             System.out.println("Piece moved");
@@ -73,12 +83,13 @@ public class MoveCommand implements Command {
 
     }
 
-    public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid) {
+    public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
         this.gm = gm;
         turn = gm.getTurn();
         this.selectedPiece = selectedPiece;
         this.destination = destination;
         startingLocation = new Location(selectedPiece.getLocation().getX(), selectedPiece.getLocation().getY());
         this.boardGrid = boardGrid;
+        this.highlightedTiles = highlightedTiles;
     }
 }

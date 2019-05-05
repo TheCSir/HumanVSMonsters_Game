@@ -49,7 +49,6 @@ public interface IBoard {
      *
      * @param piece           the piece
      * @param desiredLocation the desired location
-     * @return boolean of whether move is possible.
      */
-    boolean movePiece(IPiece piece, Location desiredLocation);
+    void movePiece(IPiece piece, Location desiredLocation);
 }
