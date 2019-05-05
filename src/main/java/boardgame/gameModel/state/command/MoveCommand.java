@@ -21,6 +21,7 @@ public class MoveCommand implements Command {
     private double x;
     private double y;
 
+
     @Override
     public void execute() {
         boolean pieceMoved = gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
@@ -42,6 +43,13 @@ public class MoveCommand implements Command {
 
         selectedPiece.getiPiece().setLocation(startingLocation);
         PieceView.changePieceFromAbsoluteValue(selectedPiece, x, y);
+        //Roll back turn.
+        int previousTurn = turn.getTurnNumber() - 1;
+        turn.setTurnNumberProperty(previousTurn);
+
+        // This should handle having multiple players on the board
+        int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
+        turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
         System.out.println("Location of selected piece is now: " + startingLocation.toString());
         System.out.println(selectedPiece.getLocation());
         System.out.println("Selected piece is: " + selectedPiece.toString());
