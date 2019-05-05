@@ -25,12 +25,12 @@ public class MoveCommand implements Command {
     private Turn turn;
     private IBoardGrid boardGrid;
     private List<TileView> highlightedTiles;
-
+    List<Location> locations = new ArrayList<>();
 
     @Override
     public void execute() {
 
-        List<Location> locations = new ArrayList<>();
+        locations.clear();
         for (TileView highlightedTile : highlightedTiles) {
             locations.add(highlightedTile.getLocation());
             System.out.println("highlightedTile.getLocation() = " + highlightedTile.getLocation());
@@ -44,6 +44,7 @@ public class MoveCommand implements Command {
             gm.getTurn().nextTurn(gm.getPlayers());
             System.out.println("Piece moved");
         }
+        // highlightedTiles.clear();
     }
 
     @Override
@@ -74,13 +75,17 @@ public class MoveCommand implements Command {
     public void redo() {
 
         TileView target2 = boardGrid.getTileView(destination);
-
-        //Required to set the correct target for when the move executes. Emulates the user
-        // goind from the ready to move state to the move transition.
         gm.getGameContext().clickTile(target2);
 
-        execute();
+        gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
 
+        //Should this be replaced by a location check instead of having move return a boolean?
+        // end turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+        System.out.println("Piece moved");
+
+        //Listener not being called properly. Temp fix.
+        PieceView.changePiecePosition(selectedPiece, target2);
     }
 
     public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
