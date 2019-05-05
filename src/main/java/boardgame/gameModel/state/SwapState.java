@@ -11,14 +11,14 @@ public class SwapState extends OwnPieceSelected {
     @Override
     public void onSwapOne(GameContext gameContext) {
         System.out.println("Selecting first option");
-        GameContext.doSwap(gameContext.getGm(), gameContext.getSwapPane(), gameContext.getOpt_one());
+        gameContext.swapTwo();
         gameContext.setState(new IdleState());
     }
 
     @Override
     public void onSwapTwo(GameContext gameContext) {
         System.out.println("Selecting second option.");
-        GameContext.doSwap(gameContext.getGm(), gameContext.getSwapPane(), gameContext.getOpt_two());
+        gameContext.swapOne();
         gameContext.setState(new IdleState());
     }
 

@@ -55,7 +55,6 @@ public class MoveCommand implements Command {
 
         selectedPiece.setLocation(startingLocation);
 
-
         //This should be called by observer not directly! Not sure why not working :(
         PieceView.changePiecePosition(selectedPiece, target2);
         //TODO reset text field.

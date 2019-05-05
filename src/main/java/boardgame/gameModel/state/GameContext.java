@@ -6,7 +6,7 @@ import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.command.CommandProcessor;
 import boardgame.gameModel.state.command.DefenceCommand;
 import boardgame.gameModel.state.command.MoveCommand;
-import boardgame.util.LocationFactory;
+import boardgame.gameModel.state.command.SwapCommand;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
@@ -35,31 +35,7 @@ public class GameContext {
         this.mc = mc;
     }
 
-    public static void doSwap(IGameManager gm, Pane SwapPane, Button selection) {
 
-        //Get current piece and it's location
-        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
-        int x = oldPiece.getLocation().getX();
-        int y = oldPiece.getLocation().getY();
-
-        //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
-
-        //Get piece full name
-        String Piece = getClassFullName(selection.getText());
-
-        //Create new piece and add to board
-        IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
-
-
-        //Handle GUI validations
-        SwapPane.setVisible(false);
-
-        //End turn
-        gm.getTurn().nextTurn(gm.getPlayers());
-
-    }
 
     //Return full name of the piece
     public static String getClassFullName(String piece) {
@@ -273,6 +249,18 @@ public class GameContext {
     public void movePiece() {
         MoveCommand command = new MoveCommand();
         command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid());
+        commandProcessor.execute(command);
+    }
+
+    public void swapOne() {
+        SwapCommand command = new SwapCommand();
+        command.SetCommand(getGm(), swapPane, opt_one);
+        commandProcessor.execute(command);
+    }
+
+    public void swapTwo() {
+        SwapCommand command = new SwapCommand();
+        command.SetCommand(getGm(), swapPane, opt_two);
         commandProcessor.execute(command);
     }
 
