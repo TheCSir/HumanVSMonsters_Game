@@ -1,9 +1,12 @@
 package boardgame.controller;
 
 import boardgame.gameModel.IGameManager;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -35,6 +38,9 @@ public class StatusController extends VBox {
     @FXML
     private Text turnTime;
 
+    @FXML
+    private Button undoButton;
+
     /**
      * Instantiates a new Status controller.
      *
@@ -53,6 +59,12 @@ public class StatusController extends VBox {
         this.gm = gm;
         initialiseTextFields();
 
+        undoButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gm.getGameContext().undo();
+            }
+        });
 
     }
 

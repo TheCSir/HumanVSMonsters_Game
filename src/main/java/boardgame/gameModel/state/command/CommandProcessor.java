@@ -25,8 +25,8 @@ public class CommandProcessor {
     }
 
     public void undo() {
-
-        //Steo 1: Assert that the undo list is empty. Cannt undo if nothing left to undo.
+        System.out.println("Undo list size is: " + undoList.size());
+        //Steo 1: Assert that the undo list is empty. Can't undo if nothing left to undo.
         require(!undoList.isEmpty());
 
         //Step 2: Pop off the top of the stack and assign the command to a variable.
@@ -38,6 +38,7 @@ public class CommandProcessor {
         //Step 4: Add the command to the redo stack.
         redoList.push(cmd);
 
+        //Step 5: Notify listeners.
         fireCommandHistoryChanged();
     }
 
@@ -46,6 +47,8 @@ public class CommandProcessor {
     }
 
     private void fireCommandHistoryChanged() {
+
+
     }
 
     private class ListenerList {

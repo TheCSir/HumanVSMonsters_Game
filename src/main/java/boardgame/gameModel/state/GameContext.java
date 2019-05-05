@@ -208,13 +208,18 @@ public class GameContext {
     }
 
 
+    private CommandProcessor commandProcessor = new CommandProcessor();
+
     public void movePiece() {
-        CommandProcessor commandProcessor = new CommandProcessor();
         MoveCommand command = new MoveCommand();
-        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece().getiPiece());
+        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece());
         commandProcessor.execute(command);
     }
 
     public void setUpSwap() {
+    }
+
+    public void undo() {
+        commandProcessor.undo();
     }
 }

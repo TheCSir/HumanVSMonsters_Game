@@ -6,18 +6,24 @@ package boardgame.gameModel.state.command;
 // implementation outline.
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.Turn;
 import boardgame.util.Location;
+import boardgame.view.HexagonTileViewPiece;
+import boardgame.view.PieceView;
 
 public class MoveCommand implements Command {
 
-    private IPiece selectedPiece;
-    private Location location;
+    private HexagonTileViewPiece selectedPiece;
+    private Location startingLocation;
+    private Location destination;
     private IGameManager gm;
+    private Turn turn;
+    private double x;
+    private double y;
 
     @Override
     public void execute() {
-        boolean pieceMoved = gm.getiBoard().movePiece(selectedPiece, location);
+        boolean pieceMoved = gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
 
         //Should this be replaced by a location check instead of having move return a boolean?
         if (pieceMoved) {
@@ -29,7 +35,18 @@ public class MoveCommand implements Command {
 
     @Override
     public void undo() {
+        System.out.println("changing locatio to");
+        //turn.setActivePlayer(turn..getActivePlayer();
+        //Set the piece back to it's starting position. This will also redraw the piece.
+        //Why is listener not being called?
 
+        selectedPiece.getiPiece().setLocation(startingLocation);
+        PieceView.changePieceFromAbsoluteValue(selectedPiece, x, y);
+        System.out.println("Location of selected piece is now: " + startingLocation.toString());
+        System.out.println(selectedPiece.getLocation());
+        System.out.println("Selected piece is: " + selectedPiece.toString());
+
+        //TODO reset text field.
     }
 
     @Override
@@ -37,9 +54,13 @@ public class MoveCommand implements Command {
 
     }
 
-    public void SetCommand(IGameManager gm, Location location, IPiece selectedPiece) {
+    public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece) {
         this.gm = gm;
+        turn = gm.getTurn();
         this.selectedPiece = selectedPiece;
-        this.location = location;
+        this.destination = destination;
+        startingLocation = selectedPiece.getLocation();
+        x = selectedPiece.getBoundsInParent().getCenterX();
+        y = selectedPiece.getBoundsInParent().getCenterY();
     }
 }
