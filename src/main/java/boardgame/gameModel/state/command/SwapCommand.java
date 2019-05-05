@@ -1,9 +1,7 @@
 package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.pieces.*;
 import boardgame.util.LocationFactory;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -12,6 +10,24 @@ public class SwapCommand implements Command {
     private Button selectionButton;
     private Pane swapPane;
     private IGameManager gm;
+
+    //Return full name of the piece
+    public static String getClassFullName(String piece) {
+        if (piece.equals(Warrior.class.getSimpleName())) {
+            return Warrior.class.getName();
+        } else if (piece.equals(Priest.class.getSimpleName())) {
+            return Priest.class.getName();
+        } else if (piece.equals(Archer.class.getSimpleName())) {
+            return Archer.class.getName();
+        } else if (piece.equals(Medusa.class.getSimpleName())) {
+            return Medusa.class.getName();
+        } else if (piece.equals(Griffin.class.getSimpleName())) {
+            return Griffin.class.getName();
+        } else if (piece.equals(Minotaur.class.getSimpleName())) {
+            return Minotaur.class.getName();
+        } else
+            return null;
+    }
 
     @Override
     public void execute() {
@@ -25,7 +41,7 @@ public class SwapCommand implements Command {
         gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
 
         //Get piece full name
-        String Piece = GameContext.getClassFullName(selectionButton.getText());
+        String Piece = getClassFullName(selectionButton.getText());
 
         //Create new piece and add to board
         IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
@@ -41,17 +57,17 @@ public class SwapCommand implements Command {
 
     @Override
     public void undo() {
-
-    }
-
-    @Override
-    public void redo() {
-
+        // TODO: swap undo to be implemented.
     }
 
     public void SetCommand(IGameManager gm, Pane swapPane, Button selectionButton) {
         this.gm = gm;
         this.swapPane = swapPane;
         this.selectionButton = selectionButton;
+    }
+
+    @Override
+    public void redo() {
+        // TODO: swap redo to be implemented.
     }
 }

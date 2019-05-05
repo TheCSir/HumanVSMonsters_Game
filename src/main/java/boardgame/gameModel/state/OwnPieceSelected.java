@@ -31,8 +31,9 @@ public class OwnPieceSelected implements State {
     public void onSpecial(GameContext gameContext) {
         System.out.println("Set special state");
         //TODO set up new buttons to click.
-
-        gameContext.setState(new SpecialState());
+        //for the moment let's make it a transition.
+        gameContext.launchSpecialAbility();
+        gameContext.setState(new IdleState());
     }
 
     @Override
@@ -126,4 +127,5 @@ public class OwnPieceSelected implements State {
     public void onSwapTwo(GameContext gameContext) {
 
     }
+
 }

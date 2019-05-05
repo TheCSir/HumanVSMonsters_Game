@@ -2,11 +2,8 @@ package boardgame.gameModel.state;
 
 import boardgame.controller.MainController;
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.pieces.*;
-import boardgame.gameModel.state.command.CommandProcessor;
-import boardgame.gameModel.state.command.DefenceCommand;
-import boardgame.gameModel.state.command.MoveCommand;
-import boardgame.gameModel.state.command.SwapCommand;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.state.command.*;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
@@ -36,25 +33,6 @@ public class GameContext {
     }
 
 
-
-    //Return full name of the piece
-    public static String getClassFullName(String piece) {
-        if (piece.equals(Warrior.class.getSimpleName())) {
-            return Warrior.class.getName();
-        } else if (piece.equals(Priest.class.getSimpleName())) {
-            return Priest.class.getName();
-        } else if (piece.equals(Archer.class.getSimpleName())) {
-            return Archer.class.getName();
-        } else if (piece.equals(Medusa.class.getSimpleName())) {
-            return Medusa.class.getName();
-        } else if (piece.equals(Griffin.class.getSimpleName())) {
-            return Griffin.class.getName();
-        } else if (piece.equals(Minotaur.class.getSimpleName())) {
-            return Minotaur.class.getName();
-        } else
-            return null;
-    }
-
     public void pressMove() {
         state.onMove(this);
     }
@@ -64,7 +42,6 @@ public class GameContext {
     }
 
     public void pressSpecial() {
-
         state.onSpecial(this);
     }
 
@@ -208,21 +185,6 @@ public class GameContext {
 
     public void setUpSwap() {
     }
-    void attackPiece() {
-        IGameManager gm = getGm();
-
-        IPiece enemyPiece = getEnemyPiece().getiPiece();
-
-        System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
-
-        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
-        // get attacked player
-        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
-
-        // end turn
-        gm.getTurn().nextTurn(gm.getPlayers());
-    }
 
     //*******************************************************
     //*********  COMMAND SECTION ****************************
@@ -235,7 +197,6 @@ public class GameContext {
     // implementing Command interface. Then set the variables.
     // Don't forget to call execute on the command.
     //******************************************************/
-
     private CommandProcessor commandProcessor = new CommandProcessor();
 
 
@@ -255,12 +216,26 @@ public class GameContext {
     public void swapOne() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(getGm(), swapPane, opt_one);
+        System.out.println("opt_one = " + opt_one.getText());
         commandProcessor.execute(command);
     }
 
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(getGm(), swapPane, opt_two);
+        System.out.println("opt_two = " + opt_two.getText());
+        commandProcessor.execute(command);
+    }
+
+    public void attackPiece() {
+        AttackCommand command = new AttackCommand();
+        command.setCommand(gm, getEnemyPiece());
+        commandProcessor.execute(command);
+    }
+
+    public void launchSpecialAbility() {
+        SpecialCommand command = new SpecialCommand();
+        command.setCommand(getGm(), getOwnPiece().getiPiece());
         commandProcessor.execute(command);
     }
 

@@ -64,7 +64,6 @@ public class MoveCommand implements Command {
     public void redo() {
 
         TileView target2 = boardGrid.getTileView(destination);
-        System.out.println("destination = " + destination);
 
         //Required to set the correct target for when the move executes. Emulates the user
         // goind from the ready to move state to the move transition.

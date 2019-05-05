@@ -8,21 +8,4 @@ public class SpecialState extends OwnPieceSelected {
     }
 
 
-    //TODO implement state changes.
-
-    @Override
-    public void onSelectOwnPiece(GameContext gameContext) {
-
-    }
-
-    @Override
-    public void onSelectTile(GameContext gameContext) {
-
-    }
-
-    @Override
-    public void onSelectEnemyPiece(GameContext gameContext) {
-
-    }
-
 }
