@@ -240,8 +240,14 @@ public class GameContext {
 
     public void movePiece() {
         MoveCommand command = new MoveCommand();
-        command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
-        commandProcessor.execute(command);
+        List<Location> locations = new ArrayList<>();
+        for (TileView t : highlightedTiles) {
+            locations.add(t.getModelTile().getLocation());
+        }
+        if (locations.contains(getTileView().getModelTile().getLocation())) {
+            command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
+            commandProcessor.execute(command);
+        }
     }
 
     public IBoardGrid getBoardGrid() {
