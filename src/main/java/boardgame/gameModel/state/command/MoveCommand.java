@@ -51,7 +51,7 @@ public class MoveCommand implements Command {
 
     @Override
     public void redo() {
-
+        execute();
     }
 
     public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece) {

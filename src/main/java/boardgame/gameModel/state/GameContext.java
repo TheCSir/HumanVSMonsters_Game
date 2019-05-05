@@ -222,4 +222,8 @@ public class GameContext {
     public void undo() {
         commandProcessor.undo();
     }
+
+    public void redo() {
+        commandProcessor.redo();
+    }
 }

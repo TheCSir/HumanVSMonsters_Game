@@ -55,5 +55,6 @@
             </VBox.margin>
         </Text>
         <Button fx:id="undoButton" mnemonicParsing="false" text="Undo"/>
+        <Button fx:id="redoButton" mnemonicParsing="false" text="Redo"/>
     </children>
 </fx:root>
