@@ -28,11 +28,6 @@ public class EnemyPieceSel implements State {
     }
 
     @Override
-    public void notSelected(GameContext gameContext) {
-
-    }
-
-    @Override
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("Changing state to own piece");
 
@@ -52,11 +47,6 @@ public class EnemyPieceSel implements State {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-
-    }
-
-    @Override
-    public void attackPiece(GameContext gameContext) {
 
     }
 

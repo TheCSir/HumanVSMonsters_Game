@@ -12,15 +12,11 @@ public interface State {
 
     void onSwap(GameContext gameContext);
 
-    void notSelected(GameContext gameContext);
-
     void onSelectOwnPiece(GameContext gameContext);
 
     void onSelectTile(GameContext gameContext);
 
     void onSelectEnemyPiece(GameContext gameContext);
-
-    void attackPiece(GameContext gameContext);
 
     void onSwapOne(GameContext gameContext);
 

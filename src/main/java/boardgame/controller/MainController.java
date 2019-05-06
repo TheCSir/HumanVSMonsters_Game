@@ -35,6 +35,10 @@ public class MainController implements Initializable {
     @FXML
     private Button defendButton;
 
+
+    @FXML
+    private Button specialAbilityButton;
+
     private GameContext gameContext;
 
     /**
@@ -153,6 +157,11 @@ public class MainController implements Initializable {
         Opt_two.setOnAction(e -> handleSwapTwo(gameContext));
         //defense code
         defendButton.setOnAction(e -> chooseDefenseTargetPiece());
+        specialAbilityButton.setOnMouseClicked(e -> handleSpecialClicked());
+    }
+
+    private void handleSpecialClicked() {
+        gameContext.pressSpecial();
     }
 
 }

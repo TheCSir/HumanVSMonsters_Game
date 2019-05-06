@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class LocationFactory {
 
-    private static Map<String, Location> locationCache = new HashMap<>();
+    private static final Map<String, Location> locationCache = new HashMap<>();
 
     //Use of flyweight pattern. Prior to flyweight pattern 1302 instances of location were being created for a 10 x 10
     //grid. After flyweight pattern only 142 instances of location were created.

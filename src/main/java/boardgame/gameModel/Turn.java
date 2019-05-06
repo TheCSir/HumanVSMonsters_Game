@@ -13,8 +13,8 @@ import java.util.List;
  * This represents a game turn.
  */
 public class Turn {
-    private IntegerProperty turnNumber;
-    private ObjectProperty<IPlayer> activePlayerProperty;
+    private final IntegerProperty turnNumber;
+    private final ObjectProperty<IPlayer> activePlayerProperty;
 
     /**
      * Instantiates a new Turn.

@@ -28,16 +28,16 @@ import static boardgame.util.Constants.TILERADIUS;
 
 class GameManager implements IGameManager {
 
-    private ArrayList<IPlayer> players;
+    private final ArrayList<IPlayer> players;
     private IBoard iBoard;
     private Turn turn;
 
     private ObservableList<IPiece> humanPieces = FXCollections.observableArrayList();
     private ObservableList<IPiece> monsterPieces = FXCollections.observableArrayList();
 
-    private IBoardGrid IBoardGrid;
-    private GameContext gameContext;
-    private MainController mc;
+    private final IBoardGrid IBoardGrid;
+    private final GameContext gameContext;
+    private final MainController mc;
 
     //Default constructor
     GameManager(Pane boardPane, MainController mainController) {

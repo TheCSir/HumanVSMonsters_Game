@@ -23,6 +23,7 @@ public class OwnPieceSelected implements State {
     @Override
     public void onAttack(GameContext gameContext) {
         //TODO highlight surrounding tiles.
+        gameContext.highlightAttack();
         System.out.println("setting attack state");
         gameContext.setState(new AttackState());
     }
@@ -31,8 +32,9 @@ public class OwnPieceSelected implements State {
     public void onSpecial(GameContext gameContext) {
         System.out.println("Set special state");
         //TODO set up new buttons to click.
-
-        gameContext.setState(new SpecialState());
+        //for the moment let's make it a transition.
+        gameContext.launchSpecialAbility();
+        gameContext.setState(new IdleState());
     }
 
     @Override
@@ -98,11 +100,6 @@ public class OwnPieceSelected implements State {
 
 
     @Override
-    public void notSelected(GameContext gameContext) {
-        System.out.println("Setting idle state");
-    }
-
-    @Override
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("No change");
     }
@@ -123,11 +120,6 @@ public class OwnPieceSelected implements State {
     }
 
     @Override
-    public void attackPiece(GameContext gameContext) {
-
-    }
-
-    @Override
     public void onSwapOne(GameContext gameContext) {
 
     }
@@ -136,4 +128,5 @@ public class OwnPieceSelected implements State {
     public void onSwapTwo(GameContext gameContext) {
 
     }
+
 }

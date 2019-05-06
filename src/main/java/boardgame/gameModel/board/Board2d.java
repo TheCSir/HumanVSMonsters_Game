@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class Board2d implements IBoard {
 
-    private ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
+    private final ObservableMap<Location, ITile> boardGrid = FXCollections.observableHashMap();
 
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);
@@ -41,14 +41,8 @@ public abstract class Board2d implements IBoard {
     }
 
     @Override
-    public boolean movePiece(IPiece piece, Location location) {
-
-        //First check that moving to a neighbouring position. If so change location.
-        if (checkValidMove(piece, location)){
+    public void movePiece(IPiece piece, Location location) {
             piece.setLocation(location);
-            return true;
-        }
-        return false;
     }
 
     private List<ITile> getNeighbours(IPiece piece) {

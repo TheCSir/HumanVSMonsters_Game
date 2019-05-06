@@ -27,11 +27,26 @@ import java.util.List;
  */
 public class BoardGrid implements IBoardGrid {
 
-    private MainController mc;
+    private final MainController mc;
 
-    private ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
-    private ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
-    private ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
+    private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
+    private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
+
+    @Override
+    public ObservableMap<Location, TileView> getTileViewObservableMap() {
+        return tileViewObservableMap;
+    }
+
+    @Override
+    public TileView getTileView(Location location) {
+        return tileViewObservableMap.get(location);
+    }
+
+    public ObservableList<TileView> getHexagonTileViews() {
+        return hexagonTileViews;
+    }
+
+    private final ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
 
     private TileView targetTile;
 
@@ -69,7 +84,7 @@ public class BoardGrid implements IBoardGrid {
         return tileViewObservableMap.get(location);
     }
 
-    private Pane boardPane;
+    private final Pane boardPane;
 
     /**
      * Add piece.
@@ -90,7 +105,7 @@ public class BoardGrid implements IBoardGrid {
         }
 
         piece.locationPropertyProperty().addListener((observable) ->
-                PieceView.changePiecePosition(pieceTile, getTargetTile()));
+                PieceView.changePiecePosition(pieceTile, getTile(pieceTile.getLocation())));
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);
