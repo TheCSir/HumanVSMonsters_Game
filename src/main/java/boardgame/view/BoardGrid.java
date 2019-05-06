@@ -105,7 +105,7 @@ public class BoardGrid implements IBoardGrid {
         }
 
         piece.locationPropertyProperty().addListener((observable) ->
-                PieceView.changePiecePosition(pieceTile, getTargetTile()));
+                PieceView.changePiecePosition(pieceTile, getTile(pieceTile.getLocation())));
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);

@@ -10,7 +10,6 @@ import boardgame.gameModel.Turn;
 import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
-import boardgame.view.PieceView;
 import boardgame.view.TileView;
 
 import java.util.ArrayList;
@@ -44,15 +43,11 @@ public class MoveCommand implements Command {
             gm.getTurn().nextTurn(gm.getPlayers());
             System.out.println("Piece moved");
         }
-        // highlightedTiles.clear();
     }
 
     @Override
     public void undo() {
 
-        //turn.setActivePlayer(turn..getActivePlayer();
-        //Set the piece back to it's starting position. This will also redraw the piece.
-        //Why is listener not being called?
 
         //Roll back turn.
         int previousTurn = turn.getTurnNumber() - 1;
@@ -62,12 +57,8 @@ public class MoveCommand implements Command {
         int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
         turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
 
-        TileView target2 = boardGrid.getTileView(startingLocation);
-
         selectedPiece.setLocation(startingLocation);
 
-        //This should be called by observer not directly! Not sure why not working :(
-        PieceView.changePiecePosition(selectedPiece, target2);
         //TODO reset text field.
     }
 
@@ -82,10 +73,7 @@ public class MoveCommand implements Command {
         //Should this be replaced by a location check instead of having move return a boolean?
         // end turn
         gm.getTurn().nextTurn(gm.getPlayers());
-        System.out.println("Piece moved");
 
-        //Listener not being called properly. Temp fix.
-        PieceView.changePiecePosition(selectedPiece, target2);
     }
 
     public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {

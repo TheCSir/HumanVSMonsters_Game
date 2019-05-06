@@ -301,6 +301,8 @@ public class GameContext {
         return new Cube(x, y, z);
     }
 
+    //*******************************************************************************
+
     /**
      * Move piece.
      */
@@ -322,11 +324,11 @@ public class GameContext {
      * @return the board grid
      */
     public IBoardGrid getBoardGrid() {
+
         return IBoardGrid;
     }
 
 
-    //*******************************************************************************
 
     /**
      * Update tile info.
