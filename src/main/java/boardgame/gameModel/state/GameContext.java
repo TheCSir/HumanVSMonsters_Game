@@ -20,6 +20,12 @@ import java.util.Queue;
 
 import static java.lang.Math.abs;
 
+/**
+ * The Game context class. This class is the main driver class for the game logic.
+ * Actions that the user takes are processed as Commands using the Command pattern.
+ * A State machine is used and is implemented using the State Pattern. This ensures
+ * that a game piece is in the correct state before a Command is issued.
+ */
 public class GameContext {
 
     private final IGameManager gm;
@@ -34,6 +40,14 @@ public class GameContext {
     private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
 
+    /**
+     * Instantiates a new Game context.
+     *
+     * @param state      the state
+     * @param IBoardGrid the board grid
+     * @param gm         the gm
+     * @param mc         the mc
+     */
     public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, MainController mc) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
@@ -44,29 +58,51 @@ public class GameContext {
 
     //*******************************************************
     //                                                      *
-    //     Buttons. This section is responsible for state   *
-    //     changes from                                     *
+    //     This section is responsible for state   *
+    //     changes called from the state machine. A user
+    //     clicks a button which triggers a State Change.
     //                                                      *
     //*******************************************************
 
+    /**
+     * Press move.
+     */
     public void pressMove() {
         state.onMove(this);
     }
 
+    /**
+     * Press attack.
+     */
     public void pressAttack() {
         state.onAttack(this);
     }
 
+    /**
+     * Press special.
+     */
     public void pressSpecial() {
         state.onSpecial(this);
     }
 
+    /**
+     * Press defence.
+     *
+     * @param gameContext the game context
+     */
     public void pressDefence(GameContext gameContext) {
         //TODO Add implementation for defence.
         System.out.println("To be implemented");
         state.onDefence(this);
     }
 
+    /**
+     * Press swap button.
+     *
+     * @param swapPane the swap pane
+     * @param opt_one  the opt one
+     * @param opt_two  the opt two
+     */
     public void pressSwapButton(Pane swapPane, Button opt_one, Button opt_two) {
         this.swapPane = swapPane;
         this.opt_one = opt_one;
@@ -74,21 +110,37 @@ public class GameContext {
         state.onSwap(this);
     }
 
+    /**
+     * Press swap one.
+     */
     public void pressSwapOne() {
         state.onSwapOne(this);
     }
 
+    /**
+     * Press swap two.
+     */
     public void pressSwapTwo() {
         state.onSwapTwo(this);
     }
 
 
+    /**
+     * Click tile.
+     *
+     * @param tile the tile
+     */
     public void clickTile(TileView tile) {
         this.tileView = tile;
         IBoardGrid.setTargetTile(tile);
         state.onSelectTile(this);
     }
 
+    /**
+     * Select piece.
+     *
+     * @param piece the piece
+     */
     public void selectPiece(HexagonTileViewPiece piece) {
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
@@ -125,6 +177,9 @@ public class GameContext {
         return false;
     }
 
+    /**
+     * Update piece details.
+     */
     public void updatePieceDetails() {
         HexagonTileViewPiece piece = getOwnPiece();
 
@@ -138,6 +193,9 @@ public class GameContext {
                 + "Y: " + piece.getiPiece().getLocation().getY());
     }
 
+    /**
+     * Update enemy piece details.
+     */
     void updateEnemyPieceDetails() {
         IPiece piece = getEnemyPiece().getiPiece();
         Text pieceLocation = getMc().getPieceLocation();
@@ -151,7 +209,7 @@ public class GameContext {
 
     /**
      * Highlight tiles that can be moved to.
-     **/
+     */
     void highlightMove() {
         highlightedTiles.clear();
         IBoardGrid bg = getBoardGrid();
@@ -163,6 +221,7 @@ public class GameContext {
         //https://www.redblobgames.com/grids/hexagons/
 
         //Start of very inefficent BFS. Will do for the moment.
+        //Probably refactor and move to separate class.
         TileView underTile = bg.getTile(pieceLocation);
         List<TileView> visited = new ArrayList<>();
         Queue<TileView> queue = new LinkedList<>();
@@ -209,9 +268,13 @@ public class GameContext {
         }
 
 
-        // bg.setNeighbourTilesColor(getOwnPiece(), Color.RED);
-
     }
+
+    //*******************************************************************************
+    //
+    //  Utility methods for calculating distance between grid points in a hex grid.
+    //
+    //********************************************************************************
 
     private int offset_distance(Location a, Location b) {
         Hex locationA = new Hex(a.getX(), a.getY());
@@ -238,6 +301,9 @@ public class GameContext {
         return new Cube(x, y, z);
     }
 
+    /**
+     * Move piece.
+     */
     public void movePiece() {
         MoveCommand command = new MoveCommand();
         List<Location> locations = new ArrayList<>();
@@ -250,15 +316,46 @@ public class GameContext {
         }
     }
 
+    /**
+     * Gets board grid.
+     *
+     * @return the board grid
+     */
     public IBoardGrid getBoardGrid() {
         return IBoardGrid;
     }
 
 
+    //*******************************************************************************
+
+    /**
+     * Update tile info.
+     */
     public void updateTileInfo() {
     }
 
+    /**
+     * Sets up swap.
+     */
     public void setUpSwap() {
+    }
+
+    /**
+     * Create shield.
+     */
+    public void createShield() {
+        DefenceCommand command = new DefenceCommand();
+        command.SetCommand(getGm(), getOwnPiece());
+        commandProcessor.execute(command);
+    }
+
+    /**
+     * Gets enemy piece.
+     *
+     * @return the enemy piece
+     */
+    public HexagonTileViewPiece getEnemyPiece() {
+        return enemyPiece;
     }
 
     //*******************************************************
@@ -274,17 +371,9 @@ public class GameContext {
     //******************************************************/
     private CommandProcessor commandProcessor = new CommandProcessor();
 
-
-    public void createShield() {
-        DefenceCommand command = new DefenceCommand();
-        command.SetCommand(getGm(), getOwnPiece());
-        commandProcessor.execute(command);
-    }
-
-    public HexagonTileViewPiece getEnemyPiece() {
-        return enemyPiece;
-    }
-
+    /**
+     * Swap one.
+     */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(getGm(), swapPane, opt_one);
@@ -292,6 +381,9 @@ public class GameContext {
         commandProcessor.execute(command);
     }
 
+    /**
+     * Swap two.
+     */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(getGm(), swapPane, opt_two);
@@ -299,16 +391,40 @@ public class GameContext {
         commandProcessor.execute(command);
     }
 
+    /**
+     * Attack piece.
+     */
     public void attackPiece() {
         AttackCommand command = new AttackCommand();
         command.setCommand(gm, getEnemyPiece());
         commandProcessor.execute(command);
     }
 
+    /**
+     * Launch special ability.
+     */
     public void launchSpecialAbility() {
         SpecialCommand command = new SpecialCommand();
         command.setCommand(getGm(), getOwnPiece().getiPiece());
         commandProcessor.execute(command);
+    }
+
+    /**
+     * Gets own piece.
+     *
+     * @return the own piece
+     */
+    public HexagonTileViewPiece getOwnPiece() {
+        return ownPiece;
+    }
+
+    /**
+     * Gets tile view.
+     *
+     * @return the tile view
+     */
+    public TileView getTileView() {
+        return tileView;
     }
 
 
@@ -329,47 +445,93 @@ public class GameContext {
 
     //Getters and setters.
 
-    public HexagonTileViewPiece getOwnPiece() {
-        return ownPiece;
-    }
-
-    public TileView getTileView() {
-        return tileView;
-    }
-
+    /**
+     * Gets gm.
+     *
+     * @return the gm
+     */
     public IGameManager getGm() {
         return gm;
     }
 
+    /**
+     * Gets mc.
+     *
+     * @return the mc
+     */
     public MainController getMc() {
         return mc;
     }
 
+    /**
+     * Gets swap pane.
+     *
+     * @return the swap pane
+     */
     public Pane getSwapPane() {
         return swapPane;
     }
 
+    /**
+     * Gets opt one.
+     *
+     * @return the opt one
+     */
     public Button getOpt_one() {
         return opt_one;
     }
 
+    /**
+     * Gets opt two.
+     *
+     * @return the opt two
+     */
     public Button getOpt_two() {
         return opt_two;
     }
 
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Sets state.
+     *
+     * @param state the state
+     */
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * The type Cube.
+     */
     class Cube {
+        /**
+         * The X.
+         */
         int x;
+        /**
+         * The Y.
+         */
         int y;
+        /**
+         * The Z.
+         */
         int z;
 
+        /**
+         * Instantiates a new Cube.
+         *
+         * @param x the x
+         * @param y the y
+         * @param z the z
+         */
         Cube(int x, int y, int z) {
             this.x = x;
             this.y = y;
@@ -377,14 +539,30 @@ public class GameContext {
         }
     }
 
+    /**
+     * The type Hex.
+     */
     class Hex {
+        /**
+         * The Col.
+         */
         int col; //x
+        /**
+         * The Row.
+         */
         int row; //y
 
+        /**
+         * Instantiates a new Hex.
+         *
+         * @param col the col
+         * @param row the row
+         */
         Hex(int col, int row) {
             this.col = col;
             this.row = row;
         }
     }
+
 
 }
