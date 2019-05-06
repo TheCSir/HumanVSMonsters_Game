@@ -23,6 +23,7 @@ public class OwnPieceSelected implements State {
     @Override
     public void onAttack(GameContext gameContext) {
         //TODO highlight surrounding tiles.
+        gameContext.highlightAttack();
         System.out.println("setting attack state");
         gameContext.setState(new AttackState());
     }

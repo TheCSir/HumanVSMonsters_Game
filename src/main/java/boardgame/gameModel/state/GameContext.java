@@ -61,6 +61,9 @@ public class GameContext {
     //     This section is responsible for state   *
     //     changes called from the state machine. A user
     //     clicks a button which triggers a State Change.
+    //      The states are not meant to hold game logic.
+    //      They merely manage the transitions and
+    //      available commands.
     //                                                      *
     //*******************************************************
 
@@ -270,6 +273,21 @@ public class GameContext {
 
     }
 
+    void highlightAttack() {
+        highlightedTiles.clear();
+        IBoardGrid bg = getBoardGrid();
+        Location pieceLocation = ownPiece.getLocation();
+        TileView underTile = bg.getTile(pieceLocation);
+
+
+        //Replace this with conditional loop once different terrain
+        // exists.
+        highlightedTiles.addAll(underTile.getNeighbourViews());
+        for (TileView t : highlightedTiles) {
+            t.setFill(Color.RED);
+        }
+    }
+
     //*******************************************************************************
     //
     //  Utility methods for calculating distance between grid points in a hex grid.
@@ -303,20 +321,7 @@ public class GameContext {
 
     //*******************************************************************************
 
-    /**
-     * Move piece.
-     */
-    public void movePiece() {
-        MoveCommand command = new MoveCommand();
-        List<Location> locations = new ArrayList<>();
-        for (TileView t : highlightedTiles) {
-            locations.add(t.getModelTile().getLocation());
-        }
-        if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
-            commandProcessor.execute(command);
-        }
-    }
+
 
     /**
      * Gets board grid.
@@ -374,6 +379,21 @@ public class GameContext {
     private CommandProcessor commandProcessor = new CommandProcessor();
 
     /**
+     * Move a piece.
+     */
+    public void movePiece() {
+        MoveCommand command = new MoveCommand();
+
+        List<Location> locations = new ArrayList<>();
+        for (TileView t : highlightedTiles) {
+            locations.add(t.getModelTile().getLocation());
+        }
+        if (locations.contains(getTileView().getModelTile().getLocation())) {
+            command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
+            commandProcessor.execute(command);
+        }
+    }
+    /**
      * Swap one.
      */
     public void swapOne() {
@@ -397,9 +417,18 @@ public class GameContext {
      * Attack piece.
      */
     public void attackPiece() {
-        AttackCommand command = new AttackCommand();
-        command.setCommand(gm, getEnemyPiece());
-        commandProcessor.execute(command);
+        //TODO highlight tiles.
+
+        if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
+
+            AttackCommand command = new AttackCommand();
+            command.setCommand(gm, getEnemyPiece());
+            commandProcessor.execute(command);
+            enemyPiece = null;
+            resetTileColours();
+        }
+        //Ensure that enemy piece is cleared as next time might be different piece.
+
     }
 
     /**

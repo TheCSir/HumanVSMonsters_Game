@@ -24,7 +24,7 @@ public class MoveCommand implements Command {
     private Turn turn;
     private IBoardGrid boardGrid;
     private List<TileView> highlightedTiles;
-    List<Location> locations = new ArrayList<>();
+    private List<Location> locations = new ArrayList<>();
 
     @Override
     public void execute() {
@@ -38,8 +38,6 @@ public class MoveCommand implements Command {
         if (locations.contains(destination)) {
             gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
 
-            //Should this be replaced by a location check instead of having move return a boolean?
-            // end turn
             gm.getTurn().nextTurn(gm.getPlayers());
             System.out.println("Piece moved");
         }
@@ -57,6 +55,7 @@ public class MoveCommand implements Command {
         int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
         turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
 
+        //Change piece's location. Listener will redraw the piece.
         selectedPiece.setLocation(startingLocation);
 
         //TODO reset text field.

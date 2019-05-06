@@ -15,7 +15,6 @@ public class DefenceState extends OwnPieceSelected {
         // Get active player and create shield
 
         gameContext.createShield();
-
         gameContext.setState(new IdleState());
     }
 
