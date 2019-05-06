@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static java.lang.Math.abs;
+import static boardgame.util.HexGridUtil.offset_distance;
 
 /**
  * The Game context class. This class is the main driver class for the game logic.
@@ -135,7 +135,6 @@ public class GameContext {
      */
     public void clickTile(TileView tile) {
         this.tileView = tile;
-        IBoardGrid.setTargetTile(tile);
         state.onSelectTile(this);
     }
 
@@ -288,36 +287,7 @@ public class GameContext {
         }
     }
 
-    //*******************************************************************************
-    //
-    //  Utility methods for calculating distance between grid points in a hex grid.
-    //
-    //********************************************************************************
 
-    private int offset_distance(Location a, Location b) {
-        Hex locationA = new Hex(a.getX(), a.getY());
-        Hex locationB = new Hex(b.getX(), b.getY());
-        Cube ac = oddr_to_cube(locationA);
-        Cube bc = oddr_to_cube(locationB);
-        return cube_distance(ac, bc);
-    }
-
-    private int cube_distance(Cube a, Cube b) {
-        return (abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z)) / 2;
-    }
-
-    private Location cube_to_oddr(Cube cube) {
-        int col = cube.x + (cube.z - (cube.z & 1)) / 2;
-        int row = cube.z;
-        return new Location(col, row);
-    }
-
-    private Cube oddr_to_cube(Hex hex) {
-        int x = hex.col - (hex.row - (hex.row & 1)) / 2;
-        int z = hex.row;
-        int y = -x - z;
-        return new Cube(x, y, z);
-    }
 
     //*******************************************************************************
 
@@ -379,7 +349,21 @@ public class GameContext {
     private CommandProcessor commandProcessor = new CommandProcessor();
 
     /**
-     * Move a piece.
+     * Undo the selected action through the command processor.
+     */
+    public void undo() {
+        commandProcessor.undo();
+    }
+
+    /**
+     * Redo the selected action through the command processor.
+     */
+    public void redo() {
+        commandProcessor.redo();
+    }
+
+    /**
+     * Move a piece. Validates valid move before command is passed to Command Processor.
      */
     public void movePiece() {
         MoveCommand command = new MoveCommand();
@@ -393,8 +377,10 @@ public class GameContext {
             commandProcessor.execute(command);
         }
     }
+
     /**
-     * Swap one.
+     * Swap selection first option. This will be one of the 2 classes fo a player that is not the current
+     * class selected
      */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
@@ -404,7 +390,8 @@ public class GameContext {
     }
 
     /**
-     * Swap two.
+     * Swap selection second option. This will be one of the 2 classes fo a player that is not the current
+     * class selected.
      */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
@@ -414,21 +401,22 @@ public class GameContext {
     }
 
     /**
-     * Attack piece.
+     * Attack a piece. Called as a transition from the attack state. Passes enemy piece details to attack Command
+     * and then resets the enemy piece variable and resets any highlighted tiles to their original value.
      */
     public void attackPiece() {
-        //TODO highlight tiles.
 
+        //Validate that the enemy piece is within attack range.
         if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
             command.setCommand(gm, getEnemyPiece());
             commandProcessor.execute(command);
+
+            //Ensure that enemy piece is cleared as next time might be different piece.
             enemyPiece = null;
             resetTileColours();
         }
-        //Ensure that enemy piece is cleared as next time might be different piece.
-
     }
 
     /**
@@ -458,20 +446,6 @@ public class GameContext {
         return tileView;
     }
 
-
-    /**
-     * Undo the selected action through the command processor.
-     */
-    public void undo() {
-        commandProcessor.undo();
-    }
-
-    /**
-     * Redo the selected action through the command processor.
-     */
-    public void redo() {
-        commandProcessor.redo();
-    }
 
 
     //Getters and setters.
@@ -537,62 +511,6 @@ public class GameContext {
      */
     public void setState(State state) {
         this.state = state;
-    }
-
-    /**
-     * The type Cube.
-     */
-    class Cube {
-        /**
-         * The X.
-         */
-        int x;
-        /**
-         * The Y.
-         */
-        int y;
-        /**
-         * The Z.
-         */
-        int z;
-
-        /**
-         * Instantiates a new Cube.
-         *
-         * @param x the x
-         * @param y the y
-         * @param z the z
-         */
-        Cube(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    }
-
-    /**
-     * The type Hex.
-     */
-    class Hex {
-        /**
-         * The Col.
-         */
-        int col; //x
-        /**
-         * The Row.
-         */
-        int row; //y
-
-        /**
-         * Instantiates a new Hex.
-         *
-         * @param col the col
-         * @param row the row
-         */
-        Hex(int col, int row) {
-            this.col = col;
-            this.row = row;
-        }
     }
 
 

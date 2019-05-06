@@ -26,13 +26,6 @@ public interface IPiece {
     void setMoveSpeed(int moveSpeed);
 
     /**
-     * Move the piece.
-     *
-     * @param direction the direction
-     */
-    void move(int direction);
-
-    /**
      * Gets location.
      *
      * @return the location

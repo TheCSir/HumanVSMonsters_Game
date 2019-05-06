@@ -2,6 +2,11 @@ package boardgame.view;
 
 import javafx.scene.transform.Translate;
 
+/**
+ * PieceView is a helper class which contains methods to do with manipulating
+ * the drawn Tile class.
+ */
+
 public class PieceView {
 
     public PieceView() {

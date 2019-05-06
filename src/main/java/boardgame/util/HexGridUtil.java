@@ -3,6 +3,8 @@ package boardgame.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class HexGridUtil {
 
     //Calculates what the neighbour positions will be on a hexagonal grid.
@@ -43,5 +45,36 @@ public class HexGridUtil {
         neighbourLocations.add(SW);
         neighbourLocations.add(SE);
         return neighbourLocations;
+    }
+
+    //*******************************************************************************
+    //
+    //  Utility methods for calculating distance between grid points in a hex grid.
+    //
+    //********************************************************************************
+
+    public static int offset_distance(Location a, Location b) {
+        Hex locationA = new Hex(a.getX(), a.getY());
+        Hex locationB = new Hex(b.getX(), b.getY());
+        Cube ac = oddr_to_cube(locationA);
+        Cube bc = oddr_to_cube(locationB);
+        return cube_distance(ac, bc);
+    }
+
+    private static int cube_distance(Cube a, Cube b) {
+        return (abs(a.getX() - b.getX()) + abs(a.getY() - b.getY()) + abs(a.getZ() - b.getZ())) / 2;
+    }
+
+    private static Location cube_to_oddr(Cube cube) {
+        int col = cube.getX() + (cube.getZ() - (cube.getZ() & 1)) / 2;
+        int row = cube.getZ();
+        return new Location(col, row);
+    }
+
+    private static Cube oddr_to_cube(Hex hex) {
+        int x = hex.getCol() - (hex.getRow() - (hex.getRow() & 1)) / 2;
+        int z = hex.getRow();
+        int y = -x - z;
+        return new Cube(x, y, z);
     }
 }
