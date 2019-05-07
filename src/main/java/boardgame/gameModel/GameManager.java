@@ -134,7 +134,6 @@ class GameManager implements IGameManager {
 
     public IPlayer getAttackedPlayer(IPiece attackedPiece){
 
-
         for(IPlayer player : players){
             for(IPiece playerPiece : player.getPieces()){
                 if(playerPiece.getClass().getSimpleName().equals(attackedPiece.getClass().getSimpleName()))
