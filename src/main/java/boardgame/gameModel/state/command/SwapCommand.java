@@ -1,6 +1,7 @@
 package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.*;
 import boardgame.util.LocationFactory;
 import javafx.scene.control.Button;
@@ -10,6 +11,9 @@ public class SwapCommand implements Command {
     private Button selectionButton;
     private Pane swapPane;
     private IGameManager gm;
+    private IPiece oldPiece;
+    private IPiece newPiece;
+    private Turn turn;
 
     //Return full name of the piece
     public static String getClassFullName(String piece) {
@@ -33,7 +37,8 @@ public class SwapCommand implements Command {
     public void execute() {
 
         //Get current piece and it's location
-        IPiece oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+
         int x = oldPiece.getLocation().getX();
         int y = oldPiece.getLocation().getY();
 
@@ -44,7 +49,8 @@ public class SwapCommand implements Command {
         String Piece = getClassFullName(selectionButton.getText());
 
         //Create new piece and add to board
-        IPiece newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+        newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+
         gm.getTurn().getActivePlayer().getPieces().add(newPiece);
 
         //Handle GUI validations
@@ -58,16 +64,40 @@ public class SwapCommand implements Command {
     @Override
     public void undo() {
         // TODO: swap undo to be implemented.
+
+        //Roll back turn.
+        int previousTurn = turn.getTurnNumber() - 1;
+        turn.setTurnNumberProperty(previousTurn);
+
+        // This should handle having multiple players on the board
+        int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
+        turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
+
+        //Remove current piece
+        gm.getTurn().getActivePlayer().getPieces().remove(newPiece);
+        //Set piece back to previous piece.
+        gm.getTurn().getActivePlayer().getPieces().add(oldPiece);
+
     }
 
     public void SetCommand(IGameManager gm, Pane swapPane, Button selectionButton) {
         this.gm = gm;
         this.swapPane = swapPane;
         this.selectionButton = selectionButton;
+        turn = gm.getTurn();
     }
 
     @Override
     public void redo() {
+
+        //Remove current piece
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+        //Set piece back to previous piece.
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+        //End turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+
         // TODO: swap redo to be implemented.
     }
 }
