@@ -39,7 +39,6 @@ public abstract class Piece implements IPiece {
         this.moveSpeed = moveSpeed;
     }
 
-    public void move(int direction) { }
 
     @Override
     public Location getLocation() {

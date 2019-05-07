@@ -14,10 +14,6 @@ public interface IBoardGrid {
 
     TileView getTileView(Location location);
 
-    TileView getTargetTile();
-
-    void setTargetTile(TileView targetTile);
-
 
     TileView getTile(Location location);
 
