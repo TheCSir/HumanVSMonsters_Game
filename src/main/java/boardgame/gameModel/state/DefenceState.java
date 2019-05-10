@@ -11,9 +11,6 @@ public class DefenceState extends OwnPieceSelected {
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
-        //TODO implement defence.
-        // Get active player and create shield
-
         gameContext.createShield();
         gameContext.setState(new IdleState());
     }

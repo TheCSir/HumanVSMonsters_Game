@@ -15,7 +15,6 @@ public class SwapCommand implements Command {
     private IPiece newPiece;
     private Turn turn;
 
-    //Return full name of the piece
     public static String getClassFullName(String piece) {
         if (piece.equals(Warrior.class.getSimpleName())) {
             return Warrior.class.getName();
@@ -34,36 +33,7 @@ public class SwapCommand implements Command {
     }
 
     @Override
-    public void execute() {
-
-        //Get current piece and it's location
-        oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
-
-        int x = oldPiece.getLocation().getX();
-        int y = oldPiece.getLocation().getY();
-
-        //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
-
-        //Get piece full name
-        String Piece = getClassFullName(selectionButton.getText());
-
-        //Create new piece and add to board
-        newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
-
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
-
-        //Handle GUI validations
-        swapPane.setVisible(false);
-
-        //End turn
-        gm.getTurn().nextTurn(gm.getPlayers());
-
-    }
-
-    @Override
     public void undo() {
-        // TODO: swap undo to be implemented.
 
         //Roll back turn.
         int previousTurn = turn.getTurnNumber() - 1;
@@ -87,6 +57,36 @@ public class SwapCommand implements Command {
         turn = gm.getTurn();
     }
 
+    //Return full name of the piece
+    @Override
+    public void execute() {
+
+        //Get current piece and it's location
+        oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+
+        int x = oldPiece.getLocation().getX();
+        int y = oldPiece.getLocation().getY();
+
+        //Remove current piece
+        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+
+        //Get piece full name
+        String Piece = getClassFullName(selectionButton.getText());
+
+        //Create new piece and add to board
+        gm.getTurn().getActivePlayer().getClass().getSimpleName();
+        newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+
+        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+
+        //Handle GUI validations
+        swapPane.setVisible(false);
+
+        //End turn
+        gm.getTurn().nextTurn(gm.getPlayers());
+
+    }
+
     @Override
     public void redo() {
 
@@ -98,6 +98,5 @@ public class SwapCommand implements Command {
         //End turn
         gm.getTurn().nextTurn(gm.getPlayers());
 
-        // TODO: swap redo to be implemented.
     }
 }

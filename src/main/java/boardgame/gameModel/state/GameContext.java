@@ -1,6 +1,6 @@
 package boardgame.gameModel.state;
 
-import boardgame.controller.MainController;
+import boardgame.controller.GameController;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.command.*;
@@ -29,7 +29,7 @@ import static boardgame.util.HexGridUtil.offset_distance;
 public class GameContext {
 
     private final IGameManager gm;
-    private final MainController mc;
+    private final GameController mc;
     private final IBoardGrid IBoardGrid;
     private State state;
     private HexagonTileViewPiece ownPiece;
@@ -48,7 +48,7 @@ public class GameContext {
      * @param gm         the gm
      * @param mc         the mc
      */
-    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, MainController mc) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, GameController mc) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
@@ -91,11 +91,8 @@ public class GameContext {
     /**
      * Press defence.
      *
-     * @param gameContext the game context
      */
-    public void pressDefence(GameContext gameContext) {
-        //TODO Add implementation for defence.
-        System.out.println("To be implemented");
+    public void pressDefence() {
         state.onDefence(this);
     }
 
@@ -464,7 +461,7 @@ public class GameContext {
      *
      * @return the mc
      */
-    public MainController getMc() {
+    public GameController getMc() {
         return mc;
     }
 

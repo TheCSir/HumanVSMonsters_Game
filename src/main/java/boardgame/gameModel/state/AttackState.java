@@ -2,6 +2,7 @@ package boardgame.gameModel.state;
 
 public class AttackState extends OwnPieceSelected {
 
+
     @Override
     public void onAttack(GameContext gameContext) {
         System.out.println("Already in attack state");

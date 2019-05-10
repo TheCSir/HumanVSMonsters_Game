@@ -1,6 +1,6 @@
 package boardgame.gameModel;
 
-import boardgame.controller.MainController;
+import boardgame.controller.GameController;
 import javafx.scene.layout.Pane;
 
 /**
@@ -15,7 +15,7 @@ public class GameManagerFactory {
      *
      * @return the game manager
      */
-    public static GameManager createGameManager(Pane boardPane, MainController mainController) {
-        return new GameManager(boardPane, mainController);
+    public static GameManager createGameManager(Pane boardPane, GameController gameController) {
+        return new GameManager(boardPane, gameController);
     }
 }
