@@ -2,15 +2,17 @@ package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.view.HexagonTileViewPiece;
 
 public class SpecialCommand implements Command {
 
     private IPiece iPiece;
     private IGameManager gm;
+    private IPiece enemyPiece;
 
     @Override
     public void execute() {
-        iPiece.specialAbility();
+        iPiece.specialAbility(enemyPiece, gm);
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 
@@ -24,8 +26,9 @@ public class SpecialCommand implements Command {
 
     }
 
-    public void setCommand(IGameManager gm, IPiece piece) {
+    public void setCommand(IGameManager gm, IPiece piece, HexagonTileViewPiece enemyPiece) {
         this.iPiece = piece;
         this.gm = gm;
+        this.enemyPiece = enemyPiece.getiPiece();
     }
 }

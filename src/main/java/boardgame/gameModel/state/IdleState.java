@@ -40,6 +40,9 @@ public class IdleState implements State {
     }
 
     @Override
+    public void onUseSpecial(GameContext gameContext){ System.out.println("test");}
+
+    @Override
     public void onSelectTile(GameContext gameContext) {
         System.out.println("Print tile info?");
     }

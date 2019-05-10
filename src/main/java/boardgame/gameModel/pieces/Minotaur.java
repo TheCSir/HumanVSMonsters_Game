@@ -1,6 +1,7 @@
 package boardgame.gameModel.pieces;
 
 
+import boardgame.gameModel.IGameManager;
 import boardgame.util.Location;
 
 public class Minotaur extends Monster {
@@ -11,7 +12,7 @@ public class Minotaur extends Monster {
     public void basicAttack(){}
 
     @Override
-    public void specialAbility(){
+    public void specialAbility(IPiece enemyPiece, IGameManager gm){
         System.out.println("Summoning Bulls!");
     }
 }

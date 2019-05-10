@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.IGameManager;
 import boardgame.util.Location;
 
 public class Medusa extends Monster {
@@ -9,7 +10,7 @@ public class Medusa extends Monster {
 
     public void basicAttack(){}
 
-    public void specialAbility(){
+    public void specialAbility(IPiece enemyPiece, IGameManager gm){
         System.out.println("Summoning Snakes!");
     }
 }

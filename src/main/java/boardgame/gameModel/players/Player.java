@@ -90,11 +90,25 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
+    public void increaseHealthProperty(int healingValue) {
+
+        //Increase health
+        this.setHealthProperty(this.healthProperty().getValue() + healingValue);
+    }
+
+    @Override
     public double calculateDamage(IPiece piece) {
+        double damage = 1;
+
+        // meet warrior special ability(damage = 2)
+
+        // meet shield piece
         if (piece.getIsShielded())
-            return 0.5;
-        else
-            return 1;
+            damage = damage / 2;
+
+        // meet critical damage(damage = damage* 2)
+
+        return damage;
     }
 
     //endregion

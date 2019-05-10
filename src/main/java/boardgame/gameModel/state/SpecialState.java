@@ -7,5 +7,11 @@ public class SpecialState extends OwnPieceSelected {
         System.out.println("Already in special state");
     }
 
+    @Override
+    public void onUseSpecial(GameContext gameContext) {
 
+        gameContext.launchSpecialAbility();
+
+        gameContext.setState(new IdleState());
+    }
 }

@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.IGameManager;
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 
@@ -77,5 +78,5 @@ public interface IPiece {
      */
     void checkShieldTurn(int turnNumber);
 
-    void specialAbility();
+    void specialAbility(IPiece enemyPiece, IGameManager gm);
 }

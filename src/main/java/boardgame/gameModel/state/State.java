@@ -18,6 +18,8 @@ public interface State {
 
     void onSelectEnemyPiece(GameContext gameContext);
 
+    void onUseSpecial(GameContext gameContext);
+
     void onSwapOne(GameContext gameContext);
 
     void onSwapTwo(GameContext gameContext);

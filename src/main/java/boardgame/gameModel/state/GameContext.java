@@ -424,7 +424,7 @@ public class GameContext {
      */
     public void launchSpecialAbility() {
         SpecialCommand command = new SpecialCommand();
-        command.setCommand(getGm(), getOwnPiece().getiPiece());
+        command.setCommand(getGm(), getOwnPiece().getiPiece(), getEnemyPiece());
         commandProcessor.execute(command);
     }
 

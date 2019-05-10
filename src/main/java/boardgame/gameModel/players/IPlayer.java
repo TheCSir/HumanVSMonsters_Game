@@ -58,6 +58,11 @@ public interface IPlayer {
      */
     void decreaseHealthProperty(IPiece piece);
 
+    /**
+     * Increase health property.
+     */
+    void increaseHealthProperty(int healingValue);
+
     double calculateDamage(IPiece piece);
 
     /**

@@ -129,4 +129,9 @@ public class OwnPieceSelected implements State {
 
     }
 
+    @Override
+    public void onUseSpecial(GameContext gameContext) {
+
+    }
+
 }
