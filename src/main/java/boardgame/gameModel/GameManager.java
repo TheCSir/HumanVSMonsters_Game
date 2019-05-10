@@ -1,13 +1,10 @@
 package boardgame.gameModel;
 
-import boardgame.controller.MainController;
+import boardgame.controller.GameController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.Griffin;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.PieceFactory;
-import boardgame.gameModel.pieces.Warrior;
+import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.gameModel.state.GameContext;
@@ -37,14 +34,14 @@ class GameManager implements IGameManager {
 
     private final IBoardGrid IBoardGrid;
     private final GameContext gameContext;
-    private final MainController mc;
+    private final GameController gc;
 
     //Default constructor
-    GameManager(Pane boardPane, MainController mainController) {
+    GameManager(Pane boardPane, GameController gameController) {
         players = new ArrayList<>();
-        IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, mainController);
-        gameContext = new GameContext(new IdleState(), IBoardGrid, this, mainController);
-        this.mc = mainController;
+        IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this, gameController);
+        this.gc = gameController;
     }
 
     @Override
@@ -112,6 +109,40 @@ class GameManager implements IGameManager {
         turn.initialiseTurns(players);
         IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
 
+    }
+
+    @Override
+    public void setUpCustomMonsterPieces() {
+        IPiece piece = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(0, 0));
+        monsterPieces.add(piece);
+    }
+
+    @Override
+    public void setUpCustomHumanPieces() {
+        IPiece piece = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(9, 9));
+        humanPieces.add(piece);
+    }
+
+    @Override
+    public void customGameSetup(String humanPlayerName, String monsterPlayerName,
+                                int numberOfPieces, int gridRows, int gridColumns){
+        //Add default Human piece
+        setUpCustomHumanPieces();
+
+        //Add default Monster piece
+        setUpCustomMonsterPieces();
+
+        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
+        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
+        players.add(player1);
+        players.add(player2);
+
+        //Set up custom board.
+        iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);
+
+        turn = new Turn();
+        turn.initialiseTurns(players);
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
     }
 
     @Override
@@ -185,7 +216,7 @@ class GameManager implements IGameManager {
     @Override
     public void addPiece(IPiece piece) {
         HexagonTileViewPiece hp = IBoardGrid.addPiece(piece);
-        hp.setOnMouseClicked(event -> mc.handlePieceClicked(hp));
+        hp.setOnMouseClicked(event -> gc.handlePieceClicked(hp));
     }
 
     @Override

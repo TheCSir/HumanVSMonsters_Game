@@ -7,7 +7,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.controller.StartMenuController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -22,16 +24,16 @@
   </rowConstraints>
    <children>
       <Button fx:id="setSettingsButton" mnemonicParsing="false" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <TextField fx:id="gridWidthText" prefHeight="25.0" prefWidth="144.0" promptText="width" GridPane.rowIndex="3" />
-      <TextField fx:id="gridHeightText" promptText="height" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="numberOfPlayersText" promptText="number of players" GridPane.rowIndex="2" />
+      <TextField fx:id="gridRowsText" prefHeight="25.0" prefWidth="144.0" text="10" GridPane.rowIndex="3" />
+      <TextField fx:id="gridColumnsText" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="numberOfPiecesText" text="1" GridPane.rowIndex="2" />
       <Label text="Game Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <Label text="Human Player Name:" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-      <Label text="Number of players:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+      <Label text="Number of pieces:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
       <Label text="Grid Width:" GridPane.rowIndex="3" GridPane.valignment="TOP" />
       <Label text="Grid Height:" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-      <TextField promptText="Human player name" fx:id="humanPlayerNameText" GridPane.rowIndex="1" />
-      <TextField promptText="Monster player name" fx:id="monsterPlayerNameText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField text="Gandalf" fx:id="humanPlayerNameText" GridPane.rowIndex="1" />
+      <TextField text="Sauron" fx:id="monsterPlayerNameText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Monster Player Name:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
    </children>
 </GridPane>

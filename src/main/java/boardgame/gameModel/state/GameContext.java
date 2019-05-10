@@ -1,6 +1,6 @@
 package boardgame.gameModel.state;
 
-import boardgame.controller.MainController;
+import boardgame.controller.GameController;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.command.*;
@@ -29,7 +29,7 @@ import static boardgame.util.HexGridUtil.offset_distance;
 public class GameContext {
 
     private final IGameManager gm;
-    private final MainController mc;
+    private final GameController gc;
     private final IBoardGrid IBoardGrid;
     private State state;
     private HexagonTileViewPiece ownPiece;
@@ -46,13 +46,13 @@ public class GameContext {
      * @param state      the state
      * @param IBoardGrid the board grid
      * @param gm         the gm
-     * @param mc         the mc
+     * @param gc         the gc
      */
-    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, MainController mc) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, GameController gc) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
-        this.mc = mc;
+        this.gc = gc;
     }
 
 
@@ -186,8 +186,8 @@ public class GameContext {
         HexagonTileViewPiece piece = getOwnPiece();
 
         //Update View.
-        Text pieceLocation = getMc().getPieceLocation();
-        Text pieceSelected = getMc().getPieceSelected();
+        Text pieceLocation = getGc().getPieceLocation();
+        Text pieceSelected = getGc().getPieceSelected();
         pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
         pieceLocation.setText("Location: "
                 + "X: " + piece.getiPiece().getLocation().getX()
@@ -200,8 +200,8 @@ public class GameContext {
      */
     void updateEnemyPieceDetails() {
         IPiece piece = getEnemyPiece().getiPiece();
-        Text pieceLocation = getMc().getPieceLocation();
-        Text pieceSelected = getMc().getPieceSelected();
+        Text pieceLocation = getGc().getPieceLocation();
+        Text pieceSelected = getGc().getPieceSelected();
         pieceSelected.setText("Class: " + piece.getClass().getSimpleName());
         pieceLocation.setText("Location: "
                 + "X: " + piece.getLocation().getX()
@@ -460,12 +460,12 @@ public class GameContext {
     }
 
     /**
-     * Gets mc.
+     * Gets gc.
      *
-     * @return the mc
+     * @return the gc
      */
-    public MainController getMc() {
-        return mc;
+    public GameController getGc() {
+        return gc;
     }
 
     /**

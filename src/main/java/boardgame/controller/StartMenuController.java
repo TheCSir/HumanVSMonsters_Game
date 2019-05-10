@@ -4,10 +4,11 @@ import boardgame.gameModel.IGameManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,11 +21,11 @@ public class StartMenuController implements Initializable {
     @FXML
     private TextField monsterPlayerNameText;
     @FXML
-    private TextField numberOfPlayersText;
+    private TextField numberOfPiecesText;
     @FXML
-    private TextField gridWidthText;
+    private TextField gridRowsText;
     @FXML
-    private TextField gridHeightText;
+    private TextField gridColumnsText;
     @FXML
     private Button setSettingsButton;
 
@@ -37,5 +38,18 @@ public class StartMenuController implements Initializable {
         setSettingsButton.setOnAction(e -> setSettings());
     }
 
-    private void setSettings(){}
+    private void setSettings() {
+        int numOfPlayers, gridRowsNum, gridColumnsNum = 0;
+        try {
+            numOfPlayers = Integer.parseInt(numberOfPiecesText.getText());
+            gridRowsNum = Integer.parseInt(gridRowsText.getText());
+            gridColumnsNum = Integer.parseInt(gridColumnsText.getText());
+
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+        GameController gc = new GameController(humanPlayerNameText.getText(),
+                monsterPlayerNameText.getText(), numOfPlayers, gridRowsNum, gridColumnsNum);
+    }
 }

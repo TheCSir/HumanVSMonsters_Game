@@ -6,18 +6,23 @@ import boardgame.gameModel.state.GameContext;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The Main Controller. This is a JavaFX Controller.
+ * The Game Controller. This is a JavaFX Controller.
  */
-public class MainController implements Initializable {
+public class GameController implements Initializable {
 
 
     @FXML
@@ -41,19 +46,44 @@ public class MainController implements Initializable {
 
     private GameContext gameContext;
 
+    private final String humanPlayerName;
+    private final String monsterPlayerName;
+    private final int numOfPieces;
+    private final int gridRowsNum;
+    private final int gridColumnsNum;
+
     /**
-     * This is the main entry point after the App class is started. The MainController holds handler methods
+     * This is the main entry point after the App class is started. The GameController holds handler methods
      * for input actions. It also registers the listeners for the model pieces. As our application follows
      * an observer pattern these listeners will update the view when triggered.
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
-     * The MainController class is the main part of application that currently requires major refactoring as
+     * The GameController class is the main part of application that currently requires major refactoring as
      * it has a bit too much coupling. Whilst it is reasonably cohesive it is highly coupled.
      * Ideally we would also remove a bit of game logic that is stuck here.
      */
-    public MainController() {
+    public GameController(String humanPlayerName, String monsterPlayerName,
+                          int numberOfPieces, int gridRows, int gridColumns) {
         //Get a reference to the game manager. Currently sets up a game with default settings.
 
+        this.humanPlayerName = humanPlayerName;
+        this.monsterPlayerName = monsterPlayerName;
+        this.numOfPieces = numberOfPieces;
+        this.gridRowsNum = gridRows;
+        this.gridColumnsNum = gridColumns;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boardgame/view/gameView.fxml"));
+        fxmlLoader.setController(this);
+
+        try {
+            Parent root = fxmlLoader.load();
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Battle Game");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     @FXML
@@ -87,7 +117,10 @@ public class MainController implements Initializable {
         //Store a reference to the Game manager for main entry point to game.
         //TODO Should boardpane be passed to model?
         IGameManager gm = GameManagerFactory.createGameManager(boardPane, this);
-        gm.defaultGameSetup();
+        // gm.defaultGameSetup();
+
+        gm.customGameSetup(this.humanPlayerName, this.monsterPlayerName,
+                this.numOfPieces, this.gridRowsNum, this.gridColumnsNum);
 
         StatusController statusController = new StatusController(gm);
 

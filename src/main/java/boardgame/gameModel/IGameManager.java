@@ -77,6 +77,22 @@ public interface IGameManager {
     void defaultGameSetup();
 
     /**
+     * Sets up monster pieces as defined from start menu .
+     */
+    void setUpCustomMonsterPieces();
+
+    /**
+     * Sets up human pieces as defined from start menu.
+     */
+    void setUpCustomHumanPieces();
+
+    /**
+     * Set up a game with custom settings from menu.
+     */
+    void customGameSetup(String humanPlayerName, String monsterPlayerName,
+                         int numberOfPlayers, int girdWidth, int gridHeight);
+
+    /**
      * The game manager is the information expert for the board.
      *
      * @return the board
