@@ -43,6 +43,9 @@ public class StatusController extends VBox {
     @FXML
     private Button redoButton;
 
+    @FXML
+    private Button replay;
+
     /**
      * Instantiates a new Status controller.
      *
@@ -64,6 +67,8 @@ public class StatusController extends VBox {
         undoButton.setOnMouseClicked(event -> gm.getGameContext().undo());
 
         redoButton.setOnMouseClicked(event -> gm.getGameContext().redo());
+
+        replay.setOnMouseClicked(event -> gm.getGameContext().replayAllMoves());
 
     }
 

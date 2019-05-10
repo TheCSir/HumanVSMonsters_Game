@@ -90,7 +90,6 @@ public class GameContext {
 
     /**
      * Press defence.
-     *
      */
     public void pressDefence() {
         state.onDefence(this);
@@ -265,8 +264,6 @@ public class GameContext {
             }
 
         }
-
-
     }
 
     void highlightAttack() {
@@ -285,9 +282,7 @@ public class GameContext {
     }
 
 
-
     //*******************************************************************************
-
 
 
     /**
@@ -299,7 +294,6 @@ public class GameContext {
 
         return IBoardGrid;
     }
-
 
 
     /**
@@ -444,7 +438,6 @@ public class GameContext {
     }
 
 
-
     //Getters and setters.
 
     /**
@@ -510,5 +503,7 @@ public class GameContext {
         this.state = state;
     }
 
-
+    public void replayAllMoves() {
+        commandProcessor.replayMoves();
+    }
 }
