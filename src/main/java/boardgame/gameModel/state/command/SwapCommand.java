@@ -3,7 +3,6 @@ package boardgame.gameModel.state.command;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.*;
-import boardgame.util.LocationFactory;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
@@ -17,17 +16,17 @@ public class SwapCommand implements Command {
 
     public static String getClassFullName(String piece) {
         if (piece.equals(Warrior.class.getSimpleName())) {
-            return Warrior.class.getName();
+            return PieceConstants.MELEE;
         } else if (piece.equals(Priest.class.getSimpleName())) {
-            return Priest.class.getName();
+            return PieceConstants.SUPPORT;
         } else if (piece.equals(Archer.class.getSimpleName())) {
-            return Archer.class.getName();
+            return PieceConstants.RANGED;
         } else if (piece.equals(Medusa.class.getSimpleName())) {
-            return Medusa.class.getName();
+            return PieceConstants.RANGED;
         } else if (piece.equals(Griffin.class.getSimpleName())) {
-            return Griffin.class.getName();
+            return PieceConstants.SUPPORT;
         } else if (piece.equals(Minotaur.class.getSimpleName())) {
-            return Minotaur.class.getName();
+            return PieceConstants.MELEE;
         } else
             return null;
     }
@@ -71,11 +70,11 @@ public class SwapCommand implements Command {
         gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
 
         //Get piece full name
-        String Piece = getClassFullName(selectionButton.getText());
+        String piece = getClassFullName(selectionButton.getText());
 
         //Create new piece and add to board
-        gm.getTurn().getActivePlayer().getClass().getSimpleName();
-        newPiece = PieceFactory.createPiece(Piece, 5, LocationFactory.createLocation(x, y));
+        AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
+        newPiece = apf.getPiece(piece, oldPiece.getLocation(), 3, 3);
 
         gm.getTurn().getActivePlayer().getPieces().add(newPiece);
 
