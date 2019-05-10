@@ -61,17 +61,18 @@ public class CommandProcessor {
 
     }
 
-    //replay all the moves that have taken place. Change the interval 
+    //replay all the moves that have taken place. Uses the Timeline JavaFX class
+    // to play back the animation of all moves (calls redo() with a delay). Change the interval
+    // to change the delay.
     public void replayMoves() {
 
+        //First undo all moves. This will appear instantaneous.
         final int m = undoList.size();
         for (int j = 0; j < m; j++) {
-            System.out.println("Undoing");
             undo();
         }
 
-        final int r = redoList.size();
-        System.out.println("r = " + r);
+
         int interval = 2;
         final Timeline timeline = new Timeline();
         for (int i = 0; i < redoList.size(); i++) {
