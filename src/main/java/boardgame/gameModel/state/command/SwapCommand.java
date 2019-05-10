@@ -63,9 +63,6 @@ public class SwapCommand implements Command {
         //Get current piece and it's location
         oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
 
-        int x = oldPiece.getLocation().getX();
-        int y = oldPiece.getLocation().getY();
-
         //Remove current piece
         gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
 

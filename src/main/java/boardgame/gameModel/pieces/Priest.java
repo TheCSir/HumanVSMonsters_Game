@@ -26,4 +26,9 @@ public class Priest extends Human {
     public void specialAbility(){
         System.out.println("Healing!");
     }
+
+    @Override
+    public String getPieceClass() {
+        return PieceConstants.SUPPORT;
+    }
 }

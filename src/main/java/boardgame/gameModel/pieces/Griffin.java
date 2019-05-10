@@ -26,5 +26,8 @@ public class Griffin extends Monster {
         System.out.println("Summon Hawks!");
     }
 
-
+    @Override
+    public String getPieceClass() {
+        return PieceConstants.SUPPORT;
+    }
 }

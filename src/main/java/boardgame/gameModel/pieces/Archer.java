@@ -18,6 +18,11 @@ public class Archer extends Human {
     }
 
     @Override
+    public String getPieceClass() {
+        return PieceConstants.RANGED;
+    }
+
+    @Override
     public int getMoveSpeed() {
         return moveSpeed;
     }
@@ -26,6 +31,5 @@ public class Archer extends Human {
     public void setMoveSpeed(int moveSpeed) {
         this.moveSpeed = moveSpeed;
     }
-
 
 }

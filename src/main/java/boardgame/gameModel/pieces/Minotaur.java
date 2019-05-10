@@ -27,4 +27,9 @@ public class Minotaur extends Monster {
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
     }
+
+    @Override
+    public String getPieceClass() {
+        return PieceConstants.MELEE;
+    }
 }
