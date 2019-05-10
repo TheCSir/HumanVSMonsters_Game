@@ -4,8 +4,21 @@ import boardgame.util.Location;
 
 
 public class Priest extends Human {
-    Priest(int moveSpeed, Location location) {
-        super(moveSpeed, location);
+
+    private int moveSpeed = 2;
+
+    Priest(Location location) {
+        super(location);
+    }
+
+    @Override
+    public int getMoveSpeed() {
+        return this.moveSpeed;
+    }
+
+    @Override
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 
     public void basicAttack(){}

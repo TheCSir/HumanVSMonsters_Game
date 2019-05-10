@@ -3,8 +3,21 @@ package boardgame.gameModel.pieces;
 import boardgame.util.Location;
 
 public class Warrior extends Human {
-    Warrior(int moveSpeed, Location location) {
-        super(moveSpeed, location);
+
+    private int moveSpeed = 3;
+
+    Warrior(Location location) {
+        super(location);
+    }
+
+    @Override
+    public int getMoveSpeed() {
+        return this.moveSpeed;
+    }
+
+    @Override
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 
     public void basicAttack(){}

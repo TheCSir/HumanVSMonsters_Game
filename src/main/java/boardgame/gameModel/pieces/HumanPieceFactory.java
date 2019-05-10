@@ -6,14 +6,14 @@ import static boardgame.gameModel.pieces.PieceConstants.*;
 
 public class HumanPieceFactory extends AbstractPieceFactory {
     @Override
-    public IPiece getPiece(String pieceClass, Location location, int moveSpeed, int attackPower) {
+    public IPiece getPiece(String pieceClass, Location location) {
         switch (pieceClass) {
             case MELEE:
-                return new Warrior(moveSpeed, location);
+                return new Warrior(location);
             case RANGED:
-                return new Archer(moveSpeed, location);
+                return new Archer(location);
             case SUPPORT:
-                return new Priest(moveSpeed, location);
+                return new Priest(location);
         }
         return null;
     }

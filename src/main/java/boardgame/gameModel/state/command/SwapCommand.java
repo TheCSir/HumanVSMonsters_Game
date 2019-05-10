@@ -74,7 +74,7 @@ public class SwapCommand implements Command {
 
         //Create new piece and add to board
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
-        newPiece = apf.getPiece(piece, oldPiece.getLocation(), 3, 3);
+        newPiece = apf.getPiece(piece, oldPiece.getLocation());
 
         gm.getTurn().getActivePlayer().getPieces().add(newPiece);
 

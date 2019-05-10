@@ -80,14 +80,14 @@ class GameManager implements IGameManager {
     @Override
     public void setUpMonsterPieces() {
         AbstractPieceFactory ap = FactoryProducer.getFactory(PieceConstants.MONSTERPLAYER);
-        IPiece iPiece = ap.getPiece(PieceConstants.MELEE, LocationFactory.createLocation(0, 0), 3, 3);
+        IPiece iPiece = ap.getPiece(PieceConstants.MELEE, LocationFactory.createLocation(0, 0));
         monsterPieces.add(iPiece);
     }
 
     @Override
     public void setUpHumanPieces() {
         AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.HUMANPLAYER);
-        IPiece ipiece = apf.getPiece(PieceConstants.RANGED, LocationFactory.createLocation(9, 9), 3, 3);
+        IPiece ipiece = apf.getPiece(PieceConstants.RANGED, LocationFactory.createLocation(9, 9));
         humanPieces.add(ipiece);
 
     }

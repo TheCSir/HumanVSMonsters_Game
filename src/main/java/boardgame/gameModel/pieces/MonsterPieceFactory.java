@@ -7,14 +7,14 @@ import static boardgame.gameModel.pieces.PieceConstants.*;
 public class MonsterPieceFactory extends AbstractPieceFactory {
 
     @Override
-    public IPiece getPiece(String pieceClass, Location location, int moveSpeed, int attackPower) {
+    public IPiece getPiece(String pieceClass, Location location) {
         switch (pieceClass) {
             case MELEE:
-                return new Minotaur(moveSpeed, location);
+                return new Minotaur(location);
             case RANGED:
-                return new Medusa(moveSpeed, location);
+                return new Medusa(location);
             case SUPPORT:
-                return new Griffin(moveSpeed, location);
+                return new Griffin(location);
         }
         return null;
     }
