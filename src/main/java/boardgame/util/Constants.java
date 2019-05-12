@@ -12,6 +12,10 @@ public class Constants {
 
     public static final int DEFAULTBOARDCOLUMNS = 10;
 
+    public static int CUSTOMBOARDROWS = 10;
+
+    public static int CUSTOMBOARDCOLUMNS = 10;
+
     public static final double xStartOffset = 40;
 
     public static final double yStartOffset = 40;

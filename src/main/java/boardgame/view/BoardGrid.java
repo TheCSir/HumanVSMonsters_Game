@@ -145,12 +145,17 @@ public class BoardGrid implements IBoardGrid {
             boardPane.getChildren().add(hexagonalTile);
         }
 
-        //Add neighbouring tile views.
-        for (TileView tileView : tileViewObservableMap.values()) {
-            List<ITile> neighbours = tileView.getNeighbours();
-            for (ITile neighbour : neighbours) {
-                tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+        try {
+            //Add neighbouring tile views.
+            for (TileView tileView : tileViewObservableMap.values()) {
+                List<ITile> neighbours = tileView.getNeighbours();
+                for (ITile neighbour : neighbours) {
+                    tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+                }
             }
+        }
+        catch(Exception ex){
+            throw ex;
         }
     }
 

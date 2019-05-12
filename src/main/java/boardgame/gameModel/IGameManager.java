@@ -79,12 +79,12 @@ public interface IGameManager {
     /**
      * Sets up monster pieces as defined from start menu .
      */
-    void setUpCustomMonsterPieces();
+    void setUpCustomMonsterPieces(int numberOfPieces, int gridRows, int gridColumns);
 
     /**
      * Sets up human pieces as defined from start menu.
      */
-    void setUpCustomHumanPieces();
+    void setUpCustomHumanPieces(int numberOfPieces, int gridRows, int gridColumns);
 
     /**
      * Set up a game with custom settings from menu.

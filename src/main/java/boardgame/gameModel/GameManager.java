@@ -4,10 +4,7 @@ import boardgame.controller.GameController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.AbstractPieceFactory;
-import boardgame.gameModel.pieces.FactoryProducer;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.PieceConstants;
+import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.gameModel.state.GameContext;
@@ -23,6 +20,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static boardgame.util.Constants.TILERADIUS;
 
@@ -106,7 +104,7 @@ class GameManager implements IGameManager {
         players.add(player2);
 
         //Set up default board.
-        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS);
+        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
 
         turn = new Turn();
         turn.initialiseTurns(players);
@@ -115,25 +113,45 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public void setUpCustomMonsterPieces() {
-        IPiece piece = PieceFactory.createPiece(Medusa.class.getName(), 5, LocationFactory.createLocation(0, 0));
-        monsterPieces.add(piece);
+    public void setUpCustomMonsterPieces(int numberOfPieces, int gridRows, int gridColumns) {
+        Random rand = new Random();
+
+        // generate random location on the grid
+        int rndX = rand.nextInt(gridRows);
+        int rndY = rand.nextInt(gridColumns);
+
+        AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.MONSTERPLAYER);
+        IPiece ipiece = apf.getPiece(PieceConstants.MELEE, LocationFactory.createLocation(rndX, rndY));
+        humanPieces.add(ipiece);
+
+        monsterPieces.add(ipiece);
     }
 
     @Override
-    public void setUpCustomHumanPieces() {
-        IPiece piece = PieceFactory.createPiece(Archer.class.getName(), 5, LocationFactory.createLocation(9, 9));
-        humanPieces.add(piece);
+    public void setUpCustomHumanPieces(int numberOfPieces, int gridRows, int gridColumns) {
+        Random rand = new Random();
+
+        // generate random location on the grid
+        int rndX = rand.nextInt(gridRows);
+        int rndY = rand.nextInt(gridColumns);
+
+        AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.HUMANPLAYER);
+        IPiece ipiece = apf.getPiece(PieceConstants.RANGED, LocationFactory.createLocation(rndX, rndY));
+
+        humanPieces.add(ipiece);
     }
 
     @Override
     public void customGameSetup(String humanPlayerName, String monsterPlayerName,
                                 int numberOfPieces, int gridRows, int gridColumns){
-        //Add default Human piece
-        setUpCustomHumanPieces();
+        Constants.CUSTOMBOARDROWS = gridRows;
+        Constants.CUSTOMBOARDCOLUMNS = gridColumns;
 
-        //Add default Monster piece
-        setUpCustomMonsterPieces();
+        //Add custom Human piece
+        setUpCustomHumanPieces(numberOfPieces, Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
+
+        //Add custom Monster piece
+        setUpCustomMonsterPieces(numberOfPieces, gridRows, gridColumns);
 
         IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
         IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
@@ -141,7 +159,7 @@ class GameManager implements IGameManager {
         players.add(player2);
 
         //Set up custom board.
-        iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);
+        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
 
         turn = new Turn();
         turn.initialiseTurns(players);
