@@ -1,5 +1,10 @@
 package boardgame.gameModel.state.command;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.util.Duration;
+
 import java.util.Stack;
 
 import static org.valid4j.Assertive.require;
@@ -7,6 +12,7 @@ import static org.valid4j.Assertive.require;
 public class CommandProcessor {
 
     private Stack<Command> undoList = new Stack<>();
+
     private Stack<Command> redoList = new Stack<>();
     private ListenerList listeners = new ListenerList();
 
@@ -40,6 +46,8 @@ public class CommandProcessor {
 
         //Step 5: Notify listeners.
         fireCommandHistoryChanged();
+
+        System.out.println("undoList = " + undoList.size());
     }
 
     public void redo() {
@@ -53,6 +61,30 @@ public class CommandProcessor {
 
     }
 
-    private class ListenerList {
+    //replay all the moves that have taken place. Uses the Timeline JavaFX class
+    // to play back the animation of all moves (calls redo() with a delay). Change the interval
+    // to change the delay.
+    public void replayMoves() {
+
+        //First undo all moves. This will appear instantaneous.
+        final int m = undoList.size();
+        for (int j = 0; j < m; j++) {
+            undo();
+        }
+
+
+        int interval = 2;
+        final Timeline timeline = new Timeline();
+        for (int i = 0; i < redoList.size(); i++) {
+            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(interval), e -> redo()));
+            interval += 2;
+        }
+        Platform.runLater(timeline::play);
+
     }
+
+    private class ListenerList {
+
+    }
+
 }
