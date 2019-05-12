@@ -8,7 +8,12 @@ import boardgame.util.Location;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -90,6 +95,23 @@ public class BoardGrid implements IBoardGrid {
 
         piece.locationPropertyProperty().addListener((observable) ->
                 PieceView.changePiecePosition(pieceTile, getTile(pieceTile.getLocation())));
+
+        pieceTile.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //TODO set state to move
+                /* drag was detected, start a drag-and-drop gesture*/
+                /* allow any transfer mode */
+                Dragboard db = pieceTile.startDragAndDrop(TransferMode.ANY);
+
+                /* Put a string on a dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString(pieceTile.getClass().getSimpleName());
+                db.setContent(content);
+
+                event.consume();
+            }
+        });
 
         boardPane.getChildren().add(pieceTile);
         pieceObservableList.add(pieceTile);

@@ -90,12 +90,8 @@ public class GameContext {
 
     /**
      * Press defence.
-     *
-     * @param gameContext the game context
      */
-    public void pressDefence(GameContext gameContext) {
-        //TODO Add implementation for defence.
-        System.out.println("To be implemented");
+    public void pressDefence() {
         state.onDefence(this);
     }
 
@@ -268,8 +264,6 @@ public class GameContext {
             }
 
         }
-
-
     }
 
     void highlightAttack() {
@@ -288,9 +282,7 @@ public class GameContext {
     }
 
 
-
     //*******************************************************************************
-
 
 
     /**
@@ -302,7 +294,6 @@ public class GameContext {
 
         return IBoardGrid;
     }
-
 
 
     /**
@@ -447,7 +438,6 @@ public class GameContext {
     }
 
 
-
     //Getters and setters.
 
     /**
@@ -513,5 +503,7 @@ public class GameContext {
         this.state = state;
     }
 
-
+    public void replayAllMoves() {
+        commandProcessor.replayMoves();
+    }
 }

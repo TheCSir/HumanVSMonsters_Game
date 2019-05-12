@@ -2,6 +2,7 @@ package boardgame.gameModel.players;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import javafx.collections.ObservableList;
 
 public class MonsterPlayer extends Player {
@@ -13,5 +14,10 @@ public class MonsterPlayer extends Player {
     @Override
     public IPiece getPiece(IPiece piece) {
         return null;
+    }
+
+    @Override
+    public String playerType() {
+        return PieceConstants.MONSTERPLAYER;
     }
 }

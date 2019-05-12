@@ -56,5 +56,6 @@
         </Text>
         <Button fx:id="undoButton" mnemonicParsing="false" text="Undo"/>
         <Button fx:id="redoButton" mnemonicParsing="false" text="Redo"/>
+        <Button fx:id="replay" mnemonicParsing="false" text="Replay All Moves"/>
     </children>
 </fx:root>

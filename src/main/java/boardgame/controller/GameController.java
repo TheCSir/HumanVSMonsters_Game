@@ -171,7 +171,7 @@ public class GameController implements Initializable {
 
     private void chooseDefenseTargetPiece() {
         System.out.println("Clicked defense");
-        gameContext.pressDefence(gameContext);
+        gameContext.pressDefence();
     }
     //Gets input and updates model for piece position.
 

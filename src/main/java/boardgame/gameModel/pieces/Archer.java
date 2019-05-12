@@ -3,8 +3,12 @@ package boardgame.gameModel.pieces;
 import boardgame.util.Location;
 
 public class Archer extends Human {
-    Archer(int moveSpeed, Location location) {
-        super(moveSpeed, location);
+
+    //default move speed for character.
+    private int moveSpeed = 2;
+
+    Archer(Location location) {
+        super(location);
     }
 
     public void basicAttack(){}
@@ -12,4 +16,20 @@ public class Archer extends Human {
     public void specialAbility() {
         System.out.println("Ranged Attack!");
     }
+
+    @Override
+    public String getPieceClass() {
+        return PieceConstants.RANGED;
+    }
+
+    @Override
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    @Override
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
 }

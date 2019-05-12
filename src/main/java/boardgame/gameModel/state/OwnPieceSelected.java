@@ -5,7 +5,12 @@ import boardgame.gameModel.pieces.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
+import java.util.Objects;
+
 public class OwnPieceSelected implements State {
+
+    private static final String TAG = "OwnPieceSelected";
+    private static OwnPieceSelected ownPieceSelected;
 
     public OwnPieceSelected() {
         System.out.println("In own piece selected state");
@@ -20,11 +25,18 @@ public class OwnPieceSelected implements State {
         gameContext.setState(new MoveState());
     }
 
+    public static OwnPieceSelected getInstance() {
+        return Objects.requireNonNullElseGet(ownPieceSelected, OwnPieceSelected::new);
+    }
+
     @Override
     public void onAttack(GameContext gameContext) {
-        //TODO highlight surrounding tiles.
+
+        //Highlight surrounding tiles.
         gameContext.highlightAttack();
+
         System.out.println("setting attack state");
+
         gameContext.setState(new AttackState());
     }
 
