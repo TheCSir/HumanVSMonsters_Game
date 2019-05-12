@@ -4,8 +4,21 @@ package boardgame.gameModel.pieces;
 import boardgame.util.Location;
 
 public class Minotaur extends Monster {
-    Minotaur(int moveSpeed, Location location) {
-        super(moveSpeed, location);
+
+    private int moveSpeed = 3;
+
+    Minotaur(Location location) {
+        super(location);
+    }
+
+    @Override
+    public int getMoveSpeed() {
+        return this.moveSpeed;
+    }
+
+    @Override
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 
     public void basicAttack(){}
@@ -13,5 +26,10 @@ public class Minotaur extends Monster {
     @Override
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
+    }
+
+    @Override
+    public String getPieceClass() {
+        return PieceConstants.MELEE;
     }
 }

@@ -75,4 +75,6 @@ public interface IPlayer {
     void setPieces(ObservableList<IPiece> pieces);
 
     IPiece getPiece(IPiece piece);
+
+    String playerType();
 }

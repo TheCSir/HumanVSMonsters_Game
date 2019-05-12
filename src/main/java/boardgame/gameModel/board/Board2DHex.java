@@ -62,7 +62,7 @@ public class Board2DHex extends Board2d {
 
     @Override
     public void deleteTile(Location location, ITile tile) {
-        getTiles().put(location, tile);
+        getTiles().remove(location, tile);
     }
 
     //For each tile store their neighbouring tiles.

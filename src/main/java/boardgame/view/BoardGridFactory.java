@@ -1,11 +1,11 @@
 package boardgame.view;
 
-import boardgame.controller.MainController;
+import boardgame.controller.GameController;
 import javafx.scene.layout.Pane;
 
 public class BoardGridFactory {
 
-    public static BoardGrid createBoardGrid(Pane boardPane, MainController mc) {
+    public static BoardGrid createBoardGrid(Pane boardPane, GameController mc) {
         return new BoardGrid(boardPane, mc);
     }
 }

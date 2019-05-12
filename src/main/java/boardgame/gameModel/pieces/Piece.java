@@ -4,14 +4,11 @@ import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import static org.valid4j.Assertive.require;
-
 /**
     This piece represents a character on the map.
  */
 public abstract class Piece implements IPiece {
 
-    private int moveSpeed;
     private boolean isShielded;
     private int shieldTurn;
     private final ObjectProperty<Location> locationProperty;
@@ -22,22 +19,16 @@ public abstract class Piece implements IPiece {
     }
 
 
-    public Piece(int moveSpeed, Location location) {
-        require(moveSpeed >= 0);
-        this.moveSpeed = moveSpeed;
+    public Piece(Location location) {
         locationProperty = new SimpleObjectProperty<>(location);
         this.isShielded = false;
     }
 
     @Override
-    public int getMoveSpeed() {
-        return moveSpeed;
-    }
+    public abstract int getMoveSpeed();
 
     @Override
-    public void setMoveSpeed(int moveSpeed) {
-        this.moveSpeed = moveSpeed;
-    }
+    public abstract void setMoveSpeed(int moveSpeed);
 
 
     @Override

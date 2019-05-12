@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * The Main Controller. This is a JavaFX Controller.
  */
-public class MainController implements Initializable {
+public class GameController implements Initializable {
 
 
     @FXML
@@ -42,16 +42,16 @@ public class MainController implements Initializable {
     private GameContext gameContext;
 
     /**
-     * This is the main entry point after the App class is started. The MainController holds handler methods
+     * This is the main entry point after the App class is started. The GameController holds handler methods
      * for input actions. It also registers the listeners for the model pieces. As our application follows
      * an observer pattern these listeners will update the view when triggered.
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
-     * The MainController class is the main part of application that currently requires major refactoring as
+     * The GameController class is the main part of application that currently requires major refactoring as
      * it has a bit too much coupling. Whilst it is reasonably cohesive it is highly coupled.
      * Ideally we would also remove a bit of game logic that is stuck here.
      */
-    public MainController() {
+    public GameController() {
         //Get a reference to the game manager. Currently sets up a game with default settings.
 
     }
@@ -138,7 +138,7 @@ public class MainController implements Initializable {
 
     private void chooseDefenseTargetPiece() {
         System.out.println("Clicked defense");
-        gameContext.pressDefence(gameContext);
+        gameContext.pressDefence();
     }
     //Gets input and updates model for piece position.
 
