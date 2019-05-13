@@ -41,6 +41,7 @@ class GameManager implements IGameManager {
     private final GameContext gameContext;
     private final GameController gc;
 
+
     //Default constructor
     GameManager(Pane boardPane, GameController gameController) {
         players = new ArrayList<>();

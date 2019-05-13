@@ -26,7 +26,7 @@ public class TurnFacade {
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 
-    //This was moved to facade. This logic was being called in every different command.
+    //This was moved to facade. This logic was being called in every different Command in Command Pattern.
     // Instead refactored to facade.
     public void goBackOneTurn() {
         //Roll back turn.
