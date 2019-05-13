@@ -17,10 +17,8 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         try {
-
-            // Read file fxml and draw interface.
             Parent root = FXMLLoader.load(getClass()
-                    .getResource("/boardgame/view/mainView.fxml"));
+                    .getResource("/boardgame/view/startMenu.fxml"));
 
             primaryStage.setTitle("Battle Game");
             primaryStage.setScene(new Scene(root));

@@ -39,7 +39,6 @@ public class StatusController extends VBox {
     @FXML
     private Button undoButton;
 
-
     @FXML
     private Button redoButton;
 
@@ -132,10 +131,10 @@ public class StatusController extends VBox {
                 gm.getTurn().getTurnNumber());
 
 
-        getHumanHealth().setText("Gandalf Health: " +
+        getHumanHealth().setText(gm.getPlayers().get(0).getPlayerName() + " Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
-        getMonsterHealth().setText("Sauron Health: " +
+        getMonsterHealth().setText(gm.getPlayers().get(1).getPlayerName() + " Health: " +
                 gm.getTurn().getActivePlayer().healthProperty().getValue());
 
         getTurnTime().setText("Turn Time " + 60);

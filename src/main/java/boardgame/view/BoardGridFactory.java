@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 
 public class BoardGridFactory {
 
-    public static BoardGrid createBoardGrid(Pane boardPane, GameController mc) {
-        return new BoardGrid(boardPane, mc);
+    public static BoardGrid createBoardGrid(Pane boardPane, GameController gc) {
+        return new BoardGrid(boardPane, gc);
     }
 }

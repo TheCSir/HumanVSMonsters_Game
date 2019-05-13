@@ -26,13 +26,13 @@ public class RegisterListeners {
 
             if (player.getClass().getSimpleName().equals(Constants.PLAYER1)) {
                 player.healthProperty().addListener((observable) ->
-                        statusController.getHumanHealth().setText(Constants.PLAYERNAME1 + " Health: " +
-                                player.healthProperty().getValue())
+                        statusController.getHumanHealth().setText(gm.getPlayers().get(0).getPlayerName() +
+                                " Health: " + player.healthProperty().getValue())
                 );
             } else if (player.getClass().getSimpleName().equals(Constants.PLAYER2)) {
                 player.healthProperty().addListener((observable) ->
-                        statusController.getMonsterHealth().setText(Constants.PLAYERNAME2 + " Health: " +
-                                player.healthProperty().getValue())
+                        statusController.getMonsterHealth().setText(gm.getPlayers().get(1).getPlayerName() +
+                                " Health: " + player.healthProperty().getValue())
                 );
             }
         }

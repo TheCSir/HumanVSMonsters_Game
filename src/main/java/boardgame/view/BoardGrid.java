@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class BoardGrid implements IBoardGrid {
 
-    private final GameController mc;
+    private final GameController gc;
 
     private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
@@ -59,7 +59,7 @@ public class BoardGrid implements IBoardGrid {
     BoardGrid(Pane boardPane, GameController gameController) {
         this.boardPane = boardPane;
         initialiseBoardBackGround();
-        this.mc = gameController;
+        this.gc = gameController;
     }
 
     /**
@@ -86,7 +86,7 @@ public class BoardGrid implements IBoardGrid {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
-        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.TILERADIUS, piece);
+        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.CUSTOM_TILERADIUS, piece);
         try {
             pieceTile.setImagePattern(imageURL(piece));
         } catch (FileNotFoundException e) {
@@ -145,12 +145,17 @@ public class BoardGrid implements IBoardGrid {
             boardPane.getChildren().add(hexagonalTile);
         }
 
-        //Add neighbouring tile views.
-        for (TileView tileView : tileViewObservableMap.values()) {
-            List<ITile> neighbours = tileView.getNeighbours();
-            for (ITile neighbour : neighbours) {
-                tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+        try {
+            //Add neighbouring tile views.
+            for (TileView tileView : tileViewObservableMap.values()) {
+                List<ITile> neighbours = tileView.getNeighbours();
+                for (ITile neighbour : neighbours) {
+                    tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+                }
             }
+        }
+        catch(Exception ex){
+            throw ex;
         }
     }
 
@@ -183,7 +188,7 @@ public class BoardGrid implements IBoardGrid {
             //Create the new tile.
             TileView tile = TileViewFactory.createTileView(xCoord, yCoord, r, hexagonalTile);
             //Set tile handlers
-            tile.setOnMouseClicked(e -> mc.handleTileClicked(tile));
+            tile.setOnMouseClicked(e -> gc.handleTileClicked(tile));
             hexagonTileViewList.add(tile);
 
 

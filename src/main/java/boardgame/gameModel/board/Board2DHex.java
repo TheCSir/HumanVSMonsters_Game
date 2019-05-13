@@ -38,8 +38,8 @@ public class Board2DHex extends Board2d {
     @Override
     public void setUpTiles() {
 
-        for (int x=0; x<Constants.DEFAULTBOARDROWS; x++) {
-               for (int y=0; y<Constants.DEFAULTBOARDCOLUMNS; y++) {
+        for (int x=0; x<Constants.CUSTOMBOARDROWS; x++) {
+               for (int y=0; y<Constants.CUSTOMBOARDCOLUMNS; y++) {
                    Location location = LocationFactory.createLocation(x, y);
                    ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
                    addTile(location, hexagonalTile);
@@ -71,7 +71,7 @@ public class Board2DHex extends Board2d {
             List<Location> neighbourLocations = HexGridUtil.getNeighbourPositions(t.getLocation());
 
             for (Location location: neighbourLocations) {
-                if(checkMapLocation(location, Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS)){
+                if(checkMapLocation(location, Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS)){
                     t.addNeighbour(getTiles().get(location));
                 }
             }

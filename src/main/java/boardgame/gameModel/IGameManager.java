@@ -77,6 +77,18 @@ public interface IGameManager {
     void defaultGameSetup();
 
     /**
+     * Sets up pieces as defined from start menu for both players.
+     */
+    void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
+                           int numberOfPieces, int gridRows, int gridColumns);
+
+    /**
+     * Set up a game with custom settings from menu.
+     */
+    void customGameSetup(String humanPlayerName, String monsterPlayerName,
+                         int numberOfPlayers, int girdWidth, int gridHeight);
+
+    /**
      * The game manager is the information expert for the board.
      *
      * @return the board
