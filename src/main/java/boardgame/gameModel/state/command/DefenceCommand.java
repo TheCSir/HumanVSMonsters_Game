@@ -16,6 +16,7 @@ public class DefenceCommand implements Command {
         ownPiece.getiPiece().createShield(gm.getTurn().getTurnNumber());
         System.out.println("Defending");
         // end turn
+        //TODO next turn should not have to request the players from the game manager. Makes no sense.
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 

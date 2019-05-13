@@ -8,10 +8,17 @@ import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -494,16 +501,35 @@ public class GameContext {
         return state;
     }
 
+    private static final Integer STARTTIME = 15;
+
+    public void replayAllMoves() {
+        commandProcessor.replayMoves();
+    }
+
+    private Timeline timeline;
+    private Label timerLabel = new Label();
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+
     /**
      * Sets state.
      *
      * @param state the state
      */
-    public void setState(State state) {
-        this.state = state;
+    public void setState(states state) {
+        this.state = StateFactory.getState(state);
     }
 
-    public void replayAllMoves() {
-        commandProcessor.replayMoves();
+    private void timeline() {
+
+        if (timeline != null) {
+            timeline.stop();
+        }
+        timeSeconds.set(STARTTIME);
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(STARTTIME + 1),
+                        new KeyValue(timeSeconds, 0)));
+        timeline.playFromStart();
     }
 }

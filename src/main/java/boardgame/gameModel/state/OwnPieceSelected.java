@@ -18,11 +18,11 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onMove(GameContext gameContext) {
-        //TODO highlight surrounding tiles.
+
         gameContext.highlightMove();
         System.out.println("Setting surrounding colour to Red");
         System.out.println("Setting move state");
-        gameContext.setState(new MoveState());
+        gameContext.setState(states.MOVE);
     }
 
     public static OwnPieceSelected getInstance() {
@@ -37,7 +37,7 @@ public class OwnPieceSelected implements State {
 
         System.out.println("setting attack state");
 
-        gameContext.setState(new AttackState());
+        gameContext.setState(states.ATTACK);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class OwnPieceSelected implements State {
         //TODO set up new buttons to click.
         //for the moment let's make it a transition.
         gameContext.launchSpecialAbility();
-        gameContext.setState(new IdleState());
+        gameContext.setState(states.IDLE);
     }
 
     @Override
     public void onDefence(GameContext gameContext) {
         System.out.println("Setting defense state");
-        gameContext.setState(new DefenceState());
+        gameContext.setState(states.DEFENCE);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class OwnPieceSelected implements State {
         Opt_one.setText(OptOne);
         Opt_two.setText(OptTwo);
 
-        gameContext.setState(new SwapState());
+        gameContext.setState(states.SWAP);
     }
 
 
@@ -119,7 +119,7 @@ public class OwnPieceSelected implements State {
     @Override
     public void onSelectTile(GameContext gameContext) {
         System.out.println("selecting tile");
-        gameContext.setState(new IdleState());
+        gameContext.setState(states.IDLE);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class OwnPieceSelected implements State {
 
         gameContext.updateEnemyPieceDetails();
 
-        gameContext.setState(new EnemyPieceSel());
+        gameContext.setState(states.ENEMYPIECESELECTED);
     }
 
     @Override

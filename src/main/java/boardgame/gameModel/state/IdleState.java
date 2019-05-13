@@ -36,7 +36,7 @@ public class IdleState implements State {
         gameContext.updatePieceDetails();
 
         //Set new State.
-        gameContext.setState(new OwnPieceSelected());
+        gameContext.setState(states.OWNPIECESELECTED);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class IdleState implements State {
 
         gameContext.updateEnemyPieceDetails();
 
-        gameContext.setState(new EnemyPieceSel());
+        gameContext.setState(states.ENEMYPIECESELECTED);
     }
 
     @Override

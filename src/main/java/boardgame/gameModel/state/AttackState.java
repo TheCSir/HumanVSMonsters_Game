@@ -13,8 +13,8 @@ public class AttackState extends OwnPieceSelected {
     public void onSelectEnemyPiece(GameContext gameContext) {
 
         gameContext.attackPiece();
-
-        gameContext.setState(new IdleState());
+        gameContext.setState(states.IDLE);
+        System.out.println(gameContext.getState().getClass().getSimpleName());
     }
 
 }

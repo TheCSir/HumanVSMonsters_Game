@@ -139,4 +139,6 @@ public interface IGameManager {
     void addPiece(IPiece piece);
 
     GameContext getGameContext();
+
+    void endTurn();
 }

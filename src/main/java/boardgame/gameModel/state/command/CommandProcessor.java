@@ -57,7 +57,9 @@ public class CommandProcessor {
     }
 
     private void fireCommandHistoryChanged() {
-
+        //cmd.GetListeners()
+        //for each listener in cmd.GetListeners {
+        //
 
     }
 

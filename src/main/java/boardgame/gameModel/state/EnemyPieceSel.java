@@ -34,7 +34,7 @@ public class EnemyPieceSel implements State {
         //Update View
         gameContext.updatePieceDetails();
 
-        gameContext.setState(new OwnPieceSelected());
+        gameContext.setState(states.OWNPIECESELECTED);
     }
 
     @Override

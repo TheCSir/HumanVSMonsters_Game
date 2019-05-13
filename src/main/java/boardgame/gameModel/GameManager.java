@@ -4,7 +4,10 @@ import boardgame.controller.GameController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.FactoryProducer;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.gameModel.state.GameContext;
@@ -253,5 +256,10 @@ class GameManager implements IGameManager {
     @Override
     public GameContext getGameContext() {
         return gameContext;
+    }
+
+    @Override
+    public void endTurn() {
+        getTurn().nextTurn(players);
     }
 }
