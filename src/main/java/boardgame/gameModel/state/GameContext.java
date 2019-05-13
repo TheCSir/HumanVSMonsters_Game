@@ -2,6 +2,7 @@ package boardgame.gameModel.state;
 
 import boardgame.controller.GameController;
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.command.*;
 import boardgame.util.Location;
@@ -46,6 +47,7 @@ public class GameContext {
     private Button opt_one;
     private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
+    private TurnFacade tf;
 
     /**
      * Instantiates a new Game context.
@@ -60,6 +62,7 @@ public class GameContext {
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
         this.gc = gc;
+        tf = new TurnFacade(gm);
     }
 
 
@@ -174,7 +177,7 @@ public class GameContext {
     private boolean isActivePlayerPiece(IPiece ipiece) {
 
         System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        for (IPiece piece : gm.getTurn().getActivePlayer().getPieces()) {
+        for (IPiece piece : tf.getActivePlayerPieces()) {
             if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
                 return true;
             }
@@ -261,7 +264,8 @@ public class GameContext {
 
 
             if (offDist <= movespeed) {
-                tileView.setFill(Color.RED);
+                //tileView.setFill(Color.RED);
+                tileView.setFill(Color.rgb(200, 24, 0));
                 //Debugging
 //                Text text = new Text(tileView.getLocation().getX() + ", " + tileView.getLocation().getY());
 //                getBoardGrid().getBoardPane().getChildren().add(text);
@@ -320,7 +324,7 @@ public class GameContext {
      */
     public void createShield() {
         DefenceCommand command = new DefenceCommand();
-        command.SetCommand(getGm(), getOwnPiece());
+        command.SetCommand(tf, getOwnPiece());
         commandProcessor.execute(command);
     }
 
@@ -371,7 +375,7 @@ public class GameContext {
             locations.add(t.getModelTile().getLocation());
         }
         if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(getGm(), getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
+            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
             commandProcessor.execute(command);
         }
     }
@@ -382,7 +386,7 @@ public class GameContext {
      */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(getGm(), swapPane, opt_one);
+        command.SetCommand(tf, getGm(), swapPane, opt_one);
         System.out.println("opt_one = " + opt_one.getText());
         commandProcessor.execute(command);
     }
@@ -393,7 +397,7 @@ public class GameContext {
      */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(getGm(), swapPane, opt_two);
+        command.SetCommand(tf, getGm(), swapPane, opt_two);
         System.out.println("opt_two = " + opt_two.getText());
         commandProcessor.execute(command);
     }
@@ -408,7 +412,7 @@ public class GameContext {
         if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(gm, getEnemyPiece());
+            command.setCommand(tf, gm, getEnemyPiece());
             commandProcessor.execute(command);
 
             //Ensure that enemy piece is cleared as next time might be different piece.

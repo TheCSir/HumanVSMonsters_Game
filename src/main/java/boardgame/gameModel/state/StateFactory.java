@@ -3,6 +3,9 @@ package boardgame.gameModel.state;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * All available states have a related enum held here as the StateFactory is the class that uses these enums.
+ */
 enum states {
     ATTACK,
     MOVE,
@@ -24,6 +27,7 @@ enum states {
  */
 class StateFactory {
 
+    //Holds allinstances of State classes.
     private static Map<states, State> allStates = new HashMap<>();
 
     private static StateFactory instance;
@@ -32,7 +36,7 @@ class StateFactory {
     }
 
     //Singleton for state factory. No need for multiple instances.
-    private static void getInstance() {
+    private static void newInstance() {
         if (instance == null) {
             instance = new StateFactory();
 
@@ -49,9 +53,13 @@ class StateFactory {
         }
     }
 
+    /**
+     * This is the only non private method in the State factory. When a state is called for the first time
+     * the state map is initialized. Every request for a State must go through this method.
+     */
     static State getState(states state) {
         if (instance == null) {
-            getInstance();
+            newInstance();
         }
         return allStates.get(state);
     }

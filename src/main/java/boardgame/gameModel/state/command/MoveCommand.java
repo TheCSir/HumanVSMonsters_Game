@@ -6,7 +6,7 @@ package boardgame.gameModel.state.command;
 // implementation outline.
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.Turn;
+import boardgame.gameModel.TurnFacade;
 import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
@@ -21,10 +21,10 @@ public class MoveCommand implements Command {
     private Location startingLocation;
     private Location destination;
     private IGameManager gm;
-    private Turn turn;
     private IBoardGrid boardGrid;
     private List<TileView> highlightedTiles;
     private List<Location> locations = new ArrayList<>();
+    private TurnFacade tf;
 
     @Override
     public void execute() {
@@ -35,10 +35,12 @@ public class MoveCommand implements Command {
             System.out.println("highlightedTile.getLocation() = " + highlightedTile.getLocation());
         }
 
+        //Check for valid location before move.
         if (locations.contains(destination)) {
             gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
 
-            gm.getTurn().nextTurn(gm.getPlayers());
+            //End turn
+            tf.nextTurn();
             System.out.println("Piece moved");
         }
     }
@@ -46,14 +48,8 @@ public class MoveCommand implements Command {
     @Override
     public void undo() {
 
-
         //Roll back turn.
-        int previousTurn = turn.getTurnNumber() - 1;
-        turn.setTurnNumberProperty(previousTurn);
-
-        // This should handle having multiple players on the board
-        int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
-        turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
+        tf.goBackOneTurn();
 
         //Change piece's location. Listener will redraw the piece.
         selectedPiece.setLocation(startingLocation);
@@ -69,15 +65,14 @@ public class MoveCommand implements Command {
 
         gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
 
-        //Should this be replaced by a location check instead of having move return a boolean?
         // end turn
-        gm.getTurn().nextTurn(gm.getPlayers());
+        tf.nextTurn();
 
     }
 
-    public void SetCommand(IGameManager gm, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
+    public void SetCommand(IGameManager gm, TurnFacade tf, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
+        this.tf = tf;
         this.gm = gm;
-        turn = gm.getTurn();
         this.selectedPiece = selectedPiece;
         this.destination = destination;
         startingLocation = new Location(selectedPiece.getLocation().getX(), selectedPiece.getLocation().getY());
