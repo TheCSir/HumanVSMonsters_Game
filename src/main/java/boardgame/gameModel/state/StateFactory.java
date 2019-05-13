@@ -14,7 +14,15 @@ enum states {
     ENEMYPIECESELECTED
 }
 
-public class StateFactory {
+/**
+ * State Factory class creates States for use by the State Pattern. This class was created as before this
+ * the State transition was gamecontext.setState(new State()). This class means that the responsibility for creating
+ * a State is moved out of the State(or gamecontext) classes and to this class. This is so that there is better
+ * abstraction and it also eliminates coupling between State classes. As there is no need for multiple instances
+ * this class is lazily instantiated (Singleton pattern) and the constructor is private. States are not intended to be
+ * accessed outside the state package and so the class is made 'package-private' to improve encapsulation.
+ */
+class StateFactory {
 
     private static Map<states, State> allStates = new HashMap<>();
 
@@ -41,7 +49,7 @@ public class StateFactory {
         }
     }
 
-    public static State getState(states state) {
+    static State getState(states state) {
         if (instance == null) {
             getInstance();
         }
