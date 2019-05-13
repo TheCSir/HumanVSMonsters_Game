@@ -7,9 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.controller.StartMenuController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.controller.StartMenuController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,10 +28,12 @@
       <Label text="Game Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <Label text="Human Player Name:" GridPane.rowIndex="1" GridPane.valignment="TOP" />
       <Label text="Number of pieces:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-      <Label text="Grid Width:" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-      <Label text="Grid Height:" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-      <TextField text="Gandalf" fx:id="humanPlayerNameText" GridPane.rowIndex="1" />
-      <TextField text="Sauron" fx:id="monsterPlayerNameText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="Grid Rows:" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+      <Label text="Grid Columns:" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+      <TextField fx:id="humanPlayerNameText" text="Gandalf" GridPane.rowIndex="1" />
+      <TextField fx:id="monsterPlayerNameText" text="Sauron" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Monster Player Name:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+      <Label fx:id="piecseNumValidation" wrapText="true" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Label fx:id="gridValidation" wrapText="true" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="3" />
    </children>
 </GridPane>

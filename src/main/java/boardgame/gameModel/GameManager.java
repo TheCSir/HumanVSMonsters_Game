@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -113,32 +114,28 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public void setUpCustomMonsterPieces(int numberOfPieces, int gridRows, int gridColumns) {
+    public void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
+                                  int numberOfPieces, int gridRows, int gridColumns) {
+        // Create a list of pieces
+        List<String> pieces = new ArrayList<>();
+        pieces.add(PieceConstants.MELEE);
+        pieces.add(PieceConstants.RANGED);
+        pieces.add(PieceConstants.SUPPORT);
+
+        // Randomise list
+        Collections.shuffle(pieces);
+
         Random rand = new Random();
 
-        // generate random location on the grid
-        int rndX = rand.nextInt(gridRows);
-        int rndY = rand.nextInt(gridColumns);
+        for (int i = 0; i < numberOfPieces; i++) {
+            // generate random location for each piece on the grid
+            int rndX = rand.nextInt(gridRows);
+            int rndY = rand.nextInt(gridColumns);
 
-        AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.MONSTERPLAYER);
-        IPiece ipiece = apf.getPiece(PieceConstants.MELEE, LocationFactory.createLocation(rndX, rndY));
-        humanPieces.add(ipiece);
-
-        monsterPieces.add(ipiece);
-    }
-
-    @Override
-    public void setUpCustomHumanPieces(int numberOfPieces, int gridRows, int gridColumns) {
-        Random rand = new Random();
-
-        // generate random location on the grid
-        int rndX = rand.nextInt(gridRows);
-        int rndY = rand.nextInt(gridColumns);
-
-        AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.HUMANPLAYER);
-        IPiece ipiece = apf.getPiece(PieceConstants.RANGED, LocationFactory.createLocation(rndX, rndY));
-
-        humanPieces.add(ipiece);
+            AbstractPieceFactory apf = FactoryProducer.getFactory(playerType);
+            IPiece ipiece = apf.getPiece(pieces.get(i), LocationFactory.createLocation(rndX, rndY));
+            playerPieces.add(ipiece);
+        }
     }
 
     @Override
@@ -147,11 +144,11 @@ class GameManager implements IGameManager {
         Constants.CUSTOMBOARDROWS = gridRows;
         Constants.CUSTOMBOARDCOLUMNS = gridColumns;
 
-        //Add custom Human piece
-        setUpCustomHumanPieces(numberOfPieces, Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
-
-        //Add custom Monster piece
-        setUpCustomMonsterPieces(numberOfPieces, gridRows, gridColumns);
+        //Add custom pieces for each player
+        setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces,
+                Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
+        setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces,
+                Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
 
         IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
         IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
@@ -163,7 +160,20 @@ class GameManager implements IGameManager {
 
         turn = new Turn();
         turn.initialiseTurns(players);
-        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
+        calculateTileRadius();
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), Constants.CUSTOM_TILERADIUS, IBoardGrid.getBoardPane());
+    }
+
+    private void calculateTileRadius() {
+        int m;
+        // grab biggest number between CUSTOMBOARDROWS and CUSTOMBOARDCOLUMNS
+        if (Constants.CUSTOMBOARDROWS > Constants.CUSTOMBOARDCOLUMNS)
+            m = Constants.CUSTOMBOARDROWS;
+        else
+            m = Constants.CUSTOMBOARDCOLUMNS;
+
+        // Use TILERADIUS and DEFAULTBOARDROWS as reference points for calculating custom radius to fit the screen
+        Constants.CUSTOM_TILERADIUS = (TILERADIUS * Constants.DEFAULTBOARDROWS) / m;
     }
 
     @Override

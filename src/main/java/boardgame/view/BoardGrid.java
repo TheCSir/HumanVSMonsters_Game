@@ -86,7 +86,7 @@ public class BoardGrid implements IBoardGrid {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
-        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.TILERADIUS, piece);
+        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.CUSTOM_TILERADIUS, piece);
         try {
             pieceTile.setImagePattern(imageURL(piece));
         } catch (FileNotFoundException e) {

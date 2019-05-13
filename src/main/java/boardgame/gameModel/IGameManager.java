@@ -77,14 +77,10 @@ public interface IGameManager {
     void defaultGameSetup();
 
     /**
-     * Sets up monster pieces as defined from start menu .
+     * Sets up pieces as defined from start menu for both players.
      */
-    void setUpCustomMonsterPieces(int numberOfPieces, int gridRows, int gridColumns);
-
-    /**
-     * Sets up human pieces as defined from start menu.
-     */
-    void setUpCustomHumanPieces(int numberOfPieces, int gridRows, int gridColumns);
+    void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
+                           int numberOfPieces, int gridRows, int gridColumns);
 
     /**
      * Set up a game with custom settings from menu.

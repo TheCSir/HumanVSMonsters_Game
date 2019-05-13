@@ -39,7 +39,6 @@ public class StatusController extends VBox {
     @FXML
     private Button undoButton;
 
-
     @FXML
     private Button redoButton;
 

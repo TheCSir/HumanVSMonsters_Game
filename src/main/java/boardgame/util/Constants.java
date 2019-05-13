@@ -20,6 +20,7 @@ public class Constants {
 
     public static final double yStartOffset = 40;
     public static final double TILERADIUS = 40;
+    public static double CUSTOM_TILERADIUS = 40;
 
 
     //Default players data.
