@@ -55,6 +55,8 @@ public class StatusController extends VBox {
 
     private static final Integer STARTTIME = 60;
     private TurnFacade tf;
+    private Timeline timeline;
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     /**
      * Gets turn number.
@@ -127,8 +129,6 @@ public class StatusController extends VBox {
         turnNumber.setText(text);
     }
 
-    private Timeline timeline;
-    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     /**
      * Instantiates a new Status controller.

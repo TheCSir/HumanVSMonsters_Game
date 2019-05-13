@@ -1,10 +1,13 @@
 package boardgame.gameModel.pieces;
 
 import boardgame.util.Location;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Griffin extends Monster {
 
     private int moveSpeed = 4;
+    private final StringProperty pieceName = new SimpleStringProperty("Griffin");
 
     Griffin(Location location) {
         super(location);
@@ -29,5 +32,10 @@ public class Griffin extends Monster {
     @Override
     public String getPieceClass() {
         return PieceConstants.SUPPORT;
+    }
+
+    @Override
+    public StringProperty getPieceName() {
+        return pieceName;
     }
 }

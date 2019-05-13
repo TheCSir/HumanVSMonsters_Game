@@ -2,10 +2,13 @@ package boardgame.gameModel.pieces;
 
 
 import boardgame.util.Location;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Minotaur extends Monster {
 
     private int moveSpeed = 3;
+    private final StringProperty pieceName = new SimpleStringProperty("Minotaur");
 
     Minotaur(Location location) {
         super(location);
@@ -31,5 +34,10 @@ public class Minotaur extends Monster {
     @Override
     public String getPieceClass() {
         return PieceConstants.MELEE;
+    }
+
+    @Override
+    public StringProperty getPieceName() {
+        return pieceName;
     }
 }

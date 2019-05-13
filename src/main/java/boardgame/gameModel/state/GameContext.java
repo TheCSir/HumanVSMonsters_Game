@@ -9,6 +9,8 @@ import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -137,12 +139,26 @@ public class GameContext {
         state.onSelectTile(this);
     }
 
+    private StringProperty s = new SimpleStringProperty();
+    private IPiece selectedPiece;
+
+    public String getS() {
+        return s.get();
+    }
+
+    public StringProperty sProperty() {
+        return s;
+    }
+
     /**
      * Select piece.
      *
      * @param piece the piece
      */
     public void selectPiece(HexagonTileViewPiece piece) {
+        selectedPiece = piece.getiPiece();
+        s.setValue(selectedPiece.getPieceName().get());
+        System.out.println("selectedPiece = " + selectedPiece.getPieceName().toString());
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             state.onSelectOwnPiece(this);
@@ -186,12 +202,17 @@ public class GameContext {
 
         //Update View.
         Text pieceLocation = getGc().getPieceLocation();
-        Text pieceSelected = getGc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
+        // getGc().getPieceSelected().textProperty().bind(selectedPiece.getPieceName());
+//        Text pieceSelected = getGc().getPieceSelected();
+        //  pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
         pieceLocation.setText("Location: "
                 + "X: " + piece.getiPiece().getLocation().getX()
                 + ", "
                 + "Y: " + piece.getiPiece().getLocation().getY());
+    }
+
+    private void testBinding() {
+
     }
 
     /**
@@ -200,8 +221,9 @@ public class GameContext {
     void updateEnemyPieceDetails() {
         IPiece piece = getEnemyPiece().getiPiece();
         Text pieceLocation = getGc().getPieceLocation();
-        Text pieceSelected = getGc().getPieceSelected();
-        pieceSelected.setText("Class: " + piece.getClass().getSimpleName());
+        //Text pieceSelected = getGc().getPieceSelected();
+        //getGc().getPieceSelected().textProperty().bind(selectedPiece.getPieceName());
+        //pieceSelected.setText("Class: " + piece.getClass().getSimpleName());
         pieceLocation.setText("Location: "
                 + "X: " + piece.getLocation().getX()
                 + ", "
@@ -510,5 +532,13 @@ public class GameContext {
      */
     public void setState(states state) {
         this.state = StateFactory.getState(state);
+    }
+
+    public void setPieceSelected(IPiece piece) {
+        this.selectedPiece = piece;
+    }
+
+    public IPiece getSelectedPiece() {
+        return selectedPiece;
     }
 }

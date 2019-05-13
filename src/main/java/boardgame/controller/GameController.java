@@ -121,12 +121,17 @@ public class GameController implements Initializable {
 
         gm.customGameSetup(this.humanPlayerName, this.monsterPlayerName,
                 this.numOfPieces, this.gridRowsNum, this.gridColumnsNum);
+        gm.setUpGame();
 
         StatusController statusController = new StatusController(gm);
 
         gameContext = gm.getGameContext();
+        gameContext.setPieceSelected(gm.getActivePlayer().getPieces().get(0));
 
-        gm.setUpGame();
+        //Bind text property for selected piece.
+        pieceSelected.textProperty().bind(gameContext.sProperty());
+
+
         RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);
 
         initialiseHandlers();
