@@ -126,8 +126,6 @@ public class OwnPieceSelected implements State {
     public void onSelectEnemyPiece(GameContext gameContext) {
         System.out.println("selecting enemy piece");
 
-        gameContext.updateEnemyPieceDetails();
-
         gameContext.setState(states.ENEMYPIECESELECTED);
     }
 

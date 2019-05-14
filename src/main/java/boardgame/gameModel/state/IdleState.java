@@ -32,9 +32,6 @@ public class IdleState implements State {
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("transitioning to piece selection");
 
-        //Update View.
-        gameContext.updatePieceDetails();
-
         //Set new State.
         gameContext.setState(states.OWNPIECESELECTED);
     }
@@ -46,8 +43,6 @@ public class IdleState implements State {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-
-        gameContext.updateEnemyPieceDetails();
 
         gameContext.setState(states.ENEMYPIECESELECTED);
     }
