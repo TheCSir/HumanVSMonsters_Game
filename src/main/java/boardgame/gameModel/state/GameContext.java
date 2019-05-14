@@ -165,6 +165,7 @@ public class GameContext {
         }
     }
 
+
     /**
      * Reset tile colours for neighbouring tiles. Call to clear highlighted tiles
      * after selecting tiles
@@ -437,15 +438,6 @@ public class GameContext {
     }
 
     /**
-     * Gets gc.
-     *
-     * @return the gc
-     */
-    public GameController getGc() {
-        return gc;
-    }
-
-    /**
      * Gets swap pane.
      *
      * @return the swap pane
@@ -502,4 +494,5 @@ public class GameContext {
     public StringProperty pieceLocationProperty() {
         return pieceLocation;
     }
+
 }
