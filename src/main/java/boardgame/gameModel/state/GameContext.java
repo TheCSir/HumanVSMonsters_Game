@@ -14,7 +14,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -139,15 +138,13 @@ public class GameContext {
         state.onSelectTile(this);
     }
 
-    private StringProperty s = new SimpleStringProperty();
+    private StringProperty pieceNameProperty = new SimpleStringProperty();
+    private StringProperty pieceLocation = new SimpleStringProperty();
     private IPiece selectedPiece;
 
-    public String getS() {
-        return s.get();
-    }
 
-    public StringProperty sProperty() {
-        return s;
+    public StringProperty pieceNamePropertyProperty() {
+        return pieceNameProperty;
     }
 
     /**
@@ -157,8 +154,8 @@ public class GameContext {
      */
     public void selectPiece(HexagonTileViewPiece piece) {
         selectedPiece = piece.getiPiece();
-        s.setValue(selectedPiece.getPieceName().get());
-        System.out.println("selectedPiece = " + selectedPiece.getPieceName().toString());
+        pieceNameProperty.setValue(selectedPiece.getPieceName().get());
+        pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             state.onSelectOwnPiece(this);
@@ -192,42 +189,6 @@ public class GameContext {
             }
         }
         return false;
-    }
-
-    /**
-     * Update piece details.
-     */
-    public void updatePieceDetails() {
-        HexagonTileViewPiece piece = getOwnPiece();
-
-        //Update View.
-        Text pieceLocation = getGc().getPieceLocation();
-        // getGc().getPieceSelected().textProperty().bind(selectedPiece.getPieceName());
-//        Text pieceSelected = getGc().getPieceSelected();
-        //  pieceSelected.setText("Class: " + piece.getiPiece().getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getiPiece().getLocation().getX()
-                + ", "
-                + "Y: " + piece.getiPiece().getLocation().getY());
-    }
-
-    private void testBinding() {
-
-    }
-
-    /**
-     * Update enemy piece details.
-     */
-    void updateEnemyPieceDetails() {
-        IPiece piece = getEnemyPiece().getiPiece();
-        Text pieceLocation = getGc().getPieceLocation();
-        //Text pieceSelected = getGc().getPieceSelected();
-        //getGc().getPieceSelected().textProperty().bind(selectedPiece.getPieceName());
-        //pieceSelected.setText("Class: " + piece.getClass().getSimpleName());
-        pieceLocation.setText("Location: "
-                + "X: " + piece.getLocation().getX()
-                + ", "
-                + "Y: " + piece.getLocation().getY());
     }
 
     /**
@@ -538,7 +499,7 @@ public class GameContext {
         this.selectedPiece = piece;
     }
 
-    public IPiece getSelectedPiece() {
-        return selectedPiece;
+    public StringProperty pieceLocationProperty() {
+        return pieceLocation;
     }
 }

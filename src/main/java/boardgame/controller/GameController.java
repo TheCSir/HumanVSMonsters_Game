@@ -126,11 +126,13 @@ public class GameController implements Initializable {
         StatusController statusController = new StatusController(gm);
 
         gameContext = gm.getGameContext();
+
+        //Avoids null pointer when setting up game.
         gameContext.setPieceSelected(gm.getActivePlayer().getPieces().get(0));
 
         //Bind text property for selected piece.
-        pieceSelected.textProperty().bind(gameContext.sProperty());
-
+        pieceSelected.textProperty().bind(gameContext.pieceNamePropertyProperty());
+        pieceLocation.textProperty().bind(gameContext.pieceLocationProperty());
 
         RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);
 
