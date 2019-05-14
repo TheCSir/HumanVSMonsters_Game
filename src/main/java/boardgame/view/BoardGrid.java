@@ -154,7 +154,8 @@ public class BoardGrid implements IBoardGrid {
             for (TileView tileView : tileViewObservableMap.values()) {
                 List<ITile> neighbours = tileView.getNeighbours();
                 for (ITile neighbour : neighbours) {
-                    tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+                    if(neighbour != null)
+                        tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
                 }
             }
         }
