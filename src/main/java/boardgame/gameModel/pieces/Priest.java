@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.IGameManager;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -26,7 +27,7 @@ public class Priest extends Human {
 
     public void basicAttack(){}
 
-    public void specialAbility(){
+    public void specialAbility(IGameManager gm){
         System.out.println("Healing!");
     }
 

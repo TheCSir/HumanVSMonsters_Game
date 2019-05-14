@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.IGameManager;
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -80,7 +81,7 @@ public interface IPiece {
      */
     void checkShieldTurn(int turnNumber);
 
-    void specialAbility();
+    void specialAbility(IGameManager gm);
 
     String getPieceClass();
 

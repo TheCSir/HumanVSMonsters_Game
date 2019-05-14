@@ -66,8 +66,7 @@ public class SwapCommand implements Command {
 
         //Create new piece and add to board
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
-        //newPiece = apf.getPiece(piece, oldPiece.getLocation());
-        newPiece = new Minion(oldPiece.getLocation(),"Snake");
+        newPiece = apf.getPiece(piece, oldPiece.getLocation());
 
         tf.addPiece(newPiece);
 

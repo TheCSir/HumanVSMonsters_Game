@@ -10,7 +10,7 @@ public class SpecialCommand implements Command {
 
     @Override
     public void execute() {
-        iPiece.specialAbility();
+        iPiece.specialAbility(gm);
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 
