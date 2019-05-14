@@ -1,7 +1,7 @@
 package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.Turn;
+import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -12,7 +12,7 @@ public class SwapCommand implements Command {
     private IGameManager gm;
     private IPiece oldPiece;
     private IPiece newPiece;
-    private Turn turn;
+    private TurnFacade tf;
 
     public static String getClassFullName(String piece) {
         if (piece.equals(Warrior.class.getSimpleName())) {
@@ -35,25 +35,20 @@ public class SwapCommand implements Command {
     public void undo() {
 
         //Roll back turn.
-        int previousTurn = turn.getTurnNumber() - 1;
-        turn.setTurnNumberProperty(previousTurn);
-
-        // This should handle having multiple players on the board
-        int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
-        turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
+        tf.goBackOneTurn();
 
         //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(newPiece);
+        tf.removePiece(newPiece);
         //Set piece back to previous piece.
-        gm.getTurn().getActivePlayer().getPieces().add(oldPiece);
+        tf.addPiece(oldPiece);
 
     }
 
-    public void SetCommand(IGameManager gm, Pane swapPane, Button selectionButton) {
+    public void SetCommand(TurnFacade tf, IGameManager gm, Pane swapPane, Button selectionButton) {
+        this.tf = tf;
         this.gm = gm;
         this.swapPane = swapPane;
         this.selectionButton = selectionButton;
-        turn = gm.getTurn();
     }
 
     //Return full name of the piece
@@ -64,7 +59,7 @@ public class SwapCommand implements Command {
         oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
 
         //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+        tf.removePiece(oldPiece);
 
         //Get piece full name
         String piece = getClassFullName(selectionButton.getText());
@@ -73,26 +68,25 @@ public class SwapCommand implements Command {
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
         newPiece = apf.getPiece(piece, oldPiece.getLocation());
 
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+        tf.addPiece(newPiece);
 
         //Handle GUI validations
         swapPane.setVisible(false);
 
         //End turn
-        gm.getTurn().nextTurn(gm.getPlayers());
-
+        tf.nextTurn();
     }
 
     @Override
     public void redo() {
 
         //Remove current piece
-        gm.getTurn().getActivePlayer().getPieces().remove(oldPiece);
+        tf.removePiece(oldPiece);
         //Set piece back to previous piece.
-        gm.getTurn().getActivePlayer().getPieces().add(newPiece);
+        tf.addPiece(newPiece);
 
         //End turn
-        gm.getTurn().nextTurn(gm.getPlayers());
+        tf.nextTurn();
 
     }
 }

@@ -4,7 +4,10 @@ import boardgame.controller.GameController;
 import boardgame.gameModel.board.Board2DHex;
 import boardgame.gameModel.board.BoardFactory;
 import boardgame.gameModel.board.IBoard;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.FactoryProducer;
+import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.gameModel.state.GameContext;
@@ -38,12 +41,13 @@ class GameManager implements IGameManager {
     private final GameContext gameContext;
     private final GameController gc;
 
+
     //Default constructor
     GameManager(Pane boardPane, GameController gameController) {
         players = new ArrayList<>();
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
-        gameContext = new GameContext(new IdleState(), IBoardGrid, this, gameController);
         this.gc = gameController;
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this, gameController);
     }
 
     @Override
@@ -253,5 +257,10 @@ class GameManager implements IGameManager {
     @Override
     public GameContext getGameContext() {
         return gameContext;
+    }
+
+    @Override
+    public void endTurn() {
+        getTurn().nextTurn(players);
     }
 }

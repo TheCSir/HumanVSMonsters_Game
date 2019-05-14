@@ -31,10 +31,7 @@ public class EnemyPieceSel implements State {
     public void onSelectOwnPiece(GameContext gameContext) {
         System.out.println("Changing state to own piece");
 
-        //Update View
-        gameContext.updatePieceDetails();
-
-        gameContext.setState(new OwnPieceSelected());
+        gameContext.setState(states.OWNPIECESELECTED);
     }
 
     @Override

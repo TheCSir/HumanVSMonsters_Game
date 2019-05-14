@@ -1,7 +1,7 @@
 package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.Turn;
+import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.view.HexagonTileViewPiece;
@@ -10,7 +10,7 @@ public class AttackCommand implements Command {
     private IGameManager gm;
     private IPiece enemyPiece;
     private double health;
-    private Turn turn;
+    private TurnFacade tf;
 
     @Override
     public void execute() {
@@ -26,7 +26,7 @@ public class AttackCommand implements Command {
         // get attacked player
         gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
         // end turn
-        gm.getTurn().nextTurn(gm.getPlayers());
+        tf.nextTurn();
     }
 
     @Override
@@ -36,12 +36,7 @@ public class AttackCommand implements Command {
         player.healthProperty().setValue(player.healthProperty().get() + health);
 
         //Roll back turn.
-        int previousTurn = turn.getTurnNumber() - 1;
-        turn.setTurnNumberProperty(previousTurn);
-
-        // This should handle having multiple players on the board
-        int nextPlayerIndex = turn.getTurnNumber() % gm.getPlayers().size();
-        turn.setActivePlayer(gm.getPlayers().get(nextPlayerIndex));
+        tf.goBackOneTurn();
 
     }
 
@@ -50,9 +45,9 @@ public class AttackCommand implements Command {
         execute();
     }
 
-    public void setCommand(IGameManager gm, HexagonTileViewPiece enemyPiece) {
+    public void setCommand(TurnFacade tf, IGameManager gm, HexagonTileViewPiece enemyPiece) {
+        this.tf = tf;
         this.gm = gm;
         this.enemyPiece = enemyPiece.getiPiece();
-        turn = gm.getTurn();
     }
 }

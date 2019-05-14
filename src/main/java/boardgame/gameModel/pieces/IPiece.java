@@ -2,6 +2,7 @@ package boardgame.gameModel.pieces;
 
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * The interface Piece. Provides the contract for new pieces on the board. All pieces must at least implement
@@ -82,4 +83,6 @@ public interface IPiece {
     void specialAbility();
 
     String getPieceClass();
+
+    StringProperty getPieceName();
 }

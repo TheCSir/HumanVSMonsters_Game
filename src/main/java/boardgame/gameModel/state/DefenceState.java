@@ -12,7 +12,7 @@ public class DefenceState extends OwnPieceSelected {
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
         gameContext.createShield();
-        gameContext.setState(new IdleState());
+        gameContext.setState(states.IDLE);
     }
 
 }

@@ -1,10 +1,13 @@
 package boardgame.gameModel.pieces;
 
 import boardgame.util.Location;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Medusa extends Monster {
 
     private int moveSpeed = 3;
+    private final StringProperty pieceName = new SimpleStringProperty("Medusa");
 
     Medusa(Location location) {
         super(location);
@@ -29,5 +32,10 @@ public class Medusa extends Monster {
     @Override
     public String getPieceClass() {
         return PieceConstants.RANGED;
+    }
+
+    @Override
+    public StringProperty getPieceName() {
+        return pieceName;
     }
 }
