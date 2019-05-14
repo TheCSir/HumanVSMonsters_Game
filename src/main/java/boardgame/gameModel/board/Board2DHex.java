@@ -21,8 +21,8 @@ public class Board2DHex extends Board2d {
     //Variable size
     public void setUpTiles(int rows, int columns) {
 
-        for (int x=0; x<rows; x++) {
-            for (int y=0; y<columns; y++) {
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < columns; y++) {
                 Location location = LocationFactory.createLocation(x, y);
                 ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
                 // hexagonalTiles.add(hexagonalTile);
@@ -31,23 +31,23 @@ public class Board2DHex extends Board2d {
         }
 
         //For each tile add the neighbouring tiles.
-        addNeighbours();
+        addNeighbours(rows, columns);
     }
 
     //Default size
     @Override
     public void setUpTiles() {
 
-        for (int x=0; x<Constants.CUSTOMBOARDROWS; x++) {
-               for (int y=0; y<Constants.CUSTOMBOARDCOLUMNS; y++) {
-                   Location location = LocationFactory.createLocation(x, y);
-                   ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
-                   addTile(location, hexagonalTile);
-               }
+        for (int x = 0; x < Constants.DEFAULTBOARDROWS; x++) {
+            for (int y = 0; y < Constants.DEFAULTBOARDCOLUMNS; y++) {
+                Location location = LocationFactory.createLocation(x, y);
+                ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
+                addTile(location, hexagonalTile);
+            }
         }
 
         //For each tile add the neighbouring tiles.
-        addNeighbours();
+        addNeighbours(Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class Board2DHex extends Board2d {
     }
 
     //For each tile store their neighbouring tiles.
-    private void addNeighbours() {
+    private void addNeighbours(int rows, int columns) {
         for (ITile t : getTiles().values()) {
             List<Location> neighbourLocations = HexGridUtil.getNeighbourPositions(t.getLocation());
 
-            for (Location location: neighbourLocations) {
-                if(checkMapLocation(location, Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS)){
+            for (Location location : neighbourLocations) {
+                if (checkMapLocation(location, rows, columns)) {
                     t.addNeighbour(getTiles().get(location));
                 }
             }

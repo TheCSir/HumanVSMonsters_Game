@@ -21,7 +21,9 @@ public interface IBoardGrid {
 
     String imageURL(IPiece iPiece);
 
-    void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane);
+    //void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane);
+
+    void drawBasicGrid(List<ITile> boardTiles, int boardRows, int boardColumns, Pane boardPane);
 
     //returns a list of tiles to add to a pane.
     List<TileView> calculateTileCoord(List<ITile> hexagonTiles, double r, double xStartOffset, double yStartOffset);
@@ -33,4 +35,6 @@ public interface IBoardGrid {
     void removePiece(IPiece piece);
 
     Pane getBoardPane();
+
+    double calculateTileRadius(int boardRows, int boardColumns);
 }
