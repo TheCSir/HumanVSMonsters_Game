@@ -45,10 +45,6 @@ public abstract class Tile implements ITile {
 
     @Override
     public List<ITile> getNeighbours() {
-//        for (ITile tile : neighbours) {
-//            //Ensure that every neighbouring tile is actually on the grid 9no negative values.
-//            ensure(tile.getLocation().getX() >= 0 && tile.getLocation().getY() >= 0);
-//        }
         return neighbours;
     }
 

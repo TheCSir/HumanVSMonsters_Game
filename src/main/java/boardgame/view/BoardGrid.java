@@ -37,6 +37,8 @@ public class BoardGrid implements IBoardGrid {
     private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
 
+    private double radius;
+
     @Override
     public ObservableMap<Location, TileView> getTileViewObservableMap() {
         return tileViewObservableMap;
@@ -48,7 +50,6 @@ public class BoardGrid implements IBoardGrid {
     }
 
     private final ObservableList<TileView> hexagonTileViews = FXCollections.observableArrayList();
-
 
     /**
      * Instantiates a new Board grid.
@@ -86,7 +87,7 @@ public class BoardGrid implements IBoardGrid {
         TileView hexView = tileViewObservableMap.get(piece.getLocation());
         double xCoord = hexView.getInitialX();
         double yCoord = hexView.getInitialY();
-        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, Constants.CUSTOM_TILERADIUS, piece);
+        HexagonTileViewPiece pieceTile = TileViewPieceFactory.createViewTilePiece(xCoord, yCoord, this.radius, piece);
         try {
             pieceTile.setImagePattern(imageURL(piece));
         } catch (FileNotFoundException e) {
@@ -130,14 +131,17 @@ public class BoardGrid implements IBoardGrid {
      * Draw basic grid.
      *
      * @param boardTiles the board tiles
-     * @param radius     the radius
+     * @param boardRows the board rows
+     * @param boardColumns the board columns
      * @param boardPane  the board pane
      */
     @Override
-    public void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane) {
+    public void drawBasicGrid(List<ITile> boardTiles, int boardRows, int boardColumns, Pane boardPane) {
+
+        this.radius = calculateTileRadius(boardRows, boardColumns);
 
         List<TileView> hexagonTileViews = calculateTileCoord(
-                boardTiles, radius, Constants.xStartOffset, Constants.yStartOffset);
+                boardTiles, this.radius, Constants.xStartOffset, Constants.yStartOffset);
 
         for (TileView hexagonalTile : hexagonTileViews) {
 
@@ -150,7 +154,8 @@ public class BoardGrid implements IBoardGrid {
             for (TileView tileView : tileViewObservableMap.values()) {
                 List<ITile> neighbours = tileView.getNeighbours();
                 for (ITile neighbour : neighbours) {
-                    tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
+                    if(neighbour != null)
+                        tileView.addNeighbourView(tileViewObservableMap.get(neighbour.getLocation()));
                 }
             }
         }
@@ -242,6 +247,19 @@ public class BoardGrid implements IBoardGrid {
     @Override
     public Pane getBoardPane() {
         return boardPane;
+    }
+
+    @Override
+    public double calculateTileRadius(int boardRows, int boardColumns) {
+        int m;
+        // Grab biggest number between rows and columns
+        if (boardRows> boardColumns)
+            m = boardRows;
+        else
+            m = boardColumns;
+
+        // Use TILERADIUS and DEFAULTBOARDROWS as reference points for calculating radius to fit the screen
+        return (Constants.TILERADIUS * Constants.DEFAULTBOARDROWS) / m;
     }
 }
 

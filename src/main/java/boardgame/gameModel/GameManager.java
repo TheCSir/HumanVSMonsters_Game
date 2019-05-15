@@ -26,8 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static boardgame.util.Constants.TILERADIUS;
-
 class GameManager implements IGameManager {
 
     private final ArrayList<IPlayer> players;
@@ -109,11 +107,12 @@ class GameManager implements IGameManager {
         players.add(player2);
 
         //Set up default board.
-        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
+        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS);
 
         turn = new Turn();
         turn.initialiseTurns(players);
-        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), TILERADIUS, IBoardGrid.getBoardPane());
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()),
+                Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, IBoardGrid.getBoardPane());
 
     }
 
@@ -145,14 +144,10 @@ class GameManager implements IGameManager {
     @Override
     public void customGameSetup(String humanPlayerName, String monsterPlayerName,
                                 int numberOfPieces, int gridRows, int gridColumns){
-        Constants.CUSTOMBOARDROWS = gridRows;
-        Constants.CUSTOMBOARDCOLUMNS = gridColumns;
 
         //Add custom pieces for each player
-        setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces,
-                Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
-        setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces,
-                Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
+        setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces, gridRows, gridColumns);
+        setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces, gridRows, gridColumns);
 
         IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
         IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
@@ -160,24 +155,12 @@ class GameManager implements IGameManager {
         players.add(player2);
 
         //Set up custom board.
-        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.CUSTOMBOARDROWS, Constants.CUSTOMBOARDCOLUMNS);
+        iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);
 
         turn = new Turn();
         turn.initialiseTurns(players);
-        calculateTileRadius();
-        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), Constants.CUSTOM_TILERADIUS, IBoardGrid.getBoardPane());
-    }
 
-    private void calculateTileRadius() {
-        int m;
-        // grab biggest number between CUSTOMBOARDROWS and CUSTOMBOARDCOLUMNS
-        if (Constants.CUSTOMBOARDROWS > Constants.CUSTOMBOARDCOLUMNS)
-            m = Constants.CUSTOMBOARDROWS;
-        else
-            m = Constants.CUSTOMBOARDCOLUMNS;
-
-        // Use TILERADIUS and DEFAULTBOARDROWS as reference points for calculating custom radius to fit the screen
-        Constants.CUSTOM_TILERADIUS = (TILERADIUS * Constants.DEFAULTBOARDROWS) / m;
+        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), gridRows, gridColumns, IBoardGrid.getBoardPane());
     }
 
     @Override
