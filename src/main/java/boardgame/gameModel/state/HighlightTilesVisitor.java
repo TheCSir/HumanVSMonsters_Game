@@ -35,12 +35,12 @@ public class HighlightTilesVisitor implements HighlightVisitor {
                 enemyPieces.add(piece);
             }
         }
-        //Color pieces that
+        //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
         for (IPiece piece : enemyPieces) {
             System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
             System.out.println("highlightDistance = " + highlightDistance);
             if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) < highlightDistance) {
-                boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTGREEN);
+                boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
             } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
         }
 
@@ -58,7 +58,10 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(HealState h) {
-
+        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
+        for (IPiece piece : ownPieces) {
+            boardGrid.getTile(piece.getLocation()).setFill(Color.GREEN);
+        }
     }
 
     @Override
