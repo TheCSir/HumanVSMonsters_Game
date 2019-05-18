@@ -1,31 +1,20 @@
 package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.SpecialVisitor;
+import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 
-public class SpecialCommand implements Command {
-
-    private IPiece iPiece;
-    private IGameManager gm;
+public abstract class SpecialCommand implements Command {
 
     @Override
-    public void execute() {
-        iPiece.specialAbility();
-        gm.getTurn().nextTurn(gm.getPlayers());
-    }
+    public abstract void execute();
 
     @Override
-    public void undo() {
-
-    }
+    public abstract void undo();
 
     @Override
-    public void redo() {
+    public abstract void redo();
 
-    }
-
-    public void setCommand(IGameManager gm, IPiece piece) {
-        this.iPiece = piece;
-        this.gm = gm;
-    }
+    public abstract void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf);
 }

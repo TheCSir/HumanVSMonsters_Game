@@ -1,6 +1,7 @@
 package boardgame.gameModel.state;
 
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.PieceVisitor;
 import boardgame.gameModel.pieces.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -45,8 +46,10 @@ public class OwnPieceSelected implements State {
         System.out.println("Set special state");
         //TODO set up new buttons to click.
         //for the moment let's make it a transition.
-        gameContext.launchSpecialAbility();
-        gameContext.setState(states.IDLE);
+        PieceVisitor sv = new PieceVisitor();
+        gameContext.getOwnPiece().getiPiece().accept(sv);
+        gameContext.setState(sv.getState());
+        gameContext.setSpecialVisitor(sv);
     }
 
     @Override

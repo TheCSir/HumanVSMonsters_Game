@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -7,7 +8,9 @@ import javafx.beans.property.StringProperty;
 public class Griffin extends Monster {
 
     private int moveSpeed = 4;
+    private int attack = 3;
     private final StringProperty pieceName = new SimpleStringProperty("Griffin");
+
 
     Griffin(Location location) {
         super(location);
@@ -23,8 +26,6 @@ public class Griffin extends Monster {
         this.moveSpeed = moveSpeed;
     }
 
-    public void basicAttack(){}
-
     public void specialAbility(){
         System.out.println("Summon Hawks!");
     }
@@ -37,5 +38,15 @@ public class Griffin extends Monster {
     @Override
     public StringProperty getPieceName() {
         return pieceName;
+    }
+
+    @Override
+    public int getAttack() {
+        return attack;
+    }
+
+    @Override
+    public void accept(SpecialVisitor v) {
+        v.visit(this);
     }
 }

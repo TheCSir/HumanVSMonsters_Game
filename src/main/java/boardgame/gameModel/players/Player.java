@@ -108,4 +108,11 @@ public abstract class Player implements IPlayer {
     public void setPieces(ObservableList<IPiece> pieces) {
         this.pieces = pieces;
     }
+
+    @Override
+    public void increaseHealthProperty(int healingValue) {
+
+        //Increase health
+        this.setHealthProperty(this.healthProperty().getValue() + healingValue);
+    }
 }

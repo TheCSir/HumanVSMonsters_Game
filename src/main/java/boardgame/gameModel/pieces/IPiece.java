@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -85,4 +86,8 @@ public interface IPiece {
     String getPieceClass();
 
     StringProperty getPieceName();
+
+    int getAttack();
+
+    void accept(SpecialVisitor v);
 }

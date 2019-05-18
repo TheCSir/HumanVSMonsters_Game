@@ -1,14 +1,17 @@
 package boardgame.gameModel.pieces;
 
 
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Minotaur extends Monster {
+public class Minotaur extends Monster implements IPiece {
 
     private int moveSpeed = 3;
+    private int attack = 2;
     private final StringProperty pieceName = new SimpleStringProperty("Minotaur");
+
 
     Minotaur(Location location) {
         super(location);
@@ -24,8 +27,6 @@ public class Minotaur extends Monster {
         this.moveSpeed = moveSpeed;
     }
 
-    public void basicAttack(){}
-
     @Override
     public void specialAbility(){
         System.out.println("Summoning Bulls!");
@@ -39,5 +40,15 @@ public class Minotaur extends Monster {
     @Override
     public StringProperty getPieceName() {
         return pieceName;
+    }
+
+    @Override
+    public int getAttack() {
+        return attack;
+    }
+
+    @Override
+    public void accept(SpecialVisitor v) {
+        v.visit(this);
     }
 }

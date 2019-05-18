@@ -1,7 +1,9 @@
 package boardgame.gameModel.state;
 
 import boardgame.controller.GameController;
+import boardgame.controller.SpecialButton;
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.command.*;
@@ -42,6 +44,7 @@ public class GameContext {
     private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
+    private SpecialVisitor sv;
 
     /**
      * Instantiates a new Game context.
@@ -110,6 +113,13 @@ public class GameContext {
         this.swapPane = swapPane;
         this.opt_one = opt_one;
         this.opt_two = opt_two;
+        SpecialButton sp1 = new SpecialButton();
+        sp1.setButton(opt_one);
+        //sp1.setiPiece();
+        SpecialButton sp2 = new SpecialButton();
+        sp2.setButton(opt_two);
+
+
         state.onSwap(this);
     }
 
@@ -296,14 +306,7 @@ public class GameContext {
     public void setUpSwap() {
     }
 
-    /**
-     * Create shield.
-     */
-    public void createShield() {
-        DefenceCommand command = new DefenceCommand();
-        command.SetCommand(tf, getOwnPiece());
-        commandProcessor.execute(command);
-    }
+
 
     /**
      * Gets enemy piece.
@@ -400,12 +403,27 @@ public class GameContext {
 
     /**
      * Launch special ability.
+     *
      */
     public void launchSpecialAbility() {
-        SpecialCommand command = new SpecialCommand();
-        command.setCommand(getGm(), getOwnPiece().getiPiece());
+        SpecialCommand command = sv.getCommand();
+        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf);
         commandProcessor.execute(command);
     }
+
+    public void setSpecialVisitor(SpecialVisitor sv) {
+        this.sv = sv;
+    }
+
+    /**
+     * Create shield.
+     */
+    public void createShield() {
+        DefenceCommand command = new DefenceCommand();
+        command.SetCommand(tf, getOwnPiece());
+        commandProcessor.execute(command);
+    }
+
 
     /**
      * Gets own piece.

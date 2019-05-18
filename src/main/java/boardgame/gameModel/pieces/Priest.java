@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -8,7 +9,9 @@ import javafx.beans.property.StringProperty;
 public class Priest extends Human {
 
     private int moveSpeed = 2;
+    private int attack = 1;
     private final StringProperty pieceName = new SimpleStringProperty("Priest");
+
 
     Priest(Location location) {
         super(location);
@@ -24,9 +27,14 @@ public class Priest extends Human {
         this.moveSpeed = moveSpeed;
     }
 
-    public void basicAttack(){}
+    @Override
+    public void specialAbility() {
 
-    public void specialAbility(){
+    }
+
+
+    public void specialAbility(SpecialVisitor v) {
+        v.visit(this);
         System.out.println("Healing!");
     }
 
@@ -38,5 +46,15 @@ public class Priest extends Human {
     @Override
     public StringProperty getPieceName() {
         return pieceName;
+    }
+
+    @Override
+    public int getAttack() {
+        return attack;
+    }
+
+    @Override
+    public void accept(SpecialVisitor v) {
+        v.visit(this);
     }
 }

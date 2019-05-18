@@ -4,20 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * All available states have a related enum held here as the StateFactory is the class that uses these enums.
- */
-enum states {
-    ATTACK,
-    MOVE,
-    SWAP,
-    SPECIAL,
-    DEFENCE,
-    IDLE,
-    OWNPIECESELECTED,
-    ENEMYPIECESELECTED
-}
-
-/**
  * State Factory class creates States for use by the State Pattern. This class was created as before this
  * the State transition was gamecontext.setState(new State()). This class means that the responsibility for creating
  * a State is moved out of the State(or gamecontext) classes and to this class. This is so that there is better
@@ -25,7 +11,7 @@ enum states {
  * this class is lazily instantiated (Singleton pattern) and the constructor is private. States are not intended to be
  * accessed outside the state package and so the class is made 'package-private' to improve encapsulation.
  */
-class StateFactory {
+public class StateFactory {
 
     //Holds allinstances of State classes.
     private static Map<states, State> allStates = new HashMap<>();
@@ -50,6 +36,9 @@ class StateFactory {
             allStates.put(states.IDLE, new IdleState());
             allStates.put(states.OWNPIECESELECTED, new OwnPieceSelected());
             allStates.put(states.ENEMYPIECESELECTED, new EnemyPieceSel());
+            allStates.put(states.HEALSTATE, new HealState());
+            allStates.put(states.BASH, new BashState());
+            allStates.put(states.SUMMON, new SummonState());
         }
     }
 
@@ -57,7 +46,7 @@ class StateFactory {
      * This is the only non private method in the State factory. When a state is called for the first time
      * the state map is initialized. Every request for a State must go through this method.
      */
-    static State getState(states state) {
+    public static State getState(states state) {
         if (instance == null) {
             newInstance();
         }
