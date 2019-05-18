@@ -1,9 +1,10 @@
 package boardgame.gameModel.state;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.PieceVisitor;
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.util.HexGridUtil;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 import javafx.scene.paint.Color;
@@ -13,13 +14,12 @@ import java.util.List;
 
 public class HighlightTilesVisitor implements HighlightVisitor {
 
-    private HightlightTiles highlightTiles;
     private IPiece selectedPiece;
     private IBoardGrid boardGrid;
     private IGameManager gm;
     private TurnFacade tf;
     private List<TileView> visited;
-    private PieceVisitor sv;
+    private SpecialVisitor sv;
     private int highlightDistance;
 
     @Override
@@ -35,11 +35,13 @@ public class HighlightTilesVisitor implements HighlightVisitor {
                 enemyPieces.add(piece);
             }
         }
-
         //Color pieces that
         for (IPiece piece : enemyPieces) {
-
-            boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTGREEN);
+            System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
+            System.out.println("highlightDistance = " + highlightDistance);
+            if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) < highlightDistance) {
+                boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTGREEN);
+            } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
         }
 
     }
@@ -85,7 +87,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     }
 
 
-    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited, PieceVisitor sv) {
+    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited, SpecialVisitor sv) {
         this.selectedPiece = selectedPiece;
         this.boardGrid = boardGrid;
         this.gm = gm;

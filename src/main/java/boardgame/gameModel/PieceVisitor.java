@@ -14,7 +14,13 @@ public class PieceVisitor implements SpecialVisitor {
 
     private states state;
     private SpecialCommand specialCommand;
-    HighlightTilesVisitor hv;
+
+    private HighlightTilesVisitor hv;
+
+    @Override
+    public HighlightTilesVisitor getHv() {
+        return hv;
+    }
 
     @Override
     public void visit(Priest priest) {
@@ -38,7 +44,7 @@ public class PieceVisitor implements SpecialVisitor {
     public void visit(Archer archer) {
         System.out.println("You've triggered a: " + archer.getPieceClass());
         state = states.RANGEDATTACK;
-        HighlightTilesVisitor hv = new HighlightTilesVisitor();
+        hv = new HighlightTilesVisitor();
         hv.setHighlightDistance(archer.getRangedDistance());
         RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
         rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
@@ -66,6 +72,7 @@ public class PieceVisitor implements SpecialVisitor {
     }
 
 
+    @Override
     public states getState() {
         return state;
     }
