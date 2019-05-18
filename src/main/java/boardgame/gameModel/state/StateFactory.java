@@ -36,7 +36,6 @@ public class StateFactory {
             allStates.put(states.OWNPIECESELECTED, new OwnPieceSelected());
             allStates.put(states.ENEMYPIECESELECTED, new EnemyPieceSel());
             allStates.put(states.HEALSTATE, new HealState());
-            allStates.put(states.BASH, new BashState());
             allStates.put(states.SUMMON, new SummonState());
             allStates.put(states.SPECIALATTACKSTATE, new SpecialAttackState());
             allStates.put(states.RANGEDATTACK, new RangedAttackState());

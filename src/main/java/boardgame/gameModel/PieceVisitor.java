@@ -26,7 +26,10 @@ public class PieceVisitor implements SpecialVisitor {
     public void visit(Priest priest) {
         System.out.println("You've triggered a: " + priest.getPieceClass());
         state = states.HEALSTATE;
+
+        //Set new HighlightVisitor to avoid null pointer.
         hv = new HighlightTilesVisitor();
+
         HealCommand h = new HealCommand();
         h.setHealValue(priest.getHealValue());
         specialCommand = h;
