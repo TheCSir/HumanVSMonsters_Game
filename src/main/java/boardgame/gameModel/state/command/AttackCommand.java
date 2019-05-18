@@ -3,6 +3,7 @@ package boardgame.gameModel.state.command;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.view.HexagonTileViewPiece;
 
@@ -18,13 +19,24 @@ public class AttackCommand implements Command {
         System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
 
         System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
+        System.out.println("is" + enemyPiece.getClass().getSimpleName());
 
-        //Store how much damage the attack will reduce for later undo action.
-        health = gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+        if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
 
-        // get attacked player
-        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+            System.out.println("-----------" + enemyPiece.getClass().getSimpleName());
+            gm.getActivePlayer().decreaseMinionHealthProperty(enemyPiece);
+            System.out.println(gm.getAttackedPlayer(enemyPiece));
+
+        }
+        else {
+            System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
+
+            //Store how much damage the attack will reduce for later undo action.
+            health = gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+
+            // get attacked player
+            gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+        }
         // end turn
         tf.nextTurn();
     }

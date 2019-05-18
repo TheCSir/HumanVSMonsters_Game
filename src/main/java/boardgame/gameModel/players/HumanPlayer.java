@@ -9,6 +9,7 @@ public class HumanPlayer extends Player {
 
     public HumanPlayer(int playerID, String playerName, int _health, ObservableList<IPiece> pieces, IGameManager gameManager) {
         super(playerID, playerName, _health, pieces, gameManager);
+
     }
 
     @Override

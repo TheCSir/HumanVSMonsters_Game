@@ -10,6 +10,8 @@ public class SpecialCommand implements Command {
 
     @Override
     public void execute() {
+
+        gm.getActivePlayer().setMinionHealthProperty(2.0);
         iPiece.specialAbility(gm);
         gm.getTurn().nextTurn(gm.getPlayers());
     }
