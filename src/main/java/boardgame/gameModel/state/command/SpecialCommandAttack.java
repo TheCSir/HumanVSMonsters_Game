@@ -4,7 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.view.HexagonTileViewPiece;
 
-public class SpecialCommand implements Command {
+public class SpecialCommandAttack implements Command {
 
     private IPiece iPiece;
     private IGameManager gm;
@@ -12,7 +12,7 @@ public class SpecialCommand implements Command {
 
     @Override
     public void execute() {
-        iPiece.specialAbility(enemyPiece, gm);
+        iPiece.specialAbilityAttack(enemyPiece, gm);
         gm.getTurn().nextTurn(gm.getPlayers());
     }
 

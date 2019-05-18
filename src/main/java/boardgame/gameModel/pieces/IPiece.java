@@ -27,6 +27,20 @@ public interface IPiece {
     void setMoveSpeed(int moveSpeed);
 
     /**
+     * Sets specialAbilityType (attack, heal or summon).
+     *
+     * @return the special ability time
+     */
+    String getSpecialType();
+
+    /**
+     * Sets specialAbilityType (attack, heal or summon).
+     *
+     * @param specialAbilityType the special ability type
+     */
+    void setSpecialType(String specialAbilityType);
+
+    /**
      * Gets location.
      *
      * @return the location
@@ -78,5 +92,9 @@ public interface IPiece {
      */
     void checkShieldTurn(int turnNumber);
 
-    void specialAbility(IPiece enemyPiece, IGameManager gm);
+    void specialAbilityAttack(IPiece enemyPiece, IGameManager gm);
+
+    void specialAbilityHeal(IGameManager gm);
+
+//    void specialAbilitySummon(IPiece enemyPiece, IGameManager gm);
 }

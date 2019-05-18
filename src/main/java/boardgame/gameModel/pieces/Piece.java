@@ -15,6 +15,7 @@ public abstract class Piece implements IPiece {
     private boolean isShielded;
     private int shieldTurn;
     private final ObjectProperty<Location> locationProperty;
+    private String specialAbilityType;
 
     //Used to make piece location observable.
     public ObjectProperty<Location> locationPropertyProperty() {
@@ -22,10 +23,11 @@ public abstract class Piece implements IPiece {
     }
 
 
-    public Piece(int moveSpeed, Location location) {
+    public Piece(int moveSpeed, Location location, String abilityType) {
         require(moveSpeed >= 0);
         this.moveSpeed = moveSpeed;
         locationProperty = new SimpleObjectProperty<>(location);
+        this.specialAbilityType = abilityType;
         this.isShielded = false;
     }
 
@@ -39,6 +41,11 @@ public abstract class Piece implements IPiece {
         this.moveSpeed = moveSpeed;
     }
 
+    @Override
+    public String getSpecialType() { return specialAbilityType; }
+
+    @Override
+    public void setSpecialType(String specialAbilityType){ this.specialAbilityType = specialAbilityType; }
 
     @Override
     public Location getLocation() {

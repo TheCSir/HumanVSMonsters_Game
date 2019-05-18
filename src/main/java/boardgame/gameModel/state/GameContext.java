@@ -423,9 +423,30 @@ public class GameContext {
      * Launch special ability.
      */
     public void launchSpecialAbility() {
-        SpecialCommand command = new SpecialCommand();
-        command.setCommand(getGm(), getOwnPiece().getiPiece(), getEnemyPiece());
-        commandProcessor.execute(command);
+        if(getOwnPiece().getiPiece().getSpecialType() == "attack"){
+            if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
+
+                SpecialCommandAttack command = new SpecialCommandAttack();
+                command.setCommand(gm, getOwnPiece().getiPiece(), getEnemyPiece());
+                commandProcessor.execute(command);
+
+                //Ensure that enemy piece is cleared as next time might be different piece.
+                enemyPiece = null;
+                resetTileColours();
+            }
+        }
+
+        if(getOwnPiece().getiPiece().getSpecialType() == "heal"){
+            SpecialCommandHeal command = new SpecialCommandHeal();
+            command.setCommand(getGm(), getOwnPiece().getiPiece());
+            commandProcessor.execute(command);
+        }
+
+        if(getOwnPiece().getiPiece().getSpecialType() == "summon"){
+            SpecialCommandSummon command = new SpecialCommandSummon();
+            command.setCommand(getGm(), getOwnPiece().getiPiece());
+            commandProcessor.execute(command);
+        }
     }
 
     /**
