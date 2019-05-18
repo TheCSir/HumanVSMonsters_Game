@@ -30,7 +30,6 @@ public class StateFactory {
             //no issue instantiating them all once at initialization.
             allStates.put(states.ATTACK, new AttackState());
             allStates.put(states.MOVE, new MoveState());
-            allStates.put(states.SPECIAL, new SpecialState());
             allStates.put(states.SWAP, new SwapState());
             allStates.put(states.DEFENCE, new DefenceState());
             allStates.put(states.IDLE, new IdleState());

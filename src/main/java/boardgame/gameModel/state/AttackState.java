@@ -17,4 +17,8 @@ public class AttackState extends OwnPieceSelected {
         System.out.println(gameContext.getState().getClass().getSimpleName());
     }
 
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

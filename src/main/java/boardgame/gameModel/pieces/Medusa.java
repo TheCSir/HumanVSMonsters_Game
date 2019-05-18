@@ -12,7 +12,7 @@ public class Medusa extends Monster {
     private final StringProperty pieceName = new SimpleStringProperty("Medusa");
 
 
-    Medusa(Location location) {
+    public Medusa(Location location) {
         super(location);
     }
 

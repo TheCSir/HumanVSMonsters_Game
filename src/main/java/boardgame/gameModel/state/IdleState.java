@@ -56,4 +56,9 @@ public class IdleState implements State {
     public void onSwapTwo(GameContext gameContext) {
         System.out.println("How did you get here?");
     }
+
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

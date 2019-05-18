@@ -1,7 +1,7 @@
 package boardgame.gameModel;
 
 
-import boardgame.gameModel.pieces.piecesImp.*;
+import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.command.HealCommand;
 import boardgame.gameModel.state.command.RangedAttackCommand;
 import boardgame.gameModel.state.command.SpecialAttackCommand;

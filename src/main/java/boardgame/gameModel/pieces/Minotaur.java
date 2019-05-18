@@ -13,7 +13,7 @@ public class Minotaur extends Monster implements IPiece {
     private final StringProperty pieceName = new SimpleStringProperty("Minotaur");
 
 
-    Minotaur(Location location) {
+    public Minotaur(Location location) {
         super(location);
     }
 

@@ -13,7 +13,7 @@ public class Warrior extends Human {
     private double specialAttackMultiplier = 2;
 
 
-    Warrior(Location location) {
+    public Warrior(Location location) {
         super(location);
     }
 

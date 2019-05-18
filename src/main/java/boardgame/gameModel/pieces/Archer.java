@@ -10,8 +10,9 @@ public class Archer extends Human {
     //default move speed for character.
     private int moveSpeed = 2;
     private int attack = 2;
+    private double rangedAttackValue = 4;
 
-    Archer(Location location) {
+    public Archer(Location location) {
         super(location);
     }
 
@@ -47,6 +48,10 @@ public class Archer extends Human {
     @Override
     public void accept(SpecialVisitor v) {
         v.visit(this);
+    }
+
+    public double getRangedAttackValue() {
+        return rangedAttackValue;
     }
 
 

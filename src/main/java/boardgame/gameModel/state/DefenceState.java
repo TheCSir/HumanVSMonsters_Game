@@ -15,4 +15,8 @@ public class DefenceState extends OwnPieceSelected {
         gameContext.setState(states.IDLE);
     }
 
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

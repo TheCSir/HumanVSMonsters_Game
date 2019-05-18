@@ -48,7 +48,7 @@ public class OwnPieceSelected implements State {
         //for the moment let's make it a transition.
         PieceVisitor sv = new PieceVisitor();
         gameContext.getSelectedPiece().accept(sv);
-
+        gameContext.highlightSpecialTiles(sv.getState());
         //Set the state to the state it should be depending on the PieceVisitor. This state is determined polymorphically.
         // as the visitor pattern is used.
         gameContext.setState(sv.getState());
@@ -144,6 +144,11 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onSwapTwo(GameContext gameContext) {
+
+    }
+
+    @Override
+    public void accept(HighlightVisitor v) {
 
     }
 

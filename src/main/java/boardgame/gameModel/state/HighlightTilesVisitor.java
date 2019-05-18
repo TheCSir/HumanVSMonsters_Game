@@ -3,10 +3,6 @@ package boardgame.gameModel.state;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.state.stateImp.HealState;
-import boardgame.gameModel.state.stateImp.RangedAttackState;
-import boardgame.gameModel.state.stateImp.SpecialAttackState;
-import boardgame.gameModel.state.stateImp.SummonState;
 import boardgame.view.IBoardGrid;
 
 public class HighlightTilesVisitor implements HighlightVisitor {
@@ -36,6 +32,31 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(HealState h) {
+
+    }
+
+    @Override
+    public void visit(EnemyPieceSel enemyPieceSel) {
+
+    }
+
+    @Override
+    public void visit(IdleState idleState) {
+
+    }
+
+    @Override
+    public void visit(MoveState moveState) {
+
+    }
+
+    @Override
+    public void visit(AttackState attackState) {
+
+    }
+
+    @Override
+    public void visit(DefenceState defenceState) {
 
     }
 

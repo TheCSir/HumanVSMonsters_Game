@@ -12,7 +12,7 @@ public class Griffin extends Monster {
     private final StringProperty pieceName = new SimpleStringProperty("Griffin");
 
 
-    Griffin(Location location) {
+    public Griffin(Location location) {
         super(location);
     }
 

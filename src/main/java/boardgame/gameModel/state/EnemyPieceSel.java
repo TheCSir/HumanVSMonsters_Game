@@ -56,4 +56,9 @@ public class EnemyPieceSel implements State {
     public void onSwapTwo(GameContext gameContext) {
         System.out.println("error");
     }
+
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

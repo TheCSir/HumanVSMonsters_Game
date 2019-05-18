@@ -14,7 +14,7 @@ public class Priest extends Human {
     private double healValue = 3;
 
 
-    Priest(Location location) {
+    public Priest(Location location) {
         super(location);
     }
 

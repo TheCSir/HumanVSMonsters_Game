@@ -1,10 +1,5 @@
 package boardgame.gameModel.state;
 
-import boardgame.gameModel.state.stateImp.HealState;
-import boardgame.gameModel.state.stateImp.RangedAttackState;
-import boardgame.gameModel.state.stateImp.SpecialAttackState;
-import boardgame.gameModel.state.stateImp.SummonState;
-
 public interface HighlightVisitor {
 
     void visit(RangedAttackState r);
@@ -15,4 +10,13 @@ public interface HighlightVisitor {
 
     void visit(HealState h);
 
+    void visit(EnemyPieceSel enemyPieceSel);
+
+    void visit(IdleState idleState);
+
+    void visit(MoveState moveState);
+
+    void visit(AttackState attackState);
+
+    void visit(DefenceState defenceState);
 }

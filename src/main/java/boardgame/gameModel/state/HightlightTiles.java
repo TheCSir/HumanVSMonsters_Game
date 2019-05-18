@@ -1,4 +1,6 @@
 package boardgame.gameModel.state;
 
-public class RangedAttack {
+public class HightlightTiles {
+
+
 }

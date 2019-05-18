@@ -54,4 +54,8 @@ public class MoveState extends OwnPieceSelected {
         gameContext.setState(states.ENEMYPIECESELECTED);
     }
 
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

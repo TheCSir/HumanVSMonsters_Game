@@ -1,9 +1,10 @@
 package boardgame.gameModel.state;
 
-public class HealState extends OwnPieceSelected {
+public class RangedAttackState extends SpecialState {
+
 
     @Override
-    public void onSelectOwnPiece(GameContext gameContext) {
+    public void onSelectEnemyPiece(GameContext gameContext) {
 
         gameContext.launchSpecialAbility();
         gameContext.setState(states.IDLE);
@@ -13,6 +14,4 @@ public class HealState extends OwnPieceSelected {
     public void accept(HighlightVisitor v) {
         v.visit(this);
     }
-
-
 }

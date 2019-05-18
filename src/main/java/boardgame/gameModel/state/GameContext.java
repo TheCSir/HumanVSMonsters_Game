@@ -68,7 +68,7 @@ public class GameContext {
     //     This section is responsible for state   *
     //     changes called from the state machine. A user
     //     clicks a button which triggers a State Change.
-    //      The states are not meant to hold game logic.
+    //      The stateImp are not meant to hold game logic.
     //      They merely manage the transitions and
     //      available commands.
     //                                                      *
@@ -210,7 +210,7 @@ public class GameContext {
     /**
      * Highlight tiles that can be moved to.
      */
-    void highlightMove() {
+    public void highlightMove() {
         highlightedTiles.clear();
         IBoardGrid bg = getBoardGrid();
 
@@ -218,11 +218,26 @@ public class GameContext {
 
         Location pieceLocation = selectedPiece.getLocation();
 
+        List<TileView> visited = visitAllTiles(movespeed, bg, pieceLocation);
+
+        for (TileView tileView : visited) {
+            int offDist = offset_distance(pieceLocation, tileView.getLocation());
+
+
+            if (offDist <= movespeed) {
+                tileView.setFill(Color.rgb(200, 24, 0));
+                highlightedTiles.add(tileView);
+            }
+
+        }
+    }
+
+    public List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
         //https://www.redblobgames.com/grids/hexagons/
 
         //Start of very inefficent BFS. Will do for the moment.
         //Probably refactor and move to separate class.
-        TileView underTile = bg.getTile(pieceLocation);
+        TileView underTile = bg.getTile(location);
         List<TileView> visited = new ArrayList<>();
         Queue<TileView> queue = new LinkedList<>();
         queue.add(underTile);
@@ -242,34 +257,11 @@ public class GameContext {
             }
             q++;
         }
-        System.out.println("visited = " + visited.size());
-        for (TileView tileView : visited) {
-            int offDist = offset_distance(pieceLocation, tileView.getLocation());
-
-            //Debugging
-            System.out.println("*******************************");
-            System.out.println("offDist = " + offDist);
-            System.out.println("tileView = " + tileView.getLocation());
-            System.out.println("pieceLocation = " + pieceLocation);
-            System.out.println("***********************************");
-            System.out.println("movespeed = " + movespeed);
-
-
-            if (offDist <= movespeed) {
-                //tileView.setFill(Color.RED);
-                tileView.setFill(Color.rgb(200, 24, 0));
-                //Debugging
-//                Text text = new Text(tileView.getLocation().getX() + ", " + tileView.getLocation().getY());
-//                getBoardGrid().getBoardPane().getChildren().add(text);
-//                text.translateXProperty().setValue(tileView.getXPosition());
-//                text.translateYProperty().setValue(tileView.getYPosition());
-                highlightedTiles.add(tileView);
-            }
-
-        }
+        return visited;
     }
 
-    void highlightAttack() {
+
+    public void highlightAttack() {
         highlightedTiles.clear();
         IBoardGrid bg = getBoardGrid();
         Location pieceLocation = selectedPiece.getLocation();
@@ -311,16 +303,6 @@ public class GameContext {
     public void setUpSwap() {
     }
 
-
-
-    /**
-     * Gets enemy piece.
-     *
-     * @return the enemy piece
-     */
-    public HexagonTileViewPiece getEnemyPiece() {
-        return enemyPiece;
-    }
 
     //*******************************************************
     //*********  COMMAND SECTION ****************************
@@ -518,4 +500,12 @@ public class GameContext {
         return pieceLocation;
     }
 
+    public void highlightSpecialTiles(states state) {
+        SpecialState specialState = (SpecialState) StateFactory.getState(state);
+        this.state = specialState;
+        HighlightTilesVisitor hv = new HighlightTilesVisitor();
+        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf);
+        specialState.accept(hv);
+
+    }
 }
