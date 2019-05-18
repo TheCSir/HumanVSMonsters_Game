@@ -1,7 +1,7 @@
 package boardgame.gameModel.state;
 
 /**
- * All available states have a related enum held here as the StateFactory is the class that uses these enums.
+ * All available stateImp have a related enum held here as the StateFactory is the class that uses these enums.
  */
 public enum states {
     ATTACK,
@@ -12,5 +12,5 @@ public enum states {
     IDLE,
     OWNPIECESELECTED,
     ENEMYPIECESELECTED,
-    BASH, SUMMON, SPECIALATTACKSTATE, HEALSTATE
+    BASH, SUMMON, SPECIALATTACKSTATE, RANGEDATTACK, HEALSTATE,
 }
