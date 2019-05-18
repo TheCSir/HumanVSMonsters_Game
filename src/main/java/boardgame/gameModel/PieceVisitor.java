@@ -1,8 +1,9 @@
 package boardgame.gameModel;
 
 
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.piecesImp.*;
 import boardgame.gameModel.state.command.HealCommand;
+import boardgame.gameModel.state.command.RangedAttackCommand;
 import boardgame.gameModel.state.command.SpecialAttackCommand;
 import boardgame.gameModel.state.command.SpecialCommand;
 import boardgame.gameModel.state.states;
@@ -32,8 +33,12 @@ public class PieceVisitor implements SpecialVisitor {
     }
 
     @Override
-    public void visit(Archer piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+    public void visit(Archer archer) {
+        System.out.println("You've triggered a: " + archer.getPieceClass());
+        state = states.RANGEDATTACK;
+        RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
+        rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
+        specialCommand = rangedAttackCommand;
     }
 
     @Override
