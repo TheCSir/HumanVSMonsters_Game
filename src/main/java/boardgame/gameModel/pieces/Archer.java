@@ -30,7 +30,7 @@ public class Archer extends Human {
     }
 
     @Override
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 

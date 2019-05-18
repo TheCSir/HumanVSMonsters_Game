@@ -16,5 +16,5 @@ public abstract class SpecialCommand implements Command {
     @Override
     public abstract void redo();
 
-    public abstract void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf);
+    public abstract void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece);
 }

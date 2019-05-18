@@ -23,7 +23,7 @@ public class SummonCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf) {
+    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece) {
 
     }
 

@@ -43,7 +43,7 @@ public class Minotaur extends Monster implements IPiece {
     }
 
     @Override
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 

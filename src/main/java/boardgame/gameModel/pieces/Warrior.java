@@ -8,8 +8,9 @@ import javafx.beans.property.StringProperty;
 public class Warrior extends Human {
 
     private int moveSpeed = 3;
-    private int attack = 4;
+    private double attack = 4;
     private final StringProperty pieceName = new SimpleStringProperty("Warrior");
+    private double specialAttackMultiplier = 2;
 
 
     Warrior(Location location) {
@@ -42,7 +43,7 @@ public class Warrior extends Human {
     }
 
     @Override
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 
@@ -50,4 +51,13 @@ public class Warrior extends Human {
     public void accept(SpecialVisitor v) {
         v.visit(this);
     }
+
+    public double getSpecialAttackMultiplier() {
+        return specialAttackMultiplier;
+    }
+
+    public void setSpecialAttackMultiplier(double specialAttackMultiplier) {
+        this.specialAttackMultiplier = specialAttackMultiplier;
+    }
+
 }

@@ -18,6 +18,5 @@ public interface SpecialVisitor {
 
     void visit(Minotaur piece);
 
-
     SpecialCommand getCommand();
 }

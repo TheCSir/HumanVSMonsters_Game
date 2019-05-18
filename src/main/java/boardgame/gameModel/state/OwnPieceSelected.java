@@ -47,8 +47,13 @@ public class OwnPieceSelected implements State {
         //TODO set up new buttons to click.
         //for the moment let's make it a transition.
         PieceVisitor sv = new PieceVisitor();
-        gameContext.getOwnPiece().getiPiece().accept(sv);
+        gameContext.getSelectedPiece().accept(sv);
+
+        //Set the state to the state it should be depending on the PieceVisitor. This state is determined polymorphically.
+        // as the visitor pattern is used.
         gameContext.setState(sv.getState());
+
+        //Set special visitor to gamecontext. Gives access to correct command to be called when special ability triggered.
         gameContext.setSpecialVisitor(sv);
     }
 

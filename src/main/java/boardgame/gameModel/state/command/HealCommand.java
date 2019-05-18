@@ -7,7 +7,7 @@ import boardgame.gameModel.pieces.IPiece;
 
 public class HealCommand extends SpecialCommand {
 
-    private int h;
+    private double h;
     private TurnFacade tf;
     private IGameManager gm;
 
@@ -20,22 +20,23 @@ public class HealCommand extends SpecialCommand {
 
     @Override
     public void undo() {
-
+        tf.goBackOneTurn();
+        gm.getActivePlayer().healthProperty().setValue(gm.getActivePlayer().healthProperty().get() - h);
     }
 
     @Override
     public void redo() {
-
+        execute();
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf) {
+    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece) {
         this.tf = tf;
         this.gm = gm;
     }
 
 
-    public void setHealValue(int h) {
+    public void setHealValue(double h) {
         this.h = h;
     }
 

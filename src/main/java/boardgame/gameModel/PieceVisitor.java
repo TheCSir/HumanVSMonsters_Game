@@ -3,6 +3,7 @@ package boardgame.gameModel;
 
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.command.HealCommand;
+import boardgame.gameModel.state.command.SpecialAttackCommand;
 import boardgame.gameModel.state.command.SpecialCommand;
 import boardgame.gameModel.state.states;
 
@@ -13,18 +14,21 @@ public class PieceVisitor implements SpecialVisitor {
     private SpecialCommand specialCommand;
 
     @Override
-    public void visit(Priest piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+    public void visit(Priest priest) {
+        System.out.println("You've triggered a: " + priest.getPieceClass());
         state = states.HEALSTATE;
         HealCommand h = new HealCommand();
-        h.setHealValue(3);
+        h.setHealValue(priest.getHealValue());
         specialCommand = h;
     }
 
     @Override
-    public void visit(Warrior piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
-        state = states.BASH;
+    public void visit(Warrior warrior) {
+        System.out.println("You've triggered a: " + warrior.getPieceClass());
+        state = states.SPECIALATTACKSTATE;
+        SpecialAttackCommand specialAttackCommand = new SpecialAttackCommand();
+        specialAttackCommand.setSpecialAttackMultiplier(warrior.getSpecialAttackMultiplier());
+        specialCommand = specialAttackCommand;
     }
 
     @Override

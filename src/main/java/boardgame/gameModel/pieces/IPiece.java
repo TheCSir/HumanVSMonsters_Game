@@ -87,7 +87,7 @@ public interface IPiece {
 
     StringProperty getPieceName();
 
-    int getAttack();
+    double getAttack();
 
     void accept(SpecialVisitor v);
 }

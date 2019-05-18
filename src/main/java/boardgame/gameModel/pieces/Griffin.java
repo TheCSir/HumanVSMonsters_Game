@@ -41,7 +41,7 @@ public class Griffin extends Monster {
     }
 
     @Override
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 

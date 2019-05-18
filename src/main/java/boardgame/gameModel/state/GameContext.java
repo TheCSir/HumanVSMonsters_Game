@@ -157,6 +157,10 @@ public class GameContext {
         return pieceNameProperty;
     }
 
+    public IPiece getSelectedPiece() {
+        return selectedPiece;
+    }
+
     /**
      * Select piece.
      *
@@ -166,11 +170,12 @@ public class GameContext {
         selectedPiece = piece.getiPiece();
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
+        System.out.println("selectedPiece = " + selectedPiece.getPieceName());
+//        System.out.println("enemyPiece = " + enemyPiece.getiPiece().getPieceName());
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             state.onSelectOwnPiece(this);
         } else {
-            this.enemyPiece = piece;
             state.onSelectEnemyPiece(this);
         }
     }
@@ -209,9 +214,9 @@ public class GameContext {
         highlightedTiles.clear();
         IBoardGrid bg = getBoardGrid();
 
-        int movespeed = ownPiece.getiPiece().getMoveSpeed();
+        int movespeed = selectedPiece.getMoveSpeed();
 
-        Location pieceLocation = ownPiece.getLocation();
+        Location pieceLocation = selectedPiece.getLocation();
 
         //https://www.redblobgames.com/grids/hexagons/
 
@@ -267,7 +272,7 @@ public class GameContext {
     void highlightAttack() {
         highlightedTiles.clear();
         IBoardGrid bg = getBoardGrid();
-        Location pieceLocation = ownPiece.getLocation();
+        Location pieceLocation = selectedPiece.getLocation();
         TileView underTile = bg.getTile(pieceLocation);
 
 
@@ -355,7 +360,7 @@ public class GameContext {
             locations.add(t.getModelTile().getLocation());
         }
         if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
+            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
             commandProcessor.execute(command);
         }
     }
@@ -389,10 +394,10 @@ public class GameContext {
     public void attackPiece() {
 
         //Validate that the enemy piece is within attack range.
-        if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
+        if (highlightedTiles.contains(getBoardGrid().getTile(selectedPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(tf, gm, getEnemyPiece());
+            command.setCommand(tf, gm, selectedPiece);
             commandProcessor.execute(command);
 
             //Ensure that enemy piece is cleared as next time might be different piece.
@@ -407,7 +412,7 @@ public class GameContext {
      */
     public void launchSpecialAbility() {
         SpecialCommand command = sv.getCommand();
-        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf);
+        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece());
         commandProcessor.execute(command);
     }
 
@@ -420,7 +425,7 @@ public class GameContext {
      */
     public void createShield() {
         DefenceCommand command = new DefenceCommand();
-        command.SetCommand(tf, getOwnPiece());
+        command.SetCommand(tf, selectedPiece);
         commandProcessor.execute(command);
     }
 

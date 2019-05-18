@@ -11,6 +11,7 @@ public class Priest extends Human {
     private int moveSpeed = 2;
     private int attack = 1;
     private final StringProperty pieceName = new SimpleStringProperty("Priest");
+    private double healValue = 3;
 
 
     Priest(Location location) {
@@ -33,11 +34,6 @@ public class Priest extends Human {
     }
 
 
-    public void specialAbility(SpecialVisitor v) {
-        v.visit(this);
-        System.out.println("Healing!");
-    }
-
     @Override
     public String getPieceClass() {
         return PieceConstants.SUPPORT;
@@ -49,12 +45,20 @@ public class Priest extends Human {
     }
 
     @Override
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 
     @Override
     public void accept(SpecialVisitor v) {
         v.visit(this);
+    }
+
+    public double getHealValue() {
+        return healValue;
+    }
+
+    public void setHealValue(double healValue) {
+        this.healValue = healValue;
     }
 }
