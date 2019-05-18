@@ -39,6 +39,7 @@ public class StateFactory {
             allStates.put(states.BASH, new BashState());
             allStates.put(states.SUMMON, new SummonState());
             allStates.put(states.SPECIALATTACKSTATE, new SpecialAttackState());
+            allStates.put(states.RANGEDATTACK, new RangedAttackState());
         }
     }
 

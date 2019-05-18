@@ -501,11 +501,12 @@ public class GameContext {
     }
 
     public void highlightSpecialTiles(states state) {
-        SpecialState specialState = (SpecialState) StateFactory.getState(state);
+        //maybe should assert correct class here.
+        State specialState = StateFactory.getState(state);
         this.state = specialState;
         HighlightTilesVisitor hv = new HighlightTilesVisitor();
-        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf);
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited);
         specialState.accept(hv);
-
     }
 }

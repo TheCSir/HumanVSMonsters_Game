@@ -4,6 +4,11 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.view.IBoardGrid;
+import boardgame.view.TileView;
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HighlightTilesVisitor implements HighlightVisitor {
 
@@ -12,12 +17,25 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     private IBoardGrid boardGrid;
     private IGameManager gm;
     private TurnFacade tf;
+    private List<TileView> visited;
 
     @Override
     public void visit(RangedAttackState r) {
         //If within range make highlight blue.
         //If enemy piece make highlight red.
 
+        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
+        List<IPiece> allpieces = gm.getAllPieces();
+        List<IPiece> enemyPieces = new ArrayList<>();
+        for (IPiece piece : allpieces) {
+            if (!ownPieces.contains(piece)) {
+                enemyPieces.add(piece);
+            }
+        }
+
+        for (IPiece piece : enemyPieces) {
+            boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTGREEN);
+        }
     }
 
     @Override
@@ -61,10 +79,11 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     }
 
 
-    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf) {
+    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited) {
         this.selectedPiece = selectedPiece;
         this.boardGrid = boardGrid;
         this.gm = gm;
         this.tf = tf;
+        this.visited = visited;
     }
 }
