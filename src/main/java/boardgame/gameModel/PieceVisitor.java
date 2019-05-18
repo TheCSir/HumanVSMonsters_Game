@@ -2,6 +2,7 @@ package boardgame.gameModel;
 
 
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.state.HighlightTilesVisitor;
 import boardgame.gameModel.state.command.HealCommand;
 import boardgame.gameModel.state.command.RangedAttackCommand;
 import boardgame.gameModel.state.command.SpecialAttackCommand;
@@ -13,6 +14,7 @@ public class PieceVisitor implements SpecialVisitor {
 
     private states state;
     private SpecialCommand specialCommand;
+    HighlightTilesVisitor hv;
 
     @Override
     public void visit(Priest priest) {
@@ -36,6 +38,8 @@ public class PieceVisitor implements SpecialVisitor {
     public void visit(Archer archer) {
         System.out.println("You've triggered a: " + archer.getPieceClass());
         state = states.RANGEDATTACK;
+        HighlightTilesVisitor hv = new HighlightTilesVisitor();
+        hv.setHighlightDistance(archer.getRangedDistance());
         RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
         rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
         specialCommand = rangedAttackCommand;

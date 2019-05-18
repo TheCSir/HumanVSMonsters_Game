@@ -1,6 +1,7 @@
 package boardgame.gameModel.state;
 
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.PieceVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.view.IBoardGrid;
@@ -18,6 +19,8 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     private IGameManager gm;
     private TurnFacade tf;
     private List<TileView> visited;
+    private PieceVisitor sv;
+    private int highlightDistance;
 
     @Override
     public void visit(RangedAttackState r) {
@@ -33,9 +36,12 @@ public class HighlightTilesVisitor implements HighlightVisitor {
             }
         }
 
+        //Color pieces that
         for (IPiece piece : enemyPieces) {
+
             boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTGREEN);
         }
+
     }
 
     @Override
@@ -79,11 +85,16 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     }
 
 
-    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited) {
+    public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited, PieceVisitor sv) {
         this.selectedPiece = selectedPiece;
         this.boardGrid = boardGrid;
         this.gm = gm;
         this.tf = tf;
         this.visited = visited;
+        this.sv = sv;
+    }
+
+    public void setHighlightDistance(int rangedDistance) {
+        this.highlightDistance = rangedDistance;
     }
 }

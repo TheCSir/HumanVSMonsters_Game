@@ -11,6 +11,7 @@ public class Archer extends Human {
     private int moveSpeed = 2;
     private int attack = 2;
     private double rangedAttackValue = 4;
+    private int rangedDistance = 4;
 
     public Archer(Location location) {
         super(location);
@@ -52,6 +53,10 @@ public class Archer extends Human {
 
     public double getRangedAttackValue() {
         return rangedAttackValue;
+    }
+
+    public int getRangedDistance() {
+        return rangedDistance;
     }
 
 

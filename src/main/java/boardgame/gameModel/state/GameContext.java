@@ -3,6 +3,7 @@ package boardgame.gameModel.state;
 import boardgame.controller.GameController;
 import boardgame.controller.SpecialButton;
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.PieceVisitor;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
@@ -396,6 +397,10 @@ public class GameContext {
         SpecialCommand command = sv.getCommand();
         command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece());
         commandProcessor.execute(command);
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        for (TileView t : visited) {
+            t.setFill(Color.ANTIQUEWHITE);
+        }
     }
 
     public void setSpecialVisitor(SpecialVisitor sv) {
@@ -500,13 +505,14 @@ public class GameContext {
         return pieceLocation;
     }
 
-    public void highlightSpecialTiles(states state) {
+    //Can only enter here from OwnPieceSelected or subclasses.
+    public void highlightSpecialTiles(states state, PieceVisitor sv) {
         //maybe should assert correct class here.
         State specialState = StateFactory.getState(state);
         this.state = specialState;
         HighlightTilesVisitor hv = new HighlightTilesVisitor();
         List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
-        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited);
+        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited, sv);
         specialState.accept(hv);
     }
 }
