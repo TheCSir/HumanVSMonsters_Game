@@ -165,7 +165,7 @@ public class GameContext {
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
         System.out.println("selectedPiece = " + selectedPiece.getPieceName());
-//        System.out.println("enemyPiece = " + enemyPiece.getiPiece().getPieceName());
+
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             state.onSelectOwnPiece(this);

@@ -128,7 +128,15 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(DefenceState defenceState) {
+        //If within range make highlight blue.
+        //If enemy piece make highlight red.
+        highlightDistance = 1;
+        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
 
+        //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
+        for (IPiece piece : ownPieces) {
+            boardGrid.getTile(piece.getLocation()).setFill(Color.GREEN);
+        }
     }
 
 
