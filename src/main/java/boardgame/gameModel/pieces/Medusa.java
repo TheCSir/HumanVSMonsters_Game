@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Medusa extends Monster {
 
     private int moveSpeed = 3;
-    private int attack = 3;
+    private int attack = 2;
     private final StringProperty pieceName = new SimpleStringProperty("Medusa");
 
 
@@ -51,7 +51,7 @@ public class Medusa extends Monster {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
+    public String getSpecialAbilityDescription() {
         return "Summon Snakes";
     }
 }

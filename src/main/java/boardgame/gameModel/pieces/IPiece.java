@@ -91,5 +91,5 @@ public interface IPiece {
 
     void accept(SpecialVisitor v);
 
-    String getSpecialAblilityDescription();
+    String getSpecialAbilityDescription();
 }

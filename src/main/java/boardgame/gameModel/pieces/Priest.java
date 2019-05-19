@@ -9,7 +9,7 @@ import javafx.beans.property.StringProperty;
 public class Priest extends Human {
 
     private int moveSpeed = 2;
-    private int attack = 1;
+    private int attack = 2;
     private final StringProperty pieceName = new SimpleStringProperty("Priest");
     private double healValue = 3;
 
@@ -55,8 +55,8 @@ public class Priest extends Human {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
-        return "Heal";
+    public String getSpecialAbilityDescription() {
+        return "Health Regeneration";
     }
 
     public double getHealValue() {

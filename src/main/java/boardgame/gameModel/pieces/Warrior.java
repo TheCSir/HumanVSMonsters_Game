@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Warrior extends Human {
 
     private int moveSpeed = 3;
-    private double attack = 4;
+    private double attack = 2;
     private final StringProperty pieceName = new SimpleStringProperty("Warrior");
     private double specialAttackMultiplier = 2;
 
@@ -29,7 +29,7 @@ public class Warrior extends Human {
 
 
     public void specialAbility(){
-        System.out.println("Bash");
+        System.out.println("Heavy Smash");
     }
 
     @Override
@@ -53,8 +53,8 @@ public class Warrior extends Human {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
-        return "Special Attack";
+    public String getSpecialAbilityDescription() {
+        return "Heavy Smash";
     }
 
     public double getSpecialAttackMultiplier() {

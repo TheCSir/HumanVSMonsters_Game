@@ -53,7 +53,7 @@ public class Minotaur extends Monster implements IPiece {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
+    public String getSpecialAbilityDescription() {
         return "Summon Bulls";
     }
 }

@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Griffin extends Monster {
 
     private int moveSpeed = 4;
-    private int attack = 3;
+    private int attack = 2;
     private final StringProperty pieceName = new SimpleStringProperty("Griffin");
 
 
@@ -51,7 +51,7 @@ public class Griffin extends Monster {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
+    public String getSpecialAbilityDescription() {
         return "Summon Hawks";
     }
 }

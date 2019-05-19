@@ -10,15 +10,15 @@ public class Archer extends Human {
     //default move speed for character.
     private int moveSpeed = 2;
     private int attack = 2;
-    private double rangedAttackValue = 4;
-    private int rangedDistance = 4;
+    private double rangedAttackValue = 3;
+    private int rangedDistance = 3;
 
     public Archer(Location location) {
         super(location);
     }
 
     public void specialAbility() {
-        System.out.println("Ranged Attack!");
+        System.out.println("Long Range Shot");
     }
 
     @Override
@@ -52,8 +52,8 @@ public class Archer extends Human {
     }
 
     @Override
-    public String getSpecialAblilityDescription() {
-        return "Ranged Attack";
+    public String getSpecialAbilityDescription() {
+        return "Long Range Shot";
     }
 
     public double getRangedAttackValue() {

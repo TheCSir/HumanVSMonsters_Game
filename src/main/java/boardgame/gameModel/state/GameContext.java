@@ -448,7 +448,7 @@ public class GameContext {
 
         if (isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
-            specialAbilityDescription.setValue(piece.getiPiece().getSpecialAblilityDescription());
+            specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
             state.onSelectOwnPiece(this);
 
         } else {
