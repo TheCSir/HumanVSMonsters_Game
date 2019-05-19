@@ -153,24 +153,7 @@ public class GameContext {
         return selectedPiece;
     }
 
-    /**
-     * Select piece.
-     *
-     * @param piece the piece
-     */
-    public void selectPiece(HexagonTileViewPiece piece) {
-        selectedPiece = piece.getiPiece();
-        pieceNameProperty.setValue(selectedPiece.getPieceName().get());
-        pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
-        System.out.println("selectedPiece = " + selectedPiece.getPieceName());
-
-        if (isActivePlayerPiece(piece.getiPiece())) {
-            this.ownPiece = piece;
-            state.onSelectOwnPiece(this);
-        } else {
-            state.onSelectEnemyPiece(this);
-        }
-    }
+    private StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
 
     // Checks if selected piece belongs to the active player
@@ -451,4 +434,34 @@ public class GameContext {
     public List<TileView> getHighlightedTiles() {
         return highlightedTiles;
     }
+
+    /**
+     * Select piece.
+     *
+     * @param piece the piece
+     */
+    public void selectPiece(HexagonTileViewPiece piece) {
+        selectedPiece = piece.getiPiece();
+        pieceNameProperty.setValue(selectedPiece.getPieceName().get());
+        pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
+        System.out.println("selectedPiece = " + selectedPiece.getPieceName());
+
+        if (isActivePlayerPiece(piece.getiPiece())) {
+            this.ownPiece = piece;
+            specialAbilityDescription.setValue(piece.getiPiece().getSpecialAblilityDescription());
+            state.onSelectOwnPiece(this);
+
+        } else {
+            state.onSelectEnemyPiece(this);
+        }
+    }
+
+    public String getSpecialAbilityDescription() {
+        return specialAbilityDescription.get();
+    }
+
+    public StringProperty specialAbilityDescriptionProperty() {
+        return specialAbilityDescription;
+    }
+
 }

@@ -54,6 +54,11 @@ public class Priest extends Human {
         v.visit(this);
     }
 
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Heal";
+    }
+
     public double getHealValue() {
         return healValue;
     }

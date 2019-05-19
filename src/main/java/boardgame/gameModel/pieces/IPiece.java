@@ -90,4 +90,6 @@ public interface IPiece {
     double getAttack();
 
     void accept(SpecialVisitor v);
+
+    String getSpecialAblilityDescription();
 }

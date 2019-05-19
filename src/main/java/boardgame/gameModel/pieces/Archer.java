@@ -51,6 +51,11 @@ public class Archer extends Human {
         v.visit(this);
     }
 
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Ranged Attack";
+    }
+
     public double getRangedAttackValue() {
         return rangedAttackValue;
     }
@@ -58,10 +63,5 @@ public class Archer extends Human {
     public int getRangedDistance() {
         return rangedDistance;
     }
-
-
-//    public SpecialCommand getSpecialAbility() {
-//        //return new HealCommand();
-//    }
 
 }

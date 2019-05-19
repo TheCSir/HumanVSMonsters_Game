@@ -133,7 +133,7 @@ public class GameController implements Initializable {
         pieceSelected.textProperty().bind(gameContext.pieceNamePropertyProperty());
         pieceLocation.textProperty().bind(gameContext.pieceLocationProperty());
 
-
+        specialAbilityButton.textProperty().bind(gameContext.specialAbilityDescriptionProperty());
         RegisterListeners registerListeners = RegisterListenerFactory.createRegisterListeners(gm, statusController);
 
         initialiseHandlers();

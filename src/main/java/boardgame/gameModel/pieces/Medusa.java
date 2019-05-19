@@ -49,4 +49,9 @@ public class Medusa extends Monster {
     public void accept(SpecialVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Summon Snakes";
+    }
 }

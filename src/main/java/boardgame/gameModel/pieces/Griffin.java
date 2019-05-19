@@ -49,4 +49,9 @@ public class Griffin extends Monster {
     public void accept(SpecialVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Summon Hawks";
+    }
 }

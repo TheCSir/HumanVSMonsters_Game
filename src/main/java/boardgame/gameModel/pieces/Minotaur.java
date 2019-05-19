@@ -51,4 +51,9 @@ public class Minotaur extends Monster implements IPiece {
     public void accept(SpecialVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Summon Bulls";
+    }
 }

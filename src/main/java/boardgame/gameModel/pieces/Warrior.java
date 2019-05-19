@@ -52,6 +52,11 @@ public class Warrior extends Human {
         v.visit(this);
     }
 
+    @Override
+    public String getSpecialAblilityDescription() {
+        return "Special Attack";
+    }
+
     public double getSpecialAttackMultiplier() {
         return specialAttackMultiplier;
     }
