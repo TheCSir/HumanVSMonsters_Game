@@ -27,7 +27,7 @@
       <TextField fx:id="numberOfPiecesText" text="1" GridPane.rowIndex="2" />
       <Label text="Game Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <Label text="Human Player Name:" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-      <Label text="Number of pieces:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+      <Label text="Number of pieces per player:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
       <Label text="Grid Rows:" GridPane.rowIndex="3" GridPane.valignment="TOP" />
       <Label text="Grid Columns:" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
       <TextField fx:id="humanPlayerNameText" text="Gandalf" GridPane.rowIndex="1" />
