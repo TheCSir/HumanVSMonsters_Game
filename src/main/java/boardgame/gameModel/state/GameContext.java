@@ -355,7 +355,7 @@ public class GameContext {
             command.setCommand(tf, gm, selectedPiece);
             commandProcessor.execute(command);
 
-            resetTileColours();
+            //resetTileColours();
         }
     }
 
@@ -475,6 +475,7 @@ public class GameContext {
      */
     public void setState(states state) {
         this.state = StateFactory.getState(state);
+        highlightTiles(this.state);
     }
 
     public void setPieceSelected(IPiece piece) {
@@ -496,9 +497,10 @@ public class GameContext {
         specialState.accept(hv);
     }
 
-    public void highlightTiles(states state) {
+    public void highlightTiles(State state) {
         HighlightTilesVisitor hv = new HighlightTilesVisitor();
         List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         hv.setHighlightVariables(getBoardGrid(), gm, visited);
+        state.accept(hv);
     }
 }

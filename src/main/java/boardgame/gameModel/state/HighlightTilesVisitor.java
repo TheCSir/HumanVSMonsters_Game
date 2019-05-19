@@ -88,7 +88,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     public void visit(IdleState idleState) {
         //Reset all tile colours
         for (TileView tile : visited) {
-
+            tile.setFill(Color.ANTIQUEWHITE);
         }
 
         //Highlight tiles depending on player.

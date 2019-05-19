@@ -42,8 +42,6 @@ public class MoveState extends OwnPieceSelected {
     public void onSelectTile(GameContext gameContext) {
         System.out.println("The piece should try to move now. If it can't move stay in this state or go to idle");
 
-        gameContext.resetTileColours();
-
         gameContext.movePiece();
 
         gameContext.setState(states.IDLE);
