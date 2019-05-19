@@ -1,6 +1,5 @@
 package boardgame.gameModel.state;
 
-import boardgame.controller.GameController;
 import boardgame.controller.SpecialButton;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
@@ -33,11 +32,9 @@ import static boardgame.util.HexGridUtil.offset_distance;
 public class GameContext {
 
     private final IGameManager gm;
-    private final GameController gc;
     private final IBoardGrid IBoardGrid;
     private State state;
     private HexagonTileViewPiece ownPiece;
-    private HexagonTileViewPiece enemyPiece;
     private TileView tileView;
     private Pane swapPane;
     private Button opt_one;
@@ -52,13 +49,11 @@ public class GameContext {
      * @param state      the state
      * @param IBoardGrid the board grid
      * @param gm         the gm
-     * @param gc         the gc
      */
-    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, GameController gc) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
-        this.gc = gc;
         tf = new TurnFacade(gm);
     }
 
@@ -280,28 +275,6 @@ public class GameContext {
     //*******************************************************************************
 
 
-    /**
-     * Gets board grid.
-     *
-     * @return the board grid
-     */
-    public IBoardGrid getBoardGrid() {
-
-        return IBoardGrid;
-    }
-
-
-    /**
-     * Update tile info.
-     */
-    public void updateTileInfo() {
-    }
-
-    /**
-     * Sets up swap.
-     */
-    public void setUpSwap() {
-    }
 
 
     //*******************************************************
@@ -383,7 +356,7 @@ public class GameContext {
             commandProcessor.execute(command);
 
             //Ensure that enemy piece is cleared as next time might be different piece.
-            enemyPiece = null;
+            HexagonTileViewPiece enemyPiece = null;
             resetTileColours();
         }
     }
@@ -480,6 +453,16 @@ public class GameContext {
      */
     public State getState() {
         return state;
+    }
+
+    /**
+     * Gets board grid.
+     *
+     * @return the board grid
+     */
+    public IBoardGrid getBoardGrid() {
+
+        return IBoardGrid;
     }
 
 

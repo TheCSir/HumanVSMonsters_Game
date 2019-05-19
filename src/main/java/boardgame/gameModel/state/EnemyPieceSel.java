@@ -38,7 +38,7 @@ public class EnemyPieceSel implements State {
     public void onSelectTile(GameContext gameContext) {
 
         //Update View.
-        gameContext.updateTileInfo();
+        //gameContext.updateTileInfo();
 
     }
 

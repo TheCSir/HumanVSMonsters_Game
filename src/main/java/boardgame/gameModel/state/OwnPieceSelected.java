@@ -66,8 +66,6 @@ public class OwnPieceSelected implements State {
     @Override
     public void onSwap(GameContext gameContext) {
 
-        gameContext.setUpSwap();
-        System.out.println("setting swap state.");
         Pane SwapPane = gameContext.getSwapPane();
         IGameManager gm = gameContext.getGm();
         Button Opt_one = gameContext.getOpt_one();

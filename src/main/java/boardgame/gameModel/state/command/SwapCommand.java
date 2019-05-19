@@ -87,7 +87,6 @@ public class SwapCommand implements Command {
 
         //End turn
         tf.nextTurn();
-
     }
 }
 

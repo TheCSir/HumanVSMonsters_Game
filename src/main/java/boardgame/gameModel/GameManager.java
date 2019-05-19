@@ -47,7 +47,7 @@ class GameManager implements IGameManager {
         players = new ArrayList<>();
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
         this.gc = gameController;
-        gameContext = new GameContext(new IdleState(), IBoardGrid, this, gameController);
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this);
     }
 
     @Override
