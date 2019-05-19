@@ -51,7 +51,7 @@ public class OwnPieceSelected implements State {
         gameContext.highlightSpecialTiles(sv.getState(), sv);
         //Set the state to the state it should be depending on the PieceVisitor. This state is determined polymorphically.
         // as the visitor pattern is used.
-        gameContext.setState(sv.getState());
+        // gameContext.setState(sv.getState());
 
         //Set special visitor to gamecontext. Gives access to correct command to be called when special ability triggered.
         gameContext.setSpecialVisitor(sv);

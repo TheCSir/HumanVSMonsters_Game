@@ -147,7 +147,6 @@ public class GameContext {
     private StringProperty pieceLocation = new SimpleStringProperty();
     private IPiece selectedPiece;
 
-
     public StringProperty pieceNamePropertyProperty() {
         return pieceNameProperty;
     }
@@ -175,20 +174,6 @@ public class GameContext {
         }
     }
 
-
-    /**
-     * Reset tile colours for neighbouring tiles. Call to clear highlighted tiles
-     * after selecting tiles
-     */
-    public void resetTileColours() {
-        // IBoardGrid.setNeighbourTilesColor(IBoardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
-        System.out.println("resetting tile colours");
-
-        // Reset tiles color
-        for (TileView tileView : highlightedTiles) {
-            tileView.setFill(Color.ANTIQUEWHITE);
-        }
-    }
 
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(IPiece ipiece) {
@@ -354,8 +339,6 @@ public class GameContext {
             AttackCommand command = new AttackCommand();
             command.setCommand(tf, gm, selectedPiece);
             commandProcessor.execute(command);
-
-            //resetTileColours();
         }
     }
 
