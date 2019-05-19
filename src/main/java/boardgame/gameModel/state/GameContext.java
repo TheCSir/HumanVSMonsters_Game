@@ -355,8 +355,6 @@ public class GameContext {
             command.setCommand(tf, gm, selectedPiece);
             commandProcessor.execute(command);
 
-            //Ensure that enemy piece is cleared as next time might be different piece.
-            HexagonTileViewPiece enemyPiece = null;
             resetTileColours();
         }
     }
@@ -496,5 +494,11 @@ public class GameContext {
         List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited, sv);
         specialState.accept(hv);
+    }
+
+    public void highlightTiles(states state) {
+        HighlightTilesVisitor hv = new HighlightTilesVisitor();
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        hv.setHighlightVariables(getBoardGrid(), gm, visited);
     }
 }

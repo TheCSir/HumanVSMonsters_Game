@@ -15,7 +15,7 @@ public class PieceVisitor implements SpecialVisitor {
     private states state;
     private SpecialCommand specialCommand;
 
-    private HighlightTilesVisitor hv;
+    private HighlightTilesVisitor hv = new HighlightTilesVisitor();
 
     @Override
     public HighlightTilesVisitor getHv() {
@@ -27,9 +27,6 @@ public class PieceVisitor implements SpecialVisitor {
         System.out.println("You've triggered a: " + priest.getPieceClass());
         state = states.HEALSTATE;
 
-        //Set new HighlightVisitor to avoid null pointer.
-        hv = new HighlightTilesVisitor();
-
         HealCommand h = new HealCommand();
         h.setHealValue(priest.getHealValue());
         specialCommand = h;
@@ -39,6 +36,8 @@ public class PieceVisitor implements SpecialVisitor {
     public void visit(Warrior warrior) {
         System.out.println("You've triggered a: " + warrior.getPieceClass());
         state = states.SPECIALATTACKSTATE;
+
+        hv.setHighlightDistance(1);
         SpecialAttackCommand specialAttackCommand = new SpecialAttackCommand();
         specialAttackCommand.setSpecialAttackMultiplier(warrior.getSpecialAttackMultiplier());
         specialCommand = specialAttackCommand;
@@ -48,7 +47,7 @@ public class PieceVisitor implements SpecialVisitor {
     public void visit(Archer archer) {
         System.out.println("You've triggered a: " + archer.getPieceClass());
         state = states.RANGEDATTACK;
-        hv = new HighlightTilesVisitor();
+
         hv.setHighlightDistance(archer.getRangedDistance());
         RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
         rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
