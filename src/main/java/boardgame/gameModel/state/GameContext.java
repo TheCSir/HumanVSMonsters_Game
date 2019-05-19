@@ -181,7 +181,7 @@ public class GameContext {
         queue.add(underTile);
         visited.add(underTile);
         int q = 0;
-        while (!queue.isEmpty() && q < 10000) {
+        while (!queue.isEmpty() && q < 100000) {
             //System.out.println("queue = " + queue.peek());
             TileView x = queue.poll();
             List<TileView> neighbours = x.getNeighbourViews();
@@ -454,10 +454,6 @@ public class GameContext {
         } else {
             state.onSelectEnemyPiece(this);
         }
-    }
-
-    public String getSpecialAbilityDescription() {
-        return specialAbilityDescription.get();
     }
 
     public StringProperty specialAbilityDescriptionProperty() {

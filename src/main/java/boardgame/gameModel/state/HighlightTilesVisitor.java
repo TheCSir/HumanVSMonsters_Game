@@ -92,7 +92,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     @Override
     public void visit(IdleState idleState) {
         //Reset all tile colours
-        for (TileView tile : visited) {
+        for (TileView tile : boardGrid.getTileViewObservableMap().values()) {
             tile.setFill(Color.ANTIQUEWHITE);
         }
 
