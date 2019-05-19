@@ -20,7 +20,6 @@ public class OwnPieceSelected implements State {
     @Override
     public void onMove(GameContext gameContext) {
 
-        gameContext.highlightMove();
         System.out.println("Setting surrounding colour to Red");
         System.out.println("Setting move state");
         gameContext.setState(states.MOVE);
@@ -32,9 +31,6 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onAttack(GameContext gameContext) {
-
-        //Highlight surrounding tiles.
-        gameContext.highlightAttack();
 
         System.out.println("setting attack state");
 

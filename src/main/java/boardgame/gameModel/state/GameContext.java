@@ -21,8 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static boardgame.util.HexGridUtil.offset_distance;
-
 /**
  * The Game context class. This class is the main driver class for the game logic.
  * Actions that the user takes are processed as Commands using the Command pattern.
@@ -187,30 +185,7 @@ public class GameContext {
         return false;
     }
 
-    /**
-     * Highlight tiles that can be moved to.
-     */
-    public void highlightMove() {
-        highlightedTiles.clear();
-        IBoardGrid bg = getBoardGrid();
 
-        int movespeed = selectedPiece.getMoveSpeed();
-
-        Location pieceLocation = selectedPiece.getLocation();
-
-        List<TileView> visited = visitAllTiles(movespeed, bg, pieceLocation);
-
-        for (TileView tileView : visited) {
-            int offDist = offset_distance(pieceLocation, tileView.getLocation());
-
-
-            if (offDist <= movespeed) {
-                tileView.setFill(Color.rgb(200, 24, 0));
-                highlightedTiles.add(tileView);
-            }
-
-        }
-    }
 
     public List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
         //https://www.redblobgames.com/grids/hexagons/
@@ -238,22 +213,6 @@ public class GameContext {
             q++;
         }
         return visited;
-    }
-
-
-    public void highlightAttack() {
-        highlightedTiles.clear();
-        IBoardGrid bg = getBoardGrid();
-        Location pieceLocation = selectedPiece.getLocation();
-        TileView underTile = bg.getTile(pieceLocation);
-
-
-        //Replace this with conditional loop once different terrain
-        // exists.
-        highlightedTiles.addAll(underTile.getNeighbourViews());
-        for (TileView t : highlightedTiles) {
-            t.setFill(Color.RED);
-        }
     }
 
 
@@ -478,12 +437,18 @@ public class GameContext {
         List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited, sv);
         specialState.accept(hv);
+        highlightedTiles = hv.getTargetTiles();
     }
 
     public void highlightTiles(State state) {
         HighlightTilesVisitor hv = new HighlightTilesVisitor();
         List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
-        hv.setHighlightVariables(getBoardGrid(), gm, visited);
+        hv.setHighlightVariables(getBoardGrid(), gm, visited, selectedPiece);
         state.accept(hv);
+        highlightedTiles = hv.getTargetTiles();
+    }
+
+    public List<TileView> getHighlightedTiles() {
+        return highlightedTiles;
     }
 }

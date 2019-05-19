@@ -5,12 +5,15 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.util.HexGridUtil;
+import boardgame.util.Location;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static boardgame.util.HexGridUtil.offset_distance;
 
 public class HighlightTilesVisitor implements HighlightVisitor {
 
@@ -21,6 +24,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     private List<TileView> visited;
     private SpecialVisitor sv;
     private int highlightDistance;
+    private List<TileView> targetTiles = new ArrayList<>();
 
     @Override
     public void visit(RangedAttackState r) {
@@ -40,6 +44,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
             System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
             System.out.println("highlightDistance = " + highlightDistance);
             if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
+                targetTiles.add(boardGrid.getTile(piece.getLocation()));
                 boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
             } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
         }
@@ -58,9 +63,8 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         }
         //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
         for (IPiece piece : enemyPieces) {
-            System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
-            System.out.println("highlightDistance = " + highlightDistance);
             if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
+                targetTiles.add(boardGrid.getTile(piece.getLocation()));
                 boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
             } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
         }
@@ -82,6 +86,7 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     @Override
     public void visit(EnemyPieceSel enemyPieceSel) {
 
+
     }
 
     @Override
@@ -96,9 +101,27 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     }
 
+    /**
+     * Highlight tiles that can be moved to.
+     */
     @Override
     public void visit(MoveState moveState) {
 
+
+        int movespeed = selectedPiece.getMoveSpeed();
+
+        Location pieceLocation = selectedPiece.getLocation();
+
+        for (TileView tileView : visited) {
+            int offDist = offset_distance(pieceLocation, tileView.getLocation());
+
+
+            if (offDist <= movespeed) {
+                tileView.setFill(Color.rgb(200, 24, 0));
+                targetTiles.add(tileView);
+            }
+
+        }
     }
 
     @Override
@@ -121,19 +144,17 @@ public class HighlightTilesVisitor implements HighlightVisitor {
             System.out.println("highlightDistance = " + highlightDistance);
             if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
                 boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
+                targetTiles.add(boardGrid.getTile(piece.getLocation()));
             } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
         }
-
     }
 
     @Override
     public void visit(DefenceState defenceState) {
-        //If within range make highlight blue.
-        //If enemy piece make highlight red.
-        highlightDistance = 1;
+
         List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
 
-        //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
+        //Colour all own pieces green.
         for (IPiece piece : ownPieces) {
             boardGrid.getTile(piece.getLocation()).setFill(Color.GREEN);
         }
@@ -149,13 +170,18 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         this.sv = sv;
     }
 
-    public void setHighlightVariables(IBoardGrid boardGrid, IGameManager gm, List<TileView> visited) {
+    public void setHighlightVariables(IBoardGrid boardGrid, IGameManager gm, List<TileView> visited, IPiece selectedPiece) {
         this.boardGrid = boardGrid;
         this.gm = gm;
         this.visited = visited;
+        this.selectedPiece = selectedPiece;
     }
 
     public void setHighlightDistance(int rangedDistance) {
         this.highlightDistance = rangedDistance;
+    }
+
+    public List<TileView> getTargetTiles() {
+        return targetTiles;
     }
 }
