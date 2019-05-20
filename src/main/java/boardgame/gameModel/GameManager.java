@@ -8,8 +8,7 @@ import boardgame.gameModel.pieces.AbstractPieceFactory;
 import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceConstants;
-import boardgame.gameModel.players.IPlayer;
-import boardgame.gameModel.players.PlayerFactory;
+import boardgame.gameModel.players.*;
 import boardgame.gameModel.state.GameContext;
 import boardgame.gameModel.state.IdleState;
 import boardgame.util.Constants;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 class GameManager implements IGameManager {
+    PlayerComponent allPlayers = new PlayerGroup();
 
     private final ArrayList<IPlayer> players;
     private IBoard iBoard;
@@ -101,16 +101,17 @@ class GameManager implements IGameManager {
         //Add default Monster piece
         setUpMonsterPieces();
 
-        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, Constants.PLAYERNAME1, Constants.INITIALHEALTH, humanPieces, this);
-        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, Constants.PLAYERNAME2, Constants.INITIALHEALTH, monsterPieces, this);
-        players.add(player1);
-        players.add(player2);
+        Player player1 = new HumanPlayer(1, Constants.PLAYERNAME1, Constants.INITIALHEALTH, humanPieces, this);
+        Player player2 = new MonsterPlayer(2, Constants.PLAYERNAME1, Constants.INITIALHEALTH, monsterPieces, this);
+        allPlayers.addPlayer(player1);
+        allPlayers.addPlayer(player2);
 
         //Set up default board.
         iBoard = setUpBoard(Board2DHex.class.getName(), Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS);
 
         turn = new Turn();
-        turn.initialiseTurns(players);
+        turn.initialiseTurns(allPlayers.getPlayerGroup());
+
         IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()),
                 Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, IBoardGrid.getBoardPane());
 
@@ -149,16 +150,16 @@ class GameManager implements IGameManager {
         setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces, gridRows, gridColumns);
         setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces, gridRows, gridColumns);
 
-        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
-        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
-        players.add(player1);
-        players.add(player2);
+        Player player1 = new HumanPlayer(1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
+        Player player2 = new MonsterPlayer(2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
+        allPlayers.addPlayer(player1);
+        allPlayers.addPlayer(player2);
 
         //Set up custom board.
         iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);
 
         turn = new Turn();
-        turn.initialiseTurns(players);
+        turn.initialiseTurns(allPlayers.getPlayerGroup());
 
         IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()), gridRows, gridColumns, IBoardGrid.getBoardPane());
     }
@@ -169,8 +170,8 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public ArrayList<IPlayer> getPlayers() {
-        return players;
+    public ArrayList<Player> getPlayers() {
+        return allPlayers.getPlayerGroup();
     }
 
     @Override
@@ -183,7 +184,7 @@ class GameManager implements IGameManager {
 
     public IPlayer getAttackedPlayer(IPiece attackedPiece){
 
-        for(IPlayer player : players){
+        for(IPlayer player : allPlayers.getPlayerGroup()){
             for(IPiece playerPiece : player.getPieces()){
                 if(playerPiece.getClass().getSimpleName().equals(attackedPiece.getClass().getSimpleName()))
                     return player;
@@ -196,8 +197,8 @@ class GameManager implements IGameManager {
     @Override
     public ObservableList<IPiece> getAllPieces() {
         ObservableList<IPiece> allpieces = FXCollections.observableArrayList();
-        allpieces.addAll(players.get(0).getPieces());
-        allpieces.addAll(players.get(1).getPieces());
+        allpieces.addAll(allPlayers.getPlayerGroup().get(0).getPieces());
+        allpieces.addAll(allPlayers.getPlayerGroup().get(1).getPieces());
         return allpieces;
     }
 
@@ -244,6 +245,6 @@ class GameManager implements IGameManager {
 
     @Override
     public void endTurn() {
-        getTurn().nextTurn(players);
+        getTurn().nextTurn(allPlayers.getPlayerGroup());
     }
 }

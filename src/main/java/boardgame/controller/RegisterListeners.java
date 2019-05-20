@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.Turn;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.Player;
 import boardgame.util.Constants;
 import javafx.collections.ObservableList;
 
@@ -20,7 +21,7 @@ public class RegisterListeners {
     }
 
 
-    public void registerPlayerListeners(List<IPlayer> players) {
+    public void registerPlayerListeners(List<Player> players) {
 
         for (IPlayer player : players) {
 

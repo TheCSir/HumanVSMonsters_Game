@@ -3,6 +3,7 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.Player;
 import boardgame.gameModel.state.GameContext;
 import javafx.collections.ObservableList;
 
@@ -107,7 +108,7 @@ public interface IGameManager {
      *
      * @return the players
      */
-    ArrayList<IPlayer> getPlayers();
+    ArrayList<Player> getPlayers();
 
     /**
      * Gets turn.
