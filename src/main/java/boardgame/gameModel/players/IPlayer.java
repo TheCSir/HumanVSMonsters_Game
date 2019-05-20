@@ -52,27 +52,11 @@ public interface IPlayer {
     void setHealthProperty(double value);
 
     /**
-     * Decrease minion health property.
+     * Decrease health property.
      *
      * @param piece the piece
      */
     void decreaseHealthProperty(IPiece piece);
-
-    Double minionHealthProperty();
-
-    /**
-     * Sets minion health property.
-     *
-     * @param value the value
-     */
-    void setMinionHealthProperty(double value);
-
-    /**
-     * Decrease minion health property.
-     *
-     * @param piece the piece
-     */
-    void decreaseMinionHealthProperty(IPiece piece);
 
     double calculateDamage(IPiece piece);
 

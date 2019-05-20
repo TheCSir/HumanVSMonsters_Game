@@ -18,9 +18,7 @@ public abstract class Player implements IPlayer {
     private String playerName;
     private String playerStatus = Constants.IDEALSTATUS;
     private final DoubleProperty health;
-    private Double minionHealth = 0.0;
     private ObservableList<IPiece> pieces;
-
 
     //endregion
 
@@ -89,26 +87,6 @@ public abstract class Player implements IPlayer {
 
         //Decrease health
         this.setHealthProperty(this.healthProperty().getValue() - damageValue);
-    }
-
-    //region Minion Health methods
-
-    @Override
-    public Double minionHealthProperty() {
-        return minionHealth;
-    }
-
-    @Override
-    public void setMinionHealthProperty(double value) { minionHealth =value; }
-
-    @Override
-    public void decreaseMinionHealthProperty(IPiece piece) {
-
-        // Calculate taken damage value
-        double damageValue = calculateDamage(piece);
-
-        //Decrease health
-        this.setMinionHealthProperty(this.minionHealthProperty() - damageValue);
     }
 
     @Override
