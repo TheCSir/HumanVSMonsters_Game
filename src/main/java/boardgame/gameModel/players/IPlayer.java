@@ -74,6 +74,20 @@ public interface IPlayer {
      */
     void setPieces(ObservableList<IPiece> pieces);
 
+    /**
+     * Gets isShielded property.
+     *
+     * @return the isAbilityUsed property.
+     */
+    boolean getIsAbilityUsed();
+
+    /**
+     * Sets isAbilityUsed property.
+     *
+     * @param isAbilityUsed the isAbilityUsed property.
+     */
+    void setIsAbilityUsed(boolean isAbilityUsed);
+
     IPiece getPiece(IPiece piece);
 
     String playerType();

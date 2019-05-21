@@ -11,11 +11,10 @@ public class SpecialCommand implements Command {
     @Override
     public void execute() {
 
-        if(!iPiece.getIsAbilityUsed()){
+        if(!gm.getActivePlayer().getIsAbilityUsed()){
             iPiece.specialAbility(gm);
-            iPiece.setIsAbilityUsed(true);
+            gm.getActivePlayer().setIsAbilityUsed(true);
             gm.getTurn().nextTurn(gm.getPlayers());
-
         }
 
     }

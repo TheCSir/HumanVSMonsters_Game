@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 public abstract class Piece implements IPiece {
 
     private boolean isShielded;
-    private boolean isAbilityUsed;
     private int shieldTurn;
     private int health;
     private final ObjectProperty<Location> locationProperty;
@@ -25,7 +24,6 @@ public abstract class Piece implements IPiece {
     public Piece(Location location) {
         locationProperty = new SimpleObjectProperty<>(location);
         this.isShielded = false;
-        this.isAbilityUsed = false;
         this.health = Constants.MININONINITIALHEALTH;
     }
 
@@ -79,16 +77,6 @@ public abstract class Piece implements IPiece {
     public void checkShieldTurn(int turnNumber) {
         if (turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
-    }
-
-    @Override
-    public boolean getIsAbilityUsed(){
-        return isAbilityUsed;
-    }
-
-    @Override
-    public void setIsAbilityUsed(boolean isAbilityUsed){
-        this.isAbilityUsed = isAbilityUsed;
     }
 
     @Override

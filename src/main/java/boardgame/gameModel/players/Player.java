@@ -16,6 +16,7 @@ public abstract class Player implements IPlayer {
 
     private int playerID;
     private String playerName;
+    private boolean isAbilityUsed;
     private String playerStatus = Constants.IDEALSTATUS;
     private final DoubleProperty health;
     private ObservableList<IPiece> pieces;
@@ -34,6 +35,7 @@ public abstract class Player implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
+        this.isAbilityUsed = false;
 
         pieces.addListener((ListChangeListener<IPiece>) c -> {
             while (c.next()) {
@@ -107,5 +109,15 @@ public abstract class Player implements IPlayer {
     @Override
     public void setPieces(ObservableList<IPiece> pieces) {
         this.pieces = pieces;
+    }
+
+    @Override
+    public boolean getIsAbilityUsed(){
+        return isAbilityUsed;
+    }
+
+    @Override
+    public void setIsAbilityUsed(boolean isAbilityUsed){
+        this.isAbilityUsed = isAbilityUsed;
     }
 }
