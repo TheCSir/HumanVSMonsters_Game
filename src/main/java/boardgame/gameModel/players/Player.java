@@ -91,10 +91,13 @@ public abstract class Player implements IPlayer {
 
     @Override
     public double calculateDamage(IPiece piece) {
+        double attackValue = piece.getAttack();
+
+        //Shield halves damage.
         if (piece.getIsShielded())
-            return 0.5;
+            return attackValue / 2;
         else
-            return 1;
+            return attackValue;
     }
 
     //endregion
@@ -107,5 +110,12 @@ public abstract class Player implements IPlayer {
     @Override
     public void setPieces(ObservableList<IPiece> pieces) {
         this.pieces = pieces;
+    }
+
+    @Override
+    public void increaseHealthProperty(double healingValue) {
+
+        //Increase health
+        this.setHealthProperty(this.healthProperty().getValue() + healingValue);
     }
 }

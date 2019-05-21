@@ -1,17 +1,17 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 import boardgame.gameModel.TurnFacade;
-import boardgame.view.HexagonTileViewPiece;
+import boardgame.gameModel.pieces.IPiece;
 
 public class DefenceCommand implements Command {
 
-    private HexagonTileViewPiece ownPiece;
+    private IPiece ownPiece;
     private TurnFacade tf;
 
 
     @Override
     public void execute() {
-        ownPiece.getiPiece().createShield(tf.getTurnNumber());
+        ownPiece.createShield(tf.getTurnNumber());
         System.out.println("Defending");
         // end turn
         tf.nextTurn();
@@ -22,7 +22,7 @@ public class DefenceCommand implements Command {
         //Roll back turn.
         tf.goBackOneTurn();
 
-        ownPiece.getiPiece().setIsShielded(false);
+        ownPiece.setIsShielded(false);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DefenceCommand implements Command {
         execute();
     }
 
-    public void SetCommand(TurnFacade tf, HexagonTileViewPiece ownPiece) {
+    public void SetCommand(TurnFacade tf, IPiece ownPiece) {
         this.tf = tf;
         this.ownPiece = ownPiece;
     }

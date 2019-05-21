@@ -1,4 +1,4 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
@@ -87,6 +87,6 @@ public class SwapCommand implements Command {
 
         //End turn
         tf.nextTurn();
-
     }
 }
+

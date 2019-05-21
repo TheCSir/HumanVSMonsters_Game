@@ -1,10 +1,9 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.view.HexagonTileViewPiece;
 
 public class AttackCommand implements Command {
     private IGameManager gm;
@@ -45,9 +44,9 @@ public class AttackCommand implements Command {
         execute();
     }
 
-    public void setCommand(TurnFacade tf, IGameManager gm, HexagonTileViewPiece enemyPiece) {
+    public void setCommand(TurnFacade tf, IGameManager gm, IPiece enemyPiece) {
         this.tf = tf;
         this.gm = gm;
-        this.enemyPiece = enemyPiece.getiPiece();
+        this.enemyPiece = enemyPiece;
     }
 }

@@ -21,4 +21,6 @@ public interface State {
     void onSwapOne(GameContext gameContext);
 
     void onSwapTwo(GameContext gameContext);
+
+    void accept(HighlightVisitor v);
 }

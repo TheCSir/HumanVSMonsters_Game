@@ -1,4 +1,8 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
+
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.states;
 
 public class MoveState extends OwnPieceSelected {
 
@@ -42,8 +46,6 @@ public class MoveState extends OwnPieceSelected {
     public void onSelectTile(GameContext gameContext) {
         System.out.println("The piece should try to move now. If it can't move stay in this state or go to idle");
 
-        gameContext.resetTileColours();
-
         gameContext.movePiece();
 
         gameContext.setState(states.IDLE);
@@ -54,4 +56,8 @@ public class MoveState extends OwnPieceSelected {
         gameContext.setState(states.ENEMYPIECESELECTED);
     }
 
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
+    }
 }

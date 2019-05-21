@@ -77,4 +77,10 @@ public interface IPlayer {
     IPiece getPiece(IPiece piece);
 
     String playerType();
+
+    /**
+     * Increase health property.
+     */
+    void increaseHealthProperty(double healingValue);
+
 }

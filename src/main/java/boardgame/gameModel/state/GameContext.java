@@ -1,10 +1,11 @@
 package boardgame.gameModel.state;
 
-import boardgame.controller.GameController;
+import boardgame.controller.SpecialButton;
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
+import boardgame.gameModel.command.*;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.state.command.*;
 import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
@@ -20,8 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static boardgame.util.HexGridUtil.offset_distance;
-
 /**
  * The Game context class. This class is the main driver class for the game logic.
  * Actions that the user takes are processed as Commands using the Command pattern.
@@ -31,17 +30,16 @@ import static boardgame.util.HexGridUtil.offset_distance;
 public class GameContext {
 
     private final IGameManager gm;
-    private final GameController gc;
     private final IBoardGrid IBoardGrid;
     private State state;
     private HexagonTileViewPiece ownPiece;
-    private HexagonTileViewPiece enemyPiece;
     private TileView tileView;
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
+    private SpecialVisitor sv;
 
     /**
      * Instantiates a new Game context.
@@ -49,13 +47,11 @@ public class GameContext {
      * @param state      the state
      * @param IBoardGrid the board grid
      * @param gm         the gm
-     * @param gc         the gc
      */
-    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, GameController gc) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
-        this.gc = gc;
         tf = new TurnFacade(gm);
     }
 
@@ -65,7 +61,7 @@ public class GameContext {
     //     This section is responsible for state   *
     //     changes called from the state machine. A user
     //     clicks a button which triggers a State Change.
-    //      The states are not meant to hold game logic.
+    //      The stateImp are not meant to hold game logic.
     //      They merely manage the transitions and
     //      available commands.
     //                                                      *
@@ -110,6 +106,13 @@ public class GameContext {
         this.swapPane = swapPane;
         this.opt_one = opt_one;
         this.opt_two = opt_two;
+        SpecialButton sp1 = new SpecialButton();
+        sp1.setButton(opt_one);
+        //sp1.setiPiece();
+        SpecialButton sp2 = new SpecialButton();
+        sp2.setButton(opt_two);
+
+
         state.onSwap(this);
     }
 
@@ -142,43 +145,16 @@ public class GameContext {
     private StringProperty pieceLocation = new SimpleStringProperty();
     private IPiece selectedPiece;
 
-
     public StringProperty pieceNamePropertyProperty() {
         return pieceNameProperty;
     }
 
-    /**
-     * Select piece.
-     *
-     * @param piece the piece
-     */
-    public void selectPiece(HexagonTileViewPiece piece) {
-        selectedPiece = piece.getiPiece();
-        pieceNameProperty.setValue(selectedPiece.getPieceName().get());
-        pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
-        if (isActivePlayerPiece(piece.getiPiece())) {
-            this.ownPiece = piece;
-            state.onSelectOwnPiece(this);
-        } else {
-            this.enemyPiece = piece;
-            state.onSelectEnemyPiece(this);
-        }
+    public IPiece getSelectedPiece() {
+        return selectedPiece;
     }
 
+    private StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
-    /**
-     * Reset tile colours for neighbouring tiles. Call to clear highlighted tiles
-     * after selecting tiles
-     */
-    public void resetTileColours() {
-        // IBoardGrid.setNeighbourTilesColor(IBoardGrid.getSelectedTilePiece(), Color.ANTIQUEWHITE);
-        System.out.println("resetting tile colours");
-
-        // Reset tiles color
-        for (TileView tileView : highlightedTiles) {
-            tileView.setFill(Color.ANTIQUEWHITE);
-        }
-    }
 
     // Checks if selected piece belongs to the active player
     private boolean isActivePlayerPiece(IPiece ipiece) {
@@ -192,28 +168,20 @@ public class GameContext {
         return false;
     }
 
-    /**
-     * Highlight tiles that can be moved to.
-     */
-    void highlightMove() {
-        highlightedTiles.clear();
-        IBoardGrid bg = getBoardGrid();
 
-        int movespeed = ownPiece.getiPiece().getMoveSpeed();
 
-        Location pieceLocation = ownPiece.getLocation();
-
+    public List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
         //https://www.redblobgames.com/grids/hexagons/
 
         //Start of very inefficent BFS. Will do for the moment.
         //Probably refactor and move to separate class.
-        TileView underTile = bg.getTile(pieceLocation);
+        TileView underTile = bg.getTile(location);
         List<TileView> visited = new ArrayList<>();
         Queue<TileView> queue = new LinkedList<>();
         queue.add(underTile);
         visited.add(underTile);
         int q = 0;
-        while (!queue.isEmpty() && q < 10000) {
+        while (!queue.isEmpty() && q < 100000) {
             //System.out.println("queue = " + queue.peek());
             TileView x = queue.poll();
             List<TileView> neighbours = x.getNeighbourViews();
@@ -227,92 +195,14 @@ public class GameContext {
             }
             q++;
         }
-        System.out.println("visited = " + visited.size());
-        for (TileView tileView : visited) {
-            int offDist = offset_distance(pieceLocation, tileView.getLocation());
-
-            //Debugging
-            System.out.println("*******************************");
-            System.out.println("offDist = " + offDist);
-            System.out.println("tileView = " + tileView.getLocation());
-            System.out.println("pieceLocation = " + pieceLocation);
-            System.out.println("***********************************");
-            System.out.println("movespeed = " + movespeed);
-
-
-            if (offDist <= movespeed) {
-                //tileView.setFill(Color.RED);
-                tileView.setFill(Color.rgb(200, 24, 0));
-                //Debugging
-//                Text text = new Text(tileView.getLocation().getX() + ", " + tileView.getLocation().getY());
-//                getBoardGrid().getBoardPane().getChildren().add(text);
-//                text.translateXProperty().setValue(tileView.getXPosition());
-//                text.translateYProperty().setValue(tileView.getYPosition());
-                highlightedTiles.add(tileView);
-            }
-
-        }
-    }
-
-    void highlightAttack() {
-        highlightedTiles.clear();
-        IBoardGrid bg = getBoardGrid();
-        Location pieceLocation = ownPiece.getLocation();
-        TileView underTile = bg.getTile(pieceLocation);
-
-
-        //Replace this with conditional loop once different terrain
-        // exists.
-        highlightedTiles.addAll(underTile.getNeighbourViews());
-        for (TileView t : highlightedTiles) {
-            t.setFill(Color.RED);
-        }
+        return visited;
     }
 
 
     //*******************************************************************************
 
 
-    /**
-     * Gets board grid.
-     *
-     * @return the board grid
-     */
-    public IBoardGrid getBoardGrid() {
 
-        return IBoardGrid;
-    }
-
-
-    /**
-     * Update tile info.
-     */
-    public void updateTileInfo() {
-    }
-
-    /**
-     * Sets up swap.
-     */
-    public void setUpSwap() {
-    }
-
-    /**
-     * Create shield.
-     */
-    public void createShield() {
-        DefenceCommand command = new DefenceCommand();
-        command.SetCommand(tf, getOwnPiece());
-        commandProcessor.execute(command);
-    }
-
-    /**
-     * Gets enemy piece.
-     *
-     * @return the enemy piece
-     */
-    public HexagonTileViewPiece getEnemyPiece() {
-        return enemyPiece;
-    }
 
     //*******************************************************
     //*********  COMMAND SECTION ****************************
@@ -352,7 +242,7 @@ public class GameContext {
             locations.add(t.getModelTile().getLocation());
         }
         if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), getOwnPiece(), getBoardGrid(), highlightedTiles);
+            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
             commandProcessor.execute(command);
         }
     }
@@ -386,26 +276,41 @@ public class GameContext {
     public void attackPiece() {
 
         //Validate that the enemy piece is within attack range.
-        if (highlightedTiles.contains(getBoardGrid().getTile(enemyPiece.getLocation()))) {
+        if (highlightedTiles.contains(getBoardGrid().getTile(selectedPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(tf, gm, getEnemyPiece());
+            command.setCommand(tf, gm, selectedPiece);
             commandProcessor.execute(command);
-
-            //Ensure that enemy piece is cleared as next time might be different piece.
-            enemyPiece = null;
-            resetTileColours();
         }
     }
 
     /**
      * Launch special ability.
+     *
      */
     public void launchSpecialAbility() {
-        SpecialCommand command = new SpecialCommand();
-        command.setCommand(getGm(), getOwnPiece().getiPiece());
+        SpecialCommand command = sv.getCommand();
+        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece());
+        commandProcessor.execute(command);
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        for (TileView t : visited) {
+            t.setFill(Color.ANTIQUEWHITE);
+        }
+    }
+
+    public void setSpecialVisitor(SpecialVisitor sv) {
+        this.sv = sv;
+    }
+
+    /**
+     * Create shield.
+     */
+    public void createShield() {
+        DefenceCommand command = new DefenceCommand();
+        command.SetCommand(tf, selectedPiece);
         commandProcessor.execute(command);
     }
+
 
     /**
      * Gets own piece.
@@ -473,6 +378,16 @@ public class GameContext {
         return state;
     }
 
+    /**
+     * Gets board grid.
+     *
+     * @return the board grid
+     */
+    public IBoardGrid getBoardGrid() {
+
+        return IBoardGrid;
+    }
+
 
     public void replayAllMoves() {
         commandProcessor.replayMoves();
@@ -485,6 +400,7 @@ public class GameContext {
      */
     public void setState(states state) {
         this.state = StateFactory.getState(state);
+        highlightTiles(this.state);
     }
 
     public void setPieceSelected(IPiece piece) {
@@ -493,6 +409,55 @@ public class GameContext {
 
     public StringProperty pieceLocationProperty() {
         return pieceLocation;
+    }
+
+    //Can only enter here from OwnPieceSelected or subclasses.
+    public void highlightSpecialTiles(states state, SpecialVisitor sv) {
+        //maybe should assert correct class here.
+        State specialState = StateFactory.getState(state);
+        this.state = specialState;
+        HighlightTilesVisitor hv = sv.getHv();
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited, sv);
+        specialState.accept(hv);
+        highlightedTiles = hv.getTargetTiles();
+    }
+
+    public void highlightTiles(State state) {
+        HighlightTilesVisitor hv = new HighlightTilesVisitor();
+        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        hv.setHighlightVariables(getBoardGrid(), gm, visited, selectedPiece);
+        state.accept(hv);
+        highlightedTiles = hv.getTargetTiles();
+    }
+
+    public List<TileView> getHighlightedTiles() {
+        return highlightedTiles;
+    }
+
+    /**
+     * Select piece.
+     *
+     * @param piece the piece
+     */
+    public void selectPiece(HexagonTileViewPiece piece) {
+        selectedPiece = piece.getiPiece();
+        pieceNameProperty.setValue(selectedPiece.getPieceName().get());
+        pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
+        System.out.println("selectedPiece = " + selectedPiece.getPieceName());
+
+        if (isActivePlayerPiece(piece.getiPiece())) {
+            this.ownPiece = piece;
+            specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
+            state.onSelectOwnPiece(this);
+
+        } else {
+            state.onSelectEnemyPiece(this);
+        }
+    }
+
+    public StringProperty specialAbilityDescriptionProperty() {
+        return specialAbilityDescription;
     }
 
 }

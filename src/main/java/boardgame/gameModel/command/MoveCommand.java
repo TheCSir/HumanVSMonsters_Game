@@ -1,4 +1,4 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 
 //This class is using the Command pattern. This implements the Command interface.
@@ -7,8 +7,8 @@ package boardgame.gameModel.state.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
+import boardgame.gameModel.pieces.IPiece;
 import boardgame.util.Location;
-import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MoveCommand implements Command {
 
-    private HexagonTileViewPiece selectedPiece;
+    private IPiece selectedPiece;
     private Location startingLocation;
     private Location destination;
     private IGameManager gm;
@@ -37,7 +37,7 @@ public class MoveCommand implements Command {
 
         //Check for valid location before move.
         if (locations.contains(destination)) {
-            gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
+            gm.getiBoard().movePiece(selectedPiece, destination);
 
             //End turn
             tf.nextTurn();
@@ -63,14 +63,14 @@ public class MoveCommand implements Command {
         TileView target2 = boardGrid.getTileView(destination);
         gm.getGameContext().clickTile(target2);
 
-        gm.getiBoard().movePiece(selectedPiece.getiPiece(), destination);
+        gm.getiBoard().movePiece(selectedPiece, destination);
 
         // end turn
         tf.nextTurn();
 
     }
 
-    public void SetCommand(IGameManager gm, TurnFacade tf, Location destination, HexagonTileViewPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
+    public void SetCommand(IGameManager gm, TurnFacade tf, Location destination, IPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
         this.tf = tf;
         this.gm = gm;
         this.selectedPiece = selectedPiece;
