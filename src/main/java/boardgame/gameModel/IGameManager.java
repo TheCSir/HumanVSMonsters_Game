@@ -63,21 +63,6 @@ public interface IGameManager {
     IBoard setUpBoard(String boardType, int rows, int columns);
 
     /**
-     * Sets up monster pieces.
-     */
-    void setUpMonsterPieces();
-
-    /**
-     * Sets up human pieces.
-     */
-    void setUpHumanPieces();
-
-    /**
-     * Set up a game with default settings.
-     */
-    void defaultGameSetup();
-
-    /**
      * Sets up pieces as defined from start menu for both players.
      */
     void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,

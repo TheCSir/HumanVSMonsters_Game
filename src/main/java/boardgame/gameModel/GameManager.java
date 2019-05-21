@@ -79,45 +79,6 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public void setUpMonsterPieces() {
-        AbstractPieceFactory ap = FactoryProducer.getFactory(PieceConstants.MONSTERPLAYER);
-        IPiece iPiece = ap.getPiece(PieceConstants.MELEE, LocationFactory.createLocation(0, 0));
-        monsterPieces.add(iPiece);
-    }
-
-    @Override
-    public void setUpHumanPieces() {
-        AbstractPieceFactory apf = FactoryProducer.getFactory(PieceConstants.HUMANPLAYER);
-        IPiece ipiece = apf.getPiece(PieceConstants.RANGED, LocationFactory.createLocation(9, 9));
-        humanPieces.add(ipiece);
-
-    }
-
-    @Override
-    public void defaultGameSetup(){
-        //Add default Human piece
-        setUpHumanPieces();
-
-        //Add default Monster piece
-        setUpMonsterPieces();
-
-        Player player1 = new HumanPlayer(1, Constants.PLAYERNAME1, Constants.INITIALHEALTH, humanPieces, this);
-        Player player2 = new MonsterPlayer(2, Constants.PLAYERNAME1, Constants.INITIALHEALTH, monsterPieces, this);
-        allPlayers.addPlayer(player1);
-        allPlayers.addPlayer(player2);
-
-        //Set up default board.
-        iBoard = setUpBoard(Board2DHex.class.getName(), Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS);
-
-        turn = new Turn();
-        turn.initialiseTurns(allPlayers.getPlayerGroup());
-
-        IBoardGrid.drawBasicGrid(new ArrayList<>(getiBoard().getTiles().values()),
-                Constants.DEFAULTBOARDROWS, Constants.DEFAULTBOARDCOLUMNS, IBoardGrid.getBoardPane());
-
-    }
-
-    @Override
     public void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
                                   int numberOfPieces, int gridRows, int gridColumns) {
         // Create a list of pieces
