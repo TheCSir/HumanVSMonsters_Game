@@ -1,6 +1,7 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;

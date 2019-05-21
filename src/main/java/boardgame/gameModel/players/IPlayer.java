@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
  * IPlayer is the entry point for access to each Player. The IPlayer interface and implementing classes
  * are information experts for their own pieces.
  */
-public interface IPlayer {
+public interface IPlayer extends IPlayerComponent{
     /**
      * Gets a player ID to uniquely identify the player.
      *
