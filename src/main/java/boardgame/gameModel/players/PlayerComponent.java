@@ -10,16 +10,15 @@ public abstract class PlayerComponent {
     // default implementation
 
     public void addPlayer(PlayerComponent playerComponent) {
-
         throw new UnsupportedOperationException();
     }
 
-    // This allows me to remove components
+    // This allows to remove components
     public void removePlayer(PlayerComponent newSongComponent) {
         throw new UnsupportedOperationException();
     }
 
-    // This allows me to get components
+    // This allows to get components
     public PlayerComponent getPlayer(int componentIndex) {
         throw new UnsupportedOperationException();
     }
