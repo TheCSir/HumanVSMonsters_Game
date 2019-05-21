@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class PlayerComponent {
 
     // We throw UnsupportedOperationException so that if
-    // it doesn't make sense for a song, or song group
+    // it doesn't make sense for a Player, or PlayerGroup
     // to inherit a method they can just inherit the
     // default implementation
 
