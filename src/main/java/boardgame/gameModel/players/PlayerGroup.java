@@ -19,7 +19,7 @@ public class PlayerGroup extends PlayerComponent {
         return (PlayerComponent) playerList.get(index);
     }
 
-    public ArrayList<Player> getPlayerGroup() {
+    public ArrayList<IPlayer> getPlayerGroup() {
         return playerList;
     }
 }

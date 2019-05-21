@@ -21,7 +21,7 @@ public class RegisterListeners {
     }
 
 
-    public void registerPlayerListeners(List<Player> players) {
+    public void registerPlayerListeners(List<IPlayer> players) {
 
         for (IPlayer player : players) {
 

@@ -76,7 +76,7 @@ public class Turn {
      *
      * @param players the players
      */
-    public void initialiseTurns(List<Player> players){
+    public void initialiseTurns(List<IPlayer> players){
         int firstTurn = 1;
         this.setTurnNumberProperty(firstTurn);
 
@@ -90,7 +90,7 @@ public class Turn {
      *
      * @param players list of players in the game.
      */
-    public void nextTurn(List<Player> players){
+    public void nextTurn(List<IPlayer> players){
 
         int nextTurn = this.getTurnNumber() + 1;
         this.setTurnNumberProperty(nextTurn);
@@ -107,7 +107,7 @@ public class Turn {
      *
      * @param players List of IPlayers
      */
-    public void checkWin(List<Player> players) {
+    public void checkWin(List<IPlayer> players) {
 
         boolean isOver = false;
         int winner = 0;

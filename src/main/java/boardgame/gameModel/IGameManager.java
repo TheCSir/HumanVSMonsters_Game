@@ -108,7 +108,7 @@ public interface IGameManager {
      *
      * @return the players
      */
-    ArrayList<Player> getPlayers();
+    ArrayList<IPlayer> getPlayers();
 
     /**
      * Gets turn.

@@ -2,7 +2,7 @@ package boardgame.gameModel.players;
 
 import java.util.ArrayList;
 
-public abstract class PlayerComponent {
+public abstract class PlayerComponent implements IPlayerComponent {
 
     // We throw UnsupportedOperationException so that if
     // it doesn't make sense for a Player, or PlayerGroup
@@ -23,7 +23,7 @@ public abstract class PlayerComponent {
         throw new UnsupportedOperationException();
     }
 
-    public ArrayList<Player> getPlayerGroup() {
+    public ArrayList<IPlayer> getPlayerGroup() {
         throw new UnsupportedOperationException();
     }
 }

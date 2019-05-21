@@ -144,16 +144,16 @@ class GameManager implements IGameManager {
 
     @Override
     public void customGameSetup(String humanPlayerName, String monsterPlayerName,
-                                int numberOfPieces, int gridRows, int gridColumns){
+                                int numberOfPieces, int gridRows, int gridColumns) {
 
         //Add custom pieces for each player
         setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces, gridRows, gridColumns);
         setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces, gridRows, gridColumns);
 
-        Player player1 = new HumanPlayer(1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
-        Player player2 = new MonsterPlayer(2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
-        allPlayers.addPlayer(player1);
-        allPlayers.addPlayer(player2);
+        IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
+        IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
+        allPlayers.addPlayer((PlayerComponent) player1);
+        allPlayers.addPlayer((PlayerComponent) player2);
 
         //Set up custom board.
         iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);
@@ -170,7 +170,7 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public ArrayList<Player> getPlayers() {
+    public ArrayList<IPlayer> getPlayers() {
         return allPlayers.getPlayerGroup();
     }
 
