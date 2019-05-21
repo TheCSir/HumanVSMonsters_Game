@@ -1,7 +1,12 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
 
 import boardgame.gameModel.IGameManager;
+import boardgame.gameModel.PieceVisitor;
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.State;
+import boardgame.gameModel.state.states;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
@@ -16,24 +21,20 @@ public class OwnPieceSelected implements State {
         System.out.println("In own piece selected state");
     }
 
-    @Override
-    public void onMove(GameContext gameContext) {
-
-        gameContext.highlightMove();
-        System.out.println("Setting surrounding colour to Red");
-        System.out.println("Setting move state");
-        gameContext.setState(states.MOVE);
-    }
-
     public static OwnPieceSelected getInstance() {
         return Objects.requireNonNullElseGet(ownPieceSelected, OwnPieceSelected::new);
     }
 
     @Override
-    public void onAttack(GameContext gameContext) {
+    public void onMove(GameContext gameContext) {
 
-        //Highlight surrounding tiles.
-        gameContext.highlightAttack();
+        System.out.println("Setting surrounding colour to Red");
+        System.out.println("Setting move state");
+        gameContext.setState(states.MOVE);
+    }
+
+    @Override
+    public void onAttack(GameContext gameContext) {
 
         System.out.println("setting attack state");
 
@@ -45,8 +46,15 @@ public class OwnPieceSelected implements State {
         System.out.println("Set special state");
         //TODO set up new buttons to click.
         //for the moment let's make it a transition.
-        gameContext.launchSpecialAbility();
-        gameContext.setState(states.IDLE);
+        PieceVisitor sv = new PieceVisitor();
+        gameContext.getSelectedPiece().accept(sv);
+        gameContext.highlightSpecialTiles(sv.getState(), sv);
+        //Set the state to the state it should be depending on the PieceVisitor. This state is determined polymorphically.
+        // as the visitor pattern is used.
+        // gameContext.setState(sv.getState());
+
+        //Set special visitor to gamecontext. Gives access to correct command to be called when special ability triggered.
+        gameContext.setSpecialVisitor(sv);
     }
 
     @Override
@@ -58,8 +66,6 @@ public class OwnPieceSelected implements State {
     @Override
     public void onSwap(GameContext gameContext) {
 
-        gameContext.setUpSwap();
-        System.out.println("setting swap state.");
         Pane SwapPane = gameContext.getSwapPane();
         IGameManager gm = gameContext.getGm();
         Button Opt_one = gameContext.getOpt_one();
@@ -136,6 +142,11 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onSwapTwo(GameContext gameContext) {
+
+    }
+
+    @Override
+    public void accept(HighlightVisitor v) {
 
     }
 

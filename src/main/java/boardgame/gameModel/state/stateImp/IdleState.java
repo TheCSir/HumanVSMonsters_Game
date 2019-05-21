@@ -1,4 +1,9 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
+
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.State;
+import boardgame.gameModel.state.states;
 
 public class IdleState implements State {
 
@@ -55,5 +60,10 @@ public class IdleState implements State {
     @Override
     public void onSwapTwo(GameContext gameContext) {
         System.out.println("How did you get here?");
+    }
+
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
     }
 }

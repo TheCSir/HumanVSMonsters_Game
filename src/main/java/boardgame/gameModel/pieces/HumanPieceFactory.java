@@ -17,4 +17,19 @@ public class HumanPieceFactory extends AbstractPieceFactory {
         }
         return null;
     }
+
+    @Override
+    public IPiece getMelee(Location location) {
+        return new Warrior(location);
+    }
+
+    @Override
+    public IPiece getRanged(Location location) {
+        return new Archer(location);
+    }
+
+    @Override
+    public IPiece getSupport(Location location) {
+        return new Priest(location);
+    }
 }

@@ -1,4 +1,4 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

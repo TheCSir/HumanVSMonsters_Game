@@ -10,7 +10,7 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.*;
 import boardgame.gameModel.state.GameContext;
-import boardgame.gameModel.state.IdleState;
+import boardgame.gameModel.state.stateImp.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
 import boardgame.view.BoardGridFactory;
@@ -45,7 +45,7 @@ class GameManager implements IGameManager {
         players = new ArrayList<>();
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
         this.gc = gameController;
-        gameContext = new GameContext(new IdleState(), IBoardGrid, this, gameController);
+        gameContext = new GameContext(new IdleState(), IBoardGrid, this);
     }
 
     @Override

@@ -1,4 +1,9 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
+
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.State;
+import boardgame.gameModel.state.states;
 
 //TODO decide whether this actually needs to be a state.
 public class EnemyPieceSel implements State {
@@ -38,7 +43,7 @@ public class EnemyPieceSel implements State {
     public void onSelectTile(GameContext gameContext) {
 
         //Update View.
-        gameContext.updateTileInfo();
+        //gameContext.updateTileInfo();
 
     }
 
@@ -55,5 +60,10 @@ public class EnemyPieceSel implements State {
     @Override
     public void onSwapTwo(GameContext gameContext) {
         System.out.println("error");
+    }
+
+    @Override
+    public void accept(HighlightVisitor v) {
+        v.visit(this);
     }
 }

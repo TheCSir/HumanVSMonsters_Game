@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -8,15 +9,16 @@ public class Archer extends Human {
     private final StringProperty pieceName = new SimpleStringProperty("Archer");
     //default move speed for character.
     private int moveSpeed = 2;
+    private int attack = 2;
+    private double rangedAttackValue = 3;
+    private int rangedDistance = 3;
 
-    Archer(Location location) {
+    public Archer(Location location) {
         super(location);
     }
 
-    public void basicAttack(){}
-
     public void specialAbility() {
-        System.out.println("Ranged Attack!");
+        System.out.println("Long Range Shot");
     }
 
     @Override
@@ -30,6 +32,11 @@ public class Archer extends Human {
     }
 
     @Override
+    public double getAttack() {
+        return attack;
+    }
+
+    @Override
     public int getMoveSpeed() {
         return moveSpeed;
     }
@@ -37,6 +44,24 @@ public class Archer extends Human {
     @Override
     public void setMoveSpeed(int moveSpeed) {
         this.moveSpeed = moveSpeed;
+    }
+
+    @Override
+    public void accept(SpecialVisitor v) {
+        v.visit(this);
+    }
+
+    @Override
+    public String getSpecialAbilityDescription() {
+        return "Long Range Shot";
+    }
+
+    public double getRangedAttackValue() {
+        return rangedAttackValue;
+    }
+
+    public int getRangedDistance() {
+        return rangedDistance;
     }
 
 }
