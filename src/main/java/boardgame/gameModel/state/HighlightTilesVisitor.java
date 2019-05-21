@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.state.stateImp.*;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.view.IBoardGrid;
@@ -97,7 +98,11 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         }
 
         //Highlight tiles depending on player.
+        for (IPiece piece : gm.getActivePlayer().getPieces()) {
 
+            TileView t = boardGrid.getTile(piece.getLocation());
+            t.setFill(Color.BLUE);
+        }
 
     }
 

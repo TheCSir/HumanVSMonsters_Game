@@ -3,6 +3,7 @@ package boardgame.controller;
 import boardgame.gameModel.GameManagerFactory;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.states;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.TileView;
 import javafx.fxml.FXML;
@@ -143,6 +144,9 @@ public class GameController implements Initializable {
 
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
+
+        //Set state for turn 1.
+        gameContext.setState(states.IDLE);
 
     }
 

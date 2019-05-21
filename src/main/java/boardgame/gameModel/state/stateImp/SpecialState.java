@@ -1,4 +1,6 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
+
+import boardgame.gameModel.state.HighlightVisitor;
 
 public abstract class SpecialState extends OwnPieceSelected {
 

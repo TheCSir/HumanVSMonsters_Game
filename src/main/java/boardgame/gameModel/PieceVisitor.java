@@ -1,12 +1,12 @@
 package boardgame.gameModel;
 
 
+import boardgame.gameModel.command.HealCommand;
+import boardgame.gameModel.command.RangedAttackCommand;
+import boardgame.gameModel.command.SpecialAttackCommand;
+import boardgame.gameModel.command.SpecialCommand;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.HighlightTilesVisitor;
-import boardgame.gameModel.state.command.HealCommand;
-import boardgame.gameModel.state.command.RangedAttackCommand;
-import boardgame.gameModel.state.command.SpecialAttackCommand;
-import boardgame.gameModel.state.command.SpecialCommand;
 import boardgame.gameModel.state.states;
 
 

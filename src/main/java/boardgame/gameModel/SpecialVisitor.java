@@ -1,8 +1,8 @@
 package boardgame.gameModel;
 
+import boardgame.gameModel.command.SpecialCommand;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.HighlightTilesVisitor;
-import boardgame.gameModel.state.command.SpecialCommand;
 import boardgame.gameModel.state.states;
 
 /**
@@ -13,6 +13,8 @@ import boardgame.gameModel.state.states;
  * of the Special Visitor class (PieceVisitor) is passed to a piece. The piece then passes itself back to the
  * Piece Visitor which then determines the Special Ability to take depending on which piece is passed back. This
  * enables the Special Ability to be determined polymorphically with only a very small change to the Piece class.
+ *
+ *
  */
 public interface SpecialVisitor {
 
@@ -74,12 +76,12 @@ public interface SpecialVisitor {
      * Gets a command. The Command from the Command Pattern is stored here and when a Special Ability is triggered the
      * Command stored here polymorphically determines which Special Ability Command to enact (eg. Ranged Attack).
      *
-     * @return the command
+     * @return a Command
      */
     SpecialCommand getCommand();
 
     /**
-     * Gets state.
+     * Gets a game State. Special Visitor stores a game state for retrieval by game context.
      *
      * @return the state
      */

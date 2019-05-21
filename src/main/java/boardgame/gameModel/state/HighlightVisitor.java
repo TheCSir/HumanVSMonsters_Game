@@ -1,5 +1,7 @@
 package boardgame.gameModel.state;
 
+import boardgame.gameModel.state.stateImp.*;
+
 public interface HighlightVisitor {
 
     void visit(RangedAttackState r);

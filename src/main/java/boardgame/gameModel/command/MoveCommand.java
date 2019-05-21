@@ -1,4 +1,4 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 
 //This class is using the Command pattern. This implements the Command interface.

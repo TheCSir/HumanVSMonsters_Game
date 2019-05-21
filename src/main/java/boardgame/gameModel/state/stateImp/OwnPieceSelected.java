@@ -1,8 +1,12 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.PieceVisitor;
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.State;
+import boardgame.gameModel.state.states;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
@@ -17,16 +21,16 @@ public class OwnPieceSelected implements State {
         System.out.println("In own piece selected state");
     }
 
+    public static OwnPieceSelected getInstance() {
+        return Objects.requireNonNullElseGet(ownPieceSelected, OwnPieceSelected::new);
+    }
+
     @Override
     public void onMove(GameContext gameContext) {
 
         System.out.println("Setting surrounding colour to Red");
         System.out.println("Setting move state");
         gameContext.setState(states.MOVE);
-    }
-
-    public static OwnPieceSelected getInstance() {
-        return Objects.requireNonNullElseGet(ownPieceSelected, OwnPieceSelected::new);
     }
 
     @Override

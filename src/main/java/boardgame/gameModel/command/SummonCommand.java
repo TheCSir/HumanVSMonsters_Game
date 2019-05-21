@@ -1,4 +1,4 @@
-package boardgame.gameModel.state.command;
+package boardgame.gameModel.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;

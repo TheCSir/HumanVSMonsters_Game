@@ -11,7 +11,7 @@ import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.gameModel.players.PlayerFactory;
 import boardgame.gameModel.state.GameContext;
-import boardgame.gameModel.state.IdleState;
+import boardgame.gameModel.state.stateImp.IdleState;
 import boardgame.util.Constants;
 import boardgame.util.LocationFactory;
 import boardgame.view.BoardGridFactory;

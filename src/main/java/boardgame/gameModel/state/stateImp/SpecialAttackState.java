@@ -1,5 +1,8 @@
-package boardgame.gameModel.state;
+package boardgame.gameModel.state.stateImp;
 
+import boardgame.gameModel.state.GameContext;
+import boardgame.gameModel.state.HighlightVisitor;
+import boardgame.gameModel.state.states;
 import boardgame.util.Location;
 import boardgame.view.TileView;
 

@@ -1,5 +1,7 @@
 package boardgame.gameModel.state;
 
+import boardgame.gameModel.state.stateImp.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
