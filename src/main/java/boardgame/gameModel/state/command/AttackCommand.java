@@ -23,9 +23,13 @@ public class AttackCommand implements Command {
 
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
 
-            System.out.println("-----------" + enemyPiece.getClass().getSimpleName());
-            gm.getActivePlayer().decreaseMinionHealthProperty(enemyPiece);
-            System.out.println(gm.getAttackedPlayer(enemyPiece));
+            enemyPiece.decreaseHealth(1);
+            System.out.println("Enemy hp is " + enemyPiece.getHealth());
+
+            if (enemyPiece.getHealth()==0) {
+                gm.removePiece(enemyPiece);
+
+            }
 
         }
         else {

@@ -83,6 +83,34 @@ public interface IPiece {
 
     void specialAbility(IGameManager gm);
 
+    /**
+     * Gets isShielded property.
+     *
+     * @return the isAbilityUsed property.
+     */
+    boolean getIsAbilityUsed();
+
+    /**
+     * Sets isAbilityUsed property.
+     *
+     * @param health the new health value.
+     */
+    void decreaseHealth(int health);
+
+    /**
+     * Gets isShielded property.
+     *
+     * @return the isAbilityUsed property.
+     */
+    int getHealth();
+
+    /**
+     * Sets isAbilityUsed property.
+     *
+     * @param isAbilityUsed the isAbilityUsed property.
+     */
+    void setIsAbilityUsed(boolean isAbilityUsed);
+
     String getPieceClass();
 
     StringProperty getPieceName();

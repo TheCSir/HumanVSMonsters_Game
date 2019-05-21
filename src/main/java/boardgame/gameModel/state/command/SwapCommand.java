@@ -55,8 +55,13 @@ public class SwapCommand implements Command {
     @Override
     public void execute() {
 
+        boolean isAbilityUsed;
+
         //Get current piece and it's location
         oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+
+        //get isAbilityUsed
+        isAbilityUsed = oldPiece.getIsAbilityUsed();
 
         //Remove current piece
         tf.removePiece(oldPiece);
@@ -69,6 +74,8 @@ public class SwapCommand implements Command {
         newPiece = apf.getPiece(piece, oldPiece.getLocation());
 
         tf.addPiece(newPiece);
+        //set isAbilityUsed
+        newPiece.setIsAbilityUsed(isAbilityUsed);
 
         //Handle GUI validations
         swapPane.setVisible(false);

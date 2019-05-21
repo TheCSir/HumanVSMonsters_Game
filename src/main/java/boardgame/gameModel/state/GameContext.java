@@ -4,6 +4,7 @@ import boardgame.controller.GameController;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.state.command.*;
 import boardgame.util.Location;
 import boardgame.view.HexagonTileViewPiece;
@@ -40,6 +41,9 @@ public class GameContext {
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
+    private Button swapButton;
+    private Button defendButton;
+    private Button specialAbilityButton;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
 
@@ -152,8 +156,26 @@ public class GameContext {
      *
      * @param piece the piece
      */
-    public void selectPiece(HexagonTileViewPiece piece) {
+    public void selectPiece(HexagonTileViewPiece piece, Button DefendButton, Button AbilityButton, Button SwapButton) {
+
+        this.defendButton = DefendButton;
+        this.specialAbilityButton = AbilityButton;
+        this.swapButton = SwapButton;
+
         selectedPiece = piece.getiPiece();
+
+        if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
+
+            defendButton.setDisable(true);
+            specialAbilityButton.setDisable(true);
+            swapButton.setDisable(true);
+
+        }
+        else {
+            defendButton.setDisable(false);
+            specialAbilityButton.setDisable(false);
+            swapButton.setDisable(false);
+        }
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
         if (isActivePlayerPiece(piece.getiPiece())) {
