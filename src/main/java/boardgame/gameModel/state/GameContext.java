@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import boardgame.gameModel.pieces.PieceConstants;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,6 +38,9 @@ public class GameContext {
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
+    private Button swapButton;
+    private Button defendButton;
+    private Button specialAbilityButton;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
@@ -440,8 +444,27 @@ public class GameContext {
      *
      * @param piece the piece
      */
-    public void selectPiece(HexagonTileViewPiece piece) {
+    public void selectPiece(HexagonTileViewPiece piece,Button DefendButton, Button AbilityButton, Button SwapButton) {
+
+        this.defendButton = DefendButton;
+        this.specialAbilityButton = AbilityButton;
+        this.swapButton = SwapButton;
+
         selectedPiece = piece.getiPiece();
+
+        if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
+
+            defendButton.setDisable(true);
+            specialAbilityButton.setDisable(true);
+            swapButton.setDisable(true);
+
+        }
+        else {
+            defendButton.setDisable(false);
+            specialAbilityButton.setDisable(false);
+            swapButton.setDisable(false);
+        }
+
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
         System.out.println("selectedPiece = " + selectedPiece.getPieceName());

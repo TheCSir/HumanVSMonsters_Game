@@ -160,7 +160,7 @@ public class GameController implements Initializable {
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
         //Update model.
-        gameContext.selectPiece(piece);
+        gameContext.selectPiece(piece,defendButton,specialAbilityButton,swapButton);
 
     }
 

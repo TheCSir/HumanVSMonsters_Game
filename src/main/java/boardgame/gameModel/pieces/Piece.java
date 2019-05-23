@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.util.Constants;
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,6 +13,7 @@ public abstract class Piece implements IPiece {
     private boolean isShielded;
     private int shieldTurn;
     private final ObjectProperty<Location> locationProperty;
+    private int health;
 
     //Used to make piece location observable.
     public ObjectProperty<Location> locationPropertyProperty() {
@@ -22,6 +24,7 @@ public abstract class Piece implements IPiece {
     public Piece(Location location) {
         locationProperty = new SimpleObjectProperty<>(location);
         this.isShielded = false;
+        this.health = Constants.INITIALMINIONHEALTH;
     }
 
     @Override
@@ -75,6 +78,17 @@ public abstract class Piece implements IPiece {
         if (turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
     }
+
+    @Override
+    public int getHealth() {
+        return this.health;
+    }
+
+    @Override
+    public void decreaseHealth(int health) {
+        this.health -= health;
+    }
+
 
     //endregion
 }
