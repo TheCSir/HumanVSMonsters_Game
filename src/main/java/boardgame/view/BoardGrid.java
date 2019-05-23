@@ -122,8 +122,17 @@ public class BoardGrid implements IBoardGrid {
 
     @Override
     public String imageURL(IPiece iPiece) {
+
+        String PieceName = iPiece.getClass().getName();
+
+        if (PieceName == "boardgame.gameModel.pieces.Minion"){
+
+            PieceName = "boardgame.gameModel.pieces." + iPiece.getPieceName().getValue();
+        }
+
+        System.out.println(PieceName);
         return "src/main/resources/"
-                + iPiece.getClass().getName()
+                + PieceName
                 + ".png";
     }
 
