@@ -91,6 +91,9 @@ public class GameController implements Initializable {
     private Text pieceLocation;
 
     @FXML
+    private Text pieceHealth;
+
+    @FXML
     private Button swapButton;
 
     @FXML
@@ -160,7 +163,7 @@ public class GameController implements Initializable {
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
         //Update model.
-        gameContext.selectPiece(piece,defendButton,specialAbilityButton,swapButton);
+        gameContext.selectPiece(piece,defendButton,specialAbilityButton,swapButton,pieceHealth);
 
     }
 

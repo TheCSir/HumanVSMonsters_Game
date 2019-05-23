@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import boardgame.gameModel.pieces.PieceConstants;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,6 +42,7 @@ public class GameContext {
     private Button swapButton;
     private Button defendButton;
     private Button specialAbilityButton;
+    private Text pieceHealth;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
@@ -444,11 +446,13 @@ public class GameContext {
      *
      * @param piece the piece
      */
-    public void selectPiece(HexagonTileViewPiece piece,Button DefendButton, Button AbilityButton, Button SwapButton) {
+    public void selectPiece(HexagonTileViewPiece piece, Button DefendButton,
+                            Button AbilityButton, Button SwapButton, Text PieceHealth) {
 
         this.defendButton = DefendButton;
         this.specialAbilityButton = AbilityButton;
         this.swapButton = SwapButton;
+        this.pieceHealth=PieceHealth;
 
         selectedPiece = piece.getiPiece();
 
@@ -457,12 +461,14 @@ public class GameContext {
             defendButton.setDisable(true);
             specialAbilityButton.setDisable(true);
             swapButton.setDisable(true);
+            pieceHealth.setText("Minion Health: "+Integer.toString(selectedPiece.getHealth()));
 
         }
         else {
             defendButton.setDisable(false);
             specialAbilityButton.setDisable(false);
             swapButton.setDisable(false);
+            pieceHealth.setText("");
         }
 
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
