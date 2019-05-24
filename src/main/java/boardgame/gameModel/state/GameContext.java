@@ -152,19 +152,6 @@ public class GameContext {
     private StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
 
-    // Checks if selected piece belongs to the active player
-    private boolean isActivePlayerPiece(IPiece ipiece) {
-
-        System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        for (IPiece piece : tf.getActivePlayerPieces()) {
-            if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     //*******************************************************************************
 
 
@@ -413,7 +400,7 @@ public class GameContext {
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
         System.out.println("selectedPiece = " + selectedPiece.getPieceName());
 
-        if (isActivePlayerPiece(piece.getiPiece())) {
+        if (tf.isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
             state.onSelectOwnPiece(this);
@@ -448,6 +435,5 @@ public class GameContext {
         opt_one.setText(alternative1.getPieceName().getValue());
         opt_two.setText(alternative2.getPieceName().getValue());
     }
-
-
+    
 }

@@ -53,4 +53,16 @@ public class TurnFacade {
     public void removePiece(IPiece piece) {
         gm.getTurn().getActivePlayer().getPieces().remove(piece);
     }
+
+    // Checks if selected piece belongs to the active player
+    public boolean isActivePlayerPiece(IPiece ipiece) {
+
+        System.out.println("Active player is: " + gm.getTurn().getActivePlayer().getPlayerName());
+        for (IPiece piece : getActivePlayerPieces()) {
+            if (piece.getClass().getSuperclass().equals(ipiece.getClass().getSuperclass())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
