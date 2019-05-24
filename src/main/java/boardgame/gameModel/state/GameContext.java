@@ -4,8 +4,13 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.command.*;
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
+import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
+import boardgame.util.PieceUtil;
 import boardgame.view.HexagonTileViewPiece;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
@@ -16,9 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * The Game context class. This class is the main driver class for the game logic.
@@ -162,35 +165,6 @@ public class GameContext {
     }
 
 
-    public List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
-        //https://www.redblobgames.com/grids/hexagons/
-
-        //Start of very inefficent BFS. Will do for the moment.
-        //Probably refactor and move to separate class.
-        TileView underTile = bg.getTile(location);
-        List<TileView> visited = new ArrayList<>();
-        Queue<TileView> queue = new LinkedList<>();
-        queue.add(underTile);
-        visited.add(underTile);
-        int q = 0;
-        while (!queue.isEmpty() && q < 100000) {
-            //System.out.println("queue = " + queue.peek());
-            TileView x = queue.poll();
-            List<TileView> neighbours = x.getNeighbourViews();
-            int i;
-            for (i = 0; i < neighbours.size(); i++) {
-                TileView tileView = neighbours.get(i);
-                queue.add(neighbours.get(i));
-                if (!visited.contains(tileView)) {
-                    visited.add(neighbours.get(i));
-                }
-            }
-            q++;
-        }
-        return visited;
-    }
-
-
     //*******************************************************************************
 
 
@@ -284,7 +258,7 @@ public class GameContext {
         SpecialCommand command = sv.getCommand();
         command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece());
         commandProcessor.execute(command);
-        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         for (TileView t : visited) {
             t.setFill(Color.ANTIQUEWHITE);
         }
@@ -409,7 +383,7 @@ public class GameContext {
         State specialState = StateFactory.getState(state);
         this.state = specialState;
         HighlightTilesVisitor hv = sv.getHv();
-        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         hv.setHighlightVariables(selectedPiece, getBoardGrid(), gm, tf, visited, sv);
         specialState.accept(hv);
         highlightedTiles = hv.getTargetTiles();
@@ -417,7 +391,7 @@ public class GameContext {
 
     public void highlightTiles(State state) {
         HighlightTilesVisitor hv = new HighlightTilesVisitor();
-        List<TileView> visited = visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
+        List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         hv.setHighlightVariables(getBoardGrid(), gm, visited, selectedPiece);
         state.accept(hv);
         highlightedTiles = hv.getTargetTiles();
@@ -453,5 +427,27 @@ public class GameContext {
     public StringProperty specialAbilityDescriptionProperty() {
         return specialAbilityDescription;
     }
+
+    public void setUpSwap() {
+        Pane SwapPane = getSwapPane();
+        Button opt_one = getOpt_one();
+        Button opt_two = getOpt_two();
+
+        //Switch the disabled status
+        SwapPane.setVisible(!SwapPane.isVisible());
+
+
+        String currentPieceClass = getSelectedPiece().getPieceClass();
+        List<String> altClasses = PieceUtil.alternativeClasses(currentPieceClass);
+
+        IPlayer currentPlayer = getGm().getActivePlayer();
+        AbstractPieceFactory a = FactoryProducer.getFactory(currentPlayer.playerType());
+        IPiece alternative1 = a.getPiece(altClasses.get(0), new Location(0, 0));
+        IPiece alternative2 = a.getPiece(altClasses.get(1), new Location(0, 0));
+
+        opt_one.setText(alternative1.getPieceName().getValue());
+        opt_two.setText(alternative2.getPieceName().getValue());
+    }
+
 
 }
