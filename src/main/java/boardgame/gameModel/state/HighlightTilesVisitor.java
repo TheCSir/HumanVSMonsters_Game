@@ -17,6 +17,10 @@ import java.util.List;
 
 import static boardgame.util.HexGridUtil.offset_distance;
 
+/**
+ * The Highlight Tiles visitor is the concrete implementation of the HighlightVisitor interface. This uses
+ * the visitor pattern. See the HighlightVisitor Interface for detailed Javadocs.
+ */
 public class HighlightTilesVisitor implements HighlightVisitor {
 
     private IPiece selectedPiece;
@@ -46,19 +50,11 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         highlightAttackTiles(enemyPieces);
     }
 
-    public void highlightAttackTiles(List<IPiece> enemyPieces) {
-        for (IPiece piece : enemyPieces) {
-            if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
-                targetTiles.add(boardGrid.getTile(piece.getLocation()));
-                boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
-            } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
-        }
-    }
-
     @Override
     public void visit(SummonState s) {
 
     }
+
 
     @Override
     public void visit(HealState h) {
@@ -71,31 +67,32 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     @Override
     public void visit(EnemyPieceSel enemyPieceSel) {
 
-
     }
 
-    @Override
-    public void visit(IdleState idleState) {
+    //TODO make each tile have a default colour.
+    private static void resetTileColours(IBoardGrid boardGrid) {
         //Reset all tile colours
         for (TileView tile : boardGrid.getTileViewObservableMap().values()) {
             tile.setFill(Color.ANTIQUEWHITE);
         }
+    }
+
+    @Override
+    public void visit(IdleState idleState) {
+
+        //Reset all tile colours.
+        resetTileColours(boardGrid);
 
         //Highlight tiles depending on player.
         for (IPiece piece : gm.getActivePlayer().getPieces()) {
-
             TileView t = boardGrid.getTile(piece.getLocation());
             t.setFill(Color.BLUE);
         }
 
     }
 
-    /**
-     * Highlight tiles that can be moved to.
-     */
     @Override
     public void visit(MoveState moveState) {
-
 
         int movespeed = selectedPiece.getMoveSpeed();
 
@@ -103,7 +100,6 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
         for (TileView tileView : visited) {
             int offDist = offset_distance(pieceLocation, tileView.getLocation());
-
 
             if (offDist <= movespeed) {
                 tileView.setFill(Color.rgb(200, 24, 0));
@@ -134,6 +130,21 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         }
     }
 
+    /**
+     * Highlight attack tiles.
+     *
+     * @param enemyPieces the enemy pieces
+     */
+//Used for highlighting tiles that are within attack range.
+    public void highlightAttackTiles(List<IPiece> enemyPieces) {
+        for (IPiece piece : enemyPieces) {
+            if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
+                targetTiles.add(boardGrid.getTile(piece.getLocation()));
+                boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
+            } else boardGrid.getTile(piece.getLocation()).setFill(Color.LIGHTPINK);
+        }
+    }
+
 
     public void setHighlightVariables(IPiece selectedPiece, IBoardGrid boardGrid, IGameManager gm, TurnFacade tf, List<TileView> visited, SpecialVisitor sv) {
         this.selectedPiece = selectedPiece;
@@ -144,12 +155,14 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         this.sv = sv;
     }
 
+
     public void setHighlightVariables(IBoardGrid boardGrid, IGameManager gm, List<TileView> visited, IPiece selectedPiece) {
         this.boardGrid = boardGrid;
         this.gm = gm;
         this.visited = visited;
         this.selectedPiece = selectedPiece;
     }
+
 
     public void setHighlightDistance(int rangedDistance) {
         this.highlightDistance = rangedDistance;
