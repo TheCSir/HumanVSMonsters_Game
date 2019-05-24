@@ -17,9 +17,6 @@ public class AttackCommand implements Command {
     @Override
     public void execute() {
 
-        System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
-
-        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
 
         // Handle attack if attack is to minion piece
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
