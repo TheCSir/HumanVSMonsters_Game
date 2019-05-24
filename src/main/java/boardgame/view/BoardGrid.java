@@ -34,8 +34,13 @@ public class BoardGrid implements IBoardGrid {
 
     private final GameController gc;
 
+    public ObservableList<HexagonTileViewPiece> getPieceObservableList() {
+        return pieceObservableList;
+    }
+
     private final ObservableList<HexagonTileViewPiece> pieceObservableList = FXCollections.observableArrayList();
     private final ObservableMap<Location, TileView> tileViewObservableMap = FXCollections.observableHashMap();
+
 
     private double radius;
 

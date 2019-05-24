@@ -24,7 +24,6 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Priest priest) {
-        System.out.println("You've triggered a: " + priest.getPieceClass());
         state = states.HEALSTATE;
 
         HealCommand h = new HealCommand();
@@ -34,7 +33,6 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Warrior warrior) {
-        System.out.println("You've triggered a: " + warrior.getPieceClass());
         state = states.SPECIALATTACKSTATE;
 
         hv.setHighlightDistance(1);
@@ -45,7 +43,6 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Archer archer) {
-        System.out.println("You've triggered a: " + archer.getPieceClass());
         state = states.RANGEDATTACK;
 
         hv.setHighlightDistance(archer.getRangedDistance());
@@ -56,17 +53,16 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Griffin piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
     }
 
     @Override
     public void visit(Medusa piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+
     }
 
     @Override
     public void visit(Minotaur piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+
     }
 
     @Override

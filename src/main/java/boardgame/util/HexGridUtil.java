@@ -1,7 +1,12 @@
 package boardgame.util;
 
+import boardgame.view.IBoardGrid;
+import boardgame.view.TileView;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import static java.lang.Math.abs;
 
@@ -76,5 +81,33 @@ public class HexGridUtil {
         int z = hex.getRow();
         int y = -x - z;
         return new Cube(x, y, z);
+    }
+
+    public static List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
+        //https://www.redblobgames.com/grids/hexagons/
+
+        //Start of very inefficent BFS. Will do for the moment.
+        //Probably refactor and move to separate class.
+        TileView underTile = bg.getTile(location);
+        List<TileView> visited = new ArrayList<>();
+        Queue<TileView> queue = new LinkedList<>();
+        queue.add(underTile);
+        visited.add(underTile);
+        int q = 0;
+        while (!queue.isEmpty() && q < 100000) {
+            //System.out.println("queue = " + queue.peek());
+            TileView x = queue.poll();
+            List<TileView> neighbours = x.getNeighbourViews();
+            int i;
+            for (i = 0; i < neighbours.size(); i++) {
+                TileView tileView = neighbours.get(i);
+                queue.add(neighbours.get(i));
+                if (!visited.contains(tileView)) {
+                    visited.add(neighbours.get(i));
+                }
+            }
+            q++;
+        }
+        return visited;
     }
 }

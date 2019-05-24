@@ -187,7 +187,6 @@ class GameManager implements IGameManager {
         IBoardGrid.removePiece(piece);
     }
 
-
     /**
      * Add a piece to the board in response to a change in the model.
      *

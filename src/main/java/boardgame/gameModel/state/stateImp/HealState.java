@@ -18,5 +18,4 @@ public class HealState extends OwnPieceSelected {
         v.visit(this);
     }
 
-
 }
