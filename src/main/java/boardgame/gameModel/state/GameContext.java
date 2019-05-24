@@ -167,6 +167,16 @@ public class GameContext {
         }
         return false;
     }
+//
+//    void setIdlePiece() {
+//        List<IPiece> pieces = tf.getActivePlayerPieces();
+//        IPiece p = pieces.get(0);
+//        for (HexagonTileViewPiece hvp: getBoardGrid().getPieceObservableList()) {
+//            if (hvp.getiPiece().equals(p))
+//                selectPiece(hvp);
+//        }
+
+    //   }
 
 
 
@@ -441,6 +451,7 @@ public class GameContext {
      * @param piece the piece
      */
     public void selectPiece(HexagonTileViewPiece piece) {
+
         selectedPiece = piece.getiPiece();
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
@@ -450,10 +461,17 @@ public class GameContext {
             this.ownPiece = piece;
             specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
             state.onSelectOwnPiece(this);
+//            for (IPiece i : tf.getActivePlayerPieces()) {
+//                if (i.getLocation().equals(piece.getLocation())){
+//                    continue;
+//                }
+////                getBoardGrid().getTile(i.getLocation()).setFill(Color.BLUE);
+//            }
 
         } else {
             state.onSelectEnemyPiece(this);
         }
+
     }
 
     public StringProperty specialAbilityDescriptionProperty() {

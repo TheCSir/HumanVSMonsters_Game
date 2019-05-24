@@ -3,6 +3,7 @@ package boardgame.view;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.tiles.ITile;
 import boardgame.util.Location;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -37,4 +38,6 @@ public interface IBoardGrid {
     Pane getBoardPane();
 
     double calculateTileRadius(int boardRows, int boardColumns);
+
+    ObservableList<HexagonTileViewPiece> getPieceObservableList();
 }

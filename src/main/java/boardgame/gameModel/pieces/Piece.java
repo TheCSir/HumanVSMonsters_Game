@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 /**
     This piece represents a character on the map.
  */
-public abstract class Piece implements IPiece {
+public abstract class Piece implements IPiece, Cloneable {
 
     private boolean isShielded;
     private int shieldTurn;
@@ -74,6 +74,19 @@ public abstract class Piece implements IPiece {
     public void checkShieldTurn(int turnNumber) {
         if (turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
+    }
+
+    public Object clone() {
+        Object clone = null;
+
+        try {
+            clone = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clone;
     }
 
     //endregion

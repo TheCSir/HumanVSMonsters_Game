@@ -56,6 +56,4 @@ public class SpecialAttackCommand extends SpecialCommand {
     public void setSpecialAttackMultiplier(double sAV) {
         this.specialAttackMultiplier = sAV;
     }
-
-
 }

@@ -2,36 +2,31 @@ package boardgame.gameModel.pieces;
 
 import boardgame.util.Location;
 
-import static boardgame.gameModel.pieces.PieceConstants.*;
-
 public class MonsterPieceFactory extends AbstractPieceFactory {
 
-    @Override
-    public IPiece getPiece(String pieceClass, Location location) {
-        switch (pieceClass) {
-            case MELEE:
-                return new Minotaur(location);
-            case RANGED:
-                return new Medusa(location);
-            case SUPPORT:
-                return new Griffin(location);
+
+    private static MonsterPieceFactory instance;
+
+    private MonsterPieceFactory() {
+    }
+
+    public static MonsterPieceFactory getInstance() {
+        if (instance == null) {
+            instance = new MonsterPieceFactory();
         }
-        return null;
+        return instance;
     }
 
     @Override
-    public IPiece getMelee(Location location) {
-        return new Minotaur(location);
+    public Piece getPiece(String pieceClass, Location location) {
+        PiecePrototypes p = PiecePrototypes.getInstance();
+        Piece prototypePiece = p.getMonsterPrototype(pieceClass);
+
+        Piece newPiece = (Piece) prototypePiece.clone();
+        newPiece.setLocation(location);
+
+        return newPiece;
     }
 
-    @Override
-    public IPiece getRanged(Location location) {
-        return new Medusa(location);
-    }
-
-    @Override
-    public IPiece getSupport(Location location) {
-        return new Griffin(location);
-    }
 }
 
