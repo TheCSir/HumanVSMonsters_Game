@@ -37,6 +37,7 @@ public abstract class Player extends PlayerComponent implements IPlayer {
         this.pieces = pieces;
         this.isAbilityUsed=false;
 
+        assert pieces != null;
         pieces.addListener((ListChangeListener<IPiece>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {

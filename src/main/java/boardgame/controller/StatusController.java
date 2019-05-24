@@ -1,7 +1,6 @@
 package boardgame.controller;
 
 import boardgame.gameModel.IGameManager;
-import boardgame.gameModel.TurnFacade;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -54,7 +53,6 @@ public class StatusController extends VBox {
     private Button replay;
 
     private static final Integer STARTTIME = 60;
-    private TurnFacade tf;
     private Timeline timeline;
     private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
@@ -137,7 +135,6 @@ public class StatusController extends VBox {
      */
     public StatusController(IGameManager gm) {
 
-        tf = new TurnFacade(gm);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boardgame/view/status.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

@@ -184,6 +184,7 @@ public class BoardGrid implements IBoardGrid {
             //Create the new tile.
             TileView tile = TileViewFactory.createTileView(xCoord, yCoord, r, hexagonalTile);
             //Set tile handlers
+            assert tile != null;
             tile.setOnMouseClicked(e -> gc.handleTileClicked(tile));
             hexagonTileViewList.add(tile);
 

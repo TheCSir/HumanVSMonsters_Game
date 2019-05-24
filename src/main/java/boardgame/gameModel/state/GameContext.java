@@ -412,7 +412,7 @@ public class GameContext {
             defendButton.setDisable(true);
             specialAbilityButton.setDisable(true);
             swapButton.setDisable(true);
-            pieceHealth.setText("Minion Health: "+Integer.toString(selectedPiece.getHealth()));
+            pieceHealth.setText("Minion Health: " + selectedPiece.getHealth());
 
         }
         else {
@@ -455,6 +455,7 @@ public class GameContext {
 
         IPlayer currentPlayer = getGm().getActivePlayer();
         AbstractPieceFactory a = FactoryProducer.getFactory(currentPlayer.playerType());
+        assert a != null;
         IPiece alternative1 = a.getPiece(altClasses.get(0), new Location(0, 0));
         IPiece alternative2 = a.getPiece(altClasses.get(1), new Location(0, 0));
 

@@ -8,4 +8,5 @@ import boardgame.util.Location;
 public abstract class AbstractPieceFactory {
     public abstract IPiece getPiece(String pieceClass, Location location);
 
+    public abstract IPiece getPieceByName(String pieceName, Location location);
 }

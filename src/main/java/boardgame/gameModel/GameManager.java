@@ -8,7 +8,10 @@ import boardgame.gameModel.pieces.AbstractPieceFactory;
 import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceConstants;
-import boardgame.gameModel.players.*;
+import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.PlayerComponent;
+import boardgame.gameModel.players.PlayerFactory;
+import boardgame.gameModel.players.PlayerGroup;
 import boardgame.gameModel.state.GameContext;
 import boardgame.gameModel.state.stateImp.IdleState;
 import boardgame.util.Constants;
@@ -26,9 +29,9 @@ import java.util.List;
 import java.util.Random;
 
 class GameManager implements IGameManager {
-    PlayerComponent allPlayers = new PlayerGroup();
 
-    private final ArrayList<IPlayer> players;
+    private PlayerComponent allPlayers = new PlayerGroup();
+
     private IBoard iBoard;
     private Turn turn;
 
@@ -42,7 +45,6 @@ class GameManager implements IGameManager {
 
     //Default constructor
     GameManager(Pane boardPane, GameController gameController) {
-        players = new ArrayList<>();
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
         this.gc = gameController;
         gameContext = new GameContext(new IdleState(), IBoardGrid, this);
@@ -92,12 +94,14 @@ class GameManager implements IGameManager {
 
         Random rand = new Random();
 
+
         for (int i = 0; i < numberOfPieces; i++) {
             // generate random location for each piece on the grid
             int rndX = rand.nextInt(gridRows);
             int rndY = rand.nextInt(gridColumns);
 
             AbstractPieceFactory apf = FactoryProducer.getFactory(playerType);
+            assert apf != null;
             IPiece ipiece = apf.getPiece(pieces.get(i), LocationFactory.createLocation(rndX, rndY));
             playerPieces.add(ipiece);
         }
@@ -175,7 +179,6 @@ class GameManager implements IGameManager {
             addPiece(piece);
         }
     }
-
 
     /**
      * Remove a piece from the view.

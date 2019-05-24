@@ -2,7 +2,9 @@ package boardgame.gameModel.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.FactoryProducer;
+import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.GameContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -15,23 +17,6 @@ public class SwapCommand implements Command {
     private IPiece oldPiece;
     private IPiece newPiece;
     private TurnFacade tf;
-
-    public static String getClassFullName(String piece) {
-        if (piece.equals(Warrior.class.getSimpleName())) {
-            return PieceConstants.MELEE;
-        } else if (piece.equals(Priest.class.getSimpleName())) {
-            return PieceConstants.SUPPORT;
-        } else if (piece.equals(Archer.class.getSimpleName())) {
-            return PieceConstants.RANGED;
-        } else if (piece.equals(Medusa.class.getSimpleName())) {
-            return PieceConstants.RANGED;
-        } else if (piece.equals(Griffin.class.getSimpleName())) {
-            return PieceConstants.SUPPORT;
-        } else if (piece.equals(Minotaur.class.getSimpleName())) {
-            return PieceConstants.MELEE;
-        } else
-            return null;
-    }
 
     @Override
     public void undo() {
@@ -65,12 +50,10 @@ public class SwapCommand implements Command {
         //Remove current piece
         tf.removePiece(oldPiece);
 
-        //Get piece full name
-        String piece = getClassFullName(selectionButton.getText());
-
         //Create new piece and add to board
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
-        newPiece = apf.getPiece(piece, oldPiece.getLocation());
+        assert apf != null;
+        newPiece = apf.getPieceByName(selectionButton.getText(), oldPiece.getLocation());
 
         tf.addPiece(newPiece);
 
