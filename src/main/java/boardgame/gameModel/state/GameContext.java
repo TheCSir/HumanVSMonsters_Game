@@ -1,6 +1,5 @@
 package boardgame.gameModel.state;
 
-import boardgame.controller.SpecialButton;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
@@ -106,12 +105,6 @@ public class GameContext {
         this.swapPane = swapPane;
         this.opt_one = opt_one;
         this.opt_two = opt_two;
-        SpecialButton sp1 = new SpecialButton();
-        sp1.setButton(opt_one);
-        //sp1.setiPiece();
-        SpecialButton sp2 = new SpecialButton();
-        sp2.setButton(opt_two);
-
 
         state.onSwap(this);
     }
@@ -167,17 +160,6 @@ public class GameContext {
         }
         return false;
     }
-//
-//    void setIdlePiece() {
-//        List<IPiece> pieces = tf.getActivePlayerPieces();
-//        IPiece p = pieces.get(0);
-//        for (HexagonTileViewPiece hvp: getBoardGrid().getPieceObservableList()) {
-//            if (hvp.getiPiece().equals(p))
-//                selectPiece(hvp);
-//        }
-
-    //   }
-
 
 
     public List<TileView> visitAllTiles(int distance, IBoardGrid bg, Location location) {
@@ -263,7 +245,7 @@ public class GameContext {
      */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, getGm(), swapPane, opt_one);
+        command.SetCommand(tf, getGm(), swapPane, opt_one, this);
         System.out.println("opt_one = " + opt_one.getText());
         commandProcessor.execute(command);
     }
@@ -274,7 +256,7 @@ public class GameContext {
      */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, getGm(), swapPane, opt_two);
+        command.SetCommand(tf, getGm(), swapPane, opt_two, this);
         System.out.println("opt_two = " + opt_two.getText());
         commandProcessor.execute(command);
     }
@@ -461,12 +443,6 @@ public class GameContext {
             this.ownPiece = piece;
             specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
             state.onSelectOwnPiece(this);
-//            for (IPiece i : tf.getActivePlayerPieces()) {
-//                if (i.getLocation().equals(piece.getLocation())){
-//                    continue;
-//                }
-////                getBoardGrid().getTile(i.getLocation()).setFill(Color.BLUE);
-//            }
 
         } else {
             state.onSelectEnemyPiece(this);

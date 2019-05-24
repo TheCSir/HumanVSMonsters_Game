@@ -18,11 +18,11 @@ public class HumanPieceFactory extends AbstractPieceFactory {
 
     @Override
     public Piece getPiece(String pieceClass, Location location) {
-        PiecePrototypes p = PiecePrototypes.getInstance();
-        Piece prototypePiece = p.getHumanPrototype(pieceClass);
+
+        Piece prototypePiece = HumanPrototypes.getInstance().getPrototype(pieceClass);
 
         Piece newPiece = (Piece) prototypePiece.clone();
-        newPiece.setLocation(location);
+        newPiece.setLocationProperty(location);
 
         return newPiece;
     }

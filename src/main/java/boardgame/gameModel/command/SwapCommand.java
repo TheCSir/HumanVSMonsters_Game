@@ -3,11 +3,13 @@ package boardgame.gameModel.command;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.state.GameContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 
 public class SwapCommand implements Command {
     private Button selectionButton;
+    private GameContext gC;
     private Pane swapPane;
     private IGameManager gm;
     private IPiece oldPiece;
@@ -44,11 +46,13 @@ public class SwapCommand implements Command {
 
     }
 
-    public void SetCommand(TurnFacade tf, IGameManager gm, Pane swapPane, Button selectionButton) {
+
+    public void SetCommand(TurnFacade tf, IGameManager gm, Pane swapPane, Button selectionButton, GameContext gC) {
         this.tf = tf;
         this.gm = gm;
         this.swapPane = swapPane;
         this.selectionButton = selectionButton;
+        this.gC = gC;
     }
 
     //Return full name of the piece
@@ -56,7 +60,7 @@ public class SwapCommand implements Command {
     public void execute() {
 
         //Get current piece and it's location
-        oldPiece = gm.getTurn().getActivePlayer().getPieces().get(0);
+        oldPiece = gC.getSelectedPiece();
 
         //Remove current piece
         tf.removePiece(oldPiece);

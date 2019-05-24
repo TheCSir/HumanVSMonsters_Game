@@ -11,7 +11,11 @@ public abstract class Piece implements IPiece, Cloneable {
 
     private boolean isShielded;
     private int shieldTurn;
-    private final ObjectProperty<Location> locationProperty;
+    private ObjectProperty<Location> locationProperty;
+
+    public void setLocationProperty(Location locationProperty) {
+        this.locationProperty = new SimpleObjectProperty<>(locationProperty);
+    }
 
     //Used to make piece location observable.
     public ObjectProperty<Location> locationPropertyProperty() {
