@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.pieces.PieceConstants;
 
 public class AttackCommand implements Command {
     private IGameManager gm;
@@ -17,14 +18,30 @@ public class AttackCommand implements Command {
         System.out.println("enemy piece is: " + enemyPiece.getClass().getName());
 
         System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
 
-        //Store how much damage the attack will reduce for later undo action.
-        health = gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+        // Handle attack if attack is to minion piece
+        if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
 
-        // get attacked player
-        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
-        // end turn
+            enemyPiece.decreaseHealth(1);
+            System.out.println("Enemy hp is " + enemyPiece.getHealth());
+
+
+            if (enemyPiece.getHealth()==0) {
+                gm.removePiece(enemyPiece);
+                gm.getPlayers().get(getOpponentPlayerID(gm.getActivePlayer())).setIsAbilityUsed(false);
+            }
+
+        }
+        else {
+            System.out.println("Attacked player is: " + gm.getAttackedPlayer(enemyPiece).getPlayerName());
+
+            //Store how much damage the attack will reduce for later undo action.
+            health = gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+
+            // get attacked player
+            gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+        }
+
         tf.nextTurn();
     }
 
@@ -48,5 +65,13 @@ public class AttackCommand implements Command {
         this.tf = tf;
         this.gm = gm;
         this.enemyPiece = enemyPiece;
+    }
+
+    private int getOpponentPlayerID(IPlayer activePlayer){
+        if (gm.getPlayers().get(0).equals(activePlayer)) {
+            return 1;
+        }
+        else
+            return 0;
     }
 }

@@ -92,4 +92,18 @@ public interface IPiece {
     void accept(SpecialVisitor v);
 
     String getSpecialAbilityDescription();
+
+    /**
+     * reduce health property.
+     *
+     * @param health the new health value.
+     */
+    void decreaseHealth(int health);
+
+    /**
+     * Gets health property.
+     *
+     * @return the isAbilityUsed property.
+     */
+    int getHealth();
 }

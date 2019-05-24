@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 
 import static org.valid4j.Assertive.require;
 
-public abstract class Player implements IPlayer {
+public abstract class Player extends PlayerComponent implements IPlayer {
 
     //region private Player properties
 
@@ -19,6 +19,7 @@ public abstract class Player implements IPlayer {
     private String playerStatus = Constants.IDEALSTATUS;
     private final DoubleProperty health;
     private ObservableList<IPiece> pieces;
+    private boolean isAbilityUsed;
 
     //endregion
 
@@ -34,6 +35,7 @@ public abstract class Player implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
+        this.isAbilityUsed=false;
 
         pieces.addListener((ListChangeListener<IPiece>) c -> {
             while (c.next()) {
@@ -117,5 +119,15 @@ public abstract class Player implements IPlayer {
 
         //Increase health
         this.setHealthProperty(this.healthProperty().getValue() + healingValue);
+    }
+
+    @Override
+    public boolean getIsAbilityUsed(){
+        return isAbilityUsed;
+    }
+
+    @Override
+    public void setIsAbilityUsed(boolean isAbilityUsed){
+        this.isAbilityUsed = isAbilityUsed;
     }
 }

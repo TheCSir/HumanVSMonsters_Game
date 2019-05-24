@@ -3,6 +3,7 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.players.Player;
 import boardgame.gameModel.state.GameContext;
 import javafx.collections.ObservableList;
 
@@ -60,21 +61,6 @@ public interface IGameManager {
      * @return the up board
      */
     IBoard setUpBoard(String boardType, int rows, int columns);
-
-    /**
-     * Sets up monster pieces.
-     */
-    void setUpMonsterPieces();
-
-    /**
-     * Sets up human pieces.
-     */
-    void setUpHumanPieces();
-
-    /**
-     * Set up a game with default settings.
-     */
-    void defaultGameSetup();
 
     /**
      * Sets up pieces as defined from start menu for both players.
