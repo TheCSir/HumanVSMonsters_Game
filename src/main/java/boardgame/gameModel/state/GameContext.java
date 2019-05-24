@@ -7,6 +7,7 @@ import boardgame.gameModel.command.*;
 import boardgame.gameModel.pieces.AbstractPieceFactory;
 import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
@@ -19,7 +20,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import boardgame.gameModel.pieces.PieceConstants;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -213,7 +213,6 @@ public class GameContext {
     public void swapOne() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(tf, getGm(), swapPane, opt_one, this);
-        System.out.println("opt_one = " + opt_one.getText());
         commandProcessor.execute(command);
     }
 
@@ -224,7 +223,6 @@ public class GameContext {
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
         command.SetCommand(tf, getGm(), swapPane, opt_two, this);
-        System.out.println("opt_two = " + opt_two.getText());
         commandProcessor.execute(command);
     }
 
@@ -249,7 +247,7 @@ public class GameContext {
      */
     public void launchSpecialAbility() {
         SpecialCommand command = sv.getCommand();
-        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece());
+        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece(), getTileView());
         commandProcessor.execute(command);
         List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         for (TileView t : visited) {

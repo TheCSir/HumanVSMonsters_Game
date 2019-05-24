@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.view.TileView;
 
 public class SpecialAttackCommand extends SpecialCommand {
     private TurnFacade tf;
@@ -45,7 +46,7 @@ public class SpecialAttackCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece enemyPiece, IPiece selectedPiece) {
+    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece enemyPiece, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
         this.gm = gm;
         this.enemyPiece = enemyPiece;

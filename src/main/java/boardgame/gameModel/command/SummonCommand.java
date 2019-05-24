@@ -4,17 +4,17 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
-import java.util.Random;
-
 import boardgame.gameModel.pieces.Minion;
 import boardgame.util.Location;
-import boardgame.util.Constants;
+import boardgame.view.TileView;
 
 public class SummonCommand extends SpecialCommand {
 
     private TurnFacade tf;
     private IGameManager gm;
     private String MinionName;
+    private Location destination;
+
 
     @Override
     public void execute() {
@@ -24,7 +24,7 @@ public class SummonCommand extends SpecialCommand {
         if(!gm.getActivePlayer().getIsAbilityUsed()){
             this.doSummon();
             gm.getActivePlayer().setIsAbilityUsed(true);
-            gm.getTurn().nextTurn(gm.getPlayers());
+            tf.nextTurn();
         }
         else {
             System.out.println("Minions Already summoned!");
@@ -43,9 +43,10 @@ public class SummonCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece) {
+    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
         this.gm = gm;
+        destination = tileView.getLocation();
     }
 
     public void setMinionName(String minionName){
@@ -54,15 +55,7 @@ public class SummonCommand extends SpecialCommand {
 
     private void doSummon(){
 
-        Random rand = new Random();
-
-        int x = rand.nextInt(10);
-        int y = rand.nextInt(10);
-
-        Location newLocation = new Location(x,y);
-        IPiece newPiece = new Minion(newLocation,MinionName);
-        gm.addPiece(newPiece);
+        IPiece newPiece = new Minion(destination, MinionName);
+        tf.addPiece(newPiece);
     }
-
-
 }

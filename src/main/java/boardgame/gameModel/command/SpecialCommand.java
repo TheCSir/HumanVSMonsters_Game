@@ -4,6 +4,7 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.view.TileView;
 
 public abstract class SpecialCommand implements Command {
 
@@ -16,7 +17,7 @@ public abstract class SpecialCommand implements Command {
     @Override
     public abstract void redo();
 
-    public abstract void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece);
+    public abstract void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece, TileView tileView);
 
 
 }

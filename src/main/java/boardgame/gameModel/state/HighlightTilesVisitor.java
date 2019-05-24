@@ -5,6 +5,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.stateImp.*;
+import boardgame.gameModel.tiles.ITile;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.util.PieceUtil;
@@ -52,6 +53,12 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(SummonState s) {
+        targetTiles.clear();
+        ITile tiles = gm.getiBoard().getTiles().get(selectedPiece.getLocation());
+        for (ITile tile : tiles.getNeighbours()) {
+            boardGrid.getTile(tile.getLocation()).setFill(Color.RED);
+            targetTiles.add(boardGrid.getTile(tile.getLocation()));
+        }
 
     }
 
@@ -128,6 +135,11 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         for (IPiece piece : ownPieces) {
             boardGrid.getTile(piece.getLocation()).setFill(Color.GREEN);
         }
+    }
+
+    @Override
+    public void visit(OwnPieceSelected ownPieceSelected) {
+
     }
 
     /**

@@ -50,7 +50,6 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Griffin piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
         state = states.SUMMON;
 
         SummonCommand summon = new SummonCommand();
@@ -60,7 +59,7 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Medusa piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+
         state = states.SUMMON;
 
         SummonCommand summon = new SummonCommand();
@@ -70,7 +69,7 @@ public class PieceVisitor implements SpecialVisitor {
 
     @Override
     public void visit(Minotaur piece) {
-        System.out.println("You've triggered a: " + piece.getPieceClass());
+
         state = states.SUMMON;
 
         SummonCommand summon = new SummonCommand();
