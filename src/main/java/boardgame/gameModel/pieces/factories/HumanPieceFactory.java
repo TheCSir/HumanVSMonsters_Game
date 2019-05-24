@@ -1,5 +1,8 @@
-package boardgame.gameModel.pieces;
+package boardgame.gameModel.pieces.factories;
 
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.Piece;
+import boardgame.gameModel.pieces.prototypes.HumanPrototypes;
 import boardgame.util.Location;
 
 public class HumanPieceFactory extends AbstractPieceFactory {

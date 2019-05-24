@@ -1,10 +1,15 @@
-package boardgame.gameModel.pieces;
+package boardgame.gameModel.pieces.prototypes;
 
+import boardgame.gameModel.pieces.*;
 import boardgame.util.Location;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * The concrete implementation for prototype pieces type HumanPlayer.
+ */
 public class HumanPrototypes implements PiecePrototypes {
 
     private static HumanPrototypes instance;
@@ -15,6 +20,11 @@ public class HumanPrototypes implements PiecePrototypes {
         initializeHumanPieceMap();
     }
 
+    /**
+     * Gets the instance or creates a new instance (singleton).
+     *
+     * @return the only instance of HumanPrototypes
+     */
     public static HumanPrototypes getInstance() {
         if (instance == null) {
             instance = new HumanPrototypes();

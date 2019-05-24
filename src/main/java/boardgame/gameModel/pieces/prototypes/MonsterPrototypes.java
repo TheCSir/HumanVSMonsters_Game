@@ -1,10 +1,15 @@
-package boardgame.gameModel.pieces;
+package boardgame.gameModel.pieces.prototypes;
 
+import boardgame.gameModel.pieces.*;
 import boardgame.util.Location;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Concrete implementation of Monster Prototypes for the Monster Player. This class holds a Monster of each
+ * type that can be cloned.
+ */
 public class MonsterPrototypes implements PiecePrototypes {
 
 
