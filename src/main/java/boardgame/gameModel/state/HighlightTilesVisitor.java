@@ -7,6 +7,7 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.stateImp.*;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
+import boardgame.util.PieceUtil;
 import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 import javafx.scene.paint.Color;
@@ -32,37 +33,20 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         //If within range make highlight blue.
         //If enemy piece make highlight red.
 
-        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
-        List<IPiece> allpieces = gm.getAllPieces();
-        List<IPiece> enemyPieces = new ArrayList<>();
-        for (IPiece piece : allpieces) {
-            if (!ownPieces.contains(piece)) {
-                enemyPieces.add(piece);
-            }
-        }
+        List<IPiece> enemyPieces = PieceUtil.getEnemyPieces(gm);
         //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
-        for (IPiece piece : enemyPieces) {
-            System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
-            System.out.println("highlightDistance = " + highlightDistance);
-            if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
-                targetTiles.add(boardGrid.getTile(piece.getLocation()));
-                boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
-            } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
-        }
+        highlightAttackTiles(enemyPieces);
 
     }
 
     @Override
     public void visit(SpecialAttackState s) {
-        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
-        List<IPiece> allpieces = gm.getAllPieces();
-        List<IPiece> enemyPieces = new ArrayList<>();
-        for (IPiece piece : allpieces) {
-            if (!ownPieces.contains(piece)) {
-                enemyPieces.add(piece);
-            }
-        }
+        List<IPiece> enemyPieces = PieceUtil.getEnemyPieces(gm);
         //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
+        highlightAttackTiles(enemyPieces);
+    }
+
+    public void highlightAttackTiles(List<IPiece> enemyPieces) {
         for (IPiece piece : enemyPieces) {
             if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
                 targetTiles.add(boardGrid.getTile(piece.getLocation()));
@@ -135,23 +119,8 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         //If within range make highlight blue.
         //If enemy piece make highlight red.
         highlightDistance = 1;
-        List<IPiece> ownPieces = gm.getActivePlayer().getPieces();
-        List<IPiece> allpieces = gm.getAllPieces();
-        List<IPiece> enemyPieces = new ArrayList<>();
-        for (IPiece piece : allpieces) {
-            if (!ownPieces.contains(piece)) {
-                enemyPieces.add(piece);
-            }
-        }
-        //Colour pieces that can be hit red. Color pieces that can't be hit a different colour.
-        for (IPiece piece : enemyPieces) {
-            System.out.println("HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) = " + HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()));
-            System.out.println("highlightDistance = " + highlightDistance);
-            if (HexGridUtil.offset_distance(piece.getLocation(), selectedPiece.getLocation()) <= highlightDistance) {
-                boardGrid.getTile(piece.getLocation()).setFill(Color.RED);
-                targetTiles.add(boardGrid.getTile(piece.getLocation()));
-            } else boardGrid.getTile(piece.getLocation()).setFill(Color.BLANCHEDALMOND);
-        }
+        List<IPiece> enemyPieces = PieceUtil.getEnemyPieces(gm);
+        highlightAttackTiles(enemyPieces);
     }
 
     @Override
@@ -189,4 +158,5 @@ public class HighlightTilesVisitor implements HighlightVisitor {
     public List<TileView> getTargetTiles() {
         return targetTiles;
     }
+
 }
