@@ -3,14 +3,16 @@ package boardgame.gameModel.command;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.players.IPlayer;
+import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
+import boardgame.gameModel.players.IPlayer;
 
 public class AttackCommand implements Command {
     private IGameManager gm;
     private IPiece enemyPiece;
     private double health;
     private TurnFacade tf;
+    private Minion minion;
 
     @Override
     public void execute() {
@@ -21,7 +23,7 @@ public class AttackCommand implements Command {
 
         // Handle attack if attack is to minion piece
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
-
+            minion = (Minion) enemyPiece;
             enemyPiece.decreaseHealth(1);
             System.out.println("Enemy hp is " + enemyPiece.getHealth());
 
@@ -47,6 +49,13 @@ public class AttackCommand implements Command {
 
     @Override
     public void undo() {
+
+        if (minion != null) {
+            if (minion.getHealth() == 0) {
+                minion.setHealth(1);
+                gm.addPiece(minion);
+            } else minion.setHealth(minion.getHealth() + 1);
+        }
 
         IPlayer player = gm.getAttackedPlayer(enemyPiece);
         player.healthProperty().setValue(player.healthProperty().get() + health);

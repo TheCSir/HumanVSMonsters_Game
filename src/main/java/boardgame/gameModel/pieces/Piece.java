@@ -24,7 +24,6 @@ public abstract class Piece implements IPiece, Cloneable {
         return locationProperty;
     }
 
-
     public Piece(Location location) {
         locationProperty = new SimpleObjectProperty<>(location);
         this.isShielded = false;
@@ -93,6 +92,10 @@ public abstract class Piece implements IPiece, Cloneable {
         this.health -= health;
     }
 
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     public Object clone() {
         Object clone = null;

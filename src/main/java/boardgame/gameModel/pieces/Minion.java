@@ -1,6 +1,5 @@
 package boardgame.gameModel.pieces;
 
-import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,7 +26,6 @@ public class Minion extends Monster {
         this.moveSpeed = moveSpeed;
     }
 
-    public void basicAttack(){}
 
     public double getAttack(){ return attack; }
 

@@ -5,6 +5,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Minion;
+import boardgame.util.Constants;
 import boardgame.util.Location;
 import boardgame.view.TileView;
 
@@ -14,12 +15,11 @@ public class SummonCommand extends SpecialCommand {
     private IGameManager gm;
     private String MinionName;
     private Location destination;
-
+    private Minion newPiece;
+    private int startingHealth;
 
     @Override
     public void execute() {
-
-        System.out.println("It's Summoning Time!");
 
         if(!gm.getActivePlayer().getIsAbilityUsed()){
             this.doSummon();
@@ -35,11 +35,18 @@ public class SummonCommand extends SpecialCommand {
     @Override
     public void undo() {
 
+        gm.getActivePlayer().setIsAbilityUsed(false);
+        gm.removePiece(newPiece);
+        tf.goBackOneTurn();
+
     }
 
     @Override
     public void redo() {
-
+        newPiece.setHealth(Constants.INITIALMINIONHEALTH);
+        gm.getActivePlayer().setIsAbilityUsed(true);
+        gm.addPiece(newPiece);
+        tf.nextTurn();
     }
 
     @Override
@@ -55,7 +62,8 @@ public class SummonCommand extends SpecialCommand {
 
     private void doSummon(){
 
-        IPiece newPiece = new Minion(destination, MinionName);
+        newPiece = new Minion(destination, MinionName);
+        startingHealth = newPiece.getHealth();
         tf.addPiece(newPiece);
     }
 }
