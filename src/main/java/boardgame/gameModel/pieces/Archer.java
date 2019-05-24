@@ -5,6 +5,11 @@ import boardgame.util.Location;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The Archer is a ranged class. It implements two methods not present in other pieces. It has a ranged attack value
+ * and a ranged attack distance which allow its Special Ability Long Range Shot to work. These are called by the Special
+ * visitor class as part of the Visitor Pattern.
+ */
 public class Archer extends Human {
     private final StringProperty pieceName = new SimpleStringProperty("Archer");
     //default move speed for character.
@@ -56,10 +61,17 @@ public class Archer extends Human {
         return "Long Range Shot";
     }
 
+
+    /**
+     * @return a double representing the attack value of the Archer's special attack.
+     */
     public double getRangedAttackValue() {
         return rangedAttackValue;
     }
 
+    /**
+     * @return an int representing how many tiles an archer can shoot.
+     */
     public int getRangedDistance() {
         return rangedDistance;
     }
