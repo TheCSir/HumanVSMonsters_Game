@@ -5,11 +5,8 @@ import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.command.*;
-import boardgame.gameModel.pieces.AbstractPieceFactory;
-import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceConstants;
-import boardgame.gameModel.players.IPlayer;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.util.PieceUtil;
@@ -42,7 +39,17 @@ public class GameContext {
     private SpecialVisitor sv;
     private StringProperty pieceNameProperty = new SimpleStringProperty();
     private StringProperty pieceLocation = new SimpleStringProperty();
-    private StringProperty swapAlternativeOne = new SimpleStringProperty();
+
+
+    private final StringProperty swapAlternativeOne = new SimpleStringProperty();
+
+    public StringProperty swapAlternativeOneProperty() {
+        return swapAlternativeOne;
+    }
+
+    public StringProperty swapAlternativeTwoProperty() {
+        return swapAlternativeTwo;
+    }
     private StringProperty swapAlternativeTwo = new SimpleStringProperty();
     private IPiece selectedPiece;
 
@@ -370,21 +377,16 @@ public class GameContext {
 
     public void setUpSwap() {
 
-        //Switch the disabled status
+        //Switch the disabled status for the Swap Pane in the GUI.
         setSwapPaneVisible(true);
 
-        String currentPieceClass = getSelectedPiece().getPieceClass();
-        List<String> altClasses = PieceUtil.alternativeClasses(currentPieceClass);
+        //Request the names of the other pieces that the piece may be swapped to.
+        String[] altClasses = PieceUtil.getSwapAlternatives(getSelectedPiece().getPieceClass(), gm.getActivePlayer());
 
-        IPlayer currentPlayer = gm.getActivePlayer();
-        AbstractPieceFactory a = FactoryProducer.getFactory(currentPlayer.playerType());
-        assert a != null;
-        IPiece alternative1 = a.getPiece(altClasses.get(0), new Location(0, 0));
-        IPiece alternative2 = a.getPiece(altClasses.get(1), new Location(0, 0));
-        swapAlternativeOne.setValue(alternative1.getPieceName().getValue());
-        swapAlternativeTwo.setValue(alternative2.getPieceName().getValue());
-        gController.setOptOneText(alternative1.getPieceName().getValue());
-        gController.setOptTwoText(alternative2.getPieceName().getValue());
+        //Set the names of the swap classes. These StringProperty values are bound in GameController so the buttons
+        // don't need to be manually set.
+        swapAlternativeOne.setValue(altClasses[0]);
+        swapAlternativeTwo.setValue(altClasses[1]);
     }
 
     public void setSwapPaneVisible(boolean b) {

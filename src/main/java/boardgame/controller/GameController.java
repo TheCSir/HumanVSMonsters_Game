@@ -146,6 +146,9 @@ public class GameController implements Initializable {
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
 
+        Opt_one.textProperty().bind(gameContext.swapAlternativeOneProperty());
+        Opt_two.textProperty().bind(gameContext.swapAlternativeTwoProperty());
+
         //Set state for turn 1.
         gameContext.setState(states.IDLE);
 
