@@ -1,5 +1,6 @@
 package boardgame.gameModel.state;
 
+import boardgame.controller.GameController;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
@@ -18,7 +19,6 @@ import boardgame.view.TileView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ public class GameContext {
 
     private final IGameManager gm;
     private final IBoardGrid IBoardGrid;
+    private final GameController gController;
     private State state;
     private HexagonTileViewPiece ownPiece;
     private TileView tileView;
-    private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
@@ -46,16 +46,17 @@ public class GameContext {
 
     /**
      * Instantiates a new Game context.
-     *
-     * @param state      the state
+     *  @param state      the state
      * @param IBoardGrid the board grid
      * @param gm         the gm
+     * @param gameController
      */
-    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm) {
+    public GameContext(State state, IBoardGrid IBoardGrid, IGameManager gm, GameController gameController) {
         this.state = state;
         this.IBoardGrid = IBoardGrid;
         this.gm = gm;
         tf = new TurnFacade(gm);
+        this.gController = gameController;
     }
 
 
@@ -101,12 +102,10 @@ public class GameContext {
     /**
      * Press swap button.
      *
-     * @param swapPane the swap pane
      * @param opt_one  the opt one
      * @param opt_two  the opt two
      */
-    public void pressSwapButton(Pane swapPane, Button opt_one, Button opt_two) {
-        this.swapPane = swapPane;
+    public void pressSwapButton(Button opt_one, Button opt_two) {
         this.opt_one = opt_one;
         this.opt_two = opt_two;
 
@@ -196,7 +195,7 @@ public class GameContext {
             locations.add(t.getModelTile().getLocation());
         }
         if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(getGm(), tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
+            command.SetCommand(gm, tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
             commandProcessor.execute(command);
         }
     }
@@ -207,7 +206,7 @@ public class GameContext {
      */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, getGm(), swapPane, opt_one, this);
+        command.SetCommand(tf, gm, opt_one, this);
         commandProcessor.execute(command);
     }
 
@@ -217,7 +216,7 @@ public class GameContext {
      */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, getGm(), swapPane, opt_two, this);
+        command.SetCommand(tf, gm, opt_two, this);
         commandProcessor.execute(command);
     }
 
@@ -284,24 +283,6 @@ public class GameContext {
 
 
     //Getters and setters.
-
-    /**
-     * Gets gm.
-     *
-     * @return the gm
-     */
-    public IGameManager getGm() {
-        return gm;
-    }
-
-    /**
-     * Gets swap pane.
-     *
-     * @return the swap pane
-     */
-    public Pane getSwapPane() {
-        return swapPane;
-    }
 
     /**
      * Gets opt one.
@@ -421,18 +402,16 @@ public class GameContext {
     }
 
     public void setUpSwap() {
-        Pane SwapPane = getSwapPane();
         Button opt_one = getOpt_one();
         Button opt_two = getOpt_two();
 
         //Switch the disabled status
-        SwapPane.setVisible(!SwapPane.isVisible());
-
+        setSwapPaneVisible(true);
 
         String currentPieceClass = getSelectedPiece().getPieceClass();
         List<String> altClasses = PieceUtil.alternativeClasses(currentPieceClass);
 
-        IPlayer currentPlayer = getGm().getActivePlayer();
+        IPlayer currentPlayer = gm.getActivePlayer();
         AbstractPieceFactory a = FactoryProducer.getFactory(currentPlayer.playerType());
         assert a != null;
         IPiece alternative1 = a.getPiece(altClasses.get(0), new Location(0, 0));
@@ -442,4 +421,7 @@ public class GameContext {
         opt_two.setText(alternative2.getPieceName().getValue());
     }
 
+    public void setSwapPaneVisible(boolean b) {
+        gController.setSwapPaneVisible(b);
+    }
 }
