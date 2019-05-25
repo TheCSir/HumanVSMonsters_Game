@@ -157,6 +157,8 @@ public class GameContext {
      * Undo the selected action through the command processor.
      */
     public void undo() {
+        //Reset all tiles to avoid weird errors.
+        HighlightTilesVisitor.resetTileColours(getBoardGrid());
         commandProcessor.undo();
     }
 

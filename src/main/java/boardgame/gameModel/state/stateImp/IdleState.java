@@ -36,7 +36,7 @@ public class IdleState implements State {
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
 
-        //Set new State.
+        //Set new State. Need to reenter this state to avoid
         gameContext.setState(states.OWNPIECESELECTED);
     }
 

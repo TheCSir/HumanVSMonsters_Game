@@ -48,7 +48,7 @@ public class EnemyPieceSel implements State {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-
+        gameContext.setState(states.ENEMYPIECESELECTED);
     }
 
     @Override

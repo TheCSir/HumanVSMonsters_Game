@@ -71,17 +71,18 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         }
     }
 
-    @Override
-    public void visit(EnemyPieceSel enemyPieceSel) {
-
-    }
-
     //TODO make each tile have a default colour.
-    private static void resetTileColours(IBoardGrid boardGrid) {
+    public static void resetTileColours(IBoardGrid boardGrid) {
         //Reset all tile colours
         for (TileView tile : boardGrid.getTileViewObservableMap().values()) {
             tile.setFill(Color.ANTIQUEWHITE);
         }
+    }
+
+    @Override
+    public void visit(EnemyPieceSel enemyPieceSel) {
+        resetTileColours(boardGrid);
+        boardGrid.getTile(selectedPiece.getLocation()).setFill(Color.RED);
     }
 
     @Override
