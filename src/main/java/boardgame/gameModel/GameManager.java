@@ -42,7 +42,6 @@ class GameManager implements IGameManager {
     private final GameContext gameContext;
     private final GameController gc;
 
-
     //Default constructor
     GameManager(Pane boardPane, GameController gameController) {
         IBoardGrid = BoardGridFactory.createBoardGrid(boardPane, gameController);
@@ -106,6 +105,7 @@ class GameManager implements IGameManager {
             playerPieces.add(ipiece);
         }
     }
+    
 
     @Override
     public void customGameSetup(String humanPlayerName, String monsterPlayerName,
