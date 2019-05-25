@@ -20,7 +20,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +40,6 @@ public class GameContext {
     private Pane swapPane;
     private Button opt_one;
     private Button opt_two;
-    private Button swapButton;
-    private Button defendButton;
-    private Button specialAbilityButton;
-    private Text pieceHealth;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
@@ -397,30 +392,14 @@ public class GameContext {
      *
      * @param piece the piece
      */
-    public void selectPiece(HexagonTileViewPiece piece, Button DefendButton,
-                            Button AbilityButton, Button SwapButton, Text PieceHealth) {
-
-        this.defendButton = DefendButton;
-        this.specialAbilityButton = AbilityButton;
-        this.swapButton = SwapButton;
-        this.pieceHealth=PieceHealth;
-
+    public void selectPiece(HexagonTileViewPiece piece) {
+        gm.toggleMinionSelectionOff();
         selectedPiece = piece.getiPiece();
 
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
-
-            defendButton.setDisable(true);
-            specialAbilityButton.setDisable(true);
-            swapButton.setDisable(true);
-            pieceHealth.setText("Minion Health: " + selectedPiece.getHealth());
-
+            gm.toggleMinionSelectionOn("Minion Health: " + selectedPiece.getHealth());
         }
-        else {
-            defendButton.setDisable(false);
-            specialAbilityButton.setDisable(false);
-            swapButton.setDisable(false);
-            pieceHealth.setText("");
-        }
+
 
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());

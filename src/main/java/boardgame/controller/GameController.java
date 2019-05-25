@@ -163,8 +163,23 @@ public class GameController implements Initializable {
     public void handlePieceClicked(HexagonTileViewPiece piece) {
 
         //Update model.
-        gameContext.selectPiece(piece,defendButton,specialAbilityButton,swapButton,pieceHealth);
+        gameContext.selectPiece(piece);
 
+    }
+
+    public void toggleMinionSelectionOn(String healthText) {
+
+        defendButton.setDisable(true);
+        specialAbilityButton.setDisable(true);
+        swapButton.setDisable(true);
+        pieceHealth.setText(healthText);
+    }
+
+    public void toggleMinionSelectionOff() {
+        defendButton.setDisable(false);
+        specialAbilityButton.setDisable(false);
+        swapButton.setDisable(false);
+        pieceHealth.setText("");
     }
 
     private void handleMoveClicked() {
@@ -210,5 +225,6 @@ public class GameController implements Initializable {
     private void handleSpecialClicked() {
         gameContext.pressSpecial();
     }
+
 
 }

@@ -140,11 +140,6 @@ class GameManager implements IGameManager {
     }
 
     @Override
-    public void setiBoard(IBoard iBoard) {
-        this.iBoard = iBoard;
-    }
-
-    @Override
     public Turn getTurn() { return turn; }
 
     public IPlayer getAttackedPlayer(IPiece attackedPiece){
@@ -209,5 +204,15 @@ class GameManager implements IGameManager {
     @Override
     public void endTurn() {
         getTurn().nextTurn(allPlayers.getPlayerGroup());
+    }
+
+    @Override
+    public void toggleMinionSelectionOff() {
+        gc.toggleMinionSelectionOff();
+    }
+
+    @Override
+    public void toggleMinionSelectionOn(String healthText) {
+        gc.toggleMinionSelectionOn(healthText);
     }
 }
