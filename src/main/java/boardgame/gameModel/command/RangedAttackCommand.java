@@ -5,6 +5,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.util.HexGridUtil;
 import boardgame.view.TileView;
 
 public class RangedAttackCommand extends SpecialCommand {
@@ -17,26 +18,32 @@ public class RangedAttackCommand extends SpecialCommand {
     private double health;
     private double finalDamage;
     private double healthOfEnemyPlayer;
+    private int rangedDistance;
+    private IPiece ownPiece;
 
     @Override
     public void execute() {
 
-        //If shielded halve the amount of damage.
-        if (selectedPiece.getIsShielded()) {
-            rangedAttackValue = rangedAttackValue / 2;
+        int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
+
+        if (dist <= rangedDistance) {
+            //If shielded halve the amount of damage.
+            if (selectedPiece.getIsShielded()) {
+                rangedAttackValue = rangedAttackValue / 2;
+            }
+
+            //Double the amount of damage.
+            healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+
+            //Store how much damage the attack will reduce for later undo action.
+            health = rangedAttackValue;
+
+            //reduce health.
+            gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
+
+            // end turn
+            tf.nextTurn();
         }
-        //Double the amount of damage.
-        healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
-
-        //Store how much damage the attack will reduce for later undo action.
-        health = rangedAttackValue;
-
-        //reduce health.
-        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
-
-
-        // end turn
-        tf.nextTurn();
     }
 
     @Override
@@ -61,9 +68,14 @@ public class RangedAttackCommand extends SpecialCommand {
         this.sv = sv;
         this.tf = tf;
         this.selectedPiece = selectedPiece;
+        this.ownPiece = ownPiece;
     }
 
     public void setRangedAttackValue(double rangedAttackValue) {
         this.rangedAttackValue = rangedAttackValue;
+    }
+
+    public void setRangedAttackDistance(int rangedDistance) {
+        this.rangedDistance = rangedDistance;
     }
 }

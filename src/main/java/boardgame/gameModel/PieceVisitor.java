@@ -45,6 +45,7 @@ public class PieceVisitor implements SpecialVisitor {
         hv.setHighlightDistance(archer.getRangedDistance());
         RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
         rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
+        rangedAttackCommand.setRangedAttackDistance(archer.getRangedDistance());
         specialCommand = rangedAttackCommand;
     }
 
