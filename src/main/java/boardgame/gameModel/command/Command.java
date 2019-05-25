@@ -5,7 +5,8 @@ package boardgame.gameModel.command;
  * The interface Command. Our game uses the Command pattern for when a player executes actions such as moving a piece
  * attacking etc. We chose to use the Command pattern for several reasons. First it enables us to store history. Because
  * a Command is an object and not a method the State variables used to execute a command can be stored in a data structure
- * such as a stack. Secondly, it is easy to add new Commands with minimal changes to existing classes. Thirdly it
+ * such as a stack. In our game the CommandProcessor class stores the stack of commands.
+ * Secondly, it is easy to add new Commands with minimal changes to existing classes. Thirdly it
  * supports polymorhically calling different command depending on the caller. In our game our pieces each have a special
  * ability. We can determine which ability to call by having an abstract SpecialCommand class which then has
  * subclasses with the type of Special Ability (Ranged Attack etc...). See the visitor pattern (Special Visitor and
