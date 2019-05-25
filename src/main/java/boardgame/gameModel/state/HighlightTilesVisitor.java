@@ -112,7 +112,6 @@ public class HighlightTilesVisitor implements HighlightVisitor {
                 tileView.setFill(Color.rgb(200, 24, 0));
                 targetTiles.add(tileView);
             }
-
         }
     }
 
@@ -139,7 +138,8 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(OwnPieceSelected ownPieceSelected) {
-
+        resetTileColours(boardGrid);
+        boardGrid.getTile(selectedPiece.getLocation()).setFill(Color.BLUE);
     }
 
     /**

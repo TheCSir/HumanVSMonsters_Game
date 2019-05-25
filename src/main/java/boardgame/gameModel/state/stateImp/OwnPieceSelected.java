@@ -10,7 +10,6 @@ import boardgame.gameModel.state.states;
 public class OwnPieceSelected implements State {
 
     public OwnPieceSelected() {
-        //Nothing happens if selecting own state.
     }
 
     @Override
@@ -47,7 +46,8 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
-
+        //Set new State.
+        gameContext.setState(states.OWNPIECESELECTED);
     }
 
     @Override
