@@ -43,6 +43,9 @@ public class GameContext {
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
+    private StringProperty pieceNameProperty = new SimpleStringProperty();
+    private StringProperty pieceLocation = new SimpleStringProperty();
+    private IPiece selectedPiece;
 
     /**
      * Instantiates a new Game context.
@@ -137,9 +140,7 @@ public class GameContext {
         state.onSelectTile(this);
     }
 
-    private StringProperty pieceNameProperty = new SimpleStringProperty();
-    private StringProperty pieceLocation = new SimpleStringProperty();
-    private IPiece selectedPiece;
+
 
     public StringProperty pieceNamePropertyProperty() {
         return pieceNameProperty;
@@ -336,13 +337,6 @@ public class GameContext {
         highlightTiles(this.state);
     }
 
-    public void setPieceSelected(IPiece piece) {
-        this.selectedPiece = piece;
-    }
-
-    public StringProperty pieceLocationProperty() {
-        return pieceLocation;
-    }
 
     //Can only enter here from OwnPieceSelected or subclasses.
     public void highlightSpecialTiles(states state, SpecialVisitor sv) {
@@ -384,7 +378,6 @@ public class GameContext {
 
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
-        System.out.println("selectedPiece = " + selectedPiece.getPieceName());
 
         if (tf.isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
@@ -423,5 +416,14 @@ public class GameContext {
 
     public void setSwapPaneVisible(boolean b) {
         gController.setSwapPaneVisible(b);
+    }
+
+
+    public void setPieceSelected(IPiece piece) {
+        this.selectedPiece = piece;
+    }
+
+    public StringProperty pieceLocationProperty() {
+        return pieceLocation;
     }
 }

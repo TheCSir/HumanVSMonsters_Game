@@ -18,7 +18,6 @@ public class SpecialAttackCommand extends SpecialCommand {
 
     @Override
     public void execute() {
-        System.out.println("It's special attack time!");
         //Store how much damage the attack will reduce for later undo action.
         health = gm.getAttackedPlayer(selectedPiece).calculateDamage(selectedPiece);
 
@@ -51,7 +50,6 @@ public class SpecialAttackCommand extends SpecialCommand {
         this.gm = gm;
         this.enemyPiece = enemyPiece;
         this.selectedPiece = selectedPiece;
-        System.out.println("selectedPiece.getPieceName() = " + selectedPiece.getPieceName());
     }
 
     public void setSpecialAttackMultiplier(double sAV) {

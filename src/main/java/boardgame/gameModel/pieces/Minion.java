@@ -40,6 +40,8 @@ public class Minion extends Monster {
     public StringProperty getPieceName() {
         return pieceName;
     }
+
+    //Minion does not have it's own special ability.
     @Override
     public void accept(SpecialVisitor v) {
 

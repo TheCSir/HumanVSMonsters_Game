@@ -9,7 +9,7 @@ public class AttackState extends OwnPieceSelected {
 
     @Override
     public void onAttack(GameContext gameContext) {
-        System.out.println("Already in attack state");
+        //Does nothing if already in attack state.
     }
 
 
@@ -18,7 +18,6 @@ public class AttackState extends OwnPieceSelected {
 
         gameContext.attackPiece();
         gameContext.setState(states.IDLE);
-        System.out.println(gameContext.getState().getClass().getSimpleName());
     }
 
     @Override

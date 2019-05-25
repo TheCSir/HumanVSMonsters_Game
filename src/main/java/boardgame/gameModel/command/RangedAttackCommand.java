@@ -23,11 +23,6 @@ public class RangedAttackCommand extends SpecialCommand {
     @Override
     public void execute() {
 
-        System.out.println("enemy piece is: " + selectedPiece.getClass().getName());
-
-        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        System.out.println("Attacked player is: " + gm.getAttackedPlayer(selectedPiece).getPlayerName());
-
         //If shielded halve the amount of damage.
         if (selectedPiece.getIsShielded()) {
             rangedAttackValue = rangedAttackValue / 2;

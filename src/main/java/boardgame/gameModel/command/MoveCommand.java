@@ -32,7 +32,6 @@ public class MoveCommand implements Command {
         locations.clear();
         for (TileView highlightedTile : highlightedTiles) {
             locations.add(highlightedTile.getLocation());
-            System.out.println("highlightedTile.getLocation() = " + highlightedTile.getLocation());
         }
 
         //Check for valid location before move.
@@ -41,7 +40,6 @@ public class MoveCommand implements Command {
 
             //End turn
             tf.nextTurn();
-            System.out.println("Piece moved");
         }
     }
 
