@@ -22,6 +22,10 @@ import java.util.List;
 
 /**
  * The Game context class. This class is the main driver class for the game logic.
+ * It is the glue between the State, Command and Visitor patterns that that implement the
+ * behaviour. As a result this class has a higher amount of coupling than most other
+ * classes in our game where we have tried to have as much abstraction as possible to enable flexibility.
+ * What we have done with this class however is move most of the implementation details out of the class.
  * Actions that the user takes are processed as Commands using the Command pattern.
  * A State machine is used and is implemented using the State Pattern. This ensures
  * that a game piece is in the correct state before a Command is issued.
@@ -37,20 +41,14 @@ public class GameContext {
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
-    private StringProperty pieceNameProperty = new SimpleStringProperty();
-    private StringProperty pieceLocation = new SimpleStringProperty();
 
-
+    //These StringProperties are bound in GameController
+    private final StringProperty pieceNameProperty = new SimpleStringProperty();
+    private final StringProperty pieceLocation = new SimpleStringProperty();
     private final StringProperty swapAlternativeOne = new SimpleStringProperty();
+    private final StringProperty swapAlternativeTwo = new SimpleStringProperty();
+    private final StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
-    public StringProperty swapAlternativeOneProperty() {
-        return swapAlternativeOne;
-    }
-
-    public StringProperty swapAlternativeTwoProperty() {
-        return swapAlternativeTwo;
-    }
-    private StringProperty swapAlternativeTwo = new SimpleStringProperty();
     private IPiece selectedPiece;
 
     /**
@@ -140,23 +138,7 @@ public class GameContext {
         state.onSelectTile(this);
     }
 
-
-
-    public StringProperty pieceNamePropertyProperty() {
-        return pieceNameProperty;
-    }
-
-    public IPiece getSelectedPiece() {
-        return selectedPiece;
-    }
-
-    private StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
-
-
     //*******************************************************************************
-
-
-
 
     //*******************************************************
     //*********  COMMAND SECTION ****************************
@@ -242,16 +224,12 @@ public class GameContext {
      */
     public void launchSpecialAbility() {
         SpecialCommand command = sv.getCommand();
-        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getSelectedPiece(), getTileView());
+        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getTileView());
         commandProcessor.execute(command);
         List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         for (TileView t : visited) {
             t.setFill(Color.ANTIQUEWHITE);
         }
-    }
-
-    public void setSpecialVisitor(SpecialVisitor sv) {
-        this.sv = sv;
     }
 
     /**
@@ -262,48 +240,6 @@ public class GameContext {
         command.SetCommand(tf, selectedPiece);
         commandProcessor.execute(command);
     }
-
-
-    /**
-     * Gets own piece.
-     *
-     * @return the own piece
-     */
-    public HexagonTileViewPiece getOwnPiece() {
-        return ownPiece;
-    }
-
-    /**
-     * Gets tile view.
-     *
-     * @return the tile view
-     */
-    public TileView getTileView() {
-        return tileView;
-    }
-
-
-    //Getters and setters.
-
-    /**
-     * Gets state.
-     *
-     * @return the state
-     */
-    public State getState() {
-        return state;
-    }
-
-    /**
-     * Gets board grid.
-     *
-     * @return the board grid
-     */
-    public IBoardGrid getBoardGrid() {
-
-        return IBoardGrid;
-    }
-
 
     public void replayAllMoves() {
         commandProcessor.replayMoves();
@@ -339,10 +275,6 @@ public class GameContext {
         highlightedTiles = hv.getTargetTiles();
     }
 
-    public List<TileView> getHighlightedTiles() {
-        return highlightedTiles;
-    }
-
     /**
      * Select piece.
      *
@@ -356,7 +288,6 @@ public class GameContext {
             gm.toggleMinionSelectionOn("Minion Health: " + selectedPiece.getHealth());
         }
 
-
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
 
@@ -368,11 +299,6 @@ public class GameContext {
         } else {
             state.onSelectEnemyPiece(this);
         }
-
-    }
-
-    public StringProperty specialAbilityDescriptionProperty() {
-        return specialAbilityDescription;
     }
 
     public void setUpSwap() {
@@ -389,6 +315,7 @@ public class GameContext {
         swapAlternativeTwo.setValue(altClasses[1]);
     }
 
+    //Getters and setters.
     public void setSwapPaneVisible(boolean b) {
         gController.setSwapPaneVisible(b);
     }
@@ -399,5 +326,49 @@ public class GameContext {
 
     public StringProperty pieceLocationProperty() {
         return pieceLocation;
+    }
+
+    public StringProperty swapAlternativeTwoProperty() {
+        return swapAlternativeTwo;
+    }
+
+    public StringProperty swapAlternativeOneProperty() {
+        return swapAlternativeOne;
+    }
+
+    public HexagonTileViewPiece getOwnPiece() {
+        return ownPiece;
+    }
+
+    public TileView getTileView() {
+        return tileView;
+    }
+
+    public StringProperty specialAbilityDescriptionProperty() {
+        return specialAbilityDescription;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public IBoardGrid getBoardGrid() {
+        return IBoardGrid;
+    }
+
+    public StringProperty pieceNamePropertyProperty() {
+        return pieceNameProperty;
+    }
+
+    public IPiece getSelectedPiece() {
+        return selectedPiece;
+    }
+
+    public void setSpecialVisitor(SpecialVisitor sv) {
+        this.sv = sv;
+    }
+
+    public List<TileView> getHighlightedTiles() {
+        return highlightedTiles;
     }
 }

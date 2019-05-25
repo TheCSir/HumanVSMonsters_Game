@@ -29,7 +29,6 @@ public class SummonCommand extends SpecialCommand {
         else {
             System.out.println("Minions Already summoned!");
         }
-
     }
 
     @Override
@@ -50,7 +49,7 @@ public class SummonCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece, TileView tileView) {
+    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
         this.gm = gm;
         destination = tileView.getLocation();

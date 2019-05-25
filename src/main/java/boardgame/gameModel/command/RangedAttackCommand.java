@@ -11,10 +11,8 @@ public class RangedAttackCommand extends SpecialCommand {
 
     private double rangedAttackValue;
     private IGameManager gm;
-    private IPiece piece;
     private SpecialVisitor sv;
     private TurnFacade tf;
-    private IPiece iPiece;
     private IPiece selectedPiece;
     private double health;
     private double finalDamage;
@@ -58,12 +56,10 @@ public class RangedAttackCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece, TileView tileView) {
+    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.gm = gm;
-        this.piece = piece;
         this.sv = sv;
         this.tf = tf;
-        this.iPiece = iPiece;
         this.selectedPiece = selectedPiece;
     }
 

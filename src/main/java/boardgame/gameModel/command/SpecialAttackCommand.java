@@ -10,7 +10,6 @@ public class SpecialAttackCommand extends SpecialCommand {
     private TurnFacade tf;
     private IGameManager gm;
     private double health;
-    private IPiece enemyPiece;
     private double specialAttackMultiplier;
     private double finalDamage;
     private double healthOfEnemyPlayer;
@@ -22,7 +21,7 @@ public class SpecialAttackCommand extends SpecialCommand {
         health = gm.getAttackedPlayer(selectedPiece).calculateDamage(selectedPiece);
 
         //Double the amount of damage.
-        healthOfEnemyPlayer = gm.getAttackedPlayer(enemyPiece).healthProperty().get();
+        healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
 
         finalDamage = health * specialAttackMultiplier;
 
@@ -35,20 +34,19 @@ public class SpecialAttackCommand extends SpecialCommand {
     @Override
     public void undo() {
         tf.goBackOneTurn();
-        gm.getAttackedPlayer(enemyPiece).increaseHealthProperty(finalDamage);
+        gm.getAttackedPlayer(selectedPiece).increaseHealthProperty(finalDamage);
     }
 
     @Override
     public void redo() {
-        gm.getAttackedPlayer(enemyPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
         tf.nextTurn();
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece enemyPiece, IPiece selectedPiece, TileView tileView) {
+    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
         this.gm = gm;
-        this.enemyPiece = enemyPiece;
         this.selectedPiece = selectedPiece;
     }
 

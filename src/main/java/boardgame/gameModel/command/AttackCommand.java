@@ -17,7 +17,6 @@ public class AttackCommand implements Command {
     @Override
     public void execute() {
 
-
         // Handle attack if attack is to minion piece
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
             minion = (Minion) enemyPiece;

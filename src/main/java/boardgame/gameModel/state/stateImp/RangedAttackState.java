@@ -9,7 +9,6 @@ public class RangedAttackState extends SpecialState {
 
     @Override
     public void onSelectEnemyPiece(GameContext gameContext) {
-
         gameContext.launchSpecialAbility();
         gameContext.setState(states.IDLE);
     }

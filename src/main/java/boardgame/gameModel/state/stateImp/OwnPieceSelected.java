@@ -13,10 +13,8 @@ public class OwnPieceSelected implements State {
         //Nothing happens if selecting own state.
     }
 
-
     @Override
     public void onMove(GameContext gameContext) {
-
         gameContext.setState(states.MOVE);
     }
 
@@ -27,12 +25,9 @@ public class OwnPieceSelected implements State {
 
     @Override
     public void onSpecial(GameContext gameContext) {
-
-
         PieceVisitor sv = new PieceVisitor();
         gameContext.getSelectedPiece().accept(sv);
         gameContext.highlightSpecialTiles(sv.getState(), sv);
-
 
         //Set special visitor to gamecontext. Gives access to correct command to be called when special ability triggered.
         gameContext.setSpecialVisitor(sv);
@@ -47,10 +42,8 @@ public class OwnPieceSelected implements State {
     public void onSwap(GameContext gameContext) {
 
         gameContext.setUpSwap();
-
         gameContext.setState(states.SWAP);
     }
-
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
