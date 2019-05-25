@@ -26,7 +26,6 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 class GameManager implements IGameManager {
 
@@ -81,7 +80,7 @@ class GameManager implements IGameManager {
 
     @Override
     public void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
-                                  int numberOfPieces, int gridRows, int gridColumns) {
+                                  int numberOfPieces, int gridRows, int gridColumns, String orientation) {
         // Create a list of pieces
         List<String> pieces = new ArrayList<>();
         pieces.add(PieceConstants.MELEE);
@@ -91,29 +90,48 @@ class GameManager implements IGameManager {
         // Randomise list
         Collections.shuffle(pieces);
 
-        Random rand = new Random();
+        int start = 0;
+        if (orientation.equals("left")) {
+            start = gridRows - 1;
+        }
 
+        List<Integer> locationPositions = positions(gridColumns, numberOfPieces);
 
         for (int i = 0; i < numberOfPieces; i++) {
             // generate random location for each piece on the grid
-            int rndX = rand.nextInt(gridRows);
-            int rndY = rand.nextInt(gridColumns);
 
             AbstractPieceFactory apf = FactoryProducer.getFactory(playerType);
             assert apf != null;
-            IPiece ipiece = apf.getPiece(pieces.get(i), LocationFactory.createLocation(rndX, rndY));
+            IPiece ipiece = apf.getPiece(pieces.get(i), LocationFactory.createLocation(locationPositions.get(i), start));
             playerPieces.add(ipiece);
         }
     }
-    
+
+    private List<Integer> positions(int upperBound, int pieceNum) {
+        List<Integer> numbers = new ArrayList<>();
+
+        for (int i = 0; i < upperBound; i++) {
+            numbers.add(i);
+        }
+        Collections.shuffle(numbers);
+
+        List<Integer> returnNumbers = new ArrayList<>();
+        for (int i = 0; i < pieceNum; i++) {
+            returnNumbers.add(numbers.get(i));
+        }
+
+        return returnNumbers;
+    }
+
+
 
     @Override
     public void customGameSetup(String humanPlayerName, String monsterPlayerName,
                                 int numberOfPieces, int gridRows, int gridColumns) {
 
         //Add custom pieces for each player
-        setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces, gridRows, gridColumns);
-        setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces, gridRows, gridColumns);
+        setUpCustomPieces(PieceConstants.HUMANPLAYER, humanPieces, numberOfPieces, gridRows, gridColumns, "left");
+        setUpCustomPieces(PieceConstants.MONSTERPLAYER, monsterPieces, numberOfPieces, gridRows, gridColumns, "right");
 
         IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
         IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);

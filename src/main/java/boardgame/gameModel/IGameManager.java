@@ -64,8 +64,9 @@ public interface IGameManager {
     /**
      * Sets up pieces as defined from start menu for both players.
      */
+
     void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
-                           int numberOfPieces, int gridRows, int gridColumns);
+                           int numberOfPieces, int gridRows, int gridColumns, String orientation);
 
     /**
      * Set up a game with custom settings from menu.
