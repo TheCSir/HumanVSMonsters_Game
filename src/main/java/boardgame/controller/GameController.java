@@ -184,8 +184,8 @@ public class GameController implements Initializable {
         gameContext.pressMove();
     }
 
-    private void handleSwapAction(Button Opt_one, Button Opt_two, GameContext gc) {
-        gc.pressSwapButton(Opt_one, Opt_two);
+    private void handleSwapAction(GameContext gc) {
+        gc.pressSwapButton();
     }
 
     private void handleSwapOne(GameContext gc) {
@@ -211,7 +211,7 @@ public class GameController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> handleSwapAction(Opt_one, Opt_two, gameContext));
+        swapButton.setOnAction(e -> handleSwapAction(gameContext));
         Opt_one.setOnAction(e -> handleSwapOne(gameContext));
         Opt_two.setOnAction(e -> handleSwapTwo(gameContext));
         //defense code
@@ -225,5 +225,13 @@ public class GameController implements Initializable {
 
     public void setSwapPaneVisible(boolean b) {
         SwapPane.setVisible(b);
+    }
+
+    public void setOptOneText(String text) {
+        Opt_one.setText(text);
+    }
+
+    public void setOptTwoText(String text) {
+        Opt_two.setText(text);
     }
 }

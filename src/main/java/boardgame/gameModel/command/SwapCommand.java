@@ -6,15 +6,14 @@ import boardgame.gameModel.pieces.AbstractPieceFactory;
 import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.GameContext;
-import javafx.scene.control.Button;
 
 public class SwapCommand implements Command {
-    private Button selectionButton;
     private GameContext gC;
     private IGameManager gm;
     private IPiece oldPiece;
     private IPiece newPiece;
     private TurnFacade tf;
+    private String swapAlternativeClass;
 
     @Override
     public void undo() {
@@ -30,10 +29,10 @@ public class SwapCommand implements Command {
     }
 
 
-    public void SetCommand(TurnFacade tf, IGameManager gm, Button selectionButton, GameContext gC) {
+    public void SetCommand(TurnFacade tf, IGameManager gm, String swapAlternativeClass, GameContext gC) {
         this.tf = tf;
         this.gm = gm;
-        this.selectionButton = selectionButton;
+        this.swapAlternativeClass = swapAlternativeClass;
         this.gC = gC;
     }
 
@@ -50,7 +49,7 @@ public class SwapCommand implements Command {
         //Create new piece and add to board
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
         assert apf != null;
-        newPiece = apf.getPieceByName(selectionButton.getText(), oldPiece.getLocation());
+        newPiece = apf.getPieceByName(swapAlternativeClass, oldPiece.getLocation());
 
         tf.addPiece(newPiece);
 

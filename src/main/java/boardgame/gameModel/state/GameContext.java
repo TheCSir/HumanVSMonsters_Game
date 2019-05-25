@@ -18,7 +18,6 @@ import boardgame.view.IBoardGrid;
 import boardgame.view.TileView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -38,13 +37,13 @@ public class GameContext {
     private State state;
     private HexagonTileViewPiece ownPiece;
     private TileView tileView;
-    private Button opt_one;
-    private Button opt_two;
     private List<TileView> highlightedTiles = new ArrayList<>();
     private TurnFacade tf;
     private SpecialVisitor sv;
     private StringProperty pieceNameProperty = new SimpleStringProperty();
     private StringProperty pieceLocation = new SimpleStringProperty();
+    private StringProperty swapAlternativeOne = new SimpleStringProperty();
+    private StringProperty swapAlternativeTwo = new SimpleStringProperty();
     private IPiece selectedPiece;
 
     /**
@@ -103,15 +102,9 @@ public class GameContext {
     }
 
     /**
-     * Press swap button.
-     *
-     * @param opt_one  the opt one
-     * @param opt_two  the opt two
+     * Press swap button. This will set the state to swap
      */
-    public void pressSwapButton(Button opt_one, Button opt_two) {
-        this.opt_one = opt_one;
-        this.opt_two = opt_two;
-
+    public void pressSwapButton() {
         state.onSwap(this);
     }
 
@@ -207,7 +200,7 @@ public class GameContext {
      */
     public void swapOne() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, gm, opt_one, this);
+        command.SetCommand(tf, gm, swapAlternativeOne.get(), this);
         commandProcessor.execute(command);
     }
 
@@ -217,7 +210,7 @@ public class GameContext {
      */
     public void swapTwo() {
         SwapCommand command = new SwapCommand();
-        command.SetCommand(tf, gm, opt_two, this);
+        command.SetCommand(tf, gm, swapAlternativeTwo.get(), this);
         commandProcessor.execute(command);
     }
 
@@ -286,24 +279,6 @@ public class GameContext {
     //Getters and setters.
 
     /**
-     * Gets opt one.
-     *
-     * @return the opt one
-     */
-    public Button getOpt_one() {
-        return opt_one;
-    }
-
-    /**
-     * Gets opt two.
-     *
-     * @return the opt two
-     */
-    public Button getOpt_two() {
-        return opt_two;
-    }
-
-    /**
      * Gets state.
      *
      * @return the state
@@ -336,7 +311,6 @@ public class GameContext {
         this.state = StateFactory.getState(state);
         highlightTiles(this.state);
     }
-
 
     //Can only enter here from OwnPieceSelected or subclasses.
     public void highlightSpecialTiles(states state, SpecialVisitor sv) {
@@ -395,8 +369,6 @@ public class GameContext {
     }
 
     public void setUpSwap() {
-        Button opt_one = getOpt_one();
-        Button opt_two = getOpt_two();
 
         //Switch the disabled status
         setSwapPaneVisible(true);
@@ -409,15 +381,15 @@ public class GameContext {
         assert a != null;
         IPiece alternative1 = a.getPiece(altClasses.get(0), new Location(0, 0));
         IPiece alternative2 = a.getPiece(altClasses.get(1), new Location(0, 0));
-
-        opt_one.setText(alternative1.getPieceName().getValue());
-        opt_two.setText(alternative2.getPieceName().getValue());
+        swapAlternativeOne.setValue(alternative1.getPieceName().getValue());
+        swapAlternativeTwo.setValue(alternative2.getPieceName().getValue());
+        gController.setOptOneText(alternative1.getPieceName().getValue());
+        gController.setOptTwoText(alternative2.getPieceName().getValue());
     }
 
     public void setSwapPaneVisible(boolean b) {
         gController.setSwapPaneVisible(b);
     }
-
 
     public void setPieceSelected(IPiece piece) {
         this.selectedPiece = piece;
