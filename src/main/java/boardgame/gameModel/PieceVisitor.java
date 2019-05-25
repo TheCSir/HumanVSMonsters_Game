@@ -64,7 +64,7 @@ public class PieceVisitor implements SpecialVisitor {
         state = states.SUMMON;
 
         SummonCommand summon = new SummonCommand();
-        summon.setMinionName("Snakes");
+        summon.setMinionName("Snake");
         specialCommand = summon;
     }
 

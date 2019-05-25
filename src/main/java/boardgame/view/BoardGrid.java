@@ -151,7 +151,7 @@ public class BoardGrid implements IBoardGrid {
             }
         }
         catch(Exception ex){
-            throw ex;
+            System.out.println("error");
         }
     }
 
