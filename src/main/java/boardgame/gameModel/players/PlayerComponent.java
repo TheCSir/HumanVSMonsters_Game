@@ -9,17 +9,17 @@ public abstract class PlayerComponent implements IPlayerComponent {
     // to inherit a method they can just inherit the
     // default implementation
 
-    public void addPlayer(PlayerComponent playerComponent) {
+    public void addPlayer(IPlayerComponent playerComponent) {
         throw new UnsupportedOperationException();
     }
 
     // This allows to remove components
-    public void removePlayer(PlayerComponent newSongComponent) {
+    public void removePlayer(IPlayerComponent newSongComponent) {
         throw new UnsupportedOperationException();
     }
 
     // This allows to get components
-    public PlayerComponent getPlayer(int componentIndex) {
+    public IPlayerComponent getPlayer(int componentIndex) {
         throw new UnsupportedOperationException();
     }
 

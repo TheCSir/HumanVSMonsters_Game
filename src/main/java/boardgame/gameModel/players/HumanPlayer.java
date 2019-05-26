@@ -6,6 +6,8 @@ import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.util.Constants;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+
 public class HumanPlayer extends Player {
 
     public HumanPlayer(int playerID, String playerName, int _health, ObservableList<IPiece> pieces, IGameManager gameManager) {
@@ -28,5 +30,25 @@ public class HumanPlayer extends Player {
     public void checkAbilityUsed(int turnNumber) {
         if (turnNumber >= super.AbilityTurn + Constants.DEFAULTABILITYCD)
             this.resetIsAbilityUsed();
+    }
+
+    @Override
+    public void addPlayer(IPlayerComponent playerComponent) {
+
+    }
+
+    @Override
+    public void removePlayer(IPlayerComponent newSongComponent) {
+
+    }
+
+    @Override
+    public IPlayerComponent getPlayer(int componentIndex) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<IPlayer> getPlayerGroup() {
+        return null;
     }
 }
