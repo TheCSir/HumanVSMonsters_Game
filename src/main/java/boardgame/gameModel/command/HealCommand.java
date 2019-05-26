@@ -14,9 +14,19 @@ public class HealCommand extends SpecialCommand {
 
     @Override
     public void execute() {
-        System.out.println("It's healing time!");
-        gm.getActivePlayer().increaseHealthProperty(h);
-        tf.nextTurn();
+
+        if(!gm.getActivePlayer().getIsAbilityUsed()){
+            System.out.println("It's healing time!");
+            gm.getActivePlayer().increaseHealthProperty(h);
+
+            //set ability used counter
+            gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+
+            tf.nextTurn();
+        }
+        else {
+            System.out.println("Special ability already used!!");
+        }
     }
 
     @Override

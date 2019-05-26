@@ -93,9 +93,13 @@ public interface IPlayer extends IPlayerComponent{
     /**
      * Sets isAbilityUsed property.
      *
-     * @param isAbilityUsed the isAbilityUsed property.
+     * @param turnNumber the turn number.
      */
-    void setIsAbilityUsed(boolean isAbilityUsed);
+    void setIsAbilityUsed(int turnNumber);
+
+    void resetIsAbilityUsed();
+
+    void checkAbilityUsed(int turnNumber);
 
 
 }

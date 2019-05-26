@@ -24,25 +24,34 @@ public class RangedAttackCommand extends SpecialCommand {
     @Override
     public void execute() {
 
-        int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
+        if(!gm.getActivePlayer().getIsAbilityUsed()){
 
-        if (dist <= rangedDistance) {
-            //If shielded halve the amount of damage.
-            if (selectedPiece.getIsShielded()) {
-                rangedAttackValue = rangedAttackValue / 2;
+            int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
+
+            if (dist <= rangedDistance) {
+                //If shielded halve the amount of damage.
+                if (selectedPiece.getIsShielded()) {
+                    rangedAttackValue = rangedAttackValue / 2;
+                }
+
+                //Double the amount of damage.
+                healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+
+                //Store how much damage the attack will reduce for later undo action.
+                health = rangedAttackValue;
+
+                //reduce health.
+                gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
+
+                //set ability used counter
+                gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+
+                // end turn
+                tf.nextTurn();
             }
-
-            //Double the amount of damage.
-            healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
-
-            //Store how much damage the attack will reduce for later undo action.
-            health = rangedAttackValue;
-
-            //reduce health.
-            gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
-
-            // end turn
-            tf.nextTurn();
+        }
+        else {
+            System.out.println("Special ability already used!!");
         }
     }
 

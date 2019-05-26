@@ -20,4 +20,9 @@ public class MonsterPlayer extends Player {
     public String playerType() {
         return PieceConstants.MONSTERPLAYER;
     }
+
+    @Override
+    public void checkAbilityUsed(int turnNumber) {
+
+    }
 }

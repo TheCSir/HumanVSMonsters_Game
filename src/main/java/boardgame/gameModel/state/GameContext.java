@@ -284,6 +284,7 @@ public class GameContext {
      */
     public void selectPiece(HexagonTileViewPiece piece) {
         gm.toggleMinionSelectionOff();
+        gm.specialAbilityOffCD();
         selectedPiece = piece.getiPiece();
 
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
@@ -295,6 +296,11 @@ public class GameContext {
 
         if (tf.isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
+            // Validate GUI special Ability
+            if(!gm.getActivePlayer().getIsAbilityUsed()){
+                    gm.specialAbilityOnCD();
+            }
+
             specialAbilityDescription.setValue(piece.getiPiece().getSpecialAbilityDescription());
             state.onSelectOwnPiece(this);
 

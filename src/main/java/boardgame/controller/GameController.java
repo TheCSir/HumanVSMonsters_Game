@@ -176,6 +176,15 @@ public class GameController implements Initializable {
         pieceHealth.setText(healthText);
     }
 
+    public void specialAbilityOnCD() {
+        specialAbilityButton.setDisable(false);
+
+    }
+
+    public void specialAbilityOffCD() {
+        specialAbilityButton.setDisable(true);
+    }
+
     public void toggleMinionSelectionOff() {
         defendButton.setDisable(false);
         specialAbilityButton.setDisable(false);

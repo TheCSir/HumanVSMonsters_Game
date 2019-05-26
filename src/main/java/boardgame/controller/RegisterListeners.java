@@ -52,6 +52,9 @@ public class RegisterListeners {
                 statusController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
 
         for (IPlayer iPlayer : gm.getPlayers()) {
+
+
+            turn.turnNumberProperty().addListener(observable -> iPlayer.checkAbilityUsed(turn.getTurnNumber()));
             ObservableList<IPiece> pieces = iPlayer.getPieces();
 
             for (IPiece piece : pieces) {

@@ -124,4 +124,8 @@ public interface IGameManager {
     void toggleMinionSelectionOff();
 
     void toggleMinionSelectionOn(String healthText);
+
+    void specialAbilityOnCD();
+
+    void specialAbilityOffCD();
 }
