@@ -52,5 +52,9 @@ public class MonsterPrototypes implements PiecePrototypes {
         mP.put(griffin.getPieceClass(), griffin);
         nameMap.put(griffin.getPieceName().get(), griffin);
 
+        Minion minion = new Minion(new Location(0, 0));
+        mP.put(minion.getPieceClass(), minion);
+        nameMap.put(minion.getPieceName().get(), minion);
+
     }
 }
