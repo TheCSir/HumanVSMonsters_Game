@@ -8,10 +8,7 @@ import boardgame.gameModel.pieces.AbstractPieceFactory;
 import boardgame.gameModel.pieces.FactoryProducer;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.PieceConstants;
-import boardgame.gameModel.players.IPlayer;
-import boardgame.gameModel.players.PlayerComponent;
-import boardgame.gameModel.players.PlayerFactory;
-import boardgame.gameModel.players.PlayerGroup;
+import boardgame.gameModel.players.*;
 import boardgame.gameModel.state.GameContext;
 import boardgame.gameModel.state.stateImp.IdleState;
 import boardgame.util.Constants;
@@ -135,8 +132,8 @@ class GameManager implements IGameManager {
 
         IPlayer player1 = PlayerFactory.createPlayer(Constants.PLAYER1, 1, humanPlayerName, Constants.INITIALHEALTH, humanPieces, this);
         IPlayer player2 = PlayerFactory.createPlayer(Constants.PLAYER2, 2, monsterPlayerName, Constants.INITIALHEALTH, monsterPieces, this);
-        allPlayers.addPlayer((PlayerComponent) player1);
-        allPlayers.addPlayer((PlayerComponent) player2);
+        allPlayers.addPlayer((IPlayerComponent) player1);
+        allPlayers.addPlayer((IPlayerComponent) player2);
 
         //Set up custom board.
         iBoard = setUpBoard(Board2DHex.class.getName(), gridRows, gridColumns);

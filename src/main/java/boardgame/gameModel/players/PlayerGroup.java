@@ -7,16 +7,16 @@ public class PlayerGroup extends PlayerComponent {
 
     public PlayerGroup() {}
 
-    public void addPlayer(PlayerComponent playerComponent) {
+    public void addPlayer(IPlayerComponent playerComponent) {
         playerList.add(playerComponent);
     }
 
-    public void removePlayer(PlayerComponent playerComponent) {
+    public void removePlayer(IPlayerComponent playerComponent) {
         playerList.remove(playerComponent);
     }
 
-    public PlayerComponent getPlayer(int index) {
-        return (PlayerComponent) playerList.get(index);
+    public IPlayerComponent getPlayer(int index) {
+        return (IPlayerComponent) playerList.get(index);
     }
 
     public ArrayList<IPlayer> getPlayerGroup() {
