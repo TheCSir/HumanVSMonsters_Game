@@ -9,7 +9,7 @@ public class DefenceState extends OwnPieceSelected {
 
     @Override
     public void onDefence(GameContext gameContext) {
-        System.out.println("Already in defence state");
+        //Does nothing if already in attack state.
     }
 
 

@@ -77,4 +77,6 @@ public interface HighlightVisitor {
      * @param defenceState the defence state
      */
     void visit(DefenceState defenceState);
+
+    void visit(OwnPieceSelected ownPieceSelected);
 }

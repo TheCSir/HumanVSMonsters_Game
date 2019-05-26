@@ -1,10 +1,7 @@
 package boardgame.gameModel;
 
 
-import boardgame.gameModel.command.HealCommand;
-import boardgame.gameModel.command.RangedAttackCommand;
-import boardgame.gameModel.command.SpecialAttackCommand;
-import boardgame.gameModel.command.SpecialCommand;
+import boardgame.gameModel.command.*;
 import boardgame.gameModel.pieces.*;
 import boardgame.gameModel.state.HighlightTilesVisitor;
 import boardgame.gameModel.state.states;
@@ -48,21 +45,37 @@ public class PieceVisitor implements SpecialVisitor {
         hv.setHighlightDistance(archer.getRangedDistance());
         RangedAttackCommand rangedAttackCommand = new RangedAttackCommand();
         rangedAttackCommand.setRangedAttackValue(archer.getRangedAttackValue());
+        rangedAttackCommand.setRangedAttackDistance(archer.getRangedDistance());
         specialCommand = rangedAttackCommand;
     }
 
     @Override
     public void visit(Griffin piece) {
+        state = states.SUMMON;
+
+        SummonCommand summon = new SummonCommand();
+        summon.setMinionName("Hawks");
+        specialCommand = summon;
     }
 
     @Override
     public void visit(Medusa piece) {
 
+        state = states.SUMMON;
+
+        SummonCommand summon = new SummonCommand();
+        summon.setMinionName("Snake");
+        specialCommand = summon;
     }
 
     @Override
     public void visit(Minotaur piece) {
 
+        state = states.SUMMON;
+
+        SummonCommand summon = new SummonCommand();
+        summon.setMinionName("Bulls");
+        specialCommand = summon;
     }
 
     @Override

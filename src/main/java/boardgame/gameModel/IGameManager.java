@@ -3,7 +3,6 @@ package boardgame.gameModel;
 import boardgame.gameModel.board.IBoard;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.gameModel.players.Player;
 import boardgame.gameModel.state.GameContext;
 import javafx.collections.ObservableList;
 
@@ -65,8 +64,9 @@ public interface IGameManager {
     /**
      * Sets up pieces as defined from start menu for both players.
      */
+
     void setUpCustomPieces(String playerType, ObservableList<IPiece> playerPieces,
-                           int numberOfPieces, int gridRows, int gridColumns);
+                           int numberOfPieces, int gridRows, int gridColumns, String orientation);
 
     /**
      * Set up a game with custom settings from menu.
@@ -80,13 +80,6 @@ public interface IGameManager {
      * @return the board
      */
     IBoard getiBoard();
-
-    /**
-     * Sets board.
-     *
-     * @param iBoard the board
-     */
-    void setiBoard(IBoard iBoard);
 
     /**
      * Gets players.
@@ -127,4 +120,8 @@ public interface IGameManager {
     GameContext getGameContext();
 
     void endTurn();
+
+    void toggleMinionSelectionOff();
+
+    void toggleMinionSelectionOn(String healthText);
 }

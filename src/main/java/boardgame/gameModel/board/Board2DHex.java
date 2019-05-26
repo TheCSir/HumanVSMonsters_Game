@@ -25,7 +25,6 @@ public class Board2DHex extends Board2d {
             for (int y = 0; y < columns; y++) {
                 Location location = LocationFactory.createLocation(x, y);
                 ITile hexagonalTile = TileFactory.createTile(HexagonalTile.class.getName(), location);
-                // hexagonalTiles.add(hexagonalTile);
                 addTile(location, hexagonalTile);
             }
         }

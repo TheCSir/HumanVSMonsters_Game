@@ -19,4 +19,5 @@ public interface PiecePrototypes {
      */
     Piece getPrototype(String classtype);
 
+    Piece getPrototypeByName(String name);
 }

@@ -19,6 +19,7 @@ public abstract class Player extends PlayerComponent implements IPlayer {
     private String playerStatus = Constants.IDEALSTATUS;
     private final DoubleProperty health;
     private ObservableList<IPiece> pieces;
+    private boolean isAbilityUsed;
 
     //endregion
 
@@ -34,7 +35,9 @@ public abstract class Player extends PlayerComponent implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
+        this.isAbilityUsed=false;
 
+        assert pieces != null;
         pieces.addListener((ListChangeListener<IPiece>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -117,5 +120,15 @@ public abstract class Player extends PlayerComponent implements IPlayer {
 
         //Increase health
         this.setHealthProperty(this.healthProperty().getValue() + healingValue);
+    }
+
+    @Override
+    public boolean getIsAbilityUsed(){
+        return isAbilityUsed;
+    }
+
+    @Override
+    public void setIsAbilityUsed(boolean isAbilityUsed){
+        this.isAbilityUsed = isAbilityUsed;
     }
 }

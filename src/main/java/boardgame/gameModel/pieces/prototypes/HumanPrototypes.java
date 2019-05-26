@@ -20,6 +20,8 @@ public class HumanPrototypes implements PiecePrototypes {
         initializeHumanPieceMap();
     }
 
+    private Map<String, Piece> nameMap = new HashMap<>();
+
     /**
      * Gets the instance or creates a new instance (singleton).
      *
@@ -36,16 +38,24 @@ public class HumanPrototypes implements PiecePrototypes {
     private void initializeHumanPieceMap() {
         Warrior w = new Warrior(new Location(0, 0));
         hP.put(w.getPieceClass(), w);
+        nameMap.put(w.getPieceName().get(), w);
 
         Archer a = new Archer(new Location(0, 0));
         hP.put(a.getPieceClass(), a);
+        nameMap.put(a.getPieceName().get(), a);
 
         Priest p = new Priest(new Location(0, 0));
         hP.put(p.getPieceClass(), p);
+        nameMap.put(p.getPieceName().get(), p);
     }
 
 
     public Piece getPrototype(String classtype) {
         return hP.get(classtype);
+    }
+
+    @Override
+    public Piece getPrototypeByName(String name) {
+        return nameMap.get(name);
     }
 }

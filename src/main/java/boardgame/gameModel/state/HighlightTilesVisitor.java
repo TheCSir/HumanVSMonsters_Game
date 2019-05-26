@@ -5,6 +5,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.stateImp.*;
+import boardgame.gameModel.tiles.ITile;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
 import boardgame.util.PieceUtil;
@@ -52,6 +53,12 @@ public class HighlightTilesVisitor implements HighlightVisitor {
 
     @Override
     public void visit(SummonState s) {
+        targetTiles.clear();
+        ITile tiles = gm.getiBoard().getTiles().get(selectedPiece.getLocation());
+        for (ITile tile : tiles.getNeighbours()) {
+            boardGrid.getTile(tile.getLocation()).setFill(Color.RED);
+            targetTiles.add(boardGrid.getTile(tile.getLocation()));
+        }
 
     }
 
@@ -64,17 +71,18 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         }
     }
 
-    @Override
-    public void visit(EnemyPieceSel enemyPieceSel) {
-
-    }
-
     //TODO make each tile have a default colour.
-    private static void resetTileColours(IBoardGrid boardGrid) {
+    public static void resetTileColours(IBoardGrid boardGrid) {
         //Reset all tile colours
         for (TileView tile : boardGrid.getTileViewObservableMap().values()) {
             tile.setFill(Color.ANTIQUEWHITE);
         }
+    }
+
+    @Override
+    public void visit(EnemyPieceSel enemyPieceSel) {
+        resetTileColours(boardGrid);
+        boardGrid.getTile(selectedPiece.getLocation()).setFill(Color.RED);
     }
 
     @Override
@@ -105,7 +113,6 @@ public class HighlightTilesVisitor implements HighlightVisitor {
                 tileView.setFill(Color.rgb(200, 24, 0));
                 targetTiles.add(tileView);
             }
-
         }
     }
 
@@ -128,6 +135,12 @@ public class HighlightTilesVisitor implements HighlightVisitor {
         for (IPiece piece : ownPieces) {
             boardGrid.getTile(piece.getLocation()).setFill(Color.GREEN);
         }
+    }
+
+    @Override
+    public void visit(OwnPieceSelected ownPieceSelected) {
+        resetTileColours(boardGrid);
+        boardGrid.getTile(selectedPiece.getLocation()).setFill(Color.BLUE);
     }
 
     /**

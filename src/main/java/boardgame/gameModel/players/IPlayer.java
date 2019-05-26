@@ -83,4 +83,19 @@ public interface IPlayer extends IPlayerComponent{
      */
     void increaseHealthProperty(double healingValue);
 
+    /**
+     * Gets isAbilityUsed property.
+     *
+     * @return the isAbilityUsed property.
+     */
+    boolean getIsAbilityUsed();
+
+    /**
+     * Sets isAbilityUsed property.
+     *
+     * @param isAbilityUsed the isAbilityUsed property.
+     */
+    void setIsAbilityUsed(boolean isAbilityUsed);
+
+
 }

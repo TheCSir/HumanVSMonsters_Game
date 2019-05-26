@@ -5,44 +5,45 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.util.HexGridUtil;
+import boardgame.view.TileView;
 
 public class RangedAttackCommand extends SpecialCommand {
 
     private double rangedAttackValue;
     private IGameManager gm;
-    private IPiece piece;
     private SpecialVisitor sv;
     private TurnFacade tf;
-    private IPiece iPiece;
     private IPiece selectedPiece;
     private double health;
     private double finalDamage;
     private double healthOfEnemyPlayer;
+    private int rangedDistance;
+    private IPiece ownPiece;
 
     @Override
     public void execute() {
 
-        System.out.println("enemy piece is: " + selectedPiece.getClass().getName());
+        int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
 
-        System.out.println("Current player is: " + gm.getTurn().getActivePlayer().getPlayerName());
-        System.out.println("Attacked player is: " + gm.getAttackedPlayer(selectedPiece).getPlayerName());
+        if (dist <= rangedDistance) {
+            //If shielded halve the amount of damage.
+            if (selectedPiece.getIsShielded()) {
+                rangedAttackValue = rangedAttackValue / 2;
+            }
 
-        //If shielded halve the amount of damage.
-        if (selectedPiece.getIsShielded()) {
-            rangedAttackValue = rangedAttackValue / 2;
+            //Double the amount of damage.
+            healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+
+            //Store how much damage the attack will reduce for later undo action.
+            health = rangedAttackValue;
+
+            //reduce health.
+            gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
+
+            // end turn
+            tf.nextTurn();
         }
-        //Double the amount of damage.
-        healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
-
-        //Store how much damage the attack will reduce for later undo action.
-        health = rangedAttackValue;
-
-        //reduce health.
-        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
-
-
-        // end turn
-        tf.nextTurn();
     }
 
     @Override
@@ -62,16 +63,19 @@ public class RangedAttackCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece iPiece, IPiece selectedPiece) {
+    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.gm = gm;
-        this.piece = piece;
         this.sv = sv;
         this.tf = tf;
-        this.iPiece = iPiece;
         this.selectedPiece = selectedPiece;
+        this.ownPiece = ownPiece;
     }
 
     public void setRangedAttackValue(double rangedAttackValue) {
         this.rangedAttackValue = rangedAttackValue;
+    }
+
+    public void setRangedAttackDistance(int rangedDistance) {
+        this.rangedDistance = rangedDistance;
     }
 }

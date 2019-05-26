@@ -1,5 +1,6 @@
 package boardgame.gameModel.pieces;
 
+import boardgame.util.Constants;
 import boardgame.util.Location;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,16 +17,17 @@ public abstract class Piece implements IPiece, Cloneable {
     public void setLocationProperty(Location locationProperty) {
         this.locationProperty = new SimpleObjectProperty<>(locationProperty);
     }
+    private int health;
 
     //Used to make piece location observable.
     public ObjectProperty<Location> locationPropertyProperty() {
         return locationProperty;
     }
 
-
     public Piece(Location location) {
         locationProperty = new SimpleObjectProperty<>(location);
         this.isShielded = false;
+        this.health = Constants.INITIALMINIONHEALTH;
     }
 
     @Override
@@ -78,6 +80,21 @@ public abstract class Piece implements IPiece, Cloneable {
     public void checkShieldTurn(int turnNumber) {
         if (turnNumber >= this.shieldTurn + 2)
             this.setIsShielded(false);
+    }
+
+    @Override
+    public int getHealth() {
+        return this.health;
+    }
+
+    @Override
+    public void decreaseHealth(int health) {
+        this.health -= health;
+    }
+
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Object clone() {

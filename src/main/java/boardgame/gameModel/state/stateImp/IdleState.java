@@ -35,9 +35,8 @@ public class IdleState implements State {
 
     @Override
     public void onSelectOwnPiece(GameContext gameContext) {
-        System.out.println("transitioning to piece selection");
 
-        //Set new State.
+        //Set new State. Need to reenter this state to avoid
         gameContext.setState(states.OWNPIECESELECTED);
     }
 

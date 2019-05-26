@@ -74,7 +74,6 @@ public class CommandProcessor {
             undo();
         }
 
-
         int interval = 2;
         final Timeline timeline = new Timeline();
         for (int i = 0; i < redoList.size(); i++) {

@@ -41,9 +41,28 @@ public class GameController implements Initializable {
     @FXML
     private Button defendButton;
 
-
     @FXML
     private Button specialAbilityButton;
+
+    @FXML
+    private Text pieceLocation;
+
+    @FXML
+    private Text pieceHealth;
+
+    @FXML
+    private Button swapButton;
+
+    @FXML
+    private Pane SwapPane;
+
+    @FXML
+    private Button Opt_one;
+
+    @FXML
+    private Button Opt_two;
+
+
 
     private GameContext gameContext;
 
@@ -54,9 +73,8 @@ public class GameController implements Initializable {
     private final int gridColumnsNum;
 
     /**
-     * This is the main entry point after the App class is started. The GameController holds handler methods
-     * for input actions. It also registers the listeners for the model pieces. As our application follows
-     * an observer pattern these listeners will update the view when triggered.
+     * The GameController holds handler methods for input actions. It also registers the listeners for the model pieces.
+     * As our application follows an observer pattern these listeners will update the view when triggered.
      * The handle methods call the model through the gameManager interface when responding to user input as per the MVC
      * pattern.
      * The GameController class is the main part of application that currently requires major refactoring as
@@ -65,7 +83,6 @@ public class GameController implements Initializable {
      */
     public GameController(String humanPlayerName, String monsterPlayerName,
                           int numberOfPieces, int gridRows, int gridColumns) {
-        //Get a reference to the game manager. Currently sets up a game with default settings.
 
         this.humanPlayerName = humanPlayerName;
         this.monsterPlayerName = monsterPlayerName;
@@ -87,21 +104,6 @@ public class GameController implements Initializable {
         }
     }
 
-    @FXML
-    private Text pieceLocation;
-
-    @FXML
-    private Button swapButton;
-
-    @FXML
-    private Pane SwapPane;
-
-    @FXML
-    private Button Opt_one;
-
-    @FXML
-    private Button Opt_two;
-
 
     public Text getPieceSelected() {
         return pieceSelected;
@@ -116,7 +118,6 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Store a reference to the Game manager for main entry point to game.
-        //TODO Should boardpane be passed to model?
         IGameManager gm = GameManagerFactory.createGameManager(boardPane, this);
         // gm.defaultGameSetup();
 
@@ -145,6 +146,9 @@ public class GameController implements Initializable {
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
 
+        Opt_one.textProperty().bind(gameContext.swapAlternativeOneProperty());
+        Opt_two.textProperty().bind(gameContext.swapAlternativeTwoProperty());
+
         //Set state for turn 1.
         gameContext.setState(states.IDLE);
 
@@ -164,12 +168,27 @@ public class GameController implements Initializable {
 
     }
 
+    public void toggleMinionSelectionOn(String healthText) {
+
+        defendButton.setDisable(true);
+        specialAbilityButton.setDisable(true);
+        swapButton.setDisable(true);
+        pieceHealth.setText(healthText);
+    }
+
+    public void toggleMinionSelectionOff() {
+        defendButton.setDisable(false);
+        specialAbilityButton.setDisable(false);
+        swapButton.setDisable(false);
+        pieceHealth.setText("");
+    }
+
     private void handleMoveClicked() {
         gameContext.pressMove();
     }
 
-    private void handleSwapAction(Pane SwapPane, Button Opt_one, Button Opt_two, GameContext gc) {
-        gc.pressSwapButton(SwapPane, Opt_one, Opt_two);
+    private void handleSwapAction(GameContext gc) {
+        gc.pressSwapButton();
     }
 
     private void handleSwapOne(GameContext gc) {
@@ -181,7 +200,6 @@ public class GameController implements Initializable {
     }
 
     private void chooseDefenseTargetPiece() {
-        System.out.println("Clicked defense");
         gameContext.pressDefence();
     }
     //Gets input and updates model for piece position.
@@ -196,7 +214,7 @@ public class GameController implements Initializable {
         // register piece actions
         moveButton.setOnMouseClicked(e -> handleMoveClicked());
         attackButton.setOnAction(e -> chooseAttackTargetPiece());
-        swapButton.setOnAction(e -> handleSwapAction(SwapPane, Opt_one, Opt_two, gameContext));
+        swapButton.setOnAction(e -> handleSwapAction(gameContext));
         Opt_one.setOnAction(e -> handleSwapOne(gameContext));
         Opt_two.setOnAction(e -> handleSwapTwo(gameContext));
         //defense code
@@ -208,4 +226,15 @@ public class GameController implements Initializable {
         gameContext.pressSpecial();
     }
 
+    public void setSwapPaneVisible(boolean b) {
+        SwapPane.setVisible(b);
+    }
+
+    public void setOptOneText(String text) {
+        Opt_one.setText(text);
+    }
+
+    public void setOptTwoText(String text) {
+        Opt_two.setText(text);
+    }
 }

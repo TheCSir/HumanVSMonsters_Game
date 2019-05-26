@@ -2,36 +2,18 @@ package boardgame.gameModel.command;
 
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
-import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.pieces.AbstractPieceFactory;
+import boardgame.gameModel.pieces.FactoryProducer;
+import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.state.GameContext;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 
 public class SwapCommand implements Command {
-    private Button selectionButton;
     private GameContext gC;
-    private Pane swapPane;
     private IGameManager gm;
     private IPiece oldPiece;
     private IPiece newPiece;
     private TurnFacade tf;
-
-    public static String getClassFullName(String piece) {
-        if (piece.equals(Warrior.class.getSimpleName())) {
-            return PieceConstants.MELEE;
-        } else if (piece.equals(Priest.class.getSimpleName())) {
-            return PieceConstants.SUPPORT;
-        } else if (piece.equals(Archer.class.getSimpleName())) {
-            return PieceConstants.RANGED;
-        } else if (piece.equals(Medusa.class.getSimpleName())) {
-            return PieceConstants.RANGED;
-        } else if (piece.equals(Griffin.class.getSimpleName())) {
-            return PieceConstants.SUPPORT;
-        } else if (piece.equals(Minotaur.class.getSimpleName())) {
-            return PieceConstants.MELEE;
-        } else
-            return null;
-    }
+    private String swapAlternativeClass;
 
     @Override
     public void undo() {
@@ -47,11 +29,10 @@ public class SwapCommand implements Command {
     }
 
 
-    public void SetCommand(TurnFacade tf, IGameManager gm, Pane swapPane, Button selectionButton, GameContext gC) {
+    public void SetCommand(TurnFacade tf, IGameManager gm, String swapAlternativeClass, GameContext gC) {
         this.tf = tf;
         this.gm = gm;
-        this.swapPane = swapPane;
-        this.selectionButton = selectionButton;
+        this.swapAlternativeClass = swapAlternativeClass;
         this.gC = gC;
     }
 
@@ -65,17 +46,15 @@ public class SwapCommand implements Command {
         //Remove current piece
         tf.removePiece(oldPiece);
 
-        //Get piece full name
-        String piece = getClassFullName(selectionButton.getText());
-
         //Create new piece and add to board
         AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getTurn().getActivePlayer().playerType());
-        newPiece = apf.getPiece(piece, oldPiece.getLocation());
+        assert apf != null;
+        newPiece = apf.getPieceByName(swapAlternativeClass, oldPiece.getLocation());
 
         tf.addPiece(newPiece);
 
         //Handle GUI validations
-        swapPane.setVisible(false);
+        gC.setSwapPaneVisible(false);
 
         //End turn
         tf.nextTurn();
