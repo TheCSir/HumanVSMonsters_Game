@@ -80,6 +80,10 @@ public class StartMenuController implements Initializable {
         if(valid) {
             GameController gc = new GameController(humanPlayerNameText.getText(),
                     monsterPlayerNameText.getText(), numOfPieces, gridRowsNum, gridColumnsNum);
+
+            // hide main menu
+            Stage stage = (Stage) humanPlayerNameText.getScene().getWindow();
+            stage.hide();
         }
     }
 
