@@ -26,7 +26,7 @@ import java.util.List;
 
 class GameManager implements IGameManager {
 
-    private PlayerComponent allPlayers = new PlayerGroup();
+    private IPlayerComponent allPlayers = new PlayerGroup();
 
     private IBoard iBoard;
     private Turn turn;
