@@ -52,13 +52,13 @@ public class StartMenuController implements Initializable {
         try {
             numOfPieces = Integer.parseInt(numberOfPiecesText.getText());
 
-            if(numOfPieces < 1 || numOfPieces > 3) {
-                piecseNumValidation.setText("Number of pieces must be from 1-3.");
+            if(numOfPieces < 2 || numOfPieces > 3) {
+                piecseNumValidation.setText("Number of pieces must be from 2-3.");
                 valid = false;
             }
 
         } catch (Exception ex) {
-            piecseNumValidation.setText("Number of pieces must be from 1-3.");
+            piecseNumValidation.setText("Number of pieces must be from 2-3.");
             valid = false;
         }
 
@@ -66,13 +66,14 @@ public class StartMenuController implements Initializable {
             gridRowsNum = Integer.parseInt(gridRowsText.getText());
             gridColumnsNum = Integer.parseInt(gridColumnsText.getText());
 
-            if(gridRowsNum < 1 || gridColumnsNum < 1){
-                gridValidation.setText("Grid Rows and Columns must be positive numbers.");
+            boolean validateSize = validateSize(gridRowsNum, gridColumnsNum);
+            if(!validateSize) {
+                gridValidation.setText("Grid Rows and Columns must be within 10 - 15");
                 valid = false;
             }
 
         } catch (Exception ex) {
-            gridValidation.setText("Grid Rows and Columns must be positive numbers.");
+            gridValidation.setText("Grid Rows and Columns must be within 10 - 15");
             valid = false;
         }
 
@@ -80,5 +81,13 @@ public class StartMenuController implements Initializable {
             GameController gc = new GameController(humanPlayerNameText.getText(),
                     monsterPlayerNameText.getText(), numOfPieces, gridRowsNum, gridColumnsNum);
         }
+    }
+
+    private boolean validateSize(int row, int column){
+        int minSize = 10, maxSize = 15;
+        if(row <= maxSize && row >= minSize && column <= maxSize && column >= minSize){
+            return true;
+        }
+        return false;
     }
 }
