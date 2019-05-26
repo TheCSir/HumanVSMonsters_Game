@@ -233,4 +233,14 @@ class GameManager implements IGameManager {
     public void toggleMinionSelectionOn(String healthText) {
         gc.toggleMinionSelectionOn(healthText);
     }
+
+    @Override
+    public void specialAbilityOnCD() {
+        gc.specialAbilityOnCD();
+
+    }
+    @Override
+    public void specialAbilityOffCD() {
+        gc.specialAbilityOffCD();
+    }
 }

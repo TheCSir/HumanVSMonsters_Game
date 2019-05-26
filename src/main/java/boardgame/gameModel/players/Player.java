@@ -20,6 +20,7 @@ public abstract class Player extends PlayerComponent implements IPlayer {
     private final DoubleProperty health;
     private ObservableList<IPiece> pieces;
     private boolean isAbilityUsed;
+    protected int AbilityTurn;
 
     //endregion
 
@@ -128,7 +129,21 @@ public abstract class Player extends PlayerComponent implements IPlayer {
     }
 
     @Override
-    public void setIsAbilityUsed(boolean isAbilityUsed){
-        this.isAbilityUsed = isAbilityUsed;
+    public void setIsAbilityUsed(int turnNumber){
+
+        this.isAbilityUsed = true;
+        this.AbilityTurn = turnNumber;
+    }
+
+    @Override
+    public void resetIsAbilityUsed(){
+
+        this.isAbilityUsed = false;
+        this.AbilityTurn = 0;
+    }
+
+    @Override
+    public void checkAbilityUsed(int turnNumber) {
+        // by default no counter for abstract player
     }
 }

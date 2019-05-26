@@ -28,4 +28,11 @@ public class Constants {
     public static  final int INITIALHEALTH = 10;
     public static  final int INITIALMINIONHEALTH = 2;
     public static final String IDEALSTATUS = "normal";
+
+    public static final  int DEFAULTABILITYCD = 10;
+
+    //DEfault piece data
+    public static final  int PIECEMINIMIMHP = 0;
+    public static final  int MINIONDAMAGERECIVE = 1;
+
 }

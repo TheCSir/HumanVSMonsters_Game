@@ -23,7 +23,7 @@ public class SummonCommand extends SpecialCommand {
 
         if(!gm.getActivePlayer().getIsAbilityUsed()){
             this.doSummon();
-            gm.getActivePlayer().setIsAbilityUsed(true);
+            gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
             tf.nextTurn();
         }
         else {
@@ -34,8 +34,7 @@ public class SummonCommand extends SpecialCommand {
     @Override
     public void undo() {
 
-        gm.getActivePlayer().setIsAbilityUsed(false);
-        gm.removePiece(newPiece);
+        gm.getActivePlayer().resetIsAbilityUsed();
         tf.goBackOneTurn();
 
     }
@@ -43,7 +42,7 @@ public class SummonCommand extends SpecialCommand {
     @Override
     public void redo() {
         newPiece.setHealth(Constants.INITIALMINIONHEALTH);
-        gm.getActivePlayer().setIsAbilityUsed(true);
+        gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
         gm.addPiece(newPiece);
         tf.nextTurn();
     }

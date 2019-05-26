@@ -17,18 +17,28 @@ public class SpecialAttackCommand extends SpecialCommand {
 
     @Override
     public void execute() {
-        //Store how much damage the attack will reduce for later undo action.
-        health = gm.getAttackedPlayer(selectedPiece).calculateDamage(selectedPiece);
 
-        //Double the amount of damage.
-        healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+        if(!gm.getActivePlayer().getIsAbilityUsed()){
+            //Store how much damage the attack will reduce for later undo action.
+            health = gm.getAttackedPlayer(selectedPiece).calculateDamage(selectedPiece);
 
-        finalDamage = health * specialAttackMultiplier;
+            //Double the amount of damage.
+            healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
 
-        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+            finalDamage = health * specialAttackMultiplier;
 
-        // end turn
-        tf.nextTurn();
+            gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+
+            //set ability used counter
+            gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+
+            // end turn
+            tf.nextTurn();
+        }
+        else {
+            System.out.println("Special ability already used!!");
+        }
+
     }
 
     @Override

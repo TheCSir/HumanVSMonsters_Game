@@ -6,6 +6,7 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
+import boardgame.util.Constants;
 
 public class AttackCommand implements Command {
     private IGameManager gm;
@@ -20,13 +21,13 @@ public class AttackCommand implements Command {
         // Handle attack if attack is to minion piece
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
             minion = (Minion) enemyPiece;
-            enemyPiece.decreaseHealth(1);
+            enemyPiece.decreaseHealth(Constants.MINIONDAMAGERECIVE);
             System.out.println("Enemy hp is " + enemyPiece.getHealth());
 
 
-            if (enemyPiece.getHealth()==0) {
+            if (enemyPiece.getHealth()== Constants.PIECEMINIMIMHP) {
                 gm.removePiece(enemyPiece);
-                gm.getPlayers().get(getOpponentPlayerID(gm.getActivePlayer())).setIsAbilityUsed(false);
+                gm.getPlayers().get(getOpponentPlayerID(gm.getActivePlayer())).resetIsAbilityUsed();
             }
 
         }
@@ -47,10 +48,10 @@ public class AttackCommand implements Command {
     public void undo() {
 
         if (minion != null) {
-            if (minion.getHealth() == 0) {
+            if (minion.getHealth() == Constants.PIECEMINIMIMHP) {
                 minion.setHealth(1);
                 gm.addPiece(minion);
-            } else minion.setHealth(minion.getHealth() + 1);
+            } else minion.setHealth(minion.getHealth() + Constants.MINIONDAMAGERECIVE);
         }
 
         IPlayer player = gm.getAttackedPlayer(enemyPiece);
