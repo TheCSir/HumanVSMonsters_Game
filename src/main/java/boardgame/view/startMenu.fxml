@@ -24,7 +24,7 @@
       <Button fx:id="setSettingsButton" mnemonicParsing="false" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <TextField fx:id="gridRowsText" prefHeight="25.0" prefWidth="144.0" text="10" GridPane.rowIndex="3" />
       <TextField fx:id="gridColumnsText" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="numberOfPiecesText" text="1" GridPane.rowIndex="2" />
+      <TextField fx:id="numberOfPiecesText" text="2" GridPane.rowIndex="2" />
       <Label text="Game Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <Label text="Human Player Name:" GridPane.rowIndex="1" GridPane.valignment="TOP" />
       <Label text="Number of pieces per player:" GridPane.rowIndex="2" GridPane.valignment="TOP" />
