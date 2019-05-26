@@ -9,11 +9,11 @@ public class Minion extends Monster {
 
     private int moveSpeed = 2;
     private double attack = 1;
-    private StringProperty pieceName;
 
-    public Minion(Location location, String name) {
+    private StringProperty pieceName = new SimpleStringProperty("Minion");
+
+    public Minion(Location location) {
         super(location);
-        pieceName = new SimpleStringProperty(name);
     }
 
     @Override
@@ -50,5 +50,9 @@ public class Minion extends Monster {
     @Override
     public String getSpecialAbilityDescription() {
         return "Summon Snakes";
+    }
+
+    public void setPieceName(String pieceName) {
+        this.pieceName.set(pieceName);
     }
 }

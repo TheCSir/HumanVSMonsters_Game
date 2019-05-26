@@ -3,10 +3,10 @@ package boardgame.gameModel.command;
 import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
-import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Minion;
+import boardgame.gameModel.pieces.*;
 import boardgame.util.Constants;
 import boardgame.util.Location;
+import boardgame.util.LocationFactory;
 import boardgame.view.TileView;
 
 public class SummonCommand extends SpecialCommand {
@@ -43,7 +43,7 @@ public class SummonCommand extends SpecialCommand {
     public void redo() {
         newPiece.setHealth(Constants.INITIALMINIONHEALTH);
         gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
-        gm.addPiece(newPiece);
+        gm.getMonsterPieces().add(newPiece);
         tf.nextTurn();
     }
 
@@ -60,8 +60,16 @@ public class SummonCommand extends SpecialCommand {
 
     private void doSummon(){
 
-        newPiece = new Minion(destination, MinionName);
+//        newPiece = new Minion(destination, MinionName);
+//        startingHealth = newPiece.getHealth();
+//        tf.addPiece(newPiece);
+
+        AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getActivePlayer().playerType());
+        assert apf != null;
+        IPiece temp = apf.getPiece(PieceConstants.MINION, destination);
+        newPiece = (Minion) temp;
+        newPiece.setPieceName(MinionName);
         startingHealth = newPiece.getHealth();
-        tf.addPiece(newPiece);
+        gm.getMonsterPieces().add(newPiece);
     }
 }
