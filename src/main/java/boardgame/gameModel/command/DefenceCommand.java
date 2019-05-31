@@ -8,7 +8,6 @@ public class DefenceCommand implements Command {
     private IPiece ownPiece;
     private TurnFacade tf;
 
-
     @Override
     public void execute() {
         ownPiece.createShield(tf.getTurnNumber());

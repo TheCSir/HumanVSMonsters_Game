@@ -29,6 +29,8 @@ import java.util.List;
  * Actions that the user takes are processed as Commands using the Command pattern.
  * A State machine is used and is implemented using the State Pattern. This ensures
  * that a game piece is in the correct state before a Command is issued.
+ * We try to put as little game logic as possible in this class as the responsibility of this class
+ * is to maintain Game State and facilitate the State, Command and Visitor patterns to work together.
  */
 public class GameContext {
 
@@ -180,7 +182,7 @@ public class GameContext {
             locations.add(t.getModelTile().getLocation());
         }
         if (locations.contains(getTileView().getModelTile().getLocation())) {
-            command.SetCommand(gm, tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
+            command.SetCommand(tf, getTileView().getModelTile().getLocation(), selectedPiece, getBoardGrid(), highlightedTiles);
             commandProcessor.execute(command);
         }
     }
@@ -215,7 +217,7 @@ public class GameContext {
         if (highlightedTiles.contains(getBoardGrid().getTile(selectedPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(tf, gm, selectedPiece);
+            command.setCommand(tf, selectedPiece);
             commandProcessor.execute(command);
         }
     }
@@ -226,7 +228,7 @@ public class GameContext {
      */
     public void launchSpecialAbility() {
         SpecialCommand command = sv.getCommand();
-        command.setCommand(gm, getOwnPiece().getiPiece(), sv, tf, selectedPiece, getTileView());
+        command.setCommand(getOwnPiece().getiPiece(), sv, tf, selectedPiece, getTileView());
         commandProcessor.execute(command);
         List<TileView> visited = HexGridUtil.visitAllTiles(0, getBoardGrid(), selectedPiece.getLocation());
         for (TileView t : visited) {

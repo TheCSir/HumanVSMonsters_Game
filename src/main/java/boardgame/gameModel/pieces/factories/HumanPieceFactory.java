@@ -7,6 +7,7 @@ import boardgame.gameModel.pieces.prototypes.HumanPrototypes;
 import boardgame.util.Location;
 
 public class HumanPieceFactory extends AbstractPieceFactory {
+
     private static HumanPieceFactory instance;
 
     private HumanPieceFactory() {

@@ -1,18 +1,16 @@
 package boardgame.gameModel.command;
 
-import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.*;
+import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
 import boardgame.util.Location;
-import boardgame.util.LocationFactory;
 import boardgame.view.TileView;
 
 public class SummonCommand extends SpecialCommand {
 
     private TurnFacade tf;
-    private IGameManager gm;
     private String MinionName;
     private Location destination;
     private Minion newPiece;
@@ -20,10 +18,11 @@ public class SummonCommand extends SpecialCommand {
 
     @Override
     public void execute() {
+        IPlayer activePlayer = tf.getActivePlayer();
 
-        if(!gm.getActivePlayer().getIsAbilityUsed()){
+        if (!activePlayer.getIsAbilityUsed()) {
             this.doSummon();
-            gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+            activePlayer.setIsAbilityUsed(tf.getTurnNumber());
             tf.nextTurn();
         }
         else {
@@ -33,24 +32,21 @@ public class SummonCommand extends SpecialCommand {
 
     @Override
     public void undo() {
-
-        gm.getActivePlayer().resetIsAbilityUsed();
+        tf.getActivePlayer().resetIsAbilityUsed();
         tf.goBackOneTurn();
-
     }
 
     @Override
     public void redo() {
         newPiece.setHealth(Constants.INITIALMINIONHEALTH);
-        gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
-        gm.getMonsterPieces().add(newPiece);
+        tf.getActivePlayer().setIsAbilityUsed(tf.getTurnNumber());
+        //tf.getMonsterPieces().add(newPiece);
         tf.nextTurn();
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
+    public void setCommand(IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
-        this.gm = gm;
         destination = tileView.getLocation();
     }
 
@@ -64,12 +60,13 @@ public class SummonCommand extends SpecialCommand {
 //        startingHealth = newPiece.getHealth();
 //        tf.addPiece(newPiece);
 
-        AbstractPieceFactory apf = FactoryProducer.getFactory(gm.getActivePlayer().playerType());
+        AbstractPieceFactory apf = FactoryProducer.getFactory(tf.getActivePlayer().playerType());
         assert apf != null;
         IPiece temp = apf.getPiece(PieceConstants.MINION, destination);
         newPiece = (Minion) temp;
         newPiece.setPieceName(MinionName);
         startingHealth = newPiece.getHealth();
-        gm.getMonsterPieces().add(newPiece);
+        //gm.getMonsterPieces().add(newPiece);
+        tf.addPiece(newPiece);
     }
 }
