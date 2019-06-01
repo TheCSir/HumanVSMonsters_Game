@@ -1,8 +1,18 @@
 # Humans vs Monsters
 
-# How to run the game
+## How to run the game
 
 We have created a .jar file to run our game.
+
+## Additional functional requirement made
+
+1- We have the undo function done in our game where the player can undo their move up to 3 move and also a redo function to undo the undo function.
+
+2- For the Additional combat capability, every piece will have their own special ability and can create a shield to defend for the incoming damage.
+
+3- We have the option to change the size of our game board and also let the player to choose how many piece to have on the board.
+
+4- We also have the option to replay all the move that have happen throughout the game.
 
 ## Game Structure:
 
