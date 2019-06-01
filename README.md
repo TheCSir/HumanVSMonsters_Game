@@ -1,10 +1,10 @@
 # Humans vs Monsters
 
-## How to run the game
+## How to run the game:
 
 We have created a .jar file to run our game.
 
-## Additional functional requirement made
+## Additional functional requirement made:
 
 1- We have the undo function done in our game where the player can undo their move up to 3 move and also a redo function to undo the undo function.
 
