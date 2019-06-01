@@ -32,6 +32,7 @@ public class SummonCommand extends SpecialCommand {
 
     @Override
     public void undo() {
+        tf.removePiece(newPiece);
         tf.getActivePlayer().resetIsAbilityUsed();
         tf.goBackOneTurn();
     }
@@ -39,6 +40,7 @@ public class SummonCommand extends SpecialCommand {
     @Override
     public void redo() {
         newPiece.setHealth(Constants.INITIALMINIONHEALTH);
+        tf.addPiece(newPiece);
         tf.getActivePlayer().setIsAbilityUsed(tf.getTurnNumber());
         tf.nextTurn();
     }
