@@ -246,6 +246,7 @@ public class GameContext {
     }
 
     public void replayAllMoves() {
+        HighlightTilesVisitor.resetTileColours(getBoardGrid());
         commandProcessor.replayMoves();
     }
 
