@@ -1,5 +1,9 @@
 # Humans vs Monsters
 
+# How to run the game
+
+We have created a .jar file to run our game.
+
 ## Game Structure:
 
 Humans vs Monsters is a battle to the death turn based board game. The aim of the game is for the two players to meet up and try to kill all opponent players. Each turn, each player can choose one certain action in order to try to defeat the opponent.
@@ -17,6 +21,7 @@ The game ends upon these four conditions:
 
 The map is dungeon based made from hexagon tiles. A player exists on a tile. And each tile cannot contain more than one player.
 The map will be made from different rooms connected by passages where the players search for each other and battle. The players are spawned randomly in the map at the beginning of each game.
+The size of the map can be modified in between the size of 10x10 to 15x15.
 Since the tiles are hexagons, there are six movements allowed:
 
 1-	North
@@ -31,66 +36,42 @@ Since the tiles are hexagons, there are six movements allowed:
 
 6-	South-East
 
-Movement will depend on rolling a dice. Minimum move is 1 and maximum moves are 6. For Example if a player decides to move and rolls a 4, then the player will be able to move 4 tiles e.g. (North, North, North-West, South-West).
+Each pieces will have their own move range.
 Players cannot move outside of walls and blocked paths.
 
 ## Player Structure:
 
 Each player will have these main attributes:
 
-Hearts: Hearts resemble the Hit Points. Each player has 8 Hearts at the beginning of each game.
+Hearts: Hearts resemble the Hit Points. Each player has 10 Hearts at the beginning of each game.
 
-Attack: Defines the amount of damage caused to opponent.
+Attack: Decrease the opponent health by attacking the opponent piece.
 
-Defense: Defense is the chance to either reduce or completely avoid damage taken by opponent.
-
-Speed: Each player has a different attack speed and affects which player causes damage first in each turn.
-
-Strength: The opponent type that you cause the most damage to.
-
-Weakness: The opponent type that you receive the most damage from.
+Defense: Defense is to reduce the incoming damage.
 
 ### Humans
 
 **1-	Archer**
 
-Attack: Decreases 1 Heart.
+Attack: Decreases 2 Heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
+Defense: Create a shield blocking half of the incoming damage.
 
-Speed: Max speed is 8. Min speed is up to 6.
-
-Effective against: Sky Monsters (Griffin).
-
-Weak against: Water Monsters (Medusa).
-
-Special Skill: Long Reach, Shoot three tiles away.
+Special Skill: Long Range Shot, Shoot 3 tiles away.
 
 **2-	Priest**
 
-Attack: Decreases 1 Heart.
+Attack: Decreases 2 Heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
+Defense: Create a shield blocking half of the incoming damage.
 
-Speed: Max speed is 6. Min speed is 4.
-
-Effective against Water Monsters (Medusa).
-
-Weak against: Ground Monsters (Minotaur).
-
-Special Skill: Healing Lights, Heal up to three hearts.
+Special Skill: Health Regeneration, Heal 3 hearts.
 
 **3-	Warrior**
 
-Attack: Decreases 1 heart.
+Attack: Decreases 2 heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
-
-Speed: Max speed is 6. Min speed is 4.
-
-Effective against: Ground Monsters (Minotaur).
-
-Weak against: Sky Monsters (Griffin).
+Defense: Create a shield blocking half of the incoming damage.
 
 Special skill: Heavy Smash, causes double HP damage.
 
@@ -98,53 +79,36 @@ Special skill: Heavy Smash, causes double HP damage.
 
 **1-	Minotaur**
 
-Attack: Decreases 1 heart.
+Attack: Decreases 2 heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
+Defense: Create a shield blocking half of the incoming damage.
 
-Speed: Max speed is 6. Min speed is 4.
-
-Effective against: Priests.
-
-Weak against: Warriors.
-
-Special skill: Summoning Bulls, each Bull has one heart of health.
+Special skill: Summoning Bull, the minion Bull will have 2 heart of health.
 
 **2-	Medusa**
 
-Attack: Decreases 1 heart.
+Attack: Decreases 2 heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
+Defense: Create a shield blocking half of the incoming damage.
 
-Speed: Max speed is 7. Min speed is 5.
-
-Effective against: Archers.
-
-Weak against: Priests.
-
-Special skill: Summoning Sneaks, each Sneak has two hearts of health. Sneaks cannot attack but they poison Humans which lasts for three turns., affecting the HP by 1 point each turn 
+Special skill: Summoning Sneaks, the minion Snake will have 2 heart of health. 
 
 **3-	Griffin**
 
-Attack: Decreases 1 heart.
+Attack: Decreases 2 heart.
 
-Defense: 10% chance in blocking all damage. 90% chance in blocking half damage.
+Defense: Create a shield blocking half of the incoming damage.
 
-Speed: Max speed is 8. Min speed is 6.
-
-Effective against: Warriors.
-
-Weak against: Archers.
-
-Special skill: Summoning Hawks, each Hawk has two hearts, and cannot attack but they decrease the Human speed by 1 speed point each turn.
+Special skill: Summoning Hawks, the minion Hawk will have 2 heart of health
 
 Each turn, the players will choose from one of three actions:
 
-1-	Attack
+1-  Move
 
-2-	Defend
+2-	Attack
 
-3-	Move
+3-  Special Ability
 
-4-	Swap Player
+4-	Defend
 
+5-	Swap 
