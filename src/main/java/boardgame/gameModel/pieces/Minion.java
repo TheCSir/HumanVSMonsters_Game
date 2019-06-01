@@ -45,6 +45,7 @@ public class Minion extends Monster {
 
     }
 
+
     @Override
     public String getSpecialAbilityDescription() {
         return "Summon Snakes";

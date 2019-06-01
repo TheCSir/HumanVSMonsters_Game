@@ -40,7 +40,6 @@ public class SummonCommand extends SpecialCommand {
     public void redo() {
         newPiece.setHealth(Constants.INITIALMINIONHEALTH);
         tf.getActivePlayer().setIsAbilityUsed(tf.getTurnNumber());
-        //tf.getMonsterPieces().add(newPiece);
         tf.nextTurn();
     }
 
@@ -55,10 +54,6 @@ public class SummonCommand extends SpecialCommand {
     }
 
     private void doSummon(){
-
-//        newPiece = new Minion(destination, MinionName);
-//        startingHealth = newPiece.getHealth();
-//        tf.addPiece(newPiece);
 
         AbstractPieceFactory apf = FactoryProducer.getFactory(tf.getActivePlayer().playerType());
         assert apf != null;
