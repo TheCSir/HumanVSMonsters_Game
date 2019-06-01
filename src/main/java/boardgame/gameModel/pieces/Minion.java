@@ -29,8 +29,6 @@ public class Minion extends Monster {
 
     public double getAttack(){ return attack; }
 
-    public void specialAbility(){ }
-
     @Override
     public String getPieceClass() {
         return PieceConstants.MINION;

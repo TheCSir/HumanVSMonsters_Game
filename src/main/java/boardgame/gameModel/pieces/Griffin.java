@@ -26,10 +26,6 @@ public class Griffin extends Monster {
         this.moveSpeed = moveSpeed;
     }
 
-    public void specialAbility(){
-        System.out.println("Summon Hawks!");
-    }
-
     @Override
     public String getPieceClass() {
         return PieceConstants.SUPPORT;

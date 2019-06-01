@@ -92,7 +92,6 @@ public abstract class Piece implements IPiece, Cloneable {
         this.health -= health;
     }
 
-
     public void setHealth(int health) {
         this.health = health;
     }
