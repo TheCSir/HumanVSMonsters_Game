@@ -1,11 +1,5 @@
 package boardgame.gameModel.command;
 
-
-//This class is using the Command pattern. This implements the Command interface.
-// See http://www.informit.com/articles/article.aspx?p=2471643&seqNum=5 for info about
-// implementation outline.
-
-import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
 import boardgame.util.Location;
@@ -20,7 +14,6 @@ public class MoveCommand implements Command {
     private IPiece selectedPiece;
     private Location startingLocation;
     private Location destination;
-    private IGameManager gm;
     private IBoardGrid boardGrid;
     private List<TileView> highlightedTiles;
     private List<Location> locations = new ArrayList<>();
@@ -36,7 +29,7 @@ public class MoveCommand implements Command {
 
         //Check for valid location before move.
         if (locations.contains(destination)) {
-            gm.getiBoard().movePiece(selectedPiece, destination);
+            tf.movePiece(selectedPiece, destination);
 
             //End turn
             tf.nextTurn();
@@ -59,18 +52,18 @@ public class MoveCommand implements Command {
     public void redo() {
 
         TileView target2 = boardGrid.getTileView(destination);
-        gm.getGameContext().clickTile(target2);
+        tf.clickTile(target2);
 
-        gm.getiBoard().movePiece(selectedPiece, destination);
+
+        tf.movePiece(selectedPiece, destination);
 
         // end turn
         tf.nextTurn();
 
     }
 
-    public void SetCommand(IGameManager gm, TurnFacade tf, Location destination, IPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
+    public void SetCommand(TurnFacade tf, Location destination, IPiece selectedPiece, IBoardGrid boardGrid, List<TileView> highlightedTiles) {
         this.tf = tf;
-        this.gm = gm;
         this.selectedPiece = selectedPiece;
         this.destination = destination;
         startingLocation = new Location(selectedPiece.getLocation().getX(), selectedPiece.getLocation().getY());

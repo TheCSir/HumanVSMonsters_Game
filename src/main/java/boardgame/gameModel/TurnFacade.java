@@ -1,6 +1,9 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
+import boardgame.util.Location;
+import boardgame.view.TileView;
 
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class TurnFacade {
     }
 
     public void removePiece(IPiece piece) {
-        gm.getTurn().getActivePlayer().getPieces().remove(piece);
+        gm.getAttackedPlayer(piece).getPieces().remove(piece);
     }
 
     // Checks if selected piece belongs to the active player
@@ -65,5 +68,63 @@ public class TurnFacade {
         return false;
     }
 
+    public double calculateEnemyDamage(IPiece enemyPiece) {
+        return gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+    }
+
+    public void applyEnemyDamage(IPiece enemyPiece) {
+        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+    }
+
+    public IPlayer getActivePlayer() {
+        return gm.getActivePlayer();
+    }
+
+    public int turnNumber() {
+        return gm.getTurn().getTurnNumber();
+    }
+
+    public IPlayer getAttackedPlayer(IPiece enemyPiece) {
+        return gm.getAttackedPlayer(enemyPiece);
+    }
+
+    public void resetAbilityUsed() {
+        gm.getPlayers().get(getOpponentPlayerID(gm.getActivePlayer())).resetIsAbilityUsed();
+    }
+
+    private int getOpponentPlayerID(IPlayer activePlayer) {
+        if (gm.getPlayers().get(0).equals(activePlayer)) {
+            return 1;
+        } else
+            return 0;
+    }
+
+    public void movePiece(IPiece selectedPiece, Location destination) {
+        gm.getiBoard().movePiece(selectedPiece, destination);
+    }
+
+    public void clickTile(TileView target2) {
+        gm.getGameContext().clickTile(target2);
+    }
+
+    public boolean abilityUsedStatus() {
+        return gm.getActivePlayer().getIsAbilityUsed();
+    }
+
+    public void setEnemyHealth(IPiece selectedPiece, double healthOfEnemyPlayer, double finalDamage) {
+        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+    }
+
+    public double getPlayerHealth(IPiece selectedPiece) {
+        return gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+    }
+
+    public void setAbilityUsed() {
+        gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+    }
+
+    public void increaseEnemyHealth(IPiece selectedPiece, double finalDamage) {
+        gm.getAttackedPlayer(selectedPiece).increaseHealthProperty(finalDamage);
+    }
 
 }

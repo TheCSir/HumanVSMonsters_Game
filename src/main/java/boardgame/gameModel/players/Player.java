@@ -143,7 +143,5 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
-    public void checkAbilityUsed(int turnNumber) {
-        // by default no counter for abstract player
-    }
+    public abstract void checkAbilityUsed(int turnNumber);
 }

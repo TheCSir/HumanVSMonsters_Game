@@ -15,14 +15,11 @@ public interface IBoardGrid {
 
     TileView getTileView(Location location);
 
-
     TileView getTile(Location location);
 
     HexagonTileViewPiece addPiece(IPiece piece);
 
     String imageURL(IPiece iPiece);
-
-    //void drawBasicGrid(List<ITile> boardTiles, double radius, Pane boardPane);
 
     void drawBasicGrid(List<ITile> boardTiles, int boardRows, int boardColumns, Pane boardPane);
 

@@ -22,10 +22,6 @@ public class Archer extends Human {
         super(location);
     }
 
-    public void specialAbility() {
-        System.out.println("Long Range Shot");
-    }
-
     @Override
     public String getPieceClass() {
         return PieceConstants.RANGED;

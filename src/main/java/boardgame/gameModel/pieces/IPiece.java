@@ -13,8 +13,6 @@ import javafx.beans.property.StringProperty;
  */
 public interface IPiece {
 
-    String classType = PieceConstants.SUPPORT;
-
     /**
      * Gets move speed.
      *
@@ -80,8 +78,6 @@ public interface IPiece {
      * Checks shield turn.
      */
     void checkShieldTurn(int turnNumber);
-
-    void specialAbility();
 
     String getPieceClass();
 
