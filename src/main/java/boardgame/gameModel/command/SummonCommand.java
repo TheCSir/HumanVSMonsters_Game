@@ -66,7 +66,6 @@ public class SummonCommand extends SpecialCommand {
         newPiece = (Minion) temp;
         newPiece.setPieceName(MinionName);
         startingHealth = newPiece.getHealth();
-        //gm.getMonsterPieces().add(newPiece);
         tf.addPiece(newPiece);
     }
 }

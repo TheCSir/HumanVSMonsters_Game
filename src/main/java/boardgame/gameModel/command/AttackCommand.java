@@ -20,12 +20,10 @@ public class AttackCommand implements Command {
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
             minion = (Minion) enemyPiece;
             enemyPiece.decreaseHealth(Constants.MINIONDAMAGERECIVE);
-
-            if (enemyPiece.getHealth()== Constants.PIECEMINIMIMHP) {
-                tf.removePiece(enemyPiece);
+            if (enemyPiece.getHealth() <= Constants.PIECEMINIMIMHP) {
+                tf.removePiece(minion);
                 tf.resetAbilityUsed();
             }
-
         }
         else {
 
