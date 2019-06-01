@@ -113,8 +113,7 @@ public class BoardGrid implements IBoardGrid {
         }
 
         System.out.println(PieceName);
-        return "src/main/resources/"
-                + PieceName
+        return PieceName
                 + ".png";
     }
 
@@ -199,7 +198,7 @@ public class BoardGrid implements IBoardGrid {
     public void initialiseBoardBackGround() {
         // Set up the background.
         try {
-            FileInputStream input = new FileInputStream("src/main/resources/wood_table_with_dice.jpeg");
+            FileInputStream input = new FileInputStream("wood_table_with_dice.jpeg");
             boardPane.setBackground(new Background(new BackgroundImage(new Image(input), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT)));
         } catch (FileNotFoundException e) {
