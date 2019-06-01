@@ -23,6 +23,7 @@ import java.io.IOException;
 public class StatusController extends VBox {
 
     private final IGameManager gm;
+    private final GameController gc;
     @FXML
     private VBox gameStatus;
 
@@ -43,10 +44,16 @@ public class StatusController extends VBox {
     private Text turnTime;
 
     @FXML
+    private Button beginUndoButton;
+
+    @FXML
     private Button undoButton;
 
     @FXML
     private Button redoButton;
+
+    @FXML
+    private Button finishUndoButton;
 
     //Button to replay all the moves from the beginning as an animation.
     @FXML
@@ -133,7 +140,7 @@ public class StatusController extends VBox {
      *
      * @param gm the game manager
      */
-    public StatusController(IGameManager gm) {
+    public StatusController(IGameManager gm, GameController gc) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boardgame/view/status.fxml"));
         fxmlLoader.setRoot(this);
@@ -145,7 +152,11 @@ public class StatusController extends VBox {
             throw new RuntimeException(exception);
         }
         this.gm = gm;
+        this.gc = gc;
         initialiseTextFields();
+
+        beginUndoButton.setOnMouseClicked(event -> beginUndo());
+        finishUndoButton.setOnMouseClicked(event -> finishUndo());
 
         undoButton.setOnMouseClicked(event -> gm.getGameContext().undo());
 
@@ -182,5 +193,36 @@ public class StatusController extends VBox {
         timeline.playFromStart();
     }
 
+
+    public void enableBeginUndo() {
+        boolean isUndoUsed = gm.getActivePlayer().getIsUndoUsed();
+        if (!isUndoUsed && finishUndoButton.isDisabled())
+            beginUndoButton.setDisable(false);
+        else {
+            beginUndoButton.setDisable(true);
+        }
+    }
+
+    private void beginUndo() {
+        /*disable all buttons except for finishUndoButton, undoButton and redoButton
+        to force user to finish taking undo/redo action
+         */
+        gm.getActivePlayer().setIsUndoUsed(true);
+        beginUndoButton.setDisable(true);
+        replay.setDisable(true);
+        gc.setActionButtonsDisable(true);
+
+        finishUndoButton.setDisable(false);
+        undoButton.setDisable(false);
+        redoButton.setDisable(false);
+    }
+
+    private void finishUndo() {
+        finishUndoButton.setDisable(true);
+        undoButton.setDisable(true);
+        redoButton.setDisable(true);
+        replay.setDisable(false);
+        gc.setActionButtonsDisable(false);
+    }
 }
 

@@ -125,7 +125,7 @@ public class GameController implements Initializable {
                 this.numOfPieces, this.gridRowsNum, this.gridColumnsNum);
         gm.setUpGame();
 
-        StatusController statusController = new StatusController(gm);
+        StatusController statusController = new StatusController(gm, this);
 
         gameContext = gm.getGameContext();
 
@@ -141,7 +141,7 @@ public class GameController implements Initializable {
         initialiseHandlers();
 
         registerListeners.registerPlayerListeners(gm.getPlayers());
-        registerListeners.registerTurnListeners(gm.getTurn());
+        registerListeners.registerTurnListeners();
 
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
@@ -245,5 +245,13 @@ public class GameController implements Initializable {
 
     public void setOptTwoText(String text) {
         Opt_two.setText(text);
+    }
+
+    public void setActionButtonsDisable(boolean isDisable){
+        moveButton.setDisable(isDisable);
+        attackButton.setDisable(isDisable);
+        specialAbilityButton.setDisable(isDisable);
+        defendButton.setDisable(isDisable);
+        swapButton.setDisable(isDisable);
     }
 }
