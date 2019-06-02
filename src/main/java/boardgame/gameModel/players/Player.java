@@ -21,6 +21,7 @@ public abstract class Player implements IPlayer {
     private ObservableList<IPiece> pieces;
     private boolean isAbilityUsed;
     protected int AbilityTurn;
+    private boolean isUndoUsed;
 
     //endregion
 
@@ -36,7 +37,8 @@ public abstract class Player implements IPlayer {
         this.playerName = playerName;
         this.health = new SimpleDoubleProperty(_health);
         this.pieces = pieces;
-        this.isAbilityUsed=false;
+        this.isAbilityUsed = false;
+        this.isUndoUsed = false;
 
         assert pieces != null;
         pieces.addListener((ListChangeListener<IPiece>) c -> {
@@ -55,19 +57,19 @@ public abstract class Player implements IPlayer {
         });
     }
 
-    public String getPlayerName(){
+    public String getPlayerName() {
         return playerName;
     }
 
-    public void setPlayerName(String playerName){
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public int getPlayerID(){
+    public int getPlayerID() {
         return playerID;
     }
 
-    public void setPlayerID(int playerID){
+    public void setPlayerID(int playerID) {
         this.playerID = playerID;
     }
 
@@ -85,7 +87,6 @@ public abstract class Player implements IPlayer {
 
     @Override
     public void decreaseHealthProperty(IPiece piece) {
-
         // Calculate taken damage value
         double damageValue = calculateDamage(piece);
 
@@ -118,30 +119,38 @@ public abstract class Player implements IPlayer {
 
     @Override
     public void increaseHealthProperty(double healingValue) {
-
         //Increase health
         this.setHealthProperty(this.healthProperty().getValue() + healingValue);
     }
 
     @Override
-    public boolean getIsAbilityUsed(){
+    public boolean getIsAbilityUsed() {
         return isAbilityUsed;
     }
 
     @Override
-    public void setIsAbilityUsed(int turnNumber){
-
+    public void setIsAbilityUsed(int turnNumber) {
         this.isAbilityUsed = true;
         this.AbilityTurn = turnNumber;
     }
 
     @Override
-    public void resetIsAbilityUsed(){
-
+    public void resetIsAbilityUsed() {
         this.isAbilityUsed = false;
         this.AbilityTurn = 0;
     }
 
     @Override
     public abstract void checkAbilityUsed(int turnNumber);
+
+    @Override
+    public boolean getIsUndoUsed() {
+        return isUndoUsed;
+    }
+
+    @Override
+    public void setIsUndoUsed(boolean isUndoUsed) {
+
+        this.isUndoUsed = isUndoUsed;
+    }
 }

@@ -52,6 +52,8 @@ public class GameContext {
     private final StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
     private IPiece selectedPiece;
+    private int undoCount = 0;
+    private final int undoCountLimit = 3;
 
     /**
      * Instantiates a new Game context.
@@ -159,16 +161,27 @@ public class GameContext {
      * Undo the selected action through the command processor.
      */
     public void undo() {
-        //Reset all tiles to avoid weird errors.
-        HighlightTilesVisitor.resetTileColours(getBoardGrid());
-        commandProcessor.undo();
+        // only allow to go back 3 steps
+        if(undoCount < undoCountLimit ) {
+            //Reset all tiles to avoid weird errors.
+            HighlightTilesVisitor.resetTileColours(getBoardGrid());
+            commandProcessor.undo();
+            undoCount++;
+        }
     }
 
     /**
      * Redo the selected action through the command processor.
      */
     public void redo() {
-        commandProcessor.redo();
+        if(undoCount > 0) {
+            commandProcessor.redo();
+            undoCount--;
+        }
+    }
+
+    public void resetUndoCount(){
+        undoCount = 0;
     }
 
     /**

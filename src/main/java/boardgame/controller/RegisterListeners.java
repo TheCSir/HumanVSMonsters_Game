@@ -39,27 +39,31 @@ public class RegisterListeners {
         }
     }
 
-    void registerTurnListeners(Turn turn) {
+    void registerTurnListeners() {
         // increment Turn number label
 
-        turn.turnNumberProperty().addListener(observable ->
+        gm.getTurn().turnNumberProperty().addListener(observable ->
                 statusController.setTurnNumber("Turn: " +
-                        turn.getTurnNumber())
+                        gm.getTurn().getTurnNumber())
         );
 
         // Change Current Player label
         gm.getTurn().getActivePlayerProperty().addListener(observable ->
-                statusController.getCurrentPlayer().setText("Current Player: " + turn.getActivePlayer().getPlayerName()));
+                statusController.getCurrentPlayer().setText("Current Player: " + gm.getTurn().getActivePlayer().getPlayerName()));
+
+        gm.getTurn().getActivePlayerProperty().addListener(observable ->
+                statusController.enableBeginUndo()
+        );
 
         for (IPlayer iPlayer : gm.getPlayers()) {
 
 
-            turn.turnNumberProperty().addListener(observable -> iPlayer.checkAbilityUsed(turn.getTurnNumber()));
+            gm.getTurn().turnNumberProperty().addListener(observable -> iPlayer.checkAbilityUsed(gm.getTurn().getTurnNumber()));
             ObservableList<IPiece> pieces = iPlayer.getPieces();
 
             for (IPiece piece : pieces) {
-                turn.turnNumberProperty().addListener(observable ->
-                        piece.checkShieldTurn(turn.getTurnNumber())
+                gm.getTurn().turnNumberProperty().addListener(observable ->
+                        piece.checkShieldTurn(gm.getTurn().getTurnNumber())
                 );
             }
 
