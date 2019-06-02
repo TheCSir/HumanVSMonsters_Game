@@ -101,5 +101,5 @@ public interface IPiece {
      *
      * @return the isAbilityUsed property.
      */
-    int getHealth();
+    double getHealth();
 }

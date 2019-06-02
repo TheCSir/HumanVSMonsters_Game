@@ -14,7 +14,7 @@ public class SummonCommand extends SpecialCommand {
     private String MinionName;
     private Location destination;
     private Minion newPiece;
-    private int startingHealth;
+    private double startingHealth;
 
     @Override
     public void execute() {

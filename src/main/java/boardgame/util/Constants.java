@@ -35,4 +35,5 @@ public class Constants {
     public static final  int PIECEMINIMIMHP = 0;
     public static final  int MINIONDAMAGERECIVE = 1;
 
+    public static final double SHIELDDEFENCE = 2;
 }

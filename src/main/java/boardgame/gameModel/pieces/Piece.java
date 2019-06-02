@@ -17,7 +17,8 @@ public abstract class Piece implements IPiece, Cloneable {
     public void setLocationProperty(Location locationProperty) {
         this.locationProperty = new SimpleObjectProperty<>(locationProperty);
     }
-    private int health;
+
+    private double health;
 
     //Used to make piece location observable.
     public ObjectProperty<Location> locationPropertyProperty() {
@@ -83,7 +84,7 @@ public abstract class Piece implements IPiece, Cloneable {
     }
 
     @Override
-    public int getHealth() {
+    public double getHealth() {
         return this.health;
     }
 
@@ -92,7 +93,7 @@ public abstract class Piece implements IPiece, Cloneable {
         this.health -= health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 

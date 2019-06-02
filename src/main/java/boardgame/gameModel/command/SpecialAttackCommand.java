@@ -13,6 +13,7 @@ public class SpecialAttackCommand extends SpecialCommand {
     private double finalDamage;
     private double healthOfEnemyPlayer;
     private IPiece selectedPiece;
+    private IPiece ownPiece;
 
     @Override
     public void execute() {
@@ -20,7 +21,7 @@ public class SpecialAttackCommand extends SpecialCommand {
         if (!activePlayer.getIsAbilityUsed()) {
 
             //Store how much damage the attack will reduce for later undo action.
-            health = tf.calculateEnemyDamage(selectedPiece);
+            health = tf.calculateEnemyDamage(ownPiece, selectedPiece);
 
             //Double the amount of damage.
             healthOfEnemyPlayer = tf.getPlayerHealth(selectedPiece);
@@ -60,6 +61,7 @@ public class SpecialAttackCommand extends SpecialCommand {
     public void setCommand(IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
         this.selectedPiece = selectedPiece;
+        this.ownPiece = ownPiece;
     }
 
     public void setSpecialAttackMultiplier(double sAV) {

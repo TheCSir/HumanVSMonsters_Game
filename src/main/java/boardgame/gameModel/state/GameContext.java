@@ -217,7 +217,7 @@ public class GameContext {
         if (highlightedTiles.contains(getBoardGrid().getTile(selectedPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(tf, selectedPiece);
+            command.setCommand(tf, selectedPiece, ownPiece);
             commandProcessor.execute(command);
         }
     }

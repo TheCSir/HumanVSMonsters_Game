@@ -51,14 +51,9 @@ public interface IPlayer extends IPlayerComponent {
      */
     void setHealthProperty(double value);
 
-    /**
-     * Decrease health property.
-     *
-     * @param piece the piece
-     */
-    void decreaseHealthProperty(IPiece piece);
+    void decreaseHealthProperty(double damageValue);
 
-    double calculateDamage(IPiece piece);
+    double calculateDamage(IPiece attackingPiece, IPiece defendingPiece);
 
     /**
      * Gets pieces.

@@ -6,12 +6,14 @@ import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
+import boardgame.view.HexagonTileViewPiece;
 
 public class AttackCommand implements Command {
     private IPiece enemyPiece;
-    private double health;
+    private double damage;
     private TurnFacade tf;
     private Minion minion;
+    private IPiece ownPiece;
 
     @Override
     public void execute() {
@@ -24,14 +26,16 @@ public class AttackCommand implements Command {
                 tf.removePiece(minion);
                 tf.resetAbilityUsed();
             }
+            damage = 1;
+            tf.applyEnemyDamage(minion, damage);
         }
         else {
 
             //Store how much damage the attack will reduce for later undo action.
-            health = tf.calculateEnemyDamage(enemyPiece);
+            damage = tf.calculateEnemyDamage(ownPiece, enemyPiece);
 
-            // get attacked player
-            tf.applyEnemyDamage(enemyPiece);
+            // get attacked player and apply damage
+            tf.applyEnemyDamage(enemyPiece, damage);
 
         }
 
@@ -49,7 +53,7 @@ public class AttackCommand implements Command {
         }
 
         IPlayer player = tf.getAttackedPlayer(enemyPiece);
-        player.healthProperty().setValue(player.healthProperty().get() + health);
+        player.healthProperty().setValue(player.healthProperty().get() + damage);
 
         //Roll back turn.
         tf.goBackOneTurn();
@@ -60,9 +64,10 @@ public class AttackCommand implements Command {
         execute();
     }
 
-    public void setCommand(TurnFacade tf, IPiece enemyPiece) {
+    public void setCommand(TurnFacade tf, IPiece enemyPiece, HexagonTileViewPiece ownPiece) {
         this.tf = tf;
         this.enemyPiece = enemyPiece;
+        this.ownPiece = ownPiece.getiPiece();
     }
 
 

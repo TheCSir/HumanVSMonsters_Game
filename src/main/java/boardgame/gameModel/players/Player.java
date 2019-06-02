@@ -84,22 +84,22 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
-    public void decreaseHealthProperty(IPiece piece) {
+    public void decreaseHealthProperty(double damageValue) {
 
-        // Calculate taken damage value
-        double damageValue = calculateDamage(piece);
+//        // Calculate taken damage value
+//        double damageValue = calculateDamage(piece);
 
         //Decrease health
         this.setHealthProperty(this.healthProperty().getValue() - damageValue);
     }
 
     @Override
-    public double calculateDamage(IPiece piece) {
-        double attackValue = piece.getAttack();
+    public double calculateDamage(IPiece attackingPiece, IPiece defendingPiece) {
+        double attackValue = attackingPiece.getAttack();
 
         //Shield halves damage.
-        if (piece.getIsShielded())
-            return attackValue / 2;
+        if (defendingPiece.getIsShielded())
+            return attackValue / Constants.SHIELDDEFENCE;
         else
             return attackValue;
     }

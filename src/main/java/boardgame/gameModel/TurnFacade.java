@@ -1,6 +1,7 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Location;
 import boardgame.view.TileView;
@@ -68,12 +69,17 @@ public class TurnFacade {
         return false;
     }
 
-    public double calculateEnemyDamage(IPiece enemyPiece) {
-        return gm.getAttackedPlayer(enemyPiece).calculateDamage(enemyPiece);
+    public double calculateEnemyDamage(IPiece attackingPiece, IPiece defendingPiece) {
+        return gm.getAttackedPlayer(defendingPiece).calculateDamage(attackingPiece, defendingPiece);
     }
 
-    public void applyEnemyDamage(IPiece enemyPiece) {
-        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(enemyPiece);
+    public void applyEnemyDamage(IPiece enemyPiece, double damage) {
+        gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(damage);
+    }
+
+    public void applyEnemyDamage(Minion minion, double damage) {
+        System.out.println("hidyho");
+        minion.setHealth(minion.getHealth() - damage);
     }
 
     public IPlayer getActivePlayer() {
@@ -126,5 +132,6 @@ public class TurnFacade {
     public void increaseEnemyHealth(IPiece selectedPiece, double finalDamage) {
         gm.getAttackedPlayer(selectedPiece).increaseHealthProperty(finalDamage);
     }
+
 
 }
