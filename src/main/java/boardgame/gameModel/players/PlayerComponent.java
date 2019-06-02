@@ -13,16 +13,6 @@ public abstract class PlayerComponent implements IPlayerComponent {
         throw new UnsupportedOperationException();
     }
 
-    // This allows to remove components
-    public void removePlayer(IPlayerComponent newSongComponent) {
-        throw new UnsupportedOperationException();
-    }
-
-    // This allows to get components
-    public IPlayerComponent getPlayer(int componentIndex) {
-        throw new UnsupportedOperationException();
-    }
-
     public ArrayList<IPlayer> getPlayerGroup() {
         throw new UnsupportedOperationException();
     }

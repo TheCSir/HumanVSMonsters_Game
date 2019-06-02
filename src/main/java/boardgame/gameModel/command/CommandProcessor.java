@@ -57,10 +57,6 @@ public class CommandProcessor {
     }
 
     private void fireCommandHistoryChanged() {
-        //cmd.GetListeners()
-        //for each listener in cmd.GetListeners {
-        //
-
     }
 
     //replay all the moves that have taken place. Uses the Timeline JavaFX class
