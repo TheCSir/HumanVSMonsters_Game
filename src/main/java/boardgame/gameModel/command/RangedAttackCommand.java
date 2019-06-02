@@ -39,7 +39,6 @@ public class RangedAttackCommand extends SpecialCommand {
                 health = rangedAttackValue;
 
                 //reduce health.
-
                 tf.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
 
                 //set ability used counter

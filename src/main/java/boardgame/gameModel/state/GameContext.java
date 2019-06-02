@@ -262,7 +262,6 @@ public class GameContext {
 
     //Can only enter here from OwnPieceSelected or subclasses.
     public void highlightSpecialTiles(states state, SpecialVisitor sv) {
-        //maybe should assert correct class here.
         State specialState = StateFactory.getState(state);
         this.state = specialState;
         HighlightTilesVisitor hv = sv.getHv();
