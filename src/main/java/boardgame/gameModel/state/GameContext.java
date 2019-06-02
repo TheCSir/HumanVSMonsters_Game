@@ -299,17 +299,25 @@ public class GameContext {
      * @param piece the piece
      */
     public void selectPiece(HexagonTileViewPiece piece) {
-        gm.toggleMinionSelectionOff();
-        gm.specialAbilityOffCD();
-        selectedPiece = piece.getiPiece();
 
+        // get selected piece
+        selectedPiece = piece.getiPiece();
+        // GUI functions for user friendliness
+        // Update piece status
+        gm.toggleMinionSelectionOff();
+        gm.togglePieceSelectionOn(selectedPiece.getIsShielded());
+        gm.specialAbilityOffCD();
+
+        // If selected piece is minion show health
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
             gm.toggleMinionSelectionOn("Minion Health: " + selectedPiece.getHealth());
         }
 
+        // Update piece name
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
 
+        // Update special ability button
         if (tf.isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             // Validate GUI special Ability
