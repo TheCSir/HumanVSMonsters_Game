@@ -131,6 +131,7 @@ public class Turn {
             alert.setTitle("Game Ended");
             alert.setHeaderText("congratulations ! Player " + players.get(winner).getPlayerName() + " Won");
             alert.showAndWait();
+            Runtime.getRuntime().exit(1);
         }
     }
 }
