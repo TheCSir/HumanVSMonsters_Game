@@ -232,6 +232,7 @@ public class BoardGrid implements IBoardGrid {
         for (HexagonTileViewPiece viewPiece : pieceObservableList) {
             if (viewPiece.getiPiece().equals(piece)) {
                 boardPane.getChildren().remove(viewPiece);
+
             }
         }
     }

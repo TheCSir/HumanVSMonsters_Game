@@ -28,10 +28,6 @@ public class Warrior extends Human {
     }
 
 
-    public void specialAbility(){
-        System.out.println("Heavy Smash");
-    }
-
     @Override
     public String getPieceClass() {
         return PieceConstants.MELEE;

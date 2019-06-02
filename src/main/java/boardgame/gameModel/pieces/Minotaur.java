@@ -28,11 +28,6 @@ public class Minotaur extends Monster implements IPiece {
     }
 
     @Override
-    public void specialAbility(){
-        System.out.println("Summoning Bulls!");
-    }
-
-    @Override
     public String getPieceClass() {
         return PieceConstants.MELEE;
     }

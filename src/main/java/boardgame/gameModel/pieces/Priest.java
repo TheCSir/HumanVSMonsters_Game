@@ -28,11 +28,6 @@ public class Priest extends Human {
         this.moveSpeed = moveSpeed;
     }
 
-    @Override
-    public void specialAbility() {
-
-    }
-
 
     @Override
     public String getPieceClass() {

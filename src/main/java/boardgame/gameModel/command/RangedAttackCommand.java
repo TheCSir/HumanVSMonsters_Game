@@ -1,6 +1,5 @@
 package boardgame.gameModel.command;
 
-import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
@@ -11,7 +10,6 @@ import boardgame.view.TileView;
 public class RangedAttackCommand extends SpecialCommand {
 
     private double rangedAttackValue;
-    private IGameManager gm;
     private SpecialVisitor sv;
     private TurnFacade tf;
     private IPiece selectedPiece;
@@ -24,7 +22,7 @@ public class RangedAttackCommand extends SpecialCommand {
     @Override
     public void execute() {
 
-        if(!gm.getActivePlayer().getIsAbilityUsed()){
+        if (!tf.abilityUsedStatus()) {
 
             int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
 
@@ -35,16 +33,17 @@ public class RangedAttackCommand extends SpecialCommand {
                 }
 
                 //Double the amount of damage.
-                healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+                healthOfEnemyPlayer = tf.getAttackedPlayer(selectedPiece).healthProperty().get();
 
                 //Store how much damage the attack will reduce for later undo action.
                 health = rangedAttackValue;
 
                 //reduce health.
-                gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
+
+                tf.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
 
                 //set ability used counter
-                gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+                tf.getActivePlayer().setIsAbilityUsed(tf.getTurnNumber());
 
                 // end turn
                 tf.nextTurn();
@@ -58,7 +57,7 @@ public class RangedAttackCommand extends SpecialCommand {
     @Override
     public void undo() {
 
-        IPlayer player = gm.getAttackedPlayer(selectedPiece);
+        IPlayer player = tf.getAttackedPlayer(selectedPiece);
         player.healthProperty().setValue(player.healthProperty().get() + health);
 
         //Roll back turn.
@@ -72,8 +71,7 @@ public class RangedAttackCommand extends SpecialCommand {
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
-        this.gm = gm;
+    public void setCommand(IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.sv = sv;
         this.tf = tf;
         this.selectedPiece = selectedPiece;

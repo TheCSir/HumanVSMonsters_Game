@@ -1,14 +1,13 @@
 package boardgame.gameModel.command;
 
-import boardgame.gameModel.IGameManager;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.players.IPlayer;
 import boardgame.view.TileView;
 
 public class SpecialAttackCommand extends SpecialCommand {
     private TurnFacade tf;
-    private IGameManager gm;
     private double health;
     private double specialAttackMultiplier;
     private double finalDamage;
@@ -17,25 +16,27 @@ public class SpecialAttackCommand extends SpecialCommand {
 
     @Override
     public void execute() {
+        IPlayer activePlayer = tf.getActivePlayer();
+        if (!activePlayer.getIsAbilityUsed()) {
 
-        if(!gm.getActivePlayer().getIsAbilityUsed()){
             //Store how much damage the attack will reduce for later undo action.
-            health = gm.getAttackedPlayer(selectedPiece).calculateDamage(selectedPiece);
+            health = tf.calculateEnemyDamage(selectedPiece);
 
             //Double the amount of damage.
-            healthOfEnemyPlayer = gm.getAttackedPlayer(selectedPiece).healthProperty().get();
+            healthOfEnemyPlayer = tf.getPlayerHealth(selectedPiece);
 
             finalDamage = health * specialAttackMultiplier;
 
-            gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+            tf.setEnemyHealth(selectedPiece, healthOfEnemyPlayer, finalDamage);
+
 
             //set ability used counter
-            gm.getActivePlayer().setIsAbilityUsed(gm.getTurn().getTurnNumber());
+            tf.setAbilityUsed();
+
 
             // end turn
             tf.nextTurn();
-        }
-        else {
+        } else {
             System.out.println("Special ability already used!!");
         }
 
@@ -44,19 +45,20 @@ public class SpecialAttackCommand extends SpecialCommand {
     @Override
     public void undo() {
         tf.goBackOneTurn();
-        gm.getAttackedPlayer(selectedPiece).increaseHealthProperty(finalDamage);
+        tf.increaseEnemyHealth(selectedPiece, finalDamage);
+
     }
 
     @Override
     public void redo() {
-        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+        tf.setEnemyHealth(selectedPiece, healthOfEnemyPlayer, finalDamage);
+
         tf.nextTurn();
     }
 
     @Override
-    public void setCommand(IGameManager gm, IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
+    public void setCommand(IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
-        this.gm = gm;
         this.selectedPiece = selectedPiece;
     }
 

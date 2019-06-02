@@ -105,14 +105,6 @@ public class GameController implements Initializable {
     }
 
 
-    public Text getPieceSelected() {
-        return pieceSelected;
-    }
-
-    public Text getPieceLocation() {
-        return pieceLocation;
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -237,14 +229,6 @@ public class GameController implements Initializable {
 
     public void setSwapPaneVisible(boolean b) {
         SwapPane.setVisible(b);
-    }
-
-    public void setOptOneText(String text) {
-        Opt_one.setText(text);
-    }
-
-    public void setOptTwoText(String text) {
-        Opt_two.setText(text);
     }
 
     public void setActionButtonsDisable(boolean isDisable){
