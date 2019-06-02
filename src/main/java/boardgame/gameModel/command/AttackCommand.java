@@ -5,7 +5,6 @@ import boardgame.gameModel.pieces.IPiece;
 import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
-import boardgame.util.Constants;
 import boardgame.view.HexagonTileViewPiece;
 
 public class AttackCommand implements Command {
@@ -21,18 +20,12 @@ public class AttackCommand implements Command {
         // Handle attack if attack is to minion piece
         if (enemyPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
             minion = (Minion) enemyPiece;
-            enemyPiece.decreaseHealth(Constants.MINIONDAMAGERECIVE);
-            if (enemyPiece.getHealth() <= Constants.PIECEMINIMIMHP) {
-                tf.removePiece(minion);
-                tf.resetAbilityUsed();
-            }
-            damage = 1;
-            tf.applyEnemyDamage(minion, damage);
+            damage = tf.calculateEnemyDamage(ownPiece.getAttack(), enemyPiece);
         }
         else {
 
             //Store how much damage the attack will reduce for later undo action.
-            damage = tf.calculateEnemyDamage(ownPiece, enemyPiece);
+            damage = tf.calculateEnemyDamage(ownPiece.getAttack(), enemyPiece);
 
             // get attacked player and apply damage
             tf.applyEnemyDamage(enemyPiece, damage);
@@ -46,10 +39,7 @@ public class AttackCommand implements Command {
     public void undo() {
 
         if (minion != null) {
-            if (minion.getHealth() == Constants.PIECEMINIMIMHP) {
-                minion.setHealth(1);
-                tf.addPiece(minion);
-            } else minion.setHealth(minion.getHealth() + Constants.MINIONDAMAGERECIVE);
+            minion.setHealth(minion.getHealth() + ownPiece.getAttack());
         }
 
         IPlayer player = tf.getAttackedPlayer(enemyPiece);
@@ -69,6 +59,5 @@ public class AttackCommand implements Command {
         this.enemyPiece = enemyPiece;
         this.ownPiece = ownPiece.getiPiece();
     }
-
 
 }

@@ -89,17 +89,5 @@ public interface IPiece {
 
     String getSpecialAbilityDescription();
 
-    /**
-     * reduce health property.
-     *
-     * @param health the new health value.
-     */
-    void decreaseHealth(int health);
-
-    /**
-     * Gets health property.
-     *
-     * @return the isAbilityUsed property.
-     */
-    double getHealth();
+    double calculateDamage(double damage);
 }

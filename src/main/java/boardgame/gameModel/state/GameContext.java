@@ -6,6 +6,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.command.*;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
@@ -290,7 +291,8 @@ public class GameContext {
         selectedPiece = piece.getiPiece();
 
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
-            gm.toggleMinionSelectionOn("Minion Health: " + selectedPiece.getHealth());
+            Minion minion = (Minion) selectedPiece;
+            gm.toggleMinionSelectionOn("Minion Health: " + minion.getHealth());
         }
 
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());

@@ -1,7 +1,6 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.pieces.IPiece;
-import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Location;
 import boardgame.view.TileView;
@@ -69,18 +68,18 @@ public class TurnFacade {
         return false;
     }
 
-    public double calculateEnemyDamage(IPiece attackingPiece, IPiece defendingPiece) {
-        return gm.getAttackedPlayer(defendingPiece).calculateDamage(attackingPiece, defendingPiece);
+    public double calculateEnemyDamage(double damage, IPiece defendingPiece) {
+        return defendingPiece.calculateDamage(damage);
     }
 
     public void applyEnemyDamage(IPiece enemyPiece, double damage) {
         gm.getAttackedPlayer(enemyPiece).decreaseHealthProperty(damage);
     }
-
-    public void applyEnemyDamage(Minion minion, double damage) {
-        System.out.println("hidyho");
-        minion.setHealth(minion.getHealth() - damage);
-    }
+//
+//    public void applyEnemyDamage(Minion minion, double damage) {
+//        System.out.println("hidyho");
+//        minion.setHealth(minion.getHealth() - damage);
+//    }
 
     public IPlayer getActivePlayer() {
         return gm.getActivePlayer();
@@ -117,8 +116,9 @@ public class TurnFacade {
         return gm.getActivePlayer().getIsAbilityUsed();
     }
 
-    public void setEnemyHealth(IPiece selectedPiece, double healthOfEnemyPlayer, double finalDamage) {
-        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - finalDamage);
+    public void setEnemyHealth(IPiece selectedPiece, double finalDamage) {
+        IPlayer player = gm.getAttackedPlayer(selectedPiece);
+        gm.getAttackedPlayer(selectedPiece).healthProperty().setValue(player.healthProperty().get() - finalDamage);
     }
 
     public double getPlayerHealth(IPiece selectedPiece) {

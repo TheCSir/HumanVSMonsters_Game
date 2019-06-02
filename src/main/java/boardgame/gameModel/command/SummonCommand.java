@@ -7,6 +7,8 @@ import boardgame.gameModel.players.IPlayer;
 import boardgame.util.Constants;
 import boardgame.util.Location;
 import boardgame.view.TileView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class SummonCommand extends SpecialCommand {
 
@@ -61,6 +63,19 @@ public class SummonCommand extends SpecialCommand {
         assert apf != null;
         IPiece temp = apf.getPiece(PieceConstants.MINION, destination);
         newPiece = (Minion) temp;
+        newPiece.healthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.doubleValue() <= 0) {
+                    tf.removePiece(newPiece);
+                    tf.resetAbilityUsed();
+                }
+                if (oldValue.doubleValue() <= 0 && newValue.doubleValue() > 0) {
+                    tf.addPiece(newPiece);
+                    tf.resetAbilityUsed();
+                }
+            }
+        });
         newPiece.setPieceName(MinionName);
         startingHealth = newPiece.getHealth();
         tf.addPiece(newPiece);
