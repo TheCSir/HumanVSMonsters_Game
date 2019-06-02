@@ -26,7 +26,7 @@ The game will end upon these four conditions:
 
 2-	Human health bar is 0, Monster win.
 
-3-	After a certain number of turns, who has highest Health Points win.
+3-	After a certain number of turns, player that has the highest Health Points win.
 
 4-	After a certain number of turns, same amount of Health Points draw.
 
