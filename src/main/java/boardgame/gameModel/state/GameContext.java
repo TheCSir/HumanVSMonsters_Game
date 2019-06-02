@@ -6,6 +6,7 @@ import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.command.*;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Minion;
 import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.util.HexGridUtil;
 import boardgame.util.Location;
@@ -52,8 +53,8 @@ public class GameContext {
     private final StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
     private IPiece selectedPiece;
-    private int undoCount = 0;
     private final int undoCountLimit = 3;
+    private int undoCount = 0;
 
     /**
      * Instantiates a new Game context.
@@ -162,7 +163,7 @@ public class GameContext {
      */
     public void undo() {
         // only allow to go back 3 steps
-        if(undoCount < undoCountLimit ) {
+        if (undoCount < undoCountLimit) {
             //Reset all tiles to avoid weird errors.
             HighlightTilesVisitor.resetTileColours(getBoardGrid());
             commandProcessor.undo();
@@ -174,13 +175,13 @@ public class GameContext {
      * Redo the selected action through the command processor.
      */
     public void redo() {
-        if(undoCount > 0) {
+        if (undoCount > 0) {
             commandProcessor.redo();
             undoCount--;
         }
     }
 
-    public void resetUndoCount(){
+    public void resetUndoCount() {
         undoCount = 0;
     }
 
@@ -230,7 +231,7 @@ public class GameContext {
         if (highlightedTiles.contains(getBoardGrid().getTile(selectedPiece.getLocation()))) {
 
             AttackCommand command = new AttackCommand();
-            command.setCommand(tf, selectedPiece);
+            command.setCommand(tf, selectedPiece, ownPiece);
             commandProcessor.execute(command);
         }
     }
@@ -275,7 +276,6 @@ public class GameContext {
 
     //Can only enter here from OwnPieceSelected or subclasses.
     public void highlightSpecialTiles(states state, SpecialVisitor sv) {
-        //maybe should assert correct class here.
         State specialState = StateFactory.getState(state);
         this.state = specialState;
         HighlightTilesVisitor hv = sv.getHv();
@@ -310,7 +310,8 @@ public class GameContext {
 
         // If selected piece is minion show health
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
-            gm.toggleMinionSelectionOn("Minion Health: " + selectedPiece.getHealth());
+            Minion minion = (Minion) selectedPiece;
+            gm.toggleMinionSelectionOn("Minion Health: " + minion.getHealth());
         }
 
         // Update piece name

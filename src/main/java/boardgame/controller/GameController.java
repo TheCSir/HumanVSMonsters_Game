@@ -185,10 +185,9 @@ public class GameController implements Initializable {
     }
 
     public void togglePieceSelectionOn(boolean isShielded) {
-        if(isShielded){
+        if (isShielded) {
             pieceHealth.setText("Minion is Shielded !");
-        }
-        else
+        } else
             pieceHealth.setText("");
 
     }
@@ -240,7 +239,7 @@ public class GameController implements Initializable {
         SwapPane.setVisible(b);
     }
 
-    public void setActionButtonsDisable(boolean isDisable){
+    public void setActionButtonsDisable(boolean isDisable) {
         moveButton.setDisable(isDisable);
         attackButton.setDisable(isDisable);
         specialAbilityButton.setDisable(isDisable);

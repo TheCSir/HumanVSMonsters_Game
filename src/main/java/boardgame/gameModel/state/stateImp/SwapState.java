@@ -8,6 +8,7 @@ public class SwapState extends OwnPieceSelected {
 
     @Override
     public void onSwap(GameContext gameContext) {
+        gameContext.setState(states.SWAP);
     }
 
     @Override

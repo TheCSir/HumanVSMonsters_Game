@@ -1,7 +1,7 @@
 package boardgame.gameModel;
 
 import boardgame.gameModel.players.IPlayer;
-import boardgame.gameModel.players.Player;
+import boardgame.util.Constants;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -120,6 +120,8 @@ public class Turn {
         } else if (players.get(1).healthProperty().getValue() <= 0) {
             isOver = true;
             winner = 0;
+        } else if (turnNumber.get() > Constants.MAXTURNS) {
+            isOver = true;
         }
 
         if (isOver) {

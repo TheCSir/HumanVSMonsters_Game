@@ -22,17 +22,13 @@ public class Constants {
     public static final String PLAYER1 = "HumanPlayer";
     public static final String PLAYER2 = "MonsterPlayer";
 
-    public static  final String PLAYERNAME1 = "Gandalf";
-    public static  final String PLAYERNAME2 = "Sauron";
-
     public static  final int INITIALHEALTH = 10;
-    public static  final int INITIALMINIONHEALTH = 2;
+    public static final int INITIALMINIONHEALTH = 4;
     public static final String IDEALSTATUS = "normal";
 
     public static final  int DEFAULTABILITYCD = 10;
 
-    //DEfault piece data
-    public static final  int PIECEMINIMIMHP = 0;
-    public static final  int MINIONDAMAGERECIVE = 1;
 
+    public static final double SHIELDDEFENCE = 2;
+    public static final int MAXTURNS = 50;
 }

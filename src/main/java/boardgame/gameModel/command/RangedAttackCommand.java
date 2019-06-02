@@ -3,6 +3,8 @@ package boardgame.gameModel.command;
 import boardgame.gameModel.SpecialVisitor;
 import boardgame.gameModel.TurnFacade;
 import boardgame.gameModel.pieces.IPiece;
+import boardgame.gameModel.pieces.Minion;
+import boardgame.gameModel.pieces.PieceConstants;
 import boardgame.gameModel.players.IPlayer;
 import boardgame.util.HexGridUtil;
 import boardgame.view.TileView;
@@ -10,14 +12,12 @@ import boardgame.view.TileView;
 public class RangedAttackCommand extends SpecialCommand {
 
     private double rangedAttackValue;
-    private SpecialVisitor sv;
     private TurnFacade tf;
     private IPiece selectedPiece;
     private double health;
-    private double finalDamage;
-    private double healthOfEnemyPlayer;
     private int rangedDistance;
     private IPiece ownPiece;
+    private Minion minion;
 
     @Override
     public void execute() {
@@ -27,20 +27,17 @@ public class RangedAttackCommand extends SpecialCommand {
             int dist = HexGridUtil.offset_distance(ownPiece.getLocation(), selectedPiece.getLocation());
 
             if (dist <= rangedDistance) {
-                //If shielded halve the amount of damage.
-                if (selectedPiece.getIsShielded()) {
-                    rangedAttackValue = rangedAttackValue / 2;
+                // Handle attack if attack is to minion piece
+                if (selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)) {
+                    minion = (Minion) selectedPiece;
+                    health = tf.calculateEnemyDamage(rangedAttackValue, selectedPiece);
+                } else {
+                    //Store how much damage the attack will reduce for later undo action.
+                    health = tf.calculateEnemyDamage(rangedAttackValue, selectedPiece);
+
+                    //reduce health.
+                    tf.applyEnemyDamage(selectedPiece, health);
                 }
-
-                //Double the amount of damage.
-                healthOfEnemyPlayer = tf.getAttackedPlayer(selectedPiece).healthProperty().get();
-
-                //Store how much damage the attack will reduce for later undo action.
-                health = rangedAttackValue;
-
-                //reduce health.
-
-                tf.getAttackedPlayer(selectedPiece).healthProperty().setValue(healthOfEnemyPlayer - rangedAttackValue);
 
                 //set ability used counter
                 tf.getActivePlayer().setIsAbilityUsed(tf.getTurnNumber());
@@ -57,6 +54,10 @@ public class RangedAttackCommand extends SpecialCommand {
     @Override
     public void undo() {
 
+        if (minion != null) {
+            minion.setHealth(minion.getHealth() + rangedAttackValue);
+        }
+
         IPlayer player = tf.getAttackedPlayer(selectedPiece);
         player.healthProperty().setValue(player.healthProperty().get() + health);
 
@@ -72,7 +73,6 @@ public class RangedAttackCommand extends SpecialCommand {
 
     @Override
     public void setCommand(IPiece ownPiece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
-        this.sv = sv;
         this.tf = tf;
         this.selectedPiece = selectedPiece;
         this.ownPiece = ownPiece;

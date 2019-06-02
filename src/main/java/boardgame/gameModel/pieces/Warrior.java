@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Warrior extends Human {
 
     private int moveSpeed = 3;
-    private double attack = 2;
+    private double attack = 3;
     private final StringProperty pieceName = new SimpleStringProperty("Warrior");
     private double specialAttackMultiplier = 2;
 

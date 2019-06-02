@@ -226,7 +226,7 @@ class GameManager implements IGameManager {
 
 
     @Override
-    public void togglePieceSelectionOn(Boolean isShielded){
+    public void togglePieceSelectionOn(Boolean isShielded) {
         gc.togglePieceSelectionOn(isShielded);
     }
 
