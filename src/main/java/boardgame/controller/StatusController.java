@@ -156,6 +156,7 @@ public class StatusController extends VBox {
         initialiseTextFields();
 
         beginUndoButton.setOnMouseClicked(event -> beginUndo());
+
         finishUndoButton.setOnMouseClicked(event -> finishUndo());
 
         undoButton.setOnMouseClicked(event -> gm.getGameContext().undo());
@@ -223,6 +224,9 @@ public class StatusController extends VBox {
         redoButton.setDisable(true);
         replay.setDisable(false);
         gc.setActionButtonsDisable(false);
+
+        //reset undo count
+        gm.getGameContext().resetUndoCount();
     }
 }
 
