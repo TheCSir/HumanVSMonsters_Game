@@ -41,9 +41,6 @@ public class EnemyPieceSel implements State {
 
     @Override
     public void onSelectTile(GameContext gameContext) {
-        //Update View.
-        //gameContext.updateTileInfo();
-
     }
 
     @Override

@@ -15,18 +15,6 @@ public abstract class Board2d implements IBoard {
     public abstract void setUpTiles();
     public abstract void addTile(ITile tile);
 
-
-    private boolean checkValidMove(IPiece piece, Location location) {
-
-        List<ITile> neighbours = getNeighbours(piece);
-        for (ITile tile: neighbours) {
-            if (tile.getLocation().equals(location)){
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public ObservableMap<Location, ITile> getTiles() {
         return this.getBoardGrid();
@@ -43,10 +31,6 @@ public abstract class Board2d implements IBoard {
     @Override
     public void movePiece(IPiece piece, Location location) {
             piece.setLocation(location);
-    }
-
-    private List<ITile> getNeighbours(IPiece piece) {
-        return boardGrid.get(piece.getLocation()).getNeighbours();
     }
 
     public ObservableMap<Location, ITile> getBoardGrid() {

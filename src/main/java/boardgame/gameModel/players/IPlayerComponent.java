@@ -11,9 +11,5 @@ import java.util.ArrayList;
 public interface IPlayerComponent {
     void addPlayer(IPlayerComponent playerComponent);
 
-    void removePlayer(IPlayerComponent newSongComponent);
-
-    IPlayerComponent getPlayer(int componentIndex);
-
     ArrayList<IPlayer> getPlayerGroup();
 }

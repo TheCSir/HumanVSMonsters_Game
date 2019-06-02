@@ -34,16 +34,6 @@ public class MonsterPlayer extends Player {
     }
 
     @Override
-    public void removePlayer(IPlayerComponent newSongComponent) {
-
-    }
-
-    @Override
-    public IPlayerComponent getPlayer(int componentIndex) {
-        return null;
-    }
-
-    @Override
     public ArrayList<IPlayer> getPlayerGroup() {
         return null;
     }
