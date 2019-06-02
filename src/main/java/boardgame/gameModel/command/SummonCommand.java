@@ -20,9 +20,13 @@ public class SummonCommand extends SpecialCommand {
     public void execute() {
         IPlayer activePlayer = tf.getActivePlayer();
 
+        // Check if special ability is already used for player
         if (!activePlayer.getIsAbilityUsed()) {
+            // do the summon
             this.doSummon();
+            // set ability used parameter
             activePlayer.setIsAbilityUsed(tf.getTurnNumber());
+            // end turn
             tf.nextTurn();
         }
         else {
@@ -48,6 +52,7 @@ public class SummonCommand extends SpecialCommand {
     @Override
     public void setCommand(IPiece piece, SpecialVisitor sv, TurnFacade tf, IPiece selectedPiece, TileView tileView) {
         this.tf = tf;
+        // place of new minion
         destination = tileView.getLocation();
     }
 
@@ -57,12 +62,19 @@ public class SummonCommand extends SpecialCommand {
 
     private void doSummon(){
 
+        // Create abstract factory instance to crete a piece
         AbstractPieceFactory apf = FactoryProducer.getFactory(tf.getActivePlayer().playerType());
+        // check is null
         assert apf != null;
+        // create a piece instance
         IPiece temp = apf.getPiece(PieceConstants.MINION, destination);
+        // cast Ipiece to minions class
         newPiece = (Minion) temp;
+        // set  piece name
         newPiece.setPieceName(MinionName);
+        // set piece health points
         startingHealth = newPiece.getHealth();
+        // add piece to game
         tf.addPiece(newPiece);
     }
 }
