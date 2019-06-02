@@ -53,25 +53,25 @@ Players cannot move outside of walls and blocked paths.
 
 #### Each player will have these main attributes:
 
-Hearts: Hearts resemble the Hit Points. Each player has 10 Hearts at the beginning of each game.
+  Hearts: Hearts resemble the Hit Points. Each player has 10 Hearts at the beginning of each game.
 
-Undo: The player would able to undo up to 3 moves once throughout the whole game.
+  Undo: The player would able to undo up to 3 moves once throughout the whole game.
 
-Redo: The player would able to undo the undo function.
+  Redo: The player would able to undo the undo function.
 
 #### Each piece will have these main attributes:
 
-Move: Change the piece location on the board.
+  Move: Change the piece location on the board.
 
-Attack: Decrease the opponent health by attacking the opponent piece.
+  Attack: Decrease the opponent health by attacking the opponent piece.
 
-Special ability: Each piece will have their own special ability, i.e. summon a minion, long range or really heacy attack, and heal
+  Special ability: Each piece will have their own special ability, i.e. summon a minion, long range or really heacy attack, and heal
 
-Defense: Defense is to reduce the incoming damage.
+  Defense: Defense is to reduce the incoming damage.
 
-Swap: The piece have the ability to swap to another different piece.
+  Swap: The piece have the ability to swap to another different piece.
 
-Minion will have the same attributes with the piece but also with its own health bar.
+  Minion will have the same attributes with the piece but also with its own health bar.
 
 ### Humans
 
