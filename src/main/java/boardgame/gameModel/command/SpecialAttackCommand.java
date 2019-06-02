@@ -55,11 +55,7 @@ public class SpecialAttackCommand extends SpecialCommand {
 
     @Override
     public void redo() {
-        if (minion != null) {
-            minion.setHealth(minion.getHealth() - finalDamage);
-        }
-        tf.setEnemyHealth(selectedPiece, health);
-        tf.nextTurn();
+        execute();
     }
 
     @Override
