@@ -2,7 +2,10 @@
 
 ## How to run the game:
 
-We have created a .jar file to run our game.
+Running the game can be done in several ways. JavaFX can be a bit tricky if not installed so we have provided a packaged 
+version. We use Gradle for our build tool. 
+ 1 - For Windows we have provided a .zip file. Extract this, go to the bin folder and run the *.bat file. 
+ 2 - Use Gradle - The Gradle Command "Gradle Run" will run the program. "Gradle runtime" generates  a runtime folder. 
 
 ## Additional functional requirement made:
 
