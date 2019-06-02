@@ -117,7 +117,7 @@ public class GameController implements Initializable {
                 this.numOfPieces, this.gridRowsNum, this.gridColumnsNum);
         gm.setUpGame();
 
-        StatusController statusController = new StatusController(gm);
+        StatusController statusController = new StatusController(gm, this);
 
         gameContext = gm.getGameContext();
 
@@ -133,7 +133,7 @@ public class GameController implements Initializable {
         initialiseHandlers();
 
         registerListeners.registerPlayerListeners(gm.getPlayers());
-        registerListeners.registerTurnListeners(gm.getTurn());
+        registerListeners.registerTurnListeners();
 
         boardPane.getChildren().add(statusController);
         statusController.setLayoutX(800);
@@ -184,6 +184,14 @@ public class GameController implements Initializable {
         pieceHealth.setText("");
     }
 
+    public void togglePieceSelectionOn(boolean isShielded) {
+        if (isShielded) {
+            pieceHealth.setText("Minion is Shielded !");
+        } else
+            pieceHealth.setText("");
+
+    }
+
     private void handleMoveClicked() {
         gameContext.pressMove();
     }
@@ -231,4 +239,11 @@ public class GameController implements Initializable {
         SwapPane.setVisible(b);
     }
 
+    public void setActionButtonsDisable(boolean isDisable) {
+        moveButton.setDisable(isDisable);
+        attackButton.setDisable(isDisable);
+        specialAbilityButton.setDisable(isDisable);
+        defendButton.setDisable(isDisable);
+        swapButton.setDisable(isDisable);
+    }
 }

@@ -53,6 +53,8 @@ public class GameContext {
     private final StringProperty specialAbilityDescription = new SimpleStringProperty("Special Ability");
 
     private IPiece selectedPiece;
+    private final int undoCountLimit = 3;
+    private int undoCount = 0;
 
     /**
      * Instantiates a new Game context.
@@ -160,16 +162,27 @@ public class GameContext {
      * Undo the selected action through the command processor.
      */
     public void undo() {
-        //Reset all tiles to avoid weird errors.
-        HighlightTilesVisitor.resetTileColours(getBoardGrid());
-        commandProcessor.undo();
+        // only allow to go back 3 steps
+        if (undoCount < undoCountLimit) {
+            //Reset all tiles to avoid weird errors.
+            HighlightTilesVisitor.resetTileColours(getBoardGrid());
+            commandProcessor.undo();
+            undoCount++;
+        }
     }
 
     /**
      * Redo the selected action through the command processor.
      */
     public void redo() {
-        commandProcessor.redo();
+        if (undoCount > 0) {
+            commandProcessor.redo();
+            undoCount--;
+        }
+    }
+
+    public void resetUndoCount() {
+        undoCount = 0;
     }
 
     /**
@@ -286,18 +299,26 @@ public class GameContext {
      * @param piece the piece
      */
     public void selectPiece(HexagonTileViewPiece piece) {
-        gm.toggleMinionSelectionOff();
-        gm.specialAbilityOffCD();
-        selectedPiece = piece.getiPiece();
 
+        // get selected piece
+        selectedPiece = piece.getiPiece();
+        // GUI functions for user friendliness
+        // Update piece status
+        gm.toggleMinionSelectionOff();
+        gm.togglePieceSelectionOn(selectedPiece.getIsShielded());
+        gm.specialAbilityOffCD();
+
+        // If selected piece is minion show health
         if(selectedPiece.getClass().getSimpleName().equals(PieceConstants.MINION)){
             Minion minion = (Minion) selectedPiece;
             gm.toggleMinionSelectionOn("Minion Health: " + minion.getHealth());
         }
 
+        // Update piece name
         pieceNameProperty.setValue(selectedPiece.getPieceName().get());
         pieceLocationProperty().setValue(selectedPiece.getLocation().toString());
 
+        // Update special ability button
         if (tf.isActivePlayerPiece(piece.getiPiece())) {
             this.ownPiece = piece;
             // Validate GUI special Ability

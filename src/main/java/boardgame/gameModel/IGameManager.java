@@ -125,6 +125,8 @@ public interface IGameManager {
 
     void toggleMinionSelectionOn(String healthText);
 
+    void togglePieceSelectionOn(Boolean isShielded);
+
     void specialAbilityOnCD();
 
     void specialAbilityOffCD();

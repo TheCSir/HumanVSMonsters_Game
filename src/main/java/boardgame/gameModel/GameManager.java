@@ -224,6 +224,12 @@ class GameManager implements IGameManager {
         getTurn().nextTurn(allPlayers.getPlayerGroup());
     }
 
+
+    @Override
+    public void togglePieceSelectionOn(Boolean isShielded) {
+        gc.togglePieceSelectionOn(isShielded);
+    }
+
     @Override
     public void toggleMinionSelectionOff() {
         gc.toggleMinionSelectionOff();

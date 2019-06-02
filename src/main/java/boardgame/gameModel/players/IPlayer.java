@@ -96,5 +96,18 @@ public interface IPlayer extends IPlayerComponent {
 
     void checkAbilityUsed(int turnNumber);
 
+    /**
+     * Gets isUndoUsed property.
+     *
+     * @return the isUndoUsed property.
+     */
+    boolean getIsUndoUsed();
+
+    /**
+     * Sets isUndoUsed property.
+     *
+     * @param isUndoUsed if undo is used.
+     */
+    void setIsUndoUsed(boolean isUndoUsed);
 
 }

@@ -54,8 +54,10 @@
                 <Insets bottom="15.0"/>
             </VBox.margin>
         </Text>
-        <Button fx:id="undoButton" mnemonicParsing="false" text="Undo"/>
-        <Button fx:id="redoButton" mnemonicParsing="false" text="Redo"/>
+        <Button fx:id="beginUndoButton" mnemonicParsing="false" text="Begin Undo"/>
+        <Button fx:id="undoButton" mnemonicParsing="false" disable="true" text="Undo"/>
+        <Button fx:id="redoButton" mnemonicParsing="false" disable="true" text="Redo"/>
+        <Button fx:id="finishUndoButton" mnemonicParsing="false" disable="true" text="Finish Undo"/>
         <Button fx:id="replay" mnemonicParsing="false" text="Replay All Moves"/>
     </children>
 </fx:root>
