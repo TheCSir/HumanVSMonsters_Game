@@ -20,6 +20,7 @@ public class Archer extends Human {
 
     public Archer(Location location) {
         super(location);
+
     }
 
     @Override

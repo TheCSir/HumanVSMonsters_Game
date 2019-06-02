@@ -23,7 +23,7 @@ public class Constants {
     public static final String PLAYER2 = "MonsterPlayer";
 
     public static  final int INITIALHEALTH = 10;
-    public static  final int INITIALMINIONHEALTH = 2;
+    public static final int INITIALMINIONHEALTH = 4;
     public static final String IDEALSTATUS = "normal";
 
     public static final  int DEFAULTABILITYCD = 10;

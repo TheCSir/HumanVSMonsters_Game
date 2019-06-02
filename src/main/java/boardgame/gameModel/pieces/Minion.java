@@ -49,7 +49,6 @@ public class Minion extends Monster {
 
     }
 
-
     @Override
     public String getSpecialAbilityDescription() {
         return "Summon Snakes";
@@ -77,7 +76,6 @@ public class Minion extends Monster {
     }
 
     public void decreaseHealth(double damage) {
-
         health.set(health.get() - damage);
     }
 
