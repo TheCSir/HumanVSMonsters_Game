@@ -184,6 +184,15 @@ public class GameController implements Initializable {
         pieceHealth.setText("");
     }
 
+    public void togglePieceSelectionOn(boolean isShielded) {
+        if(isShielded){
+            pieceHealth.setText("Minion is Shielded !");
+        }
+        else
+            pieceHealth.setText("");
+
+    }
+
     private void handleMoveClicked() {
         gameContext.pressMove();
     }
