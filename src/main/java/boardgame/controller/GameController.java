@@ -186,7 +186,7 @@ public class GameController implements Initializable {
 
     public void togglePieceSelectionOn(boolean isShielded) {
         if(isShielded){
-            pieceHealth.setText("Minion is Shielded !");
+            pieceHealth.setText("Piece is Shielded !");
         }
         else
             pieceHealth.setText("");
